@@ -3,6 +3,7 @@ import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import AISupportButton from "@/components/AISupportButton";
+import NewsTicker from "@/components/NewsTicker";
 
 export const metadata: Metadata = {
   title: 'MAPI - המרכז למיפוי ישראל | פורטל לקוחות',
@@ -39,7 +40,8 @@ export default function RootLayout({
       </head>
       <body className="bg-surface text-on-surface font-body selection:bg-secondary/30 antialiased">
         <Header />
-        <main id="main-content" className="pt-20 min-h-screen">
+        <NewsTicker />
+        <main id="main-content" className="pt-[120px] sm:pt-[124px] min-h-screen">
           {children}
         </main>
         <Footer />

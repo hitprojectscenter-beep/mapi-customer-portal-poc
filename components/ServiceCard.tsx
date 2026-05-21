@@ -41,7 +41,7 @@ export default function ServiceCard({ service, variant = "default" }: Props) {
   return (
     <Container>
       <article
-        className={`group premium-card relative bg-white rounded-3xl p-6 md:p-8 border border-outline-variant/50 hover:shadow-2xl hover:border-secondary/30 transition-all duration-500 h-full flex flex-col ${
+        className={`group premium-card wow-tilt relative bg-white rounded-3xl p-6 md:p-8 border border-outline-variant/50 hover:shadow-2xl hover:border-secondary/30 transition-all duration-500 h-full flex flex-col ${
           variant === "compact" ? "" : ""
         }`}
       >

@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useState } from "react";
 import ServiceCard from "@/components/ServiceCard";
 import QuoteRequestModal from "@/components/QuoteRequestModal";
+import WowCounter from "@/components/WowCounter";
 import { services, categories, type Service } from "@/lib/data";
 
 export default function HomePage() {
@@ -12,23 +13,39 @@ export default function HomePage() {
 
   return (
     <>
-      {/* Cinematic Hero Section */}
+      {/* Cinematic Hero Section with WOW effects */}
       <section
-        className="relative min-h-[85vh] sm:min-h-[90vh] flex items-center justify-center overflow-hidden bg-primary -mt-20 pt-20"
+        className="relative min-h-[85vh] sm:min-h-[90vh] flex items-center justify-center overflow-hidden wow-mesh wow-particles -mt-[120px] sm:-mt-[124px] pt-[120px] sm:pt-[124px]"
         aria-label="באנר ראשי"
       >
+        {/* Aurora glow blobs */}
+        <div
+          className="wow-aurora bg-secondary"
+          style={{ width: 500, height: 500, top: "10%", right: "-100px", animationDelay: "0s" }}
+          aria-hidden="true"
+        />
+        <div
+          className="wow-aurora bg-secondary-container"
+          style={{ width: 400, height: 400, bottom: "10%", left: "-100px", animationDelay: "4s", opacity: 0.35 }}
+          aria-hidden="true"
+        />
+        <div
+          className="wow-aurora bg-primary-container"
+          style={{ width: 300, height: 300, top: "40%", left: "30%", animationDelay: "8s", opacity: 0.3 }}
+          aria-hidden="true"
+        />
+
         {/* Background Layer */}
         <div className="absolute inset-0 z-0">
           <div
-            className="absolute inset-0 bg-cover bg-center opacity-30 mix-blend-overlay"
+            className="absolute inset-0 bg-cover bg-center opacity-20 mix-blend-overlay"
             style={{
               backgroundImage:
                 'url("https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?auto=format&fit=crop&w=1920&q=80")'
             }}
             aria-hidden="true"
           />
-          <div className="absolute inset-0 hero-gradient" aria-hidden="true" />
-          <div className="absolute inset-0 topo-pattern opacity-30" aria-hidden="true" />
+          <div className="absolute inset-0 topo-pattern opacity-25" aria-hidden="true" />
         </div>
 
         {/* Data Vis Decorations */}
@@ -141,7 +158,7 @@ export default function HomePage() {
 
           <div className="grid grid-cols-1 md:grid-cols-12 gap-4 sm:gap-6 md:gap-8">
             {/* Hero card 1 - no price, with quote button */}
-            <div className="md:col-span-7 group premium-card relative overflow-hidden bg-white rounded-3xl p-6 sm:p-8 md:p-10 border border-outline-variant/50 hover:shadow-2xl transition-all duration-500 shine">
+            <div className="md:col-span-7 group premium-card wow-tilt relative overflow-hidden bg-white rounded-3xl p-6 sm:p-8 md:p-10 border border-outline-variant/50 hover:shadow-2xl transition-all duration-500 shine">
               <div className="relative z-10 flex flex-col h-full text-right items-end">
                 <div className="card-icon w-16 h-16 sm:w-20 sm:h-20 bg-secondary/5 rounded-2xl flex items-center justify-center text-secondary mb-6 sm:mb-8 md:mb-10 transition-all duration-500">
                   <span className="material-symbols-outlined text-[36px] sm:text-[48px]">
@@ -180,7 +197,7 @@ export default function HomePage() {
             </div>
 
             {/* Vertical dark card - no price */}
-            <div className="md:col-span-5 group premium-card bg-primary rounded-3xl p-6 sm:p-8 md:p-10 text-white relative overflow-hidden hover:shadow-2xl transition-all duration-500 shine shine-gold">
+            <div className="md:col-span-5 group premium-card wow-tilt bg-primary rounded-3xl p-6 sm:p-8 md:p-10 text-white relative overflow-hidden hover:shadow-2xl transition-all duration-500 shine shine-gold">
               <div className="relative z-10 flex flex-col h-full text-right items-end">
                 <div className="card-icon w-14 h-14 sm:w-16 sm:h-16 bg-white/10 rounded-2xl flex items-center justify-center text-white mb-6 sm:mb-8 md:mb-10 transition-all">
                   <span className="material-symbols-outlined text-[32px] sm:text-[40px]">
@@ -228,7 +245,7 @@ export default function HomePage() {
               (service) =>
                 service && (
                   <div key={service.slug} className="md:col-span-4">
-                    <article className="group shine premium-card relative bg-white rounded-3xl p-6 sm:p-8 border border-outline-variant/50 hover:shadow-2xl hover:border-secondary/30 transition-all duration-500 h-full flex flex-col">
+                    <article className="group shine wow-tilt premium-card relative bg-white rounded-3xl p-6 sm:p-8 border border-outline-variant/50 hover:shadow-2xl hover:border-secondary/30 transition-all duration-500 h-full flex flex-col">
                       <div className="text-right flex flex-col items-end h-full">
                         <div className="card-icon w-12 h-12 sm:w-14 sm:h-14 bg-secondary/5 text-secondary flex items-center justify-center rounded-2xl mb-4 sm:mb-6 transition-all duration-500">
                           <span className="material-symbols-outlined text-[28px] sm:text-[32px]">
@@ -308,24 +325,24 @@ export default function HomePage() {
               </p>
               <div className="grid grid-cols-2 gap-6 sm:gap-8 md:gap-10">
                 <div>
-                  <p className="text-3xl sm:text-4xl md:text-5xl font-black text-secondary-container mb-1 sm:mb-2">
-                    2.4M
+                  <p className="text-3xl sm:text-4xl md:text-5xl font-black wow-counter mb-1 sm:mb-2">
+                    <WowCounter value={2400000} format="compact" />
                   </p>
                   <p className="text-[10px] sm:text-xs md:text-sm uppercase tracking-widest font-bold text-white/50">
                     שאילתות מידע בשנה
                   </p>
                 </div>
                 <div>
-                  <p className="text-3xl sm:text-4xl md:text-5xl font-black text-secondary-container mb-1 sm:mb-2">
-                    15K
+                  <p className="text-3xl sm:text-4xl md:text-5xl font-black wow-counter mb-1 sm:mb-2">
+                    <WowCounter value={15000} format="compact" />
                   </p>
                   <p className="text-[10px] sm:text-xs md:text-sm uppercase tracking-widest font-bold text-white/50">
                     אנשי מקצוע רשומים
                   </p>
                 </div>
                 <div>
-                  <p className="text-3xl sm:text-4xl md:text-5xl font-black text-secondary-container mb-1 sm:mb-2">
-                    97%
+                  <p className="text-3xl sm:text-4xl md:text-5xl font-black wow-counter mb-1 sm:mb-2">
+                    <WowCounter value={97} suffix="%" format="number" />
                   </p>
                   <p className="text-[10px] sm:text-xs md:text-sm uppercase tracking-widest font-bold text-white/50">
                     שביעות רצון לקוחות
