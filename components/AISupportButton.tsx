@@ -37,7 +37,7 @@ export default function AISupportButton() {
             >
               <span className="material-symbols-outlined">close</span>
             </button>
-            <div className="text-right">
+            <div className="text-center">
               <h3 className="text-white font-bold">צ&apos;אט תמיכה חכם</h3>
               <p className="text-white/70 text-xs flex items-center justify-end gap-1.5">
                 <span>מחובר</span>
@@ -46,18 +46,18 @@ export default function AISupportButton() {
             </div>
           </div>
           <div className="p-5 max-h-80 overflow-y-auto">
-            <div className="bg-surface-container p-4 rounded-2xl rounded-tr-sm mb-4 text-right">
+            <div className="bg-surface-container p-4 rounded-2xl rounded-tr-sm mb-4 text-center">
               <p className="text-sm text-on-surface">
                 שלום! אני העוזר הדיגיטלי של מפ&quot;י. אני יכול לעזור לך באיתור גוש וחלקה,
                 הזמנת מפה, או כל שאלה אחרת.
               </p>
             </div>
-            <div className="bg-surface-container p-4 rounded-2xl rounded-tr-sm text-right">
+            <div className="bg-surface-container p-4 rounded-2xl rounded-tr-sm text-center">
               <p className="text-sm text-on-surface font-medium mb-2">פעולות מהירות:</p>
               <div className="flex flex-col gap-2">
                 <Link
                   href="/help"
-                  className="shine text-right text-xs bg-white border border-outline-variant px-3 py-2 rounded-full hover:bg-secondary hover:text-white hover:border-secondary transition-colors"
+                  className="shine text-center text-xs bg-white border border-outline-variant px-3 py-2 rounded-full hover:bg-secondary hover:text-white hover:border-secondary transition-colors"
                   data-tooltip="עבור למרכז העזרה - איך להזמין מפה"
                   data-tooltip-position="bottom"
                 >
@@ -65,7 +65,7 @@ export default function AISupportButton() {
                 </Link>
                 <Link
                   href="/cases/new"
-                  className="shine text-right text-xs bg-white border border-outline-variant px-3 py-2 rounded-full hover:bg-secondary hover:text-white hover:border-secondary transition-colors"
+                  className="shine text-center text-xs bg-white border border-outline-variant px-3 py-2 rounded-full hover:bg-secondary hover:text-white hover:border-secondary transition-colors"
                   data-tooltip="פתיחת פנייה חדשה לטיפול בבעיה"
                   data-tooltip-position="bottom"
                 >
@@ -73,7 +73,7 @@ export default function AISupportButton() {
                 </Link>
                 <Link
                   href="/orders"
-                  className="shine text-right text-xs bg-white border border-outline-variant px-3 py-2 rounded-full hover:bg-secondary hover:text-white hover:border-secondary transition-colors"
+                  className="shine text-center text-xs bg-white border border-outline-variant px-3 py-2 rounded-full hover:bg-secondary hover:text-white hover:border-secondary transition-colors"
                   data-tooltip="צפייה בסטטוס מנויי CORS פעילים"
                   data-tooltip-position="bottom"
                 >
@@ -90,7 +90,7 @@ export default function AISupportButton() {
               id="chat-input"
               type="text"
               placeholder="הקלד הודעה..."
-              className="flex-1 bg-surface-container border-0 rounded-full px-4 py-2.5 text-sm focus:ring-2 focus:ring-secondary focus:outline-none text-right"
+              className="flex-1 bg-surface-container border-0 rounded-full px-4 py-2.5 text-sm focus:ring-2 focus:ring-secondary focus:outline-none text-center"
               aria-label="הקלד הודעה"
             />
             <button

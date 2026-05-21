@@ -112,7 +112,7 @@ export default function QuoteRequestModal({ service, open, onClose }: Props) {
               נציג שירות לקוחות יחזור אליך תוך שעות העבודה הקרובות עם הצעת מחיר מפורטת
               ל-<span className="font-bold text-primary">{service.name}</span>.
             </p>
-            <div className="bg-surface-container rounded-2xl p-4 text-right text-sm mb-6">
+            <div className="bg-surface-container rounded-2xl p-4 text-center text-sm mb-6">
               <p className="font-bold text-primary mb-2">📌 מה הלאה?</p>
               <ul className="text-on-surface-variant space-y-1 list-disc pr-5">
                 <li>קיבלת אישור במייל <strong>{form.email || "שהזנת"}</strong></li>
@@ -140,7 +140,7 @@ export default function QuoteRequestModal({ service, open, onClose }: Props) {
                     {service.icon}
                   </span>
                 </div>
-                <div className="text-right flex-1">
+                <div className="text-center flex-1">
                   <span className="text-xs uppercase tracking-widest text-secondary-container font-bold block">
                     {service.categoryLabel}
                   </span>
@@ -158,7 +158,7 @@ export default function QuoteRequestModal({ service, open, onClose }: Props) {
             <div className="p-6 sm:p-8">
               {/* Price + Details */}
               <div className="grid sm:grid-cols-2 gap-3 mb-6">
-                <div className="bg-secondary/5 rounded-2xl p-4 border border-secondary/20 text-right">
+                <div className="bg-secondary/5 rounded-2xl p-4 border border-secondary/20 text-center">
                   <p className="text-[10px] uppercase tracking-widest font-bold text-secondary mb-1">
                     מחיר משוער
                   </p>
@@ -167,7 +167,7 @@ export default function QuoteRequestModal({ service, open, onClose }: Props) {
                     (כולל מע"מ - מחיר סופי לפי פרטי הבקשה)
                   </p>
                 </div>
-                <div className="bg-surface-container rounded-2xl p-4 text-right">
+                <div className="bg-surface-container rounded-2xl p-4 text-center">
                   <p className="text-[10px] uppercase tracking-widest font-bold text-on-surface-variant mb-1">
                     זמן אספקה
                   </p>
@@ -179,10 +179,10 @@ export default function QuoteRequestModal({ service, open, onClose }: Props) {
               {/* Features (compact) */}
               {service.features.length > 0 && (
                 <div className="mb-6 bg-white rounded-2xl border border-outline-variant/50 p-4">
-                  <p className="text-[10px] uppercase tracking-widest font-bold text-secondary mb-2 text-right">
+                  <p className="text-[10px] uppercase tracking-widest font-bold text-secondary mb-2 text-center">
                     מה כלול
                   </p>
-                  <ul className="grid sm:grid-cols-2 gap-1.5 text-sm text-right">
+                  <ul className="grid sm:grid-cols-2 gap-1.5 text-sm text-center">
                     {service.features.slice(0, 6).map((f, i) => (
                       <li key={i} className="flex items-center justify-end gap-2">
                         <span>{f}</span>
@@ -197,7 +197,7 @@ export default function QuoteRequestModal({ service, open, onClose }: Props) {
 
               {/* Form */}
               <form onSubmit={handleSubmit} className="space-y-4">
-                <h3 className="text-base font-extrabold text-primary text-right flex items-center gap-2 justify-end">
+                <h3 className="text-base font-extrabold text-primary text-center flex items-center gap-2 justify-end">
                   <span>פרטי המבקש</span>
                   <span className="material-symbols-outlined text-secondary text-[20px]">
                     person
@@ -208,7 +208,7 @@ export default function QuoteRequestModal({ service, open, onClose }: Props) {
                   <div>
                     <label
                       htmlFor="qr-fname"
-                      className="block text-xs font-bold text-primary mb-1 text-right"
+                      className="block text-xs font-bold text-primary mb-1 text-center"
                     >
                       שם פרטי <span className="text-error-red">*</span>
                     </label>
@@ -220,13 +220,13 @@ export default function QuoteRequestModal({ service, open, onClose }: Props) {
                       autoComplete="given-name"
                       value={form.firstName}
                       onChange={(e) => setForm({ ...form, firstName: e.target.value })}
-                      className="w-full bg-surface-container border border-outline-variant rounded-xl px-4 py-3 text-right focus:ring-2 focus:ring-secondary focus:outline-none min-h-[44px]"
+                      className="w-full bg-surface-container border border-outline-variant rounded-xl px-4 py-3 text-center focus:ring-2 focus:ring-secondary focus:outline-none min-h-[44px]"
                     />
                   </div>
                   <div>
                     <label
                       htmlFor="qr-lname"
-                      className="block text-xs font-bold text-primary mb-1 text-right"
+                      className="block text-xs font-bold text-primary mb-1 text-center"
                     >
                       שם משפחה <span className="text-error-red">*</span>
                     </label>
@@ -237,7 +237,7 @@ export default function QuoteRequestModal({ service, open, onClose }: Props) {
                       autoComplete="family-name"
                       value={form.lastName}
                       onChange={(e) => setForm({ ...form, lastName: e.target.value })}
-                      className="w-full bg-surface-container border border-outline-variant rounded-xl px-4 py-3 text-right focus:ring-2 focus:ring-secondary focus:outline-none min-h-[44px]"
+                      className="w-full bg-surface-container border border-outline-variant rounded-xl px-4 py-3 text-center focus:ring-2 focus:ring-secondary focus:outline-none min-h-[44px]"
                     />
                   </div>
                 </div>
@@ -245,7 +245,7 @@ export default function QuoteRequestModal({ service, open, onClose }: Props) {
                 <div>
                   <label
                     htmlFor="qr-email"
-                    className="block text-xs font-bold text-primary mb-1 text-right"
+                    className="block text-xs font-bold text-primary mb-1 text-center"
                   >
                     כתובת מייל <span className="text-error-red">*</span>
                   </label>
@@ -258,7 +258,7 @@ export default function QuoteRequestModal({ service, open, onClose }: Props) {
                     placeholder="name@example.com"
                     value={form.email}
                     onChange={(e) => setForm({ ...form, email: e.target.value })}
-                    className="w-full bg-surface-container border border-outline-variant rounded-xl px-4 py-3 text-right focus:ring-2 focus:ring-secondary focus:outline-none min-h-[44px]"
+                    className="w-full bg-surface-container border border-outline-variant rounded-xl px-4 py-3 text-center focus:ring-2 focus:ring-secondary focus:outline-none min-h-[44px]"
                     dir="ltr"
                   />
                 </div>
@@ -267,7 +267,7 @@ export default function QuoteRequestModal({ service, open, onClose }: Props) {
                   <div>
                     <label
                       htmlFor="qr-org"
-                      className="block text-xs font-bold text-primary mb-1 text-right"
+                      className="block text-xs font-bold text-primary mb-1 text-center"
                     >
                       ארגון / חברה
                     </label>
@@ -278,13 +278,13 @@ export default function QuoteRequestModal({ service, open, onClose }: Props) {
                       placeholder="(אופציונלי)"
                       value={form.organization}
                       onChange={(e) => setForm({ ...form, organization: e.target.value })}
-                      className="w-full bg-surface-container border border-outline-variant rounded-xl px-4 py-3 text-right focus:ring-2 focus:ring-secondary focus:outline-none min-h-[44px]"
+                      className="w-full bg-surface-container border border-outline-variant rounded-xl px-4 py-3 text-center focus:ring-2 focus:ring-secondary focus:outline-none min-h-[44px]"
                     />
                   </div>
                   <div>
                     <label
                       htmlFor="qr-cid"
-                      className="block text-xs font-bold text-primary mb-1 text-right"
+                      className="block text-xs font-bold text-primary mb-1 text-center"
                     >
                       ח.פ. / ת.ז.
                     </label>
@@ -298,7 +298,7 @@ export default function QuoteRequestModal({ service, open, onClose }: Props) {
                       onChange={(e) =>
                         setForm({ ...form, businessId: e.target.value.replace(/\D/g, "") })
                       }
-                      className="w-full bg-surface-container border border-outline-variant rounded-xl px-4 py-3 text-right focus:ring-2 focus:ring-secondary focus:outline-none min-h-[44px]"
+                      className="w-full bg-surface-container border border-outline-variant rounded-xl px-4 py-3 text-center focus:ring-2 focus:ring-secondary focus:outline-none min-h-[44px]"
                       dir="ltr"
                     />
                   </div>
@@ -307,7 +307,7 @@ export default function QuoteRequestModal({ service, open, onClose }: Props) {
                 <div>
                   <label
                     htmlFor="qr-notes"
-                    className="block text-xs font-bold text-primary mb-1 text-right"
+                    className="block text-xs font-bold text-primary mb-1 text-center"
                   >
                     הערות נוספות (אופציונלי)
                   </label>
@@ -317,11 +317,11 @@ export default function QuoteRequestModal({ service, open, onClose }: Props) {
                     placeholder='למשל: גודל מסוים, אזור גיאוגרפי, פורמט מבוקש...'
                     value={form.notes}
                     onChange={(e) => setForm({ ...form, notes: e.target.value })}
-                    className="w-full bg-surface-container border border-outline-variant rounded-xl px-4 py-3 text-right focus:ring-2 focus:ring-secondary focus:outline-none resize-none"
+                    className="w-full bg-surface-container border border-outline-variant rounded-xl px-4 py-3 text-center focus:ring-2 focus:ring-secondary focus:outline-none resize-none"
                   />
                 </div>
 
-                <p className="text-[11px] text-on-surface-variant text-right leading-relaxed">
+                <p className="text-[11px] text-on-surface-variant text-center leading-relaxed">
                   בלחיצה על "שלח בקשה" הנך מאשר/ת את{" "}
                   <a
                     href="https://www.gov.il/he/policies/privacy_policy"

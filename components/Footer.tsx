@@ -13,7 +13,7 @@ export default function Footer() {
       <div className="absolute inset-0 dot-pattern opacity-5" aria-hidden="true" />
       <div className="max-w-container-max-width mx-auto px-4 md:px-margin-desktop relative">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-10 md:gap-16 mb-16">
-          <div className="col-span-2 md:col-span-1 flex flex-col items-end gap-5">
+          <div className="col-span-2 md:col-span-1 flex flex-col items-center gap-5">
             <a
               href={MAPI_SITE}
               target="_blank"
@@ -22,7 +22,7 @@ export default function Footer() {
               data-tooltip='לאתר הרשמי של המרכז למיפוי ישראל ב-gov.il'
               data-tooltip-position="bottom"
             >
-              <div className="flex flex-col items-end leading-tight">
+              <div className="flex flex-col items-center leading-tight">
                 <span className="font-extrabold text-2xl tracking-tight text-white">
                   MAPI
                 </span>
@@ -40,17 +40,17 @@ export default function Footer() {
                 />
               </div>
             </a>
-            <p className="text-right text-white/60 text-sm leading-relaxed">
+            <p className="text-center text-white/60 text-sm leading-relaxed">
               המרכז למיפוי ישראל הוא היחידה הממשלתית האחראית על כלל תחומי המיפוי,
               המדידה, הגיאודזיה והקדסטר במדינת ישראל.
             </p>
           </div>
 
-          <div className="flex flex-col items-end gap-5">
+          <div className="flex flex-col items-center gap-5">
             <h4 className="font-bold text-sm uppercase tracking-widest text-secondary-container">
               קישורים מהירים
             </h4>
-            <nav className="flex flex-col items-end gap-3 text-white/70 text-sm" aria-label="קישורים בפוטר">
+            <nav className="flex flex-col items-center gap-3 text-white/70 text-sm" aria-label="קישורים בפוטר">
               <Link
                 href="/catalog"
                 className="hover:text-white transition-colors shine px-2 py-0.5 rounded"
@@ -82,11 +82,11 @@ export default function Footer() {
             </nav>
           </div>
 
-          <div className="flex flex-col items-end gap-5">
+          <div className="flex flex-col items-center gap-5">
             <h4 className="font-bold text-sm uppercase tracking-widest text-secondary-container">
               מידע משפטי
             </h4>
-            <nav className="flex flex-col items-end gap-3 text-white/70 text-sm" aria-label="קישורים משפטיים">
+            <nav className="flex flex-col items-center gap-3 text-white/70 text-sm" aria-label="קישורים משפטיים">
               <a
                 href={GOV_TERMS}
                 target="_blank"
@@ -126,11 +126,11 @@ export default function Footer() {
             </nav>
           </div>
 
-          <div className="flex flex-col items-end gap-5">
+          <div className="flex flex-col items-center gap-5">
             <h4 className="font-bold text-sm uppercase tracking-widest text-secondary-container">
               צור קשר
             </h4>
-            <div className="flex flex-col items-end gap-3 text-white/70 text-right text-sm">
+            <div className="flex flex-col items-center gap-3 text-white/70 text-center text-sm">
               <a
                 href="https://maps.app.goo.gl/Q3w3VEr5K3y3Y3y39"
                 target="_blank"

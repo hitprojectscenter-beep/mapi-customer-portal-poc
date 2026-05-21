@@ -62,7 +62,7 @@ export default function DashboardPage() {
               <span className="text-secondary-container mr-2">ברוך הבא</span>
             </h1>
           </div>
-          <p className="text-white/70 max-w-2xl text-right">
+          <p className="text-white/70 max-w-2xl text-center">
             לוח בקרה אישי - סיכום הפעילות שלך, הזמנות אחרונות, התראות ופעולות מהירות.
           </p>
           <div className="mt-6 flex flex-wrap gap-3">
@@ -108,8 +108,8 @@ export default function DashboardPage() {
                   {kpi.trend}
                 </span>
               </div>
-              <p className="text-3xl md:text-4xl font-black text-primary text-right">{kpi.value}</p>
-              <p className="text-sm text-on-surface-variant text-right">{kpi.label}</p>
+              <p className="text-3xl md:text-4xl font-black text-primary text-center">{kpi.value}</p>
+              <p className="text-sm text-on-surface-variant text-center">{kpi.label}</p>
             </div>
           ))}
         </div>
@@ -135,7 +135,7 @@ export default function DashboardPage() {
           </div>
           {/* Desktop table */}
           <div className="hidden md:block overflow-x-auto">
-            <table className="w-full text-right">
+            <table className="w-full text-center">
               <thead>
                 <tr className="border-b border-outline-variant text-xs text-on-surface-variant uppercase tracking-wider">
                   <th className="pb-3 pr-2">פעולות</th>
@@ -207,7 +207,7 @@ export default function DashboardPage() {
                     <span className="material-symbols-outlined text-secondary text-[24px] flex-shrink-0">
                       {order.serviceIcon}
                     </span>
-                    <div className="text-right min-w-0">
+                    <div className="text-center min-w-0">
                       <p className="font-bold text-primary text-sm truncate">{order.serviceName}</p>
                       <p className="font-mono text-[10px] text-on-surface-variant">{order.id}</p>
                     </div>
@@ -269,7 +269,7 @@ export default function DashboardPage() {
                 >
                   <div className="flex flex-row-reverse items-start gap-3">
                     <span className="material-symbols-outlined">{n.icon}</span>
-                    <div className="flex-1 text-right">
+                    <div className="flex-1 text-center">
                       <p className="text-sm font-medium mb-2">{n.title}</p>
                       <Link
                         href={n.href}

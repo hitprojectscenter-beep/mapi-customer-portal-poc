@@ -34,7 +34,7 @@ export default function ServiceDetailPage({ params }: Props) {
           </nav>
 
           <div className="grid lg:grid-cols-3 gap-10 items-start">
-            <div className="lg:col-span-2 text-right">
+            <div className="lg:col-span-2 text-center">
               <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-md px-3 py-1 rounded-full mb-4 text-white/90 border border-white/10">
                 <span className="text-xs font-bold tracking-wide">{service.categoryLabel}</span>
               </div>
@@ -57,7 +57,7 @@ export default function ServiceDetailPage({ params }: Props) {
 
             <aside className="bg-white text-on-surface rounded-3xl shadow-2xl p-6 md:p-8">
               <div className="flex items-center justify-end gap-3 mb-6">
-                <div className="text-right">
+                <div className="text-center">
                   <p className="text-xs text-on-surface-variant uppercase tracking-widest">החל מ-</p>
                   <p className="text-3xl font-black text-secondary">
                     ₪{service.priceFrom.toLocaleString()}
@@ -71,7 +71,7 @@ export default function ServiceDetailPage({ params }: Props) {
                 </div>
               </div>
 
-              <div className="bg-surface-container rounded-2xl p-4 mb-6 text-right">
+              <div className="bg-surface-container rounded-2xl p-4 mb-6 text-center">
                 <p className="text-xs text-on-surface-variant mb-1">⏱️ זמן אספקה</p>
                 <p className="font-bold text-primary">{service.deliveryDays}</p>
               </div>
@@ -111,14 +111,14 @@ export default function ServiceDetailPage({ params }: Props) {
       {/* Price Table */}
       {service.priceTable && service.priceTable.length > 0 && (
         <section className="max-w-container-max-width mx-auto px-4 md:px-margin-desktop py-16">
-          <div className="text-right mb-8">
+          <div className="text-center mb-8">
             <span className="text-secondary font-bold text-sm tracking-[0.2em] uppercase mb-2 block">
               מחירון
             </span>
             <h2 className="text-3xl font-extrabold text-primary">טבלת מחירים מפורטת</h2>
           </div>
           <div className="bg-white rounded-3xl border border-outline-variant/50 overflow-hidden shadow-sm">
-            <table className="w-full text-right">
+            <table className="w-full text-center">
               <thead className="bg-surface-container">
                 <tr>
                   <th className="px-6 py-4 font-bold text-primary">{service.priceTable[0].with !== undefined ? service.slug === "custom-map" ? "גודל המפה" : "מסלול" : "מסלול"}</th>
@@ -161,7 +161,7 @@ export default function ServiceDetailPage({ params }: Props) {
       {/* FAQ */}
       {service.faq && service.faq.length > 0 && (
         <section className="max-w-container-max-width mx-auto px-4 md:px-margin-desktop py-16 bg-white">
-          <div className="text-right mb-8">
+          <div className="text-center mb-8">
             <span className="text-secondary font-bold text-sm tracking-[0.2em] uppercase mb-2 block">
               שאלות נפוצות
             </span>
@@ -177,9 +177,9 @@ export default function ServiceDetailPage({ params }: Props) {
                   <span className="material-symbols-outlined group-open:rotate-180 transition-transform">
                     expand_more
                   </span>
-                  <span className="text-right">{item.q}</span>
+                  <span className="text-center">{item.q}</span>
                 </summary>
-                <p className="text-on-surface-variant mt-4 text-right leading-relaxed">{item.a}</p>
+                <p className="text-on-surface-variant mt-4 text-center leading-relaxed">{item.a}</p>
               </details>
             ))}
           </div>

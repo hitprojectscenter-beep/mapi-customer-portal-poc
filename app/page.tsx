@@ -88,7 +88,7 @@ export default function HomePage() {
                 name="q"
                 type="search"
                 placeholder='חיפוש מפה, תצלום, קדסטר...'
-                className="bg-transparent border-none focus:ring-0 focus:outline-none text-white placeholder:text-white/50 text-right flex-grow px-3 sm:px-6 py-3 sm:py-4 text-sm sm:text-base md:text-lg w-full min-h-[44px]"
+                className="bg-transparent border-none focus:ring-0 focus:outline-none text-white placeholder:text-white/50 text-center flex-grow px-3 sm:px-6 py-3 sm:py-4 text-sm sm:text-base md:text-lg w-full min-h-[44px]"
               />
               <button
                 type="submit"
@@ -138,7 +138,7 @@ export default function HomePage() {
       <section className="py-16 sm:py-20 md:py-32 relative bg-surface" aria-labelledby="services-heading">
         <div className="max-w-container-max-width mx-auto px-4 md:px-margin-desktop">
           <div className="flex flex-col md:flex-row-reverse items-end justify-between mb-12 md:mb-24 gap-6 md:gap-8">
-            <div className="text-right max-w-2xl">
+            <div className="text-center max-w-2xl">
               <span className="text-secondary font-bold text-xs sm:text-sm tracking-[0.2em] uppercase mb-3 sm:mb-4 block">
                 השירותים שלנו
               </span>
@@ -151,7 +151,7 @@ export default function HomePage() {
                 בכל קנה מידה.
               </h2>
             </div>
-            <p className="text-on-surface-variant text-sm sm:text-base md:text-lg max-w-sm text-right leading-relaxed">
+            <p className="text-on-surface-variant text-sm sm:text-base md:text-lg max-w-sm text-center leading-relaxed">
               גישה ישירה למאגרי המידע הממשלתיים המעודכנים ביותר עבור אנשי מקצוע ומוסדות.
             </p>
           </div>
@@ -159,7 +159,7 @@ export default function HomePage() {
           <div className="grid grid-cols-1 md:grid-cols-12 gap-4 sm:gap-6 md:gap-8">
             {/* Hero card 1 - no price, with quote button */}
             <div className="md:col-span-7 group premium-card wow-tilt relative overflow-hidden bg-white rounded-3xl p-6 sm:p-8 md:p-10 border border-outline-variant/50 hover:shadow-2xl transition-all duration-500 shine">
-              <div className="relative z-10 flex flex-col h-full text-right items-end">
+              <div className="relative z-10 flex flex-col h-full text-center items-end">
                 <div className="card-icon w-16 h-16 sm:w-20 sm:h-20 bg-secondary/5 rounded-2xl flex items-center justify-center text-secondary mb-6 sm:mb-8 md:mb-10 transition-all duration-500">
                   <span className="material-symbols-outlined text-[36px] sm:text-[48px]">
                     {featuredServices[0]?.icon}
@@ -198,7 +198,7 @@ export default function HomePage() {
 
             {/* Vertical dark card - no price */}
             <div className="md:col-span-5 group premium-card wow-tilt bg-primary rounded-3xl p-6 sm:p-8 md:p-10 text-white relative overflow-hidden hover:shadow-2xl transition-all duration-500 shine shine-gold">
-              <div className="relative z-10 flex flex-col h-full text-right items-end">
+              <div className="relative z-10 flex flex-col h-full text-center items-end">
                 <div className="card-icon w-14 h-14 sm:w-16 sm:h-16 bg-white/10 rounded-2xl flex items-center justify-center text-white mb-6 sm:mb-8 md:mb-10 transition-all">
                   <span className="material-symbols-outlined text-[32px] sm:text-[40px]">
                     {featuredServices[1]?.icon}
@@ -246,7 +246,7 @@ export default function HomePage() {
                 service && (
                   <div key={service.slug} className="md:col-span-4">
                     <article className="group shine wow-tilt premium-card relative bg-white rounded-3xl p-6 sm:p-8 border border-outline-variant/50 hover:shadow-2xl hover:border-secondary/30 transition-all duration-500 h-full flex flex-col">
-                      <div className="text-right flex flex-col items-end h-full">
+                      <div className="text-center flex flex-col items-center h-full">
                         <div className="card-icon w-12 h-12 sm:w-14 sm:h-14 bg-secondary/5 text-secondary flex items-center justify-center rounded-2xl mb-4 sm:mb-6 transition-all duration-500">
                           <span className="material-symbols-outlined text-[28px] sm:text-[32px]">
                             {service.icon}
@@ -313,7 +313,7 @@ export default function HomePage() {
         <div className="absolute inset-0 dot-pattern opacity-10" aria-hidden="true" />
         <div className="max-w-container-max-width mx-auto px-4 md:px-margin-desktop relative z-10">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
-            <div className="text-right">
+            <div className="text-center">
               <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold mb-6 sm:mb-8 leading-tight">
                 הסטנדרט הלאומי
                 <br />

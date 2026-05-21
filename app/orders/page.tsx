@@ -42,12 +42,12 @@ export default function OrdersPage() {
         <div className="bg-white rounded-3xl p-6 border border-outline-variant/50 mb-6">
           <div className="grid sm:grid-cols-4 gap-4">
             <div>
-              <label htmlFor="filter-status" className="block text-xs font-bold text-primary mb-1 text-right">
+              <label htmlFor="filter-status" className="block text-xs font-bold text-primary mb-1 text-center">
                 סטטוס
               </label>
               <select
                 id="filter-status"
-                className="w-full bg-surface-container border-0 rounded-xl px-4 py-2 text-right focus:ring-2 focus:ring-secondary focus:outline-none"
+                className="w-full bg-surface-container border-0 rounded-xl px-4 py-2 text-center focus:ring-2 focus:ring-secondary focus:outline-none"
               >
                 <option>הכל</option>
                 <option>הושלמה</option>
@@ -56,12 +56,12 @@ export default function OrdersPage() {
               </select>
             </div>
             <div>
-              <label htmlFor="filter-type" className="block text-xs font-bold text-primary mb-1 text-right">
+              <label htmlFor="filter-type" className="block text-xs font-bold text-primary mb-1 text-center">
                 סוג מוצר
               </label>
               <select
                 id="filter-type"
-                className="w-full bg-surface-container border-0 rounded-xl px-4 py-2 text-right focus:ring-2 focus:ring-secondary focus:outline-none"
+                className="w-full bg-surface-container border-0 rounded-xl px-4 py-2 text-center focus:ring-2 focus:ring-secondary focus:outline-none"
               >
                 <option>הכל</option>
                 <option>מפות</option>
@@ -69,25 +69,25 @@ export default function OrdersPage() {
               </select>
             </div>
             <div>
-              <label htmlFor="filter-date" className="block text-xs font-bold text-primary mb-1 text-right">
+              <label htmlFor="filter-date" className="block text-xs font-bold text-primary mb-1 text-center">
                 טווח תאריכים
               </label>
               <input
                 id="filter-date"
                 type="text"
                 placeholder="dd/mm/yyyy - dd/mm/yyyy"
-                className="w-full bg-surface-container border-0 rounded-xl px-4 py-2 text-right focus:ring-2 focus:ring-secondary focus:outline-none"
+                className="w-full bg-surface-container border-0 rounded-xl px-4 py-2 text-center focus:ring-2 focus:ring-secondary focus:outline-none"
               />
             </div>
             <div>
-              <label htmlFor="filter-search" className="block text-xs font-bold text-primary mb-1 text-right">
+              <label htmlFor="filter-search" className="block text-xs font-bold text-primary mb-1 text-center">
                 חיפוש חופשי
               </label>
               <input
                 id="filter-search"
                 type="search"
                 placeholder='לדוגמה: ORD-2026-145'
-                className="w-full bg-surface-container border-0 rounded-xl px-4 py-2 text-right focus:ring-2 focus:ring-secondary focus:outline-none"
+                className="w-full bg-surface-container border-0 rounded-xl px-4 py-2 text-center focus:ring-2 focus:ring-secondary focus:outline-none"
               />
             </div>
           </div>
@@ -118,7 +118,7 @@ export default function OrdersPage() {
                     <span className="material-symbols-outlined text-secondary text-[24px] flex-shrink-0">
                       {order.serviceIcon}
                     </span>
-                    <div className="text-right min-w-0">
+                    <div className="text-center min-w-0">
                       <p className="font-bold text-primary text-sm truncate">{order.serviceName}</p>
                       <p className="font-mono text-[10px] text-on-surface-variant">{order.id}</p>
                     </div>
@@ -161,7 +161,7 @@ export default function OrdersPage() {
 
           {/* Desktop table */}
           <div className="hidden md:block overflow-x-auto">
-            <table className="w-full text-right">
+            <table className="w-full text-center">
               <thead>
                 <tr className="border-b border-outline-variant text-xs text-on-surface-variant uppercase tracking-wider bg-surface-container/50">
                   <th className="py-3 px-4">פעולות</th>

@@ -173,7 +173,7 @@ export default function OrderPage() {
                 <span>שלב 1: פרטי הבקשה</span>
                 <span className="material-symbols-outlined text-secondary">info</span>
               </h2>
-              <p className="text-sm text-on-surface-variant text-right leading-relaxed">
+              <p className="text-sm text-on-surface-variant text-center leading-relaxed">
                 בשלב זה תזין את הפרטים הבסיסיים של ההזמנה - גודל המפה, אם תרצה לכלול
                 אורתופוטו, ואופן האספקה.
                 <br />
@@ -182,19 +182,19 @@ export default function OrderPage() {
               </p>
             </aside>
             <div className="lg:col-span-2 bg-white rounded-3xl p-6 md:p-8 border border-outline-variant/50">
-              <h3 className="text-xl font-extrabold text-primary mb-6 text-right">
+              <h3 className="text-xl font-extrabold text-primary mb-6 text-center">
                 פרטי הבקשה הבסיסיים
               </h3>
               <div className="space-y-6">
                 <div>
-                  <label htmlFor="size" className="block text-sm font-bold text-primary mb-2 text-right">
+                  <label htmlFor="size" className="block text-sm font-bold text-primary mb-2 text-center">
                     גודל מפה <span className="text-error-red">*</span>
                   </label>
                   <select
                     id="size"
                     value={size}
                     onChange={(e) => setSize(e.target.value)}
-                    className="w-full bg-surface-container border border-outline-variant rounded-xl px-4 py-3 text-right focus:ring-2 focus:ring-secondary focus:outline-none"
+                    className="w-full bg-surface-container border border-outline-variant rounded-xl px-4 py-3 text-center focus:ring-2 focus:ring-secondary focus:outline-none"
                   >
                     {service.priceTable?.map((row) => {
                       const sizeKey = row.label.split(" ")[0];
@@ -208,7 +208,7 @@ export default function OrderPage() {
                 </div>
 
                 <fieldset>
-                  <legend className="block text-sm font-bold text-primary mb-2 text-right">
+                  <legend className="block text-sm font-bold text-primary mb-2 text-center">
                     כלול אורתופוטו? <span className="text-error-red">*</span>
                   </legend>
                   <div className="flex flex-row-reverse gap-4">
@@ -235,7 +235,7 @@ export default function OrderPage() {
                 </fieldset>
 
                 <fieldset>
-                  <legend className="block text-sm font-bold text-primary mb-2 text-right">
+                  <legend className="block text-sm font-bold text-primary mb-2 text-center">
                     אופן אספקה <span className="text-error-red">*</span>
                   </legend>
                   <div className="grid sm:grid-cols-3 gap-3">
@@ -269,7 +269,7 @@ export default function OrderPage() {
                 </fieldset>
 
                 <div>
-                  <label htmlFor="purpose" className="block text-sm font-bold text-primary mb-2 text-right">
+                  <label htmlFor="purpose" className="block text-sm font-bold text-primary mb-2 text-center">
                     מטרת השימוש (אופציונלי)
                   </label>
                   <textarea
@@ -278,7 +278,7 @@ export default function OrderPage() {
                     onChange={(e) => setPurpose(e.target.value)}
                     rows={3}
                     placeholder="לדוגמה: תכנון פרויקט בניה, מחקר אקדמי..."
-                    className="w-full bg-surface-container border border-outline-variant rounded-xl px-4 py-3 text-right focus:ring-2 focus:ring-secondary focus:outline-none resize-none"
+                    className="w-full bg-surface-container border border-outline-variant rounded-xl px-4 py-3 text-center focus:ring-2 focus:ring-secondary focus:outline-none resize-none"
                   />
                 </div>
               </div>
@@ -315,29 +315,29 @@ export default function OrderPage() {
                 <span>שלב 2: סימון אזור</span>
                 <span className="material-symbols-outlined text-secondary">my_location</span>
               </h2>
-              <p className="text-sm text-on-surface-variant text-right leading-relaxed mb-4">
+              <p className="text-sm text-on-surface-variant text-center leading-relaxed mb-4">
                 סמן את האזור הגיאוגרפי על המפה. השטח המסומן יחושב אוטומטית בקמ"ר.
               </p>
               <div className="bg-white rounded-xl p-4">
-                <p className="text-xs text-on-surface-variant mb-2 text-right">פרטי הסימון:</p>
+                <p className="text-xs text-on-surface-variant mb-2 text-center">פרטי הסימון:</p>
                 {areaMarked ? (
                   <>
-                    <p className="text-sm font-bold text-positive-green text-right">✓ הסימון תקין</p>
-                    <p className="text-xs text-on-surface-variant text-right mt-2">
+                    <p className="text-sm font-bold text-positive-green text-center">✓ הסימון תקין</p>
+                    <p className="text-xs text-on-surface-variant text-center mt-2">
                       שטח: 1.2 קמ"ר
                       <br />
                       קואורדינטות מרכז: 32.0853, 34.7818
                     </p>
                   </>
                 ) : (
-                  <p className="text-sm text-on-surface-variant text-right">
+                  <p className="text-sm text-on-surface-variant text-center">
                     יש לסמן אזור על המפה
                   </p>
                 )}
               </div>
             </aside>
             <div className="lg:col-span-2 bg-white rounded-3xl p-6 md:p-8 border border-outline-variant/50">
-              <h3 className="text-xl font-extrabold text-primary mb-6 text-right">
+              <h3 className="text-xl font-extrabold text-primary mb-6 text-center">
                 סימון האזור על המפה (GovMap)
               </h3>
 
@@ -384,7 +384,7 @@ export default function OrderPage() {
                   <input
                     type="text"
                     placeholder="חיפוש מקום (לדוגמה: רחוב, גוש וחלקה...)"
-                    className="w-full bg-surface-container border border-outline-variant rounded-xl px-4 py-3 text-right focus:ring-2 focus:ring-secondary focus:outline-none pr-10"
+                    className="w-full bg-surface-container border border-outline-variant rounded-xl px-4 py-3 text-center focus:ring-2 focus:ring-secondary focus:outline-none pr-10"
                   />
                   <span className="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-[20px]">
                     search
@@ -445,10 +445,10 @@ export default function OrderPage() {
         {step === 3 && (
           <div className="grid lg:grid-cols-3 gap-8">
             <div className="lg:col-span-2 bg-white rounded-3xl p-6 md:p-8 border border-outline-variant/50">
-              <h3 className="text-xl font-extrabold text-primary mb-6 text-right">
+              <h3 className="text-xl font-extrabold text-primary mb-6 text-center">
                 סיכום ההזמנה שלך
               </h3>
-              <ul className="space-y-3 text-right" role="list">
+              <ul className="space-y-3 text-center" role="list">
                 {[
                   { label: "סוג שירות", value: service.name },
                   { label: "גודל מפה", value: size },
@@ -505,7 +505,7 @@ export default function OrderPage() {
                 <span>הצעת מחיר</span>
                 <span className="material-symbols-outlined">request_quote</span>
               </h3>
-              <div className="space-y-2 mb-4 text-right">
+              <div className="space-y-2 mb-4 text-center">
                 <div className="flex flex-row-reverse justify-between text-sm">
                   <span className="text-white/70">
                     {service.name} {size}
@@ -520,7 +520,7 @@ export default function OrderPage() {
                   </div>
                 )}
               </div>
-              <div className="border-t border-white/20 pt-4 mb-6 text-right">
+              <div className="border-t border-white/20 pt-4 mb-6 text-center">
                 <div className="flex flex-row-reverse justify-between items-baseline">
                   <span className="text-sm font-bold">סה"כ לתשלום</span>
                   <span className="text-3xl font-black text-secondary-container">
@@ -553,7 +553,7 @@ export default function OrderPage() {
                 ⏱ תוקף הצעה: 30 ימים
               </p>
 
-              <div className="space-y-3 mb-6 text-right text-sm">
+              <div className="space-y-3 mb-6 text-center text-sm">
                 <label className="flex items-center justify-end gap-2 cursor-pointer">
                   <span>אני מאשר/ת את תנאי השימוש</span>
                   <input
@@ -616,7 +616,7 @@ export default function OrderPage() {
               <br />
               סכום: <span className="font-bold text-primary">₪{totalPrice}</span>
             </p>
-            <div className="bg-secondary/5 rounded-2xl p-4 mb-8 text-right">
+            <div className="bg-secondary/5 rounded-2xl p-4 mb-8 text-center">
               <p className="text-xs text-on-surface-variant mb-2">📌 מה יקרה אחרי?</p>
               <ol className="text-sm space-y-1 list-decimal pr-5">
                 <li>תועבר/י לשרת התשלומים הממשלתי</li>

@@ -32,7 +32,7 @@ export default function NewCasePage() {
               <br />
               צוות השירות יחזור אליך תוך 1-2 ימי עסקים.
             </p>
-            <div className="bg-surface-container rounded-2xl p-4 mb-8 text-right">
+            <div className="bg-surface-container rounded-2xl p-4 mb-8 text-center">
               <p className="text-sm font-bold text-primary mb-2">📌 מה הלאה?</p>
               <ul className="text-sm text-on-surface-variant space-y-1 list-disc pr-5">
                 <li>קיבלת אישור במייל</li>
@@ -89,7 +89,7 @@ export default function NewCasePage() {
             <span>צריך עזרה?</span>
             <span className="material-symbols-outlined text-secondary">support_agent</span>
           </h2>
-          <div className="space-y-4 text-right">
+          <div className="space-y-4 text-center">
             <div>
               <p className="text-xs text-on-surface-variant mb-1">🕐 שעות פעילות:</p>
               <p className="text-sm font-medium">א'-ה': 08:00-17:00</p>
@@ -128,10 +128,10 @@ export default function NewCasePage() {
           onSubmit={onSubmit}
           className="lg:col-span-2 bg-white rounded-3xl p-6 md:p-8 border border-outline-variant/50"
         >
-          <h2 className="text-xl font-extrabold text-primary mb-6 text-right">פרטי הפנייה</h2>
+          <h2 className="text-xl font-extrabold text-primary mb-6 text-center">פרטי הפנייה</h2>
           <div className="space-y-5">
             <div>
-              <label htmlFor="type" className="block text-sm font-bold text-primary mb-2 text-right">
+              <label htmlFor="type" className="block text-sm font-bold text-primary mb-2 text-center">
                 סוג פנייה <span className="text-error-red">*</span>
               </label>
               <select
@@ -139,7 +139,7 @@ export default function NewCasePage() {
                 value={type}
                 onChange={(e) => setType(e.target.value)}
                 required
-                className="w-full bg-surface-container border border-outline-variant rounded-xl px-4 py-3 text-right focus:ring-2 focus:ring-secondary focus:outline-none"
+                className="w-full bg-surface-container border border-outline-variant rounded-xl px-4 py-3 text-center focus:ring-2 focus:ring-secondary focus:outline-none"
               >
                 <option value="">בחר סוג...</option>
                 <option value="technical">טכנית - תקלה בשירות</option>
@@ -151,12 +151,12 @@ export default function NewCasePage() {
             </div>
 
             <div>
-              <label htmlFor="related-order" className="block text-sm font-bold text-primary mb-2 text-right">
+              <label htmlFor="related-order" className="block text-sm font-bold text-primary mb-2 text-center">
                 קשור להזמנה (אופציונלי)
               </label>
               <select
                 id="related-order"
-                className="w-full bg-surface-container border border-outline-variant rounded-xl px-4 py-3 text-right focus:ring-2 focus:ring-secondary focus:outline-none"
+                className="w-full bg-surface-container border border-outline-variant rounded-xl px-4 py-3 text-center focus:ring-2 focus:ring-secondary focus:outline-none"
               >
                 <option value="">בחר הזמנה...</option>
                 <option>ORD-2026-145 - מפה A2</option>
@@ -166,7 +166,7 @@ export default function NewCasePage() {
             </div>
 
             <div>
-              <label htmlFor="subject" className="block text-sm font-bold text-primary mb-2 text-right">
+              <label htmlFor="subject" className="block text-sm font-bold text-primary mb-2 text-center">
                 כותרת הפנייה <span className="text-error-red">*</span>
               </label>
               <input
@@ -176,12 +176,12 @@ export default function NewCasePage() {
                 onChange={(e) => setSubject(e.target.value)}
                 required
                 placeholder="תיאור קצר של הבעיה..."
-                className="w-full bg-surface-container border border-outline-variant rounded-xl px-4 py-3 text-right focus:ring-2 focus:ring-secondary focus:outline-none"
+                className="w-full bg-surface-container border border-outline-variant rounded-xl px-4 py-3 text-center focus:ring-2 focus:ring-secondary focus:outline-none"
               />
             </div>
 
             <div>
-              <label htmlFor="description" className="block text-sm font-bold text-primary mb-2 text-right">
+              <label htmlFor="description" className="block text-sm font-bold text-primary mb-2 text-center">
                 תיאור הפנייה <span className="text-error-red">*</span>
               </label>
               <textarea
@@ -191,12 +191,12 @@ export default function NewCasePage() {
                 required
                 rows={5}
                 placeholder="תאר את הבעיה בפירוט..."
-                className="w-full bg-surface-container border border-outline-variant rounded-xl px-4 py-3 text-right focus:ring-2 focus:ring-secondary focus:outline-none resize-none"
+                className="w-full bg-surface-container border border-outline-variant rounded-xl px-4 py-3 text-center focus:ring-2 focus:ring-secondary focus:outline-none resize-none"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-bold text-primary mb-2 text-right">
+              <label className="block text-sm font-bold text-primary mb-2 text-center">
                 צירוף קבצים (אופציונלי)
               </label>
               <div className="border-2 border-dashed border-outline-variant rounded-xl p-6 text-center hover:border-secondary transition-colors">
@@ -214,7 +214,7 @@ export default function NewCasePage() {
             </div>
 
             <fieldset>
-              <legend className="block text-sm font-bold text-primary mb-2 text-right">
+              <legend className="block text-sm font-bold text-primary mb-2 text-center">
                 דחיפות
               </legend>
               <div className="grid sm:grid-cols-3 gap-3">

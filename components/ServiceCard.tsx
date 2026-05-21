@@ -54,7 +54,7 @@ export default function ServiceCard({ service, variant = "default" }: Props) {
             <span>govforms</span>
           </span>
         )}
-        <div className="text-right flex flex-col items-end h-full">
+        <div className="text-center flex flex-col items-center h-full">
           <div className="card-icon w-14 h-14 bg-secondary/5 text-secondary flex items-center justify-center rounded-2xl mb-6 transition-all duration-500">
             <span className="material-symbols-outlined text-[32px]">
               {service.icon}
@@ -70,7 +70,7 @@ export default function ServiceCard({ service, variant = "default" }: Props) {
             {service.shortDescription}
           </p>
           <div className="w-full flex items-center justify-between flex-row-reverse mt-auto">
-            <div className="text-right">
+            <div className="text-center">
               <div className="text-[10px] text-on-surface-variant uppercase tracking-widest">החל מ-</div>
               <span className="text-lg font-extrabold text-secondary">
                 {service.priceUnit === "₪/חודש"

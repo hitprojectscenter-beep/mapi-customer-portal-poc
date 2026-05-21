@@ -94,8 +94,8 @@ export default function HelpPage() {
               <li className="text-white font-bold">מרכז עזרה</li>
             </ol>
           </nav>
-          <h1 className="text-3xl md:text-5xl font-extrabold mb-4 text-right">מרכז העזרה</h1>
-          <p className="text-white/80 text-lg max-w-2xl text-right mb-8">
+          <h1 className="text-3xl md:text-5xl font-extrabold mb-4 text-center">מרכז העזרה</h1>
+          <p className="text-white/80 text-lg max-w-2xl text-center mb-8">
             תשובות לשאלות הנפוצות ביותר אצל לקוחות מפ"י. אם לא מצאת תשובה - פנה לשירות הלקוחות.
           </p>
 
@@ -112,7 +112,7 @@ export default function HelpPage() {
                 name="q"
                 type="search"
                 placeholder='איך אני יכול לעזור?'
-                className="bg-transparent border-none focus:ring-0 focus:outline-none text-white placeholder:text-white/50 text-right flex-grow px-4 py-3 text-base"
+                className="bg-transparent border-none focus:ring-0 focus:outline-none text-white placeholder:text-white/50 text-center flex-grow px-4 py-3 text-base"
               />
               <button
                 type="submit"
@@ -161,7 +161,7 @@ export default function HelpPage() {
                 <div className="w-14 h-14 bg-secondary/10 text-secondary rounded-2xl flex items-center justify-center flex-shrink-0">
                   <span className="material-symbols-outlined text-[28px]">{c.icon}</span>
                 </div>
-                <div className="flex-1 text-right">
+                <div className="flex-1 text-center">
                   <p className="font-bold text-primary">{c.title}</p>
                   <p className="text-sm text-on-surface-variant">{c.desc}</p>
                 </div>
@@ -195,7 +195,7 @@ export default function HelpPage() {
 
       {/* FAQ Categories */}
       <section className="max-w-container-max-width mx-auto px-4 md:px-margin-desktop pb-16">
-        <h2 className="text-2xl md:text-3xl font-extrabold text-primary mb-8 text-right">
+        <h2 className="text-2xl md:text-3xl font-extrabold text-primary mb-8 text-center">
           שאלות נפוצות לפי קטגוריה
         </h2>
         <div className="space-y-6">
@@ -217,9 +217,9 @@ export default function HelpPage() {
                       <span className="material-symbols-outlined group-open:rotate-180 transition-transform">
                         expand_more
                       </span>
-                      <span className="text-right">{item.q}</span>
+                      <span className="text-center">{item.q}</span>
                     </summary>
-                    <p className="text-on-surface-variant mt-3 text-right leading-relaxed">
+                    <p className="text-on-surface-variant mt-3 text-center leading-relaxed">
                       {item.a}
                     </p>
                   </details>

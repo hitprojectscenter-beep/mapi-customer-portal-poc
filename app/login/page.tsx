@@ -9,7 +9,7 @@ export default function LoginPage() {
 
       <div className="relative max-w-container-max-width mx-auto px-4 md:px-margin-desktop py-12 w-full grid lg:grid-cols-2 gap-8 items-center">
         {/* Marketing Side */}
-        <div className="text-white text-right">
+        <div className="text-white text-center">
           <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-md px-4 py-1.5 rounded-full mb-6 text-white/90 border border-white/10">
             <span className="material-symbols-outlined text-[18px]">verified_user</span>
             <span className="text-xs font-bold tracking-wide">הזדהות לאומית מאובטחת</span>
@@ -42,10 +42,10 @@ export default function LoginPage() {
 
         {/* Login Card */}
         <div className="bg-white rounded-3xl p-8 md:p-10 shadow-2xl">
-          <h2 className="text-2xl font-extrabold text-primary mb-2 text-right">
+          <h2 className="text-2xl font-extrabold text-primary mb-2 text-center">
             בחר אופן הזדהות
           </h2>
-          <p className="text-on-surface-variant text-sm mb-8 text-right">
+          <p className="text-on-surface-variant text-sm mb-8 text-center">
             השירות מאובטח. הנתונים שלך מוגנים בהצפנה.
           </p>
 
@@ -60,7 +60,7 @@ export default function LoginPage() {
               <div className="w-14 h-14 bg-white/20 rounded-2xl flex items-center justify-center flex-shrink-0">
                 <span className="material-symbols-outlined text-[28px]">badge</span>
               </div>
-              <div className="text-right flex-1">
+              <div className="text-center flex-1">
                 <p className="text-lg font-extrabold">הזדהות לאומית</p>
                 <p className="text-xs font-normal text-white/80">לכל אזרח ישראלי</p>
               </div>
@@ -79,7 +79,7 @@ export default function LoginPage() {
               <div className="w-14 h-14 bg-secondary/10 text-secondary rounded-2xl flex items-center justify-center flex-shrink-0">
                 <span className="material-symbols-outlined text-[28px]">business</span>
               </div>
-              <div className="text-right flex-1">
+              <div className="text-center flex-1">
                 <p className="text-lg font-extrabold">SSO ארגוני</p>
                 <p className="text-xs font-normal text-on-surface-variant">משרדי ממשלה ורשויות</p>
               </div>
@@ -98,7 +98,7 @@ export default function LoginPage() {
               <div className="w-14 h-14 bg-positive-green/10 text-positive-green rounded-2xl flex items-center justify-center flex-shrink-0">
                 <span className="material-symbols-outlined text-[28px]">engineering</span>
               </div>
-              <div className="text-right flex-1">
+              <div className="text-center flex-1">
                 <p className="text-lg font-extrabold">מודד מוסמך</p>
                 <p className="text-xs font-normal text-on-surface-variant">כניסה לאזור המקצועי</p>
               </div>

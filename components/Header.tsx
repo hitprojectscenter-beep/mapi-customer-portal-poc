@@ -25,7 +25,7 @@ export default function Header() {
         <div className="max-w-container-max-width mx-auto px-3 md:px-margin-desktop h-20 flex flex-row-reverse items-center justify-between gap-2">
           {/* Logo */}
           <div className="flex items-center gap-2 sm:gap-4">
-            <div className="text-right flex flex-col justify-center border-l border-outline-variant pl-4 ml-4 hidden md:flex">
+            <div className="text-center flex flex-col justify-center border-l border-outline-variant pl-4 ml-4 hidden md:flex">
               <span className="text-[10px] uppercase tracking-widest font-bold text-secondary">
                 מדינת ישראל
               </span>
@@ -40,7 +40,7 @@ export default function Header() {
               data-tooltip='חזרה לדף הבית של פורטל מפ"י'
               data-tooltip-position="bottom"
             >
-              <div className="flex flex-col items-end leading-tight">
+              <div className="flex flex-col items-center leading-tight">
                 <span className="font-extrabold text-lg sm:text-xl tracking-tight text-primary group-hover:text-secondary transition-colors">
                   MAPI
                 </span>
@@ -137,7 +137,7 @@ export default function Header() {
                   <Link
                     href={item.href}
                     onClick={() => setOpen(false)}
-                    className="shine block px-6 py-4 text-right font-medium text-primary hover:bg-surface-container border-b border-outline-variant/30 min-h-[48px] flex items-center justify-end"
+                    className="shine block px-6 py-4 text-center font-medium text-primary hover:bg-surface-container border-b border-outline-variant/30 min-h-[48px] flex items-center justify-end"
                     title={item.tooltip}
                   >
                     {item.label}
@@ -151,7 +151,7 @@ export default function Header() {
                     setSupportOpen(true);
                     setOpen(false);
                   }}
-                  className="shine w-full text-right px-6 py-4 font-medium text-secondary hover:bg-surface-container border-b border-outline-variant/30 min-h-[48px] flex items-center justify-end gap-2"
+                  className="shine w-full text-center px-6 py-4 font-medium text-secondary hover:bg-surface-container border-b border-outline-variant/30 min-h-[48px] flex items-center justify-end gap-2"
                   title="פנייה למוקד התמיכה"
                 >
                   <span>פנייה למוקד</span>
@@ -162,7 +162,7 @@ export default function Header() {
                 <Link
                   href="/login"
                   onClick={() => setOpen(false)}
-                  className="shine block px-6 py-4 text-right font-medium text-secondary hover:bg-surface-container min-h-[48px] flex items-center justify-end"
+                  className="shine block px-6 py-4 text-center font-medium text-secondary hover:bg-surface-container min-h-[48px] flex items-center justify-end"
                   title='התחברות לפורטל'
                 >
                   התחברות

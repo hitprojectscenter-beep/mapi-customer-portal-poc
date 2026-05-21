@@ -66,6 +66,58 @@
     text-wrap: balance;
   }
 
+  /* ========================================
+     GLOBAL CENTER-ALIGNMENT
+     Per user requirement: All Hebrew captions
+     and controls should be center-aligned.
+     ======================================== */
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  p,
+  li,
+  label,
+  legend,
+  th,
+  td,
+  caption,
+  blockquote,
+  figcaption,
+  summary {
+    text-align: center;
+  }
+
+  /* Form inputs - keep value centered too */
+  input:not([type="checkbox"]):not([type="radio"]):not([type="range"]),
+  textarea,
+  select {
+    text-align: center;
+  }
+
+  /* But keep search bar inside hero specifically still readable from start */
+  input[type="search"] {
+    text-align: center;
+  }
+
+  /* Tables: keep numeric values centered, restore right-alignment for the first column header */
+  table {
+    text-align: center;
+  }
+  table td:first-child,
+  table th:first-child {
+    text-align: center;
+  }
+
+  /* Skip-link must remain at top */
+  .skip-link {
+    text-align: center;
+  }
+
+  /* Tooltips already centered via .center in component CSS */
+
   /* Safe-area footer padding for iOS notch on bottom */
   footer {
     padding-bottom: max(2.5rem, var(--safe-bottom));

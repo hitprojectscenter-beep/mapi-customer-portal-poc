@@ -97,7 +97,7 @@ export default function SupportFormModal({ open, onClose }: Props) {
               <br />
               נציג מהמוקד הארצי של מפ&quot;י יחזור אליך תוך 1-2 ימי עסקים.
             </p>
-            <div className="bg-surface-container rounded-2xl p-4 mb-6 text-right text-sm">
+            <div className="bg-surface-container rounded-2xl p-4 mb-6 text-center text-sm">
               <p className="font-bold text-primary mb-2">📌 מסלולי מענה נוספים:</p>
               <ul className="text-on-surface-variant space-y-1 list-disc pr-5">
                 <li>חיוג ישיר: <a href="tel:*6274" className="text-secondary font-bold">*6274</a></li>
@@ -129,7 +129,7 @@ export default function SupportFormModal({ open, onClose }: Props) {
                 <div className="w-14 h-14 bg-white/15 rounded-2xl flex items-center justify-center flex-shrink-0">
                   <span className="material-symbols-outlined text-[32px]">support_agent</span>
                 </div>
-                <div className="text-right flex-1">
+                <div className="text-center flex-1">
                   <span className="text-xs uppercase tracking-widest text-secondary-container font-bold block">
                     שירות לקוחות
                   </span>
@@ -206,7 +206,7 @@ export default function SupportFormModal({ open, onClose }: Props) {
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div className="grid sm:grid-cols-2 gap-3">
                   <div>
-                    <label htmlFor="sf-name" className="block text-xs font-bold text-primary mb-1 text-right">
+                    <label htmlFor="sf-name" className="block text-xs font-bold text-primary mb-1 text-center">
                       שם מלא <span className="text-error-red">*</span>
                     </label>
                     <input
@@ -217,11 +217,11 @@ export default function SupportFormModal({ open, onClose }: Props) {
                       autoComplete="name"
                       value={form.fullName}
                       onChange={(e) => setForm({ ...form, fullName: e.target.value })}
-                      className="w-full bg-surface-container border border-outline-variant rounded-xl px-4 py-3 text-right focus:ring-2 focus:ring-secondary focus:outline-none min-h-[44px]"
+                      className="w-full bg-surface-container border border-outline-variant rounded-xl px-4 py-3 text-center focus:ring-2 focus:ring-secondary focus:outline-none min-h-[44px]"
                     />
                   </div>
                   <div>
-                    <label htmlFor="sf-id" className="block text-xs font-bold text-primary mb-1 text-right">
+                    <label htmlFor="sf-id" className="block text-xs font-bold text-primary mb-1 text-center">
                       ת.ז.
                     </label>
                     <input
@@ -234,7 +234,7 @@ export default function SupportFormModal({ open, onClose }: Props) {
                       onChange={(e) =>
                         setForm({ ...form, nationalId: e.target.value.replace(/\D/g, "") })
                       }
-                      className="w-full bg-surface-container border border-outline-variant rounded-xl px-4 py-3 text-right focus:ring-2 focus:ring-secondary focus:outline-none min-h-[44px]"
+                      className="w-full bg-surface-container border border-outline-variant rounded-xl px-4 py-3 text-center focus:ring-2 focus:ring-secondary focus:outline-none min-h-[44px]"
                       dir="ltr"
                     />
                   </div>
@@ -242,7 +242,7 @@ export default function SupportFormModal({ open, onClose }: Props) {
 
                 <div className="grid sm:grid-cols-2 gap-3">
                   <div>
-                    <label htmlFor="sf-email" className="block text-xs font-bold text-primary mb-1 text-right">
+                    <label htmlFor="sf-email" className="block text-xs font-bold text-primary mb-1 text-center">
                       מייל <span className="text-error-red">*</span>
                     </label>
                     <input
@@ -253,12 +253,12 @@ export default function SupportFormModal({ open, onClose }: Props) {
                       autoComplete="email"
                       value={form.email}
                       onChange={(e) => setForm({ ...form, email: e.target.value })}
-                      className="w-full bg-surface-container border border-outline-variant rounded-xl px-4 py-3 text-right focus:ring-2 focus:ring-secondary focus:outline-none min-h-[44px]"
+                      className="w-full bg-surface-container border border-outline-variant rounded-xl px-4 py-3 text-center focus:ring-2 focus:ring-secondary focus:outline-none min-h-[44px]"
                       dir="ltr"
                     />
                   </div>
                   <div>
-                    <label htmlFor="sf-phone" className="block text-xs font-bold text-primary mb-1 text-right">
+                    <label htmlFor="sf-phone" className="block text-xs font-bold text-primary mb-1 text-center">
                       טלפון <span className="text-error-red">*</span>
                     </label>
                     <input
@@ -270,7 +270,7 @@ export default function SupportFormModal({ open, onClose }: Props) {
                       placeholder="05X-XXXXXXX"
                       value={form.phone}
                       onChange={(e) => setForm({ ...form, phone: e.target.value })}
-                      className="w-full bg-surface-container border border-outline-variant rounded-xl px-4 py-3 text-right focus:ring-2 focus:ring-secondary focus:outline-none min-h-[44px]"
+                      className="w-full bg-surface-container border border-outline-variant rounded-xl px-4 py-3 text-center focus:ring-2 focus:ring-secondary focus:outline-none min-h-[44px]"
                       dir="ltr"
                     />
                   </div>
@@ -278,7 +278,7 @@ export default function SupportFormModal({ open, onClose }: Props) {
 
                 <div className="grid sm:grid-cols-2 gap-3">
                   <div>
-                    <label htmlFor="sf-type" className="block text-xs font-bold text-primary mb-1 text-right">
+                    <label htmlFor="sf-type" className="block text-xs font-bold text-primary mb-1 text-center">
                       נושא הפנייה <span className="text-error-red">*</span>
                     </label>
                     <select
@@ -286,7 +286,7 @@ export default function SupportFormModal({ open, onClose }: Props) {
                       required
                       value={form.inquiryType}
                       onChange={(e) => setForm({ ...form, inquiryType: e.target.value })}
-                      className="w-full bg-surface-container border border-outline-variant rounded-xl px-4 py-3 text-right focus:ring-2 focus:ring-secondary focus:outline-none min-h-[44px]"
+                      className="w-full bg-surface-container border border-outline-variant rounded-xl px-4 py-3 text-center focus:ring-2 focus:ring-secondary focus:outline-none min-h-[44px]"
                     >
                       <option value="">בחר...</option>
                       <option value="technical">תקלה טכנית בפורטל</option>
@@ -298,7 +298,7 @@ export default function SupportFormModal({ open, onClose }: Props) {
                     </select>
                   </div>
                   <div>
-                    <label htmlFor="sf-order" className="block text-xs font-bold text-primary mb-1 text-right">
+                    <label htmlFor="sf-order" className="block text-xs font-bold text-primary mb-1 text-center">
                       מספר הזמנה (אופציונלי)
                     </label>
                     <input
@@ -307,13 +307,13 @@ export default function SupportFormModal({ open, onClose }: Props) {
                       placeholder='למשל: ORD-2026-145'
                       value={form.relatedOrder}
                       onChange={(e) => setForm({ ...form, relatedOrder: e.target.value })}
-                      className="w-full bg-surface-container border border-outline-variant rounded-xl px-4 py-3 text-right focus:ring-2 focus:ring-secondary focus:outline-none min-h-[44px]"
+                      className="w-full bg-surface-container border border-outline-variant rounded-xl px-4 py-3 text-center focus:ring-2 focus:ring-secondary focus:outline-none min-h-[44px]"
                     />
                   </div>
                 </div>
 
                 <div>
-                  <label htmlFor="sf-subject" className="block text-xs font-bold text-primary mb-1 text-right">
+                  <label htmlFor="sf-subject" className="block text-xs font-bold text-primary mb-1 text-center">
                     נושא קצר <span className="text-error-red">*</span>
                   </label>
                   <input
@@ -323,12 +323,12 @@ export default function SupportFormModal({ open, onClose }: Props) {
                     placeholder='למשל: לא קיבלתי את המפה שהזמנתי'
                     value={form.subject}
                     onChange={(e) => setForm({ ...form, subject: e.target.value })}
-                    className="w-full bg-surface-container border border-outline-variant rounded-xl px-4 py-3 text-right focus:ring-2 focus:ring-secondary focus:outline-none min-h-[44px]"
+                    className="w-full bg-surface-container border border-outline-variant rounded-xl px-4 py-3 text-center focus:ring-2 focus:ring-secondary focus:outline-none min-h-[44px]"
                   />
                 </div>
 
                 <div>
-                  <label htmlFor="sf-msg" className="block text-xs font-bold text-primary mb-1 text-right">
+                  <label htmlFor="sf-msg" className="block text-xs font-bold text-primary mb-1 text-center">
                     תיאור מפורט <span className="text-error-red">*</span>
                   </label>
                   <textarea
@@ -338,11 +338,11 @@ export default function SupportFormModal({ open, onClose }: Props) {
                     placeholder="תאר/י את הבעיה..."
                     value={form.message}
                     onChange={(e) => setForm({ ...form, message: e.target.value })}
-                    className="w-full bg-surface-container border border-outline-variant rounded-xl px-4 py-3 text-right focus:ring-2 focus:ring-secondary focus:outline-none resize-none"
+                    className="w-full bg-surface-container border border-outline-variant rounded-xl px-4 py-3 text-center focus:ring-2 focus:ring-secondary focus:outline-none resize-none"
                   />
                 </div>
 
-                <p className="text-[11px] text-on-surface-variant text-right leading-relaxed">
+                <p className="text-[11px] text-on-surface-variant text-center leading-relaxed">
                   הפנייה תועבר לעיבוד במערכת המוקד הארצית של מפ&quot;י תוך כפיפות ל-
                   <a
                     href="https://www.gov.il/he/policies/privacy_policy"

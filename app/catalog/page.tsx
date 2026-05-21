@@ -146,7 +146,7 @@ function CatalogContent() {
 
               {/* Search */}
               <div className="mb-6">
-                <label htmlFor="filter-search" className="text-sm font-bold text-primary mb-2 block text-right">
+                <label htmlFor="filter-search" className="text-sm font-bold text-primary mb-2 block text-center">
                   חיפוש חופשי
                 </label>
                 <div className="relative">
@@ -156,7 +156,7 @@ function CatalogContent() {
                     value={query}
                     onChange={(e) => setQuery(e.target.value)}
                     placeholder="הקלד..."
-                    className="w-full bg-surface-container border-0 rounded-xl px-4 py-2.5 text-right focus:ring-2 focus:ring-secondary focus:outline-none"
+                    className="w-full bg-surface-container border-0 rounded-xl px-4 py-2.5 text-center focus:ring-2 focus:ring-secondary focus:outline-none"
                   />
                   <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-[20px]">
                     search
@@ -166,12 +166,12 @@ function CatalogContent() {
 
               {/* Categories */}
               <div className="mb-6">
-                <h3 className="text-sm font-bold text-primary mb-3 text-right">קטגוריה</h3>
+                <h3 className="text-sm font-bold text-primary mb-3 text-center">קטגוריה</h3>
                 <div className="flex flex-col gap-2">
                   {categories.map((cat) => (
                     <label
                       key={cat.id}
-                      className="flex items-center justify-end gap-2 cursor-pointer text-right group"
+                      className="flex items-center justify-end gap-2 cursor-pointer text-center group"
                     >
                       <span className="text-sm group-hover:text-secondary transition-colors">
                         {cat.label}
@@ -189,12 +189,12 @@ function CatalogContent() {
 
               {/* Customer Type */}
               <div className="mb-6">
-                <h3 className="text-sm font-bold text-primary mb-3 text-right">סוג לקוח</h3>
+                <h3 className="text-sm font-bold text-primary mb-3 text-center">סוג לקוח</h3>
                 <div className="flex flex-col gap-2">
                   {Object.entries(customerTypeLabels).map(([id, label]) => (
                     <label
                       key={id}
-                      className="flex items-center justify-end gap-2 cursor-pointer text-right group"
+                      className="flex items-center justify-end gap-2 cursor-pointer text-center group"
                     >
                       <span className="text-sm group-hover:text-secondary transition-colors">{label}</span>
                       <input
@@ -210,7 +210,7 @@ function CatalogContent() {
 
               {/* Price Range */}
               <div className="mb-6">
-                <h3 className="text-sm font-bold text-primary mb-3 text-right">
+                <h3 className="text-sm font-bold text-primary mb-3 text-center">
                   מחיר מקסימלי: ₪{maxPrice.toLocaleString()}
                 </h3>
                 <input
@@ -227,7 +227,7 @@ function CatalogContent() {
 
               {/* In Scope */}
               <div className="border-t border-outline-variant pt-4">
-                <label className="flex items-center justify-end gap-2 cursor-pointer text-right">
+                <label className="flex items-center justify-end gap-2 cursor-pointer text-center">
                   <span className="text-sm font-bold text-primary">רק שירותים פעילים בפורטל</span>
                   <input
                     type="checkbox"
@@ -236,7 +236,7 @@ function CatalogContent() {
                     className="w-4 h-4 rounded text-secondary focus:ring-secondary"
                   />
                 </label>
-                <p className="text-xs text-on-surface-variant mt-2 text-right">
+                <p className="text-xs text-on-surface-variant mt-2 text-center">
                   שירותים שטרם בתכולה - יפתחו ב-govforms
                 </p>
               </div>
