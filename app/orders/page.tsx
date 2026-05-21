@@ -109,7 +109,58 @@ export default function OrdersPage() {
               </button>
             </div>
           </div>
-          <div className="overflow-x-auto">
+          {/* Mobile cards */}
+          <ul className="md:hidden divide-y divide-outline-variant/40" role="list">
+            {mockOrders.map((order) => (
+              <li key={order.id} className="p-4 hover:bg-surface-container/50 transition-colors">
+                <div className="flex flex-row-reverse items-start justify-between gap-3 mb-3">
+                  <div className="flex items-center gap-2 flex-1 min-w-0">
+                    <span className="material-symbols-outlined text-secondary text-[24px] flex-shrink-0">
+                      {order.serviceIcon}
+                    </span>
+                    <div className="text-right min-w-0">
+                      <p className="font-bold text-primary text-sm truncate">{order.serviceName}</p>
+                      <p className="font-mono text-[10px] text-on-surface-variant">{order.id}</p>
+                    </div>
+                  </div>
+                  <span
+                    className={`inline-block px-2 py-1 rounded-full text-[10px] font-bold whitespace-nowrap ${
+                      statusClasses[order.status]
+                    }`}
+                  >
+                    {order.statusLabel}
+                  </span>
+                </div>
+                <div className="grid grid-cols-2 gap-2 text-xs mb-3">
+                  <div>
+                    <span className="text-on-surface-variant block">תאריך:</span>
+                    <span className="font-bold text-primary">{order.date}</span>
+                  </div>
+                  <div>
+                    <span className="text-on-surface-variant block">סכום:</span>
+                    <span className="font-bold text-primary">₪{order.amount}</span>
+                  </div>
+                </div>
+                <div className="flex gap-2">
+                  <button className="shine flex-1 bg-secondary/10 text-secondary hover:bg-secondary hover:text-white px-3 py-2 rounded-lg text-xs font-bold flex items-center justify-center gap-1 min-h-[40px]">
+                    <span className="material-symbols-outlined text-[16px]">visibility</span>
+                    <span>צפה</span>
+                  </button>
+                  <button className="shine flex-1 bg-secondary/10 text-secondary hover:bg-secondary hover:text-white px-3 py-2 rounded-lg text-xs font-bold flex items-center justify-center gap-1 min-h-[40px]">
+                    <span className="material-symbols-outlined text-[16px]">replay</span>
+                    <span>הזמן שוב</span>
+                  </button>
+                  <button className="shine flex-1 bg-secondary/10 text-secondary hover:bg-secondary hover:text-white px-3 py-2 rounded-lg text-xs font-bold flex items-center justify-center gap-1 min-h-[40px]">
+                    <span className="material-symbols-outlined text-[16px]">receipt</span>
+                    <span>חשבונית</span>
+                  </button>
+                </div>
+              </li>
+            ))}
+          </ul>
+
+          {/* Desktop table */}
+          <div className="hidden md:block overflow-x-auto">
             <table className="w-full text-right">
               <thead>
                 <tr className="border-b border-outline-variant text-xs text-on-surface-variant uppercase tracking-wider bg-surface-container/50">

@@ -97,13 +97,30 @@ export default function OrderPage() {
 
       {/* Progress Bar */}
       <div className="bg-white border-b border-outline-variant sticky top-20 z-30">
-        <div className="max-w-container-max-width mx-auto px-4 md:px-margin-desktop py-4">
-          <ol className="flex flex-row-reverse items-center justify-between gap-2 md:gap-4">
+        <div className="max-w-container-max-width mx-auto px-3 md:px-margin-desktop py-3 md:py-4">
+          {/* Mobile compact view */}
+          <div className="md:hidden flex items-center justify-between gap-3">
+            <span className="text-xs font-bold text-on-surface-variant">
+              שלב {step} מתוך 4
+            </span>
+            <div className="flex-1 h-2 bg-surface-container rounded-full overflow-hidden">
+              <div
+                className="h-full bg-gradient-to-l from-positive-green to-secondary transition-all duration-500"
+                style={{ width: `${(step / 4) * 100}%` }}
+              />
+            </div>
+            <span className="text-xs font-bold text-primary truncate max-w-[120px]">
+              {stepLabels[step]}
+            </span>
+          </div>
+
+          {/* Desktop full step indicator */}
+          <ol className="hidden md:flex flex-row-reverse items-center justify-between gap-4">
             <li className="flex items-center gap-2">
               <span className="w-8 h-8 rounded-full bg-positive-green text-white flex items-center justify-center text-sm font-bold">
                 <span className="material-symbols-outlined text-[18px]">check</span>
               </span>
-              <span className="hidden md:inline text-sm font-bold text-positive-green">הזדהות</span>
+              <span className="text-sm font-bold text-positive-green">הזדהות</span>
             </li>
             {([1, 2, 3, 4] as Step[]).map((s) => {
               const isCurrent = s === step;

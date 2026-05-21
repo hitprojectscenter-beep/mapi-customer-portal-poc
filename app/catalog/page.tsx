@@ -87,15 +87,39 @@ function CatalogContent() {
               <li className="text-white font-bold">קטלוג שירותים</li>
             </ol>
           </nav>
-          <h1 className="text-3xl md:text-5xl font-extrabold mb-4">
+          <h1 className="text-2xl sm:text-3xl md:text-5xl font-extrabold mb-3 sm:mb-4">
             קטלוג כל שירותי המרכז למיפוי ישראל
           </h1>
-          <p className="text-white/80 text-lg max-w-2xl">
+          <p className="text-white/80 text-sm sm:text-base md:text-lg max-w-2xl">
             14 שירותים מקצועיים - מפות, קדסטר, גיאודזיה, אורתופוטו, נתוני GIS ותעודות.
             <span className="font-bold text-secondary-container mr-2">
               {filtered.length} שירותים מוצגים
             </span>
           </p>
+          <div className="mt-4 flex flex-wrap gap-3">
+            <a
+              href="https://www.gov.il/he/departments/units/products_online_catalog_mapi/govil-landing-page"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="shine inline-flex items-center gap-2 bg-white/10 backdrop-blur-md border border-white/20 text-white px-4 py-2 rounded-full text-xs sm:text-sm font-bold hover:bg-white/20 transition-colors"
+              data-tooltip='הקטלוג הרשמי של מפ"י באתר gov.il'
+              data-tooltip-position="bottom"
+            >
+              <span className="material-symbols-outlined text-[18px]">open_in_new</span>
+              <span>לקטלוג הרשמי ב-gov.il</span>
+            </a>
+            <a
+              href="https://www.gov.il/he/departments/survey_of_israel"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="shine inline-flex items-center gap-2 bg-white/10 backdrop-blur-md border border-white/20 text-white px-4 py-2 rounded-full text-xs sm:text-sm font-bold hover:bg-white/20 transition-colors"
+              data-tooltip='אתר היחידה הממשלתית של מפ"י'
+              data-tooltip-position="bottom"
+            >
+              <span className="material-symbols-outlined text-[18px]">public</span>
+              <span>אתר מפ"י הרשמי</span>
+            </a>
+          </div>
         </div>
       </div>
 

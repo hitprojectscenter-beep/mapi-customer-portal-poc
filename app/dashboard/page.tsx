@@ -133,7 +133,8 @@ export default function DashboardPage() {
               לכל ההזמנות ←
             </Link>
           </div>
-          <div className="overflow-x-auto">
+          {/* Desktop table */}
+          <div className="hidden md:block overflow-x-auto">
             <table className="w-full text-right">
               <thead>
                 <tr className="border-b border-outline-variant text-xs text-on-surface-variant uppercase tracking-wider">
@@ -193,6 +194,55 @@ export default function DashboardPage() {
               </tbody>
             </table>
           </div>
+
+          {/* Mobile cards */}
+          <ul className="md:hidden space-y-3" role="list">
+            {mockOrders.slice(0, 5).map((order) => (
+              <li
+                key={order.id}
+                className="bg-surface-container/50 rounded-2xl p-4 border border-outline-variant/40 hover:bg-surface-container transition-colors"
+              >
+                <div className="flex flex-row-reverse items-start justify-between mb-3 gap-3">
+                  <div className="flex items-center gap-2 flex-1 min-w-0">
+                    <span className="material-symbols-outlined text-secondary text-[24px] flex-shrink-0">
+                      {order.serviceIcon}
+                    </span>
+                    <div className="text-right min-w-0">
+                      <p className="font-bold text-primary text-sm truncate">{order.serviceName}</p>
+                      <p className="font-mono text-[10px] text-on-surface-variant">{order.id}</p>
+                    </div>
+                  </div>
+                  <span
+                    className={`inline-block px-2 py-1 rounded-full text-[10px] font-bold whitespace-nowrap ${
+                      statusClasses[order.status]
+                    }`}
+                  >
+                    {order.statusLabel}
+                  </span>
+                </div>
+                <div className="flex flex-row-reverse items-center justify-between pt-2 border-t border-outline-variant/30">
+                  <div className="flex items-center gap-3 text-xs text-on-surface-variant">
+                    <span>{order.date}</span>
+                    <span className="font-bold text-primary text-sm">₪{order.amount}</span>
+                  </div>
+                  <div className="flex gap-1">
+                    <button
+                      className="shine w-9 h-9 rounded-lg bg-white hover:bg-secondary hover:text-white text-secondary flex items-center justify-center"
+                      aria-label={`צפה ב-${order.id}`}
+                    >
+                      <span className="material-symbols-outlined text-[18px]">visibility</span>
+                    </button>
+                    <button
+                      className="shine w-9 h-9 rounded-lg bg-white hover:bg-secondary hover:text-white text-secondary flex items-center justify-center"
+                      aria-label={`הורד ${order.id}`}
+                    >
+                      <span className="material-symbols-outlined text-[18px]">download</span>
+                    </button>
+                  </div>
+                </div>
+              </li>
+            ))}
+          </ul>
         </section>
 
         {/* Notifications + Quick Actions */}

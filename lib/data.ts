@@ -1,3 +1,10 @@
+// Official MAPI catalog URL (Survey of Israel - Products Online Catalog)
+export const MAPI_OFFICIAL_CATALOG =
+  "https://www.gov.il/he/departments/units/products_online_catalog_mapi/govil-landing-page";
+export const MAPI_OFFICIAL_DEPARTMENT =
+  "https://www.gov.il/he/departments/survey_of_israel";
+export const MAPI_SUPPORT_PAGE = "https://www.gov.il/he/pages/mapi_support";
+
 export type Category =
   | "maps"
   | "cadastre"
