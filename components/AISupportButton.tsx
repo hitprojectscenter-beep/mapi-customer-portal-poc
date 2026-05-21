@@ -39,7 +39,7 @@ export default function AISupportButton() {
             </button>
             <div className="text-center">
               <h3 className="text-white font-bold">צ&apos;אט תמיכה חכם</h3>
-              <p className="text-white/70 text-xs flex items-center justify-end gap-1.5">
+              <p className="text-white/70 text-xs flex items-center justify-center gap-1.5">
                 <span>מחובר</span>
                 <span className="w-2 h-2 bg-positive-green rounded-full" aria-hidden="true" />
               </p>

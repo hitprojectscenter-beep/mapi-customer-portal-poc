@@ -169,7 +169,7 @@ export default function OrderPage() {
         {step === 1 && (
           <div className="grid lg:grid-cols-3 gap-8">
             <aside className="bg-secondary/5 rounded-3xl p-6 border border-secondary/20 lg:col-span-1">
-              <h2 className="text-lg font-extrabold text-primary mb-3 flex items-center gap-2 justify-end">
+              <h2 className="text-lg font-extrabold text-primary mb-3 flex items-center gap-2 justify-center">
                 <span>שלב 1: פרטי הבקשה</span>
                 <span className="material-symbols-outlined text-secondary">info</span>
               </h2>
@@ -311,7 +311,7 @@ export default function OrderPage() {
         {step === 2 && (
           <div className="grid lg:grid-cols-3 gap-8">
             <aside className="bg-secondary/5 rounded-3xl p-6 border border-secondary/20 lg:col-span-1">
-              <h2 className="text-lg font-extrabold text-primary mb-3 flex items-center gap-2 justify-end">
+              <h2 className="text-lg font-extrabold text-primary mb-3 flex items-center gap-2 justify-center">
                 <span>שלב 2: סימון אזור</span>
                 <span className="material-symbols-outlined text-secondary">my_location</span>
               </h2>
@@ -501,7 +501,7 @@ export default function OrderPage() {
             </div>
 
             <aside className="bg-gradient-to-br from-primary to-tertiary text-white rounded-3xl p-6 md:p-8 sticky top-44">
-              <h3 className="text-lg font-bold mb-4 flex items-center gap-2 justify-end">
+              <h3 className="text-lg font-bold mb-4 flex items-center gap-2 justify-center">
                 <span>הצעת מחיר</span>
                 <span className="material-symbols-outlined">request_quote</span>
               </h3>
@@ -554,7 +554,7 @@ export default function OrderPage() {
               </p>
 
               <div className="space-y-3 mb-6 text-center text-sm">
-                <label className="flex items-center justify-end gap-2 cursor-pointer">
+                <label className="flex items-center justify-center gap-2 cursor-pointer">
                   <span>אני מאשר/ת את תנאי השימוש</span>
                   <input
                     type="checkbox"
@@ -563,7 +563,7 @@ export default function OrderPage() {
                     className="w-4 h-4 rounded text-secondary"
                   />
                 </label>
-                <label className="flex items-center justify-end gap-2 cursor-pointer">
+                <label className="flex items-center justify-center gap-2 cursor-pointer">
                   <span>אני מאשר/ת את הצעת המחיר</span>
                   <input
                     type="checkbox"

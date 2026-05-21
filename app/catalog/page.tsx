@@ -171,7 +171,7 @@ function CatalogContent() {
                   {categories.map((cat) => (
                     <label
                       key={cat.id}
-                      className="flex items-center justify-end gap-2 cursor-pointer text-center group"
+                      className="flex items-center justify-center gap-2 cursor-pointer text-center group"
                     >
                       <span className="text-sm group-hover:text-secondary transition-colors">
                         {cat.label}
@@ -194,7 +194,7 @@ function CatalogContent() {
                   {Object.entries(customerTypeLabels).map(([id, label]) => (
                     <label
                       key={id}
-                      className="flex items-center justify-end gap-2 cursor-pointer text-center group"
+                      className="flex items-center justify-center gap-2 cursor-pointer text-center group"
                     >
                       <span className="text-sm group-hover:text-secondary transition-colors">{label}</span>
                       <input
@@ -227,7 +227,7 @@ function CatalogContent() {
 
               {/* In Scope */}
               <div className="border-t border-outline-variant pt-4">
-                <label className="flex items-center justify-end gap-2 cursor-pointer text-center">
+                <label className="flex items-center justify-center gap-2 cursor-pointer text-center">
                   <span className="text-sm font-bold text-primary">רק שירותים פעילים בפורטל</span>
                   <input
                     type="checkbox"

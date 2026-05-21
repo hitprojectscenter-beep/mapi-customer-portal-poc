@@ -85,7 +85,7 @@ export default function NewCasePage() {
 
       <div className="max-w-container-max-width mx-auto px-4 md:px-margin-desktop py-10 grid lg:grid-cols-3 gap-8">
         <aside className="bg-white rounded-3xl p-6 border border-outline-variant/50 lg:col-span-1 self-start">
-          <h2 className="text-lg font-bold text-primary mb-4 flex items-center gap-2 justify-end">
+          <h2 className="text-lg font-bold text-primary mb-4 flex items-center gap-2 justify-center">
             <span>צריך עזרה?</span>
             <span className="material-symbols-outlined text-secondary">support_agent</span>
           </h2>

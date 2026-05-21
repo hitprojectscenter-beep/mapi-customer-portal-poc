@@ -113,7 +113,7 @@ export default function OrdersPage() {
           <ul className="md:hidden divide-y divide-outline-variant/40" role="list">
             {mockOrders.map((order) => (
               <li key={order.id} className="p-4 hover:bg-surface-container/50 transition-colors">
-                <div className="flex flex-row-reverse items-start justify-between gap-3 mb-3">
+                <div className="flex flex-row-reverse items-center justify-between gap-3 mb-3">
                   <div className="flex items-center gap-2 flex-1 min-w-0">
                     <span className="material-symbols-outlined text-secondary text-[24px] flex-shrink-0">
                       {order.serviceIcon}
@@ -180,7 +180,7 @@ export default function OrdersPage() {
                     className="border-b border-outline-variant/40 hover:bg-surface-container/50 transition-colors"
                   >
                     <td className="py-4 px-4">
-                      <div className="flex gap-1 justify-end">
+                      <div className="flex gap-1 justify-center">
                         <button
                           className="shine w-8 h-8 rounded-lg hover:bg-secondary/10 hover:text-secondary text-on-surface-variant flex items-center justify-center"
                           aria-label="צפה"
@@ -222,7 +222,7 @@ export default function OrdersPage() {
                     </td>
                     <td className="py-4 px-4 text-on-surface-variant text-sm">{order.date}</td>
                     <td className="py-4 px-4">
-                      <span className="flex items-center gap-2 justify-end">
+                      <span className="flex items-center gap-2 justify-center">
                         <span>{order.serviceName}</span>
                         <span className="material-symbols-outlined text-secondary text-[20px]">
                           {order.serviceIcon}

@@ -65,7 +65,7 @@ export default function QuoteRequestModal({ service, open, onClose }: Props) {
 
   return (
     <div
-      className="fixed inset-0 z-[200] flex items-end sm:items-center justify-center p-0 sm:p-4 animate-fade-in"
+      className="fixed inset-0 z-[200] flex items-center sm:items-center justify-center p-0 sm:p-4 animate-fade-in"
       role="dialog"
       aria-modal="true"
       aria-labelledby={titleId}
@@ -134,7 +134,7 @@ export default function QuoteRequestModal({ service, open, onClose }: Props) {
           <>
             {/* Header */}
             <div className="bg-gradient-to-l from-primary to-secondary text-white p-6 sm:p-8 sm:rounded-t-3xl">
-              <div className="flex flex-row-reverse items-start gap-4 mb-4">
+              <div className="flex flex-row-reverse items-center gap-4 mb-4">
                 <div className="w-14 h-14 bg-white/15 rounded-2xl flex items-center justify-center flex-shrink-0">
                   <span className="material-symbols-outlined text-[32px]">
                     {service.icon}
@@ -184,7 +184,7 @@ export default function QuoteRequestModal({ service, open, onClose }: Props) {
                   </p>
                   <ul className="grid sm:grid-cols-2 gap-1.5 text-sm text-center">
                     {service.features.slice(0, 6).map((f, i) => (
-                      <li key={i} className="flex items-center justify-end gap-2">
+                      <li key={i} className="flex items-center justify-center gap-2">
                         <span>{f}</span>
                         <span className="material-symbols-outlined text-positive-green text-[16px] flex-shrink-0">
                           check_circle
@@ -197,7 +197,7 @@ export default function QuoteRequestModal({ service, open, onClose }: Props) {
 
               {/* Form */}
               <form onSubmit={handleSubmit} className="space-y-4">
-                <h3 className="text-base font-extrabold text-primary text-center flex items-center gap-2 justify-end">
+                <h3 className="text-base font-extrabold text-primary text-center flex items-center gap-2 justify-center">
                   <span>פרטי המבקש</span>
                   <span className="material-symbols-outlined text-secondary text-[20px]">
                     person

@@ -137,7 +137,7 @@ export default function HomePage() {
       {/* Services Section */}
       <section className="py-16 sm:py-20 md:py-32 relative bg-surface" aria-labelledby="services-heading">
         <div className="max-w-container-max-width mx-auto px-4 md:px-margin-desktop">
-          <div className="flex flex-col md:flex-row-reverse items-end justify-between mb-12 md:mb-24 gap-6 md:gap-8">
+          <div className="flex flex-col md:flex-row-reverse items-center justify-between mb-12 md:mb-24 gap-6 md:gap-8">
             <div className="text-center max-w-2xl">
               <span className="text-secondary font-bold text-xs sm:text-sm tracking-[0.2em] uppercase mb-3 sm:mb-4 block">
                 השירותים שלנו
@@ -159,7 +159,7 @@ export default function HomePage() {
           <div className="grid grid-cols-1 md:grid-cols-12 gap-4 sm:gap-6 md:gap-8">
             {/* Hero card 1 - no price, with quote button */}
             <div className="md:col-span-7 group premium-card wow-tilt relative overflow-hidden bg-white rounded-3xl p-6 sm:p-8 md:p-10 border border-outline-variant/50 hover:shadow-2xl transition-all duration-500 shine">
-              <div className="relative z-10 flex flex-col h-full text-center items-end">
+              <div className="relative z-10 flex flex-col h-full text-center items-center">
                 <div className="card-icon w-16 h-16 sm:w-20 sm:h-20 bg-secondary/5 rounded-2xl flex items-center justify-center text-secondary mb-6 sm:mb-8 md:mb-10 transition-all duration-500">
                   <span className="material-symbols-outlined text-[36px] sm:text-[48px]">
                     {featuredServices[0]?.icon}
@@ -198,7 +198,7 @@ export default function HomePage() {
 
             {/* Vertical dark card - no price */}
             <div className="md:col-span-5 group premium-card wow-tilt bg-primary rounded-3xl p-6 sm:p-8 md:p-10 text-white relative overflow-hidden hover:shadow-2xl transition-all duration-500 shine shine-gold">
-              <div className="relative z-10 flex flex-col h-full text-center items-end">
+              <div className="relative z-10 flex flex-col h-full text-center items-center">
                 <div className="card-icon w-14 h-14 sm:w-16 sm:h-16 bg-white/10 rounded-2xl flex items-center justify-center text-white mb-6 sm:mb-8 md:mb-10 transition-all">
                   <span className="material-symbols-outlined text-[32px] sm:text-[40px]">
                     {featuredServices[1]?.icon}

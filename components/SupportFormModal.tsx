@@ -56,7 +56,7 @@ export default function SupportFormModal({ open, onClose }: Props) {
 
   return (
     <div
-      className="fixed inset-0 z-[200] flex items-end sm:items-center justify-center p-0 sm:p-4 animate-fade-in"
+      className="fixed inset-0 z-[200] flex items-center sm:items-center justify-center p-0 sm:p-4 animate-fade-in"
       role="dialog"
       aria-modal="true"
       aria-labelledby={titleId}
@@ -125,7 +125,7 @@ export default function SupportFormModal({ open, onClose }: Props) {
         ) : (
           <>
             <div className="bg-gradient-to-l from-primary to-secondary text-white p-6 sm:p-8 sm:rounded-t-3xl">
-              <div className="flex flex-row-reverse items-start gap-4 mb-3">
+              <div className="flex flex-row-reverse items-center gap-4 mb-3">
                 <div className="w-14 h-14 bg-white/15 rounded-2xl flex items-center justify-center flex-shrink-0">
                   <span className="material-symbols-outlined text-[32px]">support_agent</span>
                 </div>

@@ -30,7 +30,7 @@ export default function LoginPage() {
               'שמירה אוטומטית של ההזמנות שלך',
               "תקני יה\"ב 5.35"
             ].map((feat, i) => (
-              <div key={i} className="flex items-center justify-end gap-3 text-sm">
+              <div key={i} className="flex items-center justify-center gap-3 text-sm">
                 <span>{feat}</span>
                 <span className="material-symbols-outlined text-secondary-container">
                   check_circle

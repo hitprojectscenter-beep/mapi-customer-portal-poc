@@ -2,8 +2,9 @@ import type { Metadata } from "next";
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import AISupportButton from "@/components/AISupportButton";
+import AIAssistant from "@/components/AIAssistant";
 import NewsTicker from "@/components/NewsTicker";
+import { LanguageProvider } from "@/lib/LanguageContext";
 
 export const metadata: Metadata = {
   title: 'MAPI - המרכז למיפוי ישראל | פורטל לקוחות',
@@ -39,13 +40,15 @@ export default function RootLayout({
         />
       </head>
       <body className="bg-surface text-on-surface font-body selection:bg-secondary/30 antialiased">
-        <Header />
-        <NewsTicker />
-        <main id="main-content" className="pt-[120px] sm:pt-[124px] min-h-screen">
-          {children}
-        </main>
-        <Footer />
-        <AISupportButton />
+        <LanguageProvider>
+          <NewsTicker />
+          <Header />
+          <main id="main-content" className="pt-[120px] sm:pt-[124px] min-h-screen">
+            {children}
+          </main>
+          <Footer />
+          <AIAssistant />
+        </LanguageProvider>
       </body>
     </html>
   );

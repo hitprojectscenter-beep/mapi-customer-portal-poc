@@ -98,7 +98,7 @@ export default function DashboardPage() {
               data-tooltip={`${kpi.label}: ${kpi.value} (${kpi.trend})`}
               data-tooltip-position="bottom"
             >
-              <div className="flex flex-row-reverse items-start justify-between mb-3">
+              <div className="flex flex-row-reverse items-center justify-between mb-3">
                 <div
                   className={`w-12 h-12 rounded-xl flex items-center justify-center ${kpi.iconBg}`}
                 >
@@ -150,7 +150,7 @@ export default function DashboardPage() {
                 {mockOrders.slice(0, 5).map((order) => (
                   <tr key={order.id} className="border-b border-outline-variant/40 hover:bg-surface-container/50 transition-colors">
                     <td className="py-4 pr-2">
-                      <div className="flex gap-1 justify-end">
+                      <div className="flex gap-1 justify-center">
                         <button
                           className="shine w-8 h-8 rounded-lg hover:bg-secondary/10 hover:text-secondary text-on-surface-variant flex items-center justify-center"
                           aria-label={`צפה ב-${order.id}`}
@@ -181,7 +181,7 @@ export default function DashboardPage() {
                     </td>
                     <td className="py-4 text-on-surface-variant text-sm">{order.date}</td>
                     <td className="py-4">
-                      <span className="flex items-center gap-2 justify-end">
+                      <span className="flex items-center gap-2 justify-center">
                         <span>{order.serviceName}</span>
                         <span className="material-symbols-outlined text-secondary text-[20px]">
                           {order.serviceIcon}
@@ -202,7 +202,7 @@ export default function DashboardPage() {
                 key={order.id}
                 className="bg-surface-container/50 rounded-2xl p-4 border border-outline-variant/40 hover:bg-surface-container transition-colors"
               >
-                <div className="flex flex-row-reverse items-start justify-between mb-3 gap-3">
+                <div className="flex flex-row-reverse items-center justify-between mb-3 gap-3">
                   <div className="flex items-center gap-2 flex-1 min-w-0">
                     <span className="material-symbols-outlined text-secondary text-[24px] flex-shrink-0">
                       {order.serviceIcon}
@@ -267,7 +267,7 @@ export default function DashboardPage() {
                   key={n.id}
                   className={`rounded-2xl p-4 ${notifTypeClasses[n.type]} border border-current/10`}
                 >
-                  <div className="flex flex-row-reverse items-start gap-3">
+                  <div className="flex flex-row-reverse items-center gap-3">
                     <span className="material-symbols-outlined">{n.icon}</span>
                     <div className="flex-1 text-center">
                       <p className="text-sm font-medium mb-2">{n.title}</p>
@@ -293,7 +293,7 @@ export default function DashboardPage() {
           >
             <h2
               id="quick-actions-heading"
-              className="text-xl font-extrabold mb-4 flex items-center gap-2 justify-end"
+              className="text-xl font-extrabold mb-4 flex items-center gap-2 justify-center"
             >
               <span>פעולות מהירות</span>
               <span className="material-symbols-outlined text-secondary-container">bolt</span>
