@@ -68,14 +68,18 @@ export default function DashboardPage() {
           <div className="mt-6 flex flex-wrap gap-3">
             <Link
               href="/catalog"
-              className="bg-secondary text-white px-6 py-3 rounded-full font-bold flex items-center gap-2 hover:bg-secondary/90 transition-colors"
+              className="shine shine-glow bg-secondary text-white px-6 py-3 rounded-full font-bold flex items-center gap-2 hover:bg-secondary/90 transition-colors"
+              data-tooltip="פתיחת קטלוג השירותים והתחלת הזמנה חדשה"
+              data-tooltip-position="bottom"
             >
               <span className="material-symbols-outlined">add_shopping_cart</span>
               <span>הזמן שירות חדש</span>
             </Link>
             <Link
               href="/orders"
-              className="bg-white/10 backdrop-blur-md border border-white/20 text-white px-6 py-3 rounded-full font-bold flex items-center gap-2 hover:bg-white/20 transition-colors"
+              className="shine bg-white/10 backdrop-blur-md border border-white/20 text-white px-6 py-3 rounded-full font-bold flex items-center gap-2 hover:bg-white/20 transition-colors"
+              data-tooltip="צפייה בהיסטוריית כל ההזמנות שלך"
+              data-tooltip-position="bottom"
             >
               <span className="material-symbols-outlined">history</span>
               <span>היסטוריה</span>
@@ -90,7 +94,9 @@ export default function DashboardPage() {
           {kpis.map((kpi, i) => (
             <div
               key={i}
-              className="bg-white rounded-2xl p-5 border border-outline-variant/50 shadow-sm hover:shadow-lg transition-shadow"
+              className="shine bg-white rounded-2xl p-5 border border-outline-variant/50 shadow-sm hover:shadow-lg transition-all hover:-translate-y-0.5"
+              data-tooltip={`${kpi.label}: ${kpi.value} (${kpi.trend})`}
+              data-tooltip-position="bottom"
             >
               <div className="flex flex-row-reverse items-start justify-between mb-3">
                 <div
@@ -118,7 +124,12 @@ export default function DashboardPage() {
               <span>הזמנות אחרונות</span>
               <span className="material-symbols-outlined text-secondary">package_2</span>
             </h2>
-            <Link href="/orders" className="text-sm font-bold text-secondary hover:underline">
+            <Link
+              href="/orders"
+              className="shine text-sm font-bold text-secondary hover:underline px-2 py-1 rounded"
+              data-tooltip="צפייה ברשימת כל ההזמנות שלך"
+              data-tooltip-position="bottom"
+            >
               לכל ההזמנות ←
             </Link>
           </div>
@@ -140,14 +151,18 @@ export default function DashboardPage() {
                     <td className="py-4 pr-2">
                       <div className="flex gap-1 justify-end">
                         <button
-                          className="w-8 h-8 rounded-lg hover:bg-secondary/10 hover:text-secondary text-on-surface-variant flex items-center justify-center"
+                          className="shine w-8 h-8 rounded-lg hover:bg-secondary/10 hover:text-secondary text-on-surface-variant flex items-center justify-center"
                           aria-label={`צפה ב-${order.id}`}
+                          data-tooltip={`צפייה בפרטי הזמנה ${order.id}`}
+                          data-tooltip-position="bottom"
                         >
                           <span className="material-symbols-outlined text-[18px]">visibility</span>
                         </button>
                         <button
-                          className="w-8 h-8 rounded-lg hover:bg-secondary/10 hover:text-secondary text-on-surface-variant flex items-center justify-center"
+                          className="shine w-8 h-8 rounded-lg hover:bg-secondary/10 hover:text-secondary text-on-surface-variant flex items-center justify-center"
                           aria-label={`הורד ${order.id}`}
+                          data-tooltip={`הורדת תוצר/חשבונית ל-${order.id}`}
+                          data-tooltip-position="bottom"
                         >
                           <span className="material-symbols-outlined text-[18px]">download</span>
                         </button>
@@ -206,7 +221,12 @@ export default function DashboardPage() {
                     <span className="material-symbols-outlined">{n.icon}</span>
                     <div className="flex-1 text-right">
                       <p className="text-sm font-medium mb-2">{n.title}</p>
-                      <Link href={n.href} className="text-xs font-bold underline">
+                      <Link
+                        href={n.href}
+                        className="shine text-xs font-bold underline px-1 py-0.5 rounded"
+                        data-tooltip={`${n.cta} - ${n.title}`}
+                        data-tooltip-position="bottom"
+                      >
                         {n.cta} ←
                       </Link>
                     </div>
@@ -230,22 +250,62 @@ export default function DashboardPage() {
             </h2>
             <div className="grid grid-cols-2 gap-3">
               {[
-                { label: "מנוי CORS חדש", icon: "sensors", href: "/catalog/cors-subscription" },
-                { label: 'הזמן מפה', icon: "map", href: "/catalog/custom-map" },
-                { label: 'פתח פנייה', icon: "support_agent", href: "/cases/new" },
-                { label: 'הגדרות', icon: "settings", href: "#" }
-              ].map((action, i) => (
-                <Link
-                  key={i}
-                  href={action.href}
-                  className="bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/10 rounded-2xl p-4 flex flex-col items-center text-center transition-colors"
-                >
-                  <span className="material-symbols-outlined text-secondary-container mb-2">
-                    {action.icon}
-                  </span>
-                  <span className="text-xs font-bold">{action.label}</span>
-                </Link>
-              ))}
+                {
+                  label: 'מנוי CORS חדש',
+                  icon: "sensors",
+                  href: "/catalog/cors-subscription",
+                  tip: "פתיחת מנוי לתחנות קבע - תיקוני RTK/VRS"
+                },
+                {
+                  label: 'הזמן מפה',
+                  icon: "map",
+                  href: "/catalog/custom-map",
+                  tip: "הזמנת מפה בהתאמה אישית A4-A0"
+                },
+                {
+                  label: 'פתח פנייה',
+                  icon: "support_agent",
+                  href: "/cases/new",
+                  tip: "פתיחת Case חדש לשירות הלקוחות"
+                },
+                {
+                  label: 'הגדרות',
+                  icon: "settings",
+                  href: "https://www.gov.il/he/departments/survey_of_israel",
+                  tip: 'ניהול פרופיל באתר gov.il'
+                }
+              ].map((action, i) => {
+                const isExternal = action.href.startsWith("http");
+                const sharedProps = {
+                  className:
+                    "shine bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/10 rounded-2xl p-4 flex flex-col items-center text-center transition-colors",
+                  "data-tooltip": action.tip,
+                  "data-tooltip-position": "bottom" as const
+                };
+                const inner = (
+                  <>
+                    <span className="material-symbols-outlined text-secondary-container mb-2">
+                      {action.icon}
+                    </span>
+                    <span className="text-xs font-bold">{action.label}</span>
+                  </>
+                );
+                return isExternal ? (
+                  <a
+                    key={i}
+                    href={action.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    {...sharedProps}
+                  >
+                    {inner}
+                  </a>
+                ) : (
+                  <Link key={i} href={action.href} {...sharedProps}>
+                    {inner}
+                  </Link>
+                );
+              })}
             </div>
           </section>
         </div>

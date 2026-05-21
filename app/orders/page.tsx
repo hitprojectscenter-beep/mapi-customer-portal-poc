@@ -26,7 +26,9 @@ export default function OrdersPage() {
             <h1 className="text-3xl md:text-4xl font-extrabold">ההזמנות שלי</h1>
             <Link
               href="/catalog"
-              className="bg-secondary text-white px-6 py-3 rounded-full font-bold flex items-center gap-2 hover:bg-secondary/90 transition-colors"
+              className="shine shine-glow bg-secondary text-white px-6 py-3 rounded-full font-bold flex items-center gap-2 hover:bg-secondary/90 transition-colors"
+              data-tooltip="פתיחת קטלוג לבחירת שירות חדש"
+              data-tooltip-position="bottom"
             >
               <span className="material-symbols-outlined">add</span>
               <span>הזמנה חדשה</span>
@@ -97,7 +99,11 @@ export default function OrdersPage() {
               <span className="font-bold text-primary">{mockOrders.length}</span> הזמנות נמצאו
             </p>
             <div className="flex gap-2">
-              <button className="text-xs bg-surface-container hover:bg-surface-container-high px-3 py-1.5 rounded-full font-bold flex items-center gap-1">
+              <button
+                className="shine text-xs bg-surface-container hover:bg-surface-container-high px-3 py-1.5 rounded-full font-bold flex items-center gap-1"
+                data-tooltip="הורדת הטבלה כקובץ XLSX"
+                data-tooltip-position="bottom"
+              >
                 <span className="material-symbols-outlined text-[16px]">download</span>
                 <span>ייצא Excel</span>
               </button>
@@ -124,13 +130,28 @@ export default function OrdersPage() {
                   >
                     <td className="py-4 px-4">
                       <div className="flex gap-1 justify-end">
-                        <button className="w-8 h-8 rounded-lg hover:bg-secondary/10 hover:text-secondary text-on-surface-variant flex items-center justify-center" aria-label="צפה">
+                        <button
+                          className="shine w-8 h-8 rounded-lg hover:bg-secondary/10 hover:text-secondary text-on-surface-variant flex items-center justify-center"
+                          aria-label="צפה"
+                          data-tooltip="צפייה בפרטי ההזמנה"
+                          data-tooltip-position="bottom"
+                        >
                           <span className="material-symbols-outlined text-[18px]">visibility</span>
                         </button>
-                        <button className="w-8 h-8 rounded-lg hover:bg-secondary/10 hover:text-secondary text-on-surface-variant flex items-center justify-center" aria-label="הזמן שוב">
+                        <button
+                          className="shine w-8 h-8 rounded-lg hover:bg-secondary/10 hover:text-secondary text-on-surface-variant flex items-center justify-center"
+                          aria-label="הזמן שוב"
+                          data-tooltip="הזמנה חוזרת של אותו שירות"
+                          data-tooltip-position="bottom"
+                        >
                           <span className="material-symbols-outlined text-[18px]">replay</span>
                         </button>
-                        <button className="w-8 h-8 rounded-lg hover:bg-secondary/10 hover:text-secondary text-on-surface-variant flex items-center justify-center" aria-label="הורד חשבונית">
+                        <button
+                          className="shine w-8 h-8 rounded-lg hover:bg-secondary/10 hover:text-secondary text-on-surface-variant flex items-center justify-center"
+                          aria-label="הורד חשבונית"
+                          data-tooltip="הורדת חשבונית/קבלה"
+                          data-tooltip-position="bottom"
+                        >
                           <span className="material-symbols-outlined text-[18px]">receipt</span>
                         </button>
                       </div>
@@ -166,10 +187,18 @@ export default function OrdersPage() {
           <div className="p-4 flex flex-row-reverse items-center justify-between">
             <p className="text-sm text-on-surface-variant">עמוד 1 מתוך 3</p>
             <div className="flex gap-2">
-              <button className="px-4 py-2 rounded-full bg-surface-container hover:bg-surface-container-high font-bold text-sm">
+              <button
+                className="shine px-4 py-2 rounded-full bg-surface-container hover:bg-surface-container-high font-bold text-sm"
+                data-tooltip="עמוד קודם בהזמנות"
+                data-tooltip-position="bottom"
+              >
                 ← הקודם
               </button>
-              <button className="px-4 py-2 rounded-full bg-primary text-white hover:bg-secondary font-bold text-sm">
+              <button
+                className="shine px-4 py-2 rounded-full bg-primary text-white hover:bg-secondary font-bold text-sm"
+                data-tooltip="עמוד הבא בהזמנות"
+                data-tooltip-position="bottom"
+              >
                 הבא →
               </button>
             </div>

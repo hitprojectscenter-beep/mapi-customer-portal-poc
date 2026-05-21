@@ -269,7 +269,9 @@ export default function OrderPage() {
                 <button
                   type="button"
                   onClick={() => router.push(`/catalog/${service.slug}`)}
-                  className="text-on-surface-variant font-bold hover:text-primary transition-colors"
+                  className="shine text-on-surface-variant font-bold hover:text-primary transition-colors px-3 py-2 rounded-lg"
+                  data-tooltip="חזרה לדף השירות"
+                  data-tooltip-position="bottom"
                 >
                   <span className="material-symbols-outlined align-middle ml-1">arrow_forward</span>
                   חזור
@@ -277,7 +279,9 @@ export default function OrderPage() {
                 <button
                   type="button"
                   onClick={() => setStep(2)}
-                  className="bg-primary text-white px-8 py-3 rounded-full font-bold hover:bg-secondary transition-colors flex items-center gap-2"
+                  className="shine shine-glow bg-primary text-white px-8 py-3 rounded-full font-bold hover:bg-secondary transition-colors flex items-center gap-2"
+                  data-tooltip="המשך לשלב 2 - סימון אזור על המפה"
+                  data-tooltip-position="bottom"
                 >
                   המשך
                   <span className="material-symbols-outlined">arrow_back</span>
@@ -372,11 +376,13 @@ export default function OrderPage() {
                 <button
                   type="button"
                   onClick={() => setAreaMarked(true)}
-                  className={`px-4 py-3 rounded-xl font-bold transition-colors flex items-center justify-center gap-2 ${
+                  className={`shine px-4 py-3 rounded-xl font-bold transition-colors flex items-center justify-center gap-2 ${
                     areaMarked
                       ? "bg-positive-green text-white"
                       : "bg-secondary text-white hover:bg-secondary/90"
                   }`}
+                  data-tooltip={areaMarked ? "האזור סומן ונשמר בהצלחה" : "סימון פוליגון על המפה - חישוב שטח אוטומטי"}
+                  data-tooltip-position="bottom"
                 >
                   {areaMarked ? (
                     <>
@@ -396,7 +402,9 @@ export default function OrderPage() {
                 <button
                   type="button"
                   onClick={() => setStep(1)}
-                  className="text-on-surface-variant font-bold hover:text-primary transition-colors"
+                  className="shine text-on-surface-variant font-bold hover:text-primary transition-colors px-3 py-2 rounded-lg"
+                  data-tooltip="חזרה לשלב 1 - פרטי הבקשה"
+                  data-tooltip-position="bottom"
                 >
                   <span className="material-symbols-outlined align-middle ml-1">arrow_forward</span>
                   חזור
@@ -405,7 +413,9 @@ export default function OrderPage() {
                   type="button"
                   onClick={() => setStep(3)}
                   disabled={!areaMarked}
-                  className="bg-primary text-white px-8 py-3 rounded-full font-bold hover:bg-secondary transition-colors flex items-center gap-2 disabled:bg-outline-variant disabled:cursor-not-allowed"
+                  className="shine shine-glow bg-primary text-white px-8 py-3 rounded-full font-bold hover:bg-secondary transition-colors flex items-center gap-2 disabled:bg-outline-variant disabled:cursor-not-allowed disabled:hover:bg-outline-variant"
+                  data-tooltip={areaMarked ? "המשך לשלב 3 - סיכום הזמנה" : "סמן אזור על המפה לפני המשך"}
+                  data-tooltip-position="bottom"
                 >
                   המשך
                   <span className="material-symbols-outlined">arrow_back</span>
@@ -453,7 +463,9 @@ export default function OrderPage() {
                 <button
                   type="button"
                   onClick={() => setStep(1)}
-                  className="flex-1 bg-surface-container hover:bg-surface-container-high text-primary px-4 py-2 rounded-xl font-bold text-sm flex items-center justify-center gap-1"
+                  className="shine flex-1 bg-surface-container hover:bg-surface-container-high text-primary px-4 py-2 rounded-xl font-bold text-sm flex items-center justify-center gap-1"
+                  data-tooltip="חזרה לשלב 1 - עריכת פרטי הבקשה"
+                  data-tooltip-position="bottom"
                 >
                   <span className="material-symbols-outlined text-[18px]">edit</span>
                   ערוך פרטים
@@ -461,7 +473,9 @@ export default function OrderPage() {
                 <button
                   type="button"
                   onClick={() => setStep(2)}
-                  className="flex-1 bg-surface-container hover:bg-surface-container-high text-primary px-4 py-2 rounded-xl font-bold text-sm flex items-center justify-center gap-1"
+                  className="shine flex-1 bg-surface-container hover:bg-surface-container-high text-primary px-4 py-2 rounded-xl font-bold text-sm flex items-center justify-center gap-1"
+                  data-tooltip="חזרה לשלב 2 - עריכת האזור על המפה"
+                  data-tooltip-position="bottom"
                 >
                   <span className="material-symbols-outlined text-[18px]">edit</span>
                   ערוך אזור
@@ -500,11 +514,19 @@ export default function OrderPage() {
               </div>
 
               <div className="space-y-2 mb-6">
-                <button className="w-full bg-white/10 hover:bg-white/20 text-white px-4 py-2 rounded-xl text-sm font-bold flex items-center justify-center gap-2 transition-colors">
+                <button
+                  className="shine w-full bg-white/10 hover:bg-white/20 text-white px-4 py-2 rounded-xl text-sm font-bold flex items-center justify-center gap-2 transition-colors"
+                  data-tooltip="הורדת הצעת המחיר כקובץ PDF (DocGen)"
+                  data-tooltip-position="bottom"
+                >
                   <span className="material-symbols-outlined text-[18px]">download</span>
                   הורד הצעת מחיר PDF
                 </button>
-                <button className="w-full bg-white/10 hover:bg-white/20 text-white px-4 py-2 rounded-xl text-sm font-bold flex items-center justify-center gap-2 transition-colors">
+                <button
+                  className="shine w-full bg-white/10 hover:bg-white/20 text-white px-4 py-2 rounded-xl text-sm font-bold flex items-center justify-center gap-2 transition-colors"
+                  data-tooltip="שליחת הצעת המחיר לתיבת המייל שלך"
+                  data-tooltip-position="bottom"
+                >
                   <span className="material-symbols-outlined text-[18px]">mail</span>
                   שלח לעצמי במייל
                 </button>
@@ -539,7 +561,9 @@ export default function OrderPage() {
                 <button
                   type="button"
                   onClick={() => setStep(2)}
-                  className="px-4 py-3 rounded-xl text-white/70 font-bold hover:text-white"
+                  className="shine px-4 py-3 rounded-xl text-white/70 font-bold hover:text-white"
+                  data-tooltip="חזרה לשלב 2 - סימון אזור"
+                  data-tooltip-position="bottom"
                 >
                   ← חזור
                 </button>
@@ -547,7 +571,13 @@ export default function OrderPage() {
                   type="button"
                   onClick={() => setStep(4)}
                   disabled={!acceptTerms || !acceptQuote}
-                  className="flex-1 bg-secondary hover:bg-secondary/90 text-white px-4 py-3 rounded-xl font-bold disabled:bg-white/20 disabled:cursor-not-allowed transition-colors"
+                  className="shine flex-1 bg-secondary hover:bg-secondary/90 text-white px-4 py-3 rounded-xl font-bold disabled:bg-white/20 disabled:cursor-not-allowed transition-colors"
+                  data-tooltip={
+                    !acceptTerms || !acceptQuote
+                      ? "אשר את התנאים והצעת המחיר לפני התשלום"
+                      : 'מעבר לשרת התשלומים הממשלתי המאובטח'
+                  }
+                  data-tooltip-position="bottom"
                 >
                   ✓ אשר ועבור לתשלום
                 </button>
@@ -581,7 +611,9 @@ export default function OrderPage() {
             <div className="flex flex-col sm:flex-row-reverse gap-3">
               <Link
                 href="/dashboard?paid=true"
-                className="flex-1 bg-positive-green text-white px-6 py-4 rounded-full font-bold hover:bg-positive-green/90 transition-colors flex items-center justify-center gap-2"
+                className="shine shine-glow flex-1 bg-positive-green text-white px-6 py-4 rounded-full font-bold hover:bg-positive-green/90 transition-colors flex items-center justify-center gap-2"
+                data-tooltip='ב-POC מדמה תשלום מוצלח וחוזר ללוח הבקרה'
+                data-tooltip-position="bottom"
               >
                 <span className="material-symbols-outlined">payments</span>
                 המשך לתשלום (סימולציה)
@@ -589,7 +621,9 @@ export default function OrderPage() {
               <button
                 type="button"
                 onClick={() => setStep(3)}
-                className="px-6 py-4 rounded-full text-primary font-bold hover:bg-surface-container transition-colors"
+                className="shine px-6 py-4 rounded-full text-primary font-bold hover:bg-surface-container transition-colors"
+                data-tooltip="חזרה לשלב הסיכום והצעת המחיר"
+                data-tooltip-position="bottom"
               >
                 ← חזור
               </button>

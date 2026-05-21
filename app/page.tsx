@@ -70,7 +70,9 @@ export default function HomePage() {
               />
               <button
                 type="submit"
-                className="bg-white text-primary px-4 md:px-8 py-3 md:py-4 rounded-xl font-bold flex items-center gap-2 hover:bg-secondary-container transition-all whitespace-nowrap"
+                className="shine bg-white text-primary px-4 md:px-8 py-3 md:py-4 rounded-xl font-bold flex items-center gap-2 hover:bg-secondary-container transition-all whitespace-nowrap"
+                data-tooltip="חיפוש שירות בקטלוג"
+                data-tooltip-position="bottom"
               >
                 <span className="hidden sm:inline">חיפוש</span>
                 <span className="material-symbols-outlined">search</span>
@@ -81,7 +83,9 @@ export default function HomePage() {
           <div className="flex flex-col sm:flex-row-reverse items-center justify-center gap-4 md:gap-6">
             <Link
               href="/catalog"
-              className="group bg-secondary text-white px-8 md:px-10 py-4 md:py-5 rounded-full font-bold flex items-center gap-3 hover:bg-secondary/90 transition-all shadow-xl shadow-secondary/20 w-full sm:w-auto justify-center"
+              className="shine shine-glow group bg-secondary text-white px-8 md:px-10 py-4 md:py-5 rounded-full font-bold flex items-center gap-3 hover:bg-secondary/90 transition-all shadow-xl shadow-secondary/20 w-full sm:w-auto justify-center"
+              data-tooltip="צפייה ב-14 השירותים והתחלת הזמנה"
+              data-tooltip-position="bottom"
             >
               התחל הזמנה
               <span className="material-symbols-outlined transition-transform group-hover:-translate-x-1">
@@ -89,10 +93,12 @@ export default function HomePage() {
               </span>
             </Link>
             <a
-              href="https://govmap.gov.il"
+              href="https://www.govmap.gov.il/"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-white/80 hover:text-white font-bold flex items-center gap-2 transition-all"
+              className="shine text-white/80 hover:text-white font-bold flex items-center gap-2 transition-all px-3 py-2 rounded-lg"
+              data-tooltip='פתיחת GovMap - מערכת המפות הציבורית של ממשלת ישראל'
+              data-tooltip-position="bottom"
             >
               <span>למפה החופשית</span>
               <span className="material-symbols-outlined">open_in_new</span>
@@ -132,7 +138,9 @@ export default function HomePage() {
             {/* Hero card 1 */}
             <Link
               href={`/catalog/${featuredServices[0]?.slug}`}
-              className="md:col-span-7 group premium-card relative overflow-hidden bg-white rounded-3xl p-8 md:p-10 border border-outline-variant/50 hover:shadow-2xl transition-all duration-500"
+              className="shine md:col-span-7 group premium-card relative overflow-hidden bg-white rounded-3xl p-8 md:p-10 border border-outline-variant/50 hover:shadow-2xl transition-all duration-500"
+              data-tooltip={`${featuredServices[0]?.name} - פרטים, מחירון והזמנה`}
+              data-tooltip-position="bottom"
             >
               <div className="relative z-10 flex flex-col h-full text-right items-end">
                 <div className="card-icon w-20 h-20 bg-secondary/5 rounded-2xl flex items-center justify-center text-secondary mb-8 md:mb-10 transition-all duration-500">
@@ -165,7 +173,9 @@ export default function HomePage() {
             {/* Vertical dark card */}
             <Link
               href={`/catalog/${featuredServices[1]?.slug}`}
-              className="md:col-span-5 group premium-card bg-primary rounded-3xl p-8 md:p-10 text-white relative overflow-hidden hover:shadow-2xl transition-all duration-500"
+              className="shine shine-gold md:col-span-5 group premium-card bg-primary rounded-3xl p-8 md:p-10 text-white relative overflow-hidden hover:shadow-2xl transition-all duration-500"
+              data-tooltip={`${featuredServices[1]?.name} - מנוי חודשי החל מ-₪${featuredServices[1]?.priceFrom}`}
+              data-tooltip-position="bottom"
             >
               <div className="relative z-10 flex flex-col h-full text-right items-end">
                 <div className="card-icon w-16 h-16 bg-white/10 rounded-2xl flex items-center justify-center text-white mb-8 md:mb-10 transition-all">
@@ -305,7 +315,9 @@ export default function HomePage() {
               <Link
                 key={cat.id}
                 href={`/catalog?category=${cat.id}`}
-                className="group flex flex-col items-center p-6 md:p-10 bg-surface rounded-3xl hover:bg-primary transition-all duration-300"
+                className="shine group flex flex-col items-center p-6 md:p-10 bg-surface rounded-3xl hover:bg-primary transition-all duration-300"
+                data-tooltip={`סינון הקטלוג לפי קטגוריית "${cat.label}"`}
+                data-tooltip-position="bottom"
               >
                 <span className="material-symbols-outlined text-[32px] md:text-[40px] text-secondary mb-4 md:mb-6 group-hover:text-white transition-colors">
                   {cat.icon}
@@ -331,14 +343,18 @@ export default function HomePage() {
           <div className="flex flex-col sm:flex-row-reverse items-center justify-center gap-4">
             <Link
               href="/login"
-              className="bg-primary text-white px-8 py-4 rounded-full font-bold flex items-center gap-2 hover:bg-secondary transition-colors shadow-xl"
+              className="shine shine-glow bg-primary text-white px-8 py-4 rounded-full font-bold flex items-center gap-2 hover:bg-secondary transition-colors shadow-xl"
+              data-tooltip='התחברות מאובטחת באמצעות מערכת ההזדהות הלאומית'
+              data-tooltip-position="bottom"
             >
               <span>התחבר עם הזדהות לאומית</span>
               <span className="material-symbols-outlined">login</span>
             </Link>
             <Link
               href="/catalog"
-              className="text-primary font-bold flex items-center gap-2 hover:text-secondary transition-colors"
+              className="shine text-primary font-bold flex items-center gap-2 hover:text-secondary transition-colors px-3 py-2 rounded-lg"
+              data-tooltip="צפייה בקטלוג מלא - ללא צורך בהזדהות"
+              data-tooltip-position="bottom"
             >
               <span>עיין בקטלוג ללא הזדהות</span>
               <span className="material-symbols-outlined">arrow_back</span>

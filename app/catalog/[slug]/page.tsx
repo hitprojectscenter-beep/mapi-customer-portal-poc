@@ -79,7 +79,9 @@ export default function ServiceDetailPage({ params }: Props) {
               {service.inScope ? (
                 <Link
                   href={`/order/${service.slug}`}
-                  className="block w-full bg-primary text-white text-center py-4 rounded-full font-bold hover:bg-secondary transition-colors text-lg"
+                  className="shine shine-glow block w-full bg-primary text-white text-center py-4 rounded-full font-bold hover:bg-secondary transition-colors text-lg"
+                  data-tooltip='פתיחת טופס OmniScript - 4 שלבים: פרטים, מפה, הצעת מחיר, תשלום'
+                  data-tooltip-position="bottom"
                 >
                   התחל הזמנה
                 </Link>
@@ -88,7 +90,9 @@ export default function ServiceDetailPage({ params }: Props) {
                   href={service.externalUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="block w-full bg-alert-yellow text-white text-center py-4 rounded-full font-bold hover:bg-alert-yellow/90 transition-colors text-lg flex items-center justify-center gap-2"
+                  className="shine block w-full bg-alert-yellow text-white text-center py-4 rounded-full font-bold hover:bg-alert-yellow/90 transition-colors text-lg flex items-center justify-center gap-2"
+                  data-tooltip="שירות זה לא בתכולה ראשונית של הפורטל - יפתח באתר gov.il"
+                  data-tooltip-position="bottom"
                 >
                   <span>פתח טופס ב-govforms</span>
                   <span className="material-symbols-outlined">open_in_new</span>
@@ -197,7 +201,9 @@ export default function ServiceDetailPage({ params }: Props) {
               {service.inScope ? (
                 <Link
                   href={`/order/${service.slug}`}
-                  className="inline-flex items-center gap-2 bg-white text-primary px-8 py-4 rounded-full font-bold hover:bg-secondary-container transition-colors"
+                  className="shine shine-glow inline-flex items-center gap-2 bg-white text-primary px-8 py-4 rounded-full font-bold hover:bg-secondary-container transition-colors"
+                  data-tooltip='פתיחת תהליך ההזמנה הדינמי'
+                  data-tooltip-position="bottom"
                 >
                   <span>התחל עכשיו</span>
                   <span className="material-symbols-outlined">arrow_back</span>
@@ -207,7 +213,9 @@ export default function ServiceDetailPage({ params }: Props) {
                   href={service.externalUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 bg-alert-yellow text-white px-8 py-4 rounded-full font-bold hover:bg-alert-yellow/90 transition-colors"
+                  className="shine inline-flex items-center gap-2 bg-alert-yellow text-white px-8 py-4 rounded-full font-bold hover:bg-alert-yellow/90 transition-colors"
+                  data-tooltip="פתיחת הטופס המקורי באתר gov.il"
+                  data-tooltip-position="bottom"
                 >
                   <span>פתח טופס ב-govforms</span>
                   <span className="material-symbols-outlined">open_in_new</span>

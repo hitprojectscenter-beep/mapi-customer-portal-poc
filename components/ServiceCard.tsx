@@ -10,19 +10,30 @@ export default function ServiceCard({ service, variant = "default" }: Props) {
   const isExternal = !service.inScope && service.externalUrl;
   const href = isExternal ? service.externalUrl! : `/catalog/${service.slug}`;
 
+  const tooltip = isExternal
+    ? `${service.name} — פתיחת הטופס באתר gov.il (לא בתכולת הפורטל)`
+    : `${service.name} — פרטים, מחירון והתחלת הזמנה`;
+
   const Container = ({ children }: { children: React.ReactNode }) =>
     isExternal ? (
       <a
         href={href}
         target="_blank"
         rel="noopener noreferrer"
-        className="block h-full"
+        className="block h-full shine rounded-3xl"
         aria-label={`${service.name} - פתיחה בחלון חדש`}
+        data-tooltip={tooltip}
+        data-tooltip-position="bottom"
       >
         {children}
       </a>
     ) : (
-      <Link href={href} className="block h-full">
+      <Link
+        href={href}
+        className="block h-full shine rounded-3xl"
+        data-tooltip={tooltip}
+        data-tooltip-position="bottom"
+      >
         {children}
       </Link>
     );
@@ -35,7 +46,10 @@ export default function ServiceCard({ service, variant = "default" }: Props) {
         }`}
       >
         {isExternal && (
-          <span className="absolute top-4 left-4 bg-alert-yellow/10 text-alert-yellow text-[10px] font-bold px-2 py-1 rounded-full uppercase tracking-wider flex items-center gap-1">
+          <span
+            className="absolute top-4 left-4 bg-alert-yellow/10 text-alert-yellow text-[10px] font-bold px-2 py-1 rounded-full uppercase tracking-wider flex items-center gap-1"
+            title='שירות זה נפתח בטופס gov.il - אינו בתכולת הפורטל הראשונית'
+          >
             <span className="material-symbols-outlined text-[12px]">open_in_new</span>
             <span>govforms</span>
           </span>
@@ -64,16 +78,14 @@ export default function ServiceCard({ service, variant = "default" }: Props) {
                   : `${service.priceUnit}${service.priceFrom.toLocaleString()}`}
               </span>
             </div>
-            <button
-              type="button"
+            <span
               className="w-10 h-10 bg-primary text-white rounded-full flex items-center justify-center group-hover:bg-secondary group-hover:scale-110 transition-all"
-              aria-label={`עבור ל${service.name}`}
-              tabIndex={-1}
+              aria-hidden="true"
             >
               <span className="material-symbols-outlined text-[20px]">
                 arrow_back
               </span>
-            </button>
+            </span>
           </div>
         </div>
       </article>

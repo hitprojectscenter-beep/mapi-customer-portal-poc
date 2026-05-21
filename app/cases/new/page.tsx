@@ -43,14 +43,18 @@ export default function NewCasePage() {
             <div className="flex flex-col sm:flex-row-reverse gap-3 justify-center">
               <Link
                 href="/dashboard"
-                className="bg-primary text-white px-6 py-3 rounded-full font-bold hover:bg-secondary transition-colors"
+                className="shine shine-glow bg-primary text-white px-6 py-3 rounded-full font-bold hover:bg-secondary transition-colors"
+                data-tooltip='חזרה ללוח הבקרה האישי'
+                data-tooltip-position="bottom"
               >
                 חזור לאזור אישי
               </Link>
               <button
                 type="button"
                 onClick={() => setSubmitted(false)}
-                className="text-primary font-bold hover:underline"
+                className="shine text-primary font-bold hover:underline px-3 py-2 rounded"
+                data-tooltip="פתיחת טופס Case חדש"
+                data-tooltip-position="bottom"
               >
                 פתח פנייה נוספת
               </button>
@@ -108,10 +112,13 @@ export default function NewCasePage() {
             <div className="border-t border-outline-variant pt-4">
               <p className="text-xs text-on-surface-variant mb-2">⚡ מענה אוטומטי:</p>
               <button
-                className="text-sm bg-secondary/10 text-secondary px-4 py-2 rounded-full font-bold hover:bg-secondary hover:text-white transition-colors flex items-center gap-2"
+                type="button"
+                className="shine text-sm bg-secondary/10 text-secondary px-4 py-2 rounded-full font-bold hover:bg-secondary hover:text-white transition-colors flex items-center gap-2"
+                data-tooltip="פתיחת חלונית הצ&apos;אט החכם מימין למטה"
+                data-tooltip-position="bottom"
               >
                 <span className="material-symbols-outlined text-[18px]">smart_toy</span>
-                <span>פתח צ'אט תמיכה חכם</span>
+                <span>פתח צ&apos;אט תמיכה חכם</span>
               </button>
             </div>
           </div>
@@ -243,13 +250,17 @@ export default function NewCasePage() {
           <div className="flex flex-row-reverse items-center justify-between mt-8 pt-6 border-t border-outline-variant">
             <Link
               href="/dashboard"
-              className="text-on-surface-variant font-bold hover:text-primary transition-colors"
+              className="shine text-on-surface-variant font-bold hover:text-primary transition-colors px-3 py-2 rounded-lg"
+              data-tooltip="ביטול הפנייה וחזרה לאזור האישי"
+              data-tooltip-position="bottom"
             >
               ביטול
             </Link>
             <button
               type="submit"
-              className="bg-primary text-white px-8 py-3 rounded-full font-bold hover:bg-secondary transition-colors flex items-center gap-2"
+              className="shine shine-glow bg-primary text-white px-8 py-3 rounded-full font-bold hover:bg-secondary transition-colors flex items-center gap-2"
+              data-tooltip="שליחת הפנייה - מספר Case יתקבל מיד"
+              data-tooltip-position="bottom"
             >
               <span className="material-symbols-outlined">send</span>
               שלח פנייה

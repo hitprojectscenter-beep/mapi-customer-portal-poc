@@ -108,7 +108,9 @@ function CatalogContent() {
                 <button
                   type="button"
                   onClick={clearFilters}
-                  className="text-secondary font-bold text-sm hover:underline"
+                  className="shine text-secondary font-bold text-sm hover:underline px-2 py-1 rounded"
+                  data-tooltip="ניקוי כל הסינונים והחזרה לתצוגה מלאה"
+                  data-tooltip-position="bottom"
                 >
                   נקה הכל
                 </button>
@@ -231,7 +233,9 @@ function CatalogContent() {
                 <button
                   type="button"
                   onClick={clearFilters}
-                  className="bg-primary text-white px-6 py-3 rounded-full font-bold hover:bg-secondary transition-colors"
+                  className="shine shine-glow bg-primary text-white px-6 py-3 rounded-full font-bold hover:bg-secondary transition-colors"
+                  data-tooltip="ניקוי הסינונים כדי לראות את כל השירותים"
+                  data-tooltip-position="bottom"
                 >
                   נקה סינונים
                 </button>

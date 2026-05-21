@@ -95,6 +95,131 @@
   }
 }
 
+/* ========================================
+   SHINE / BRILLIANCE EFFECT (on hover)
+   ======================================== */
+@layer components {
+  .shine {
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+  }
+
+  .shine::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    transform: translateX(-150%) skewX(-20deg);
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(255, 255, 255, 0) 30%,
+      rgba(255, 255, 255, 0.5) 50%,
+      rgba(255, 255, 255, 0) 70%,
+      transparent 100%
+    );
+    transition: transform 0.85s cubic-bezier(0.22, 1, 0.36, 1);
+    pointer-events: none;
+    z-index: 2;
+  }
+
+  .shine:hover::before,
+  .shine:focus-visible::before {
+    transform: translateX(150%) skewX(-20deg);
+  }
+
+  /* Dark/colored backgrounds variant - amber tint */
+  .shine-gold::before {
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(255, 220, 130, 0) 30%,
+      rgba(255, 220, 130, 0.35) 50%,
+      rgba(255, 220, 130, 0) 70%,
+      transparent 100%
+    );
+  }
+
+  /* Glow ring on hover */
+  .shine-glow {
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
+  }
+
+  .shine-glow:hover {
+    box-shadow:
+      0 0 0 4px rgba(124, 186, 255, 0.25),
+      0 8px 24px -8px rgba(11, 97, 161, 0.45);
+  }
+
+  /* ========================================
+     TOOLTIP SYSTEM
+     ======================================== */
+  [data-tooltip] {
+    position: relative;
+  }
+
+  [data-tooltip]::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: calc(100% + 10px);
+    left: 50%;
+    transform: translateX(-50%) translateY(4px);
+    background: #001d35;
+    color: white;
+    padding: 7px 14px;
+    border-radius: 10px;
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 1.35;
+    white-space: nowrap;
+    z-index: 9999;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.2s, transform 0.2s;
+    box-shadow:
+      0 8px 18px -4px rgba(0, 29, 53, 0.55),
+      0 0 0 1px rgba(124, 186, 255, 0.25),
+      0 0 12px rgba(124, 186, 255, 0.15);
+    font-family: "Public Sans", "Heebo", sans-serif;
+    max-width: 280px;
+    text-align: center;
+  }
+
+  /* NOTE: We deliberately do NOT use ::before for tooltip arrow,
+     because .shine::before is already taken. Tooltip text + glow
+     replaces the arrow visually. */
+
+  [data-tooltip]:hover::after,
+  [data-tooltip]:focus-visible::after {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+
+  /* Bottom variant */
+  [data-tooltip-position="bottom"]::after {
+    bottom: auto;
+    top: calc(100% + 10px);
+    transform: translateX(-50%) translateY(-4px);
+  }
+  [data-tooltip-position="bottom"]:hover::after,
+  [data-tooltip-position="bottom"]:focus-visible::after {
+    transform: translateX(-50%) translateY(0);
+  }
+
+  /* Wrap text variant */
+  [data-tooltip-wrap="true"]::after {
+    white-space: normal;
+    width: 240px;
+  }
+
+  /* Hide tooltip on touch devices to prevent stuck states */
+  @media (hover: none) {
+    [data-tooltip]::after {
+      display: none;
+    }
+  }
+}
+
 /* Custom scrollbar */
 ::-webkit-scrollbar {
   width: 10px;

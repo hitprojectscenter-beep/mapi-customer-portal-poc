@@ -116,7 +116,9 @@ export default function HelpPage() {
               />
               <button
                 type="submit"
-                className="bg-white text-primary px-6 py-3 rounded-xl font-bold flex items-center gap-2 hover:bg-secondary-container transition-all"
+                className="shine bg-white text-primary px-6 py-3 rounded-xl font-bold flex items-center gap-2 hover:bg-secondary-container transition-all"
+                data-tooltip="חיפוש במאגר השאלות והמדריכים"
+                data-tooltip-position="bottom"
               >
                 <span className="material-symbols-outlined">search</span>
               </button>
@@ -129,30 +131,65 @@ export default function HelpPage() {
       <section className="max-w-container-max-width mx-auto px-4 md:px-margin-desktop py-10">
         <div className="grid sm:grid-cols-3 gap-4">
           {[
-            { icon: "phone", title: "מוקד טלפוני", desc: "*6274 | 03-9298853", action: "התקשר" },
-            { icon: "mail", title: "מייל", desc: "service@mapi.gov.il", action: "שלח מייל" },
-            { icon: "support_agent", title: 'פתח פנייה', desc: "מענה תוך 1-2 ימי עסקים", action: "פנייה חדשה" }
-          ].map((c, i) => (
-            <div
-              key={i}
-              className="bg-white rounded-3xl p-6 border border-outline-variant/50 hover:shadow-xl transition-shadow flex flex-row-reverse items-center gap-4"
-            >
-              <div className="w-14 h-14 bg-secondary/10 text-secondary rounded-2xl flex items-center justify-center flex-shrink-0">
-                <span className="material-symbols-outlined text-[28px]">{c.icon}</span>
-              </div>
-              <div className="flex-1 text-right">
-                <p className="font-bold text-primary">{c.title}</p>
-                <p className="text-sm text-on-surface-variant">{c.desc}</p>
-              </div>
-              {c.action === 'פנייה חדשה' ? (
-                <Link href="/cases/new" className="text-sm font-bold text-secondary hover:underline">
-                  ←
-                </Link>
-              ) : (
+            {
+              icon: "phone",
+              title: 'מוקד טלפוני',
+              desc: "*6274 | 03-9298853",
+              href: "tel:*6274",
+              tip: 'חיוג ישיר למוקד מפ"י'
+            },
+            {
+              icon: "mail",
+              title: 'מייל',
+              desc: "service@mapi.gov.il",
+              href: "mailto:service@mapi.gov.il",
+              tip: 'שליחת מייל לשירות הלקוחות'
+            },
+            {
+              icon: "support_agent",
+              title: 'פתח פנייה',
+              desc: "מענה תוך 1-2 ימי עסקים",
+              href: "/cases/new",
+              tip: 'מעבר לטופס פתיחת Case חדש'
+            }
+          ].map((c, i) => {
+            const isExternal = c.href.startsWith("tel:") || c.href.startsWith("mailto:");
+            const cls =
+              "shine bg-white rounded-3xl p-6 border border-outline-variant/50 hover:shadow-xl transition-all hover:-translate-y-0.5 flex flex-row-reverse items-center gap-4";
+            const inner = (
+              <>
+                <div className="w-14 h-14 bg-secondary/10 text-secondary rounded-2xl flex items-center justify-center flex-shrink-0">
+                  <span className="material-symbols-outlined text-[28px]">{c.icon}</span>
+                </div>
+                <div className="flex-1 text-right">
+                  <p className="font-bold text-primary">{c.title}</p>
+                  <p className="text-sm text-on-surface-variant">{c.desc}</p>
+                </div>
                 <span className="text-sm font-bold text-secondary">←</span>
-              )}
-            </div>
-          ))}
+              </>
+            );
+            return isExternal ? (
+              <a
+                key={i}
+                href={c.href}
+                className={cls}
+                data-tooltip={c.tip}
+                data-tooltip-position="bottom"
+              >
+                {inner}
+              </a>
+            ) : (
+              <Link
+                key={i}
+                href={c.href}
+                className={cls}
+                data-tooltip={c.tip}
+                data-tooltip-position="bottom"
+              >
+                {inner}
+              </Link>
+            );
+          })}
         </div>
       </section>
 
@@ -204,7 +241,9 @@ export default function HelpPage() {
             </p>
             <Link
               href="/cases/new"
-              className="inline-flex items-center gap-2 bg-white text-primary px-8 py-4 rounded-full font-bold hover:bg-secondary-container transition-colors"
+              className="shine shine-glow inline-flex items-center gap-2 bg-white text-primary px-8 py-4 rounded-full font-bold hover:bg-secondary-container transition-colors"
+              data-tooltip="פתיחת Case חדש - מענה תוך 1-2 ימי עסקים"
+              data-tooltip-position="bottom"
             >
               <span className="material-symbols-outlined">support_agent</span>
               <span>פתח פנייה חדשה</span>

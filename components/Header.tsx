@@ -1,13 +1,14 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useState } from "react";
 
 const navItems = [
-  { label: "בית", href: "/" },
-  { label: "קטלוג שירותים", href: "/catalog" },
-  { label: 'אזור אישי', href: "/dashboard" },
-  { label: "מרכז עזרה", href: "/help" }
+  { label: "בית", href: "/", tooltip: "חזרה לדף הבית של הפורטל" },
+  { label: "קטלוג שירותים", href: "/catalog", tooltip: "צפייה ב-14 השירותים של מפ\"י" },
+  { label: 'אזור אישי', href: "/dashboard", tooltip: "לוח בקרה אישי, הזמנות והתראות" },
+  { label: "מרכז עזרה", href: "/help", tooltip: "FAQ, מדריכים ותמיכה" }
 ];
 
 export default function Header() {
@@ -15,7 +16,7 @@ export default function Header() {
 
   return (
     <header className="fixed top-0 left-0 right-0 z-[100] glass-header border-b border-outline-variant/30">
-      <a href="#main-content" className="skip-link">
+      <a href="#main-content" className="skip-link shine" data-tooltip="קפיצה לתוכן הראשי - נגישות">
         דלג לתוכן הראשי
       </a>
       <div className="max-w-container-max-width mx-auto px-4 md:px-margin-desktop h-20 flex flex-row-reverse items-center justify-between">
@@ -26,10 +27,16 @@ export default function Header() {
               מדינת ישראל
             </span>
             <span className="text-xs font-medium text-primary">
-              שר הבינוי והשיכון
+              משרד הבינוי והשיכון
             </span>
           </div>
-          <Link href="/" className="flex items-center gap-3 group" aria-label="חזרה לדף הבית">
+          <Link
+            href="/"
+            className="flex items-center gap-3 group shine rounded-2xl p-1 -m-1"
+            aria-label="חזרה לדף הבית"
+            data-tooltip="חזרה לדף הבית של פורטל מפ&quot;י"
+            data-tooltip-position="bottom"
+          >
             <div className="flex flex-col items-end leading-tight">
               <span className="font-extrabold text-xl tracking-tight text-primary group-hover:text-secondary transition-colors">
                 MAPI
@@ -38,10 +45,15 @@ export default function Header() {
                 המרכז למיפוי ישראל
               </span>
             </div>
-            <div className="h-12 w-12 rounded-2xl bg-gradient-to-br from-primary to-secondary flex items-center justify-center shadow-lg">
-              <span className="material-symbols-outlined text-white text-[28px]">
-                public
-              </span>
+            <div className="h-12 w-12 rounded-2xl bg-white border border-outline-variant/50 flex items-center justify-center shadow-md group-hover:shadow-xl group-hover:scale-105 transition-all overflow-hidden">
+              <Image
+                src="/mapi-logo.svg"
+                alt='לוגו המרכז למיפוי ישראל'
+                width={48}
+                height={48}
+                priority
+                className="w-full h-full object-contain p-1"
+              />
             </div>
           </Link>
         </div>
@@ -52,7 +64,9 @@ export default function Header() {
             <Link
               key={item.href}
               href={item.href}
-              className="text-sm font-medium text-primary hover:text-secondary transition-colors relative group"
+              className="text-sm font-medium text-primary hover:text-secondary transition-colors relative group shine px-2 py-1 rounded-lg"
+              data-tooltip={item.tooltip}
+              data-tooltip-position="bottom"
             >
               {item.label}
               <span className="absolute -bottom-1 right-0 w-0 h-0.5 bg-secondary group-hover:w-full transition-all duration-300" />
@@ -64,13 +78,17 @@ export default function Header() {
         <div className="flex items-center gap-3">
           <Link
             href="/login"
-            className="text-sm font-bold text-primary hover:text-secondary hidden sm:block transition-colors"
+            className="text-sm font-bold text-primary hover:text-secondary hidden sm:block transition-colors shine px-2 py-1 rounded-lg"
+            data-tooltip="התחברות בהזדהות לאומית, SSO ארגוני, או מודד"
+            data-tooltip-position="bottom"
           >
             התחברות
           </Link>
           <Link
             href="/dashboard"
-            className="bg-primary text-white px-5 py-2.5 rounded-full text-sm font-bold shadow-lg hover:shadow-primary/30 hover:-translate-y-0.5 transition-all active:scale-95 flex items-center gap-2"
+            className="shine shine-glow bg-primary text-white px-5 py-2.5 rounded-full text-sm font-bold shadow-lg hover:-translate-y-0.5 transition-all active:scale-95 flex items-center gap-2"
+            data-tooltip="לוח בקרה אישי - הזמנות, התראות ופעולות מהירות"
+            data-tooltip-position="bottom"
           >
             <span>אזור אישי</span>
             <span className="material-symbols-outlined text-[18px]">person</span>
@@ -78,9 +96,11 @@ export default function Header() {
           <button
             type="button"
             onClick={() => setOpen(!open)}
-            className="lg:hidden p-2 rounded-lg hover:bg-surface-container transition-colors"
-            aria-label="פתח תפריט"
+            className="lg:hidden p-2 rounded-lg hover:bg-surface-container transition-colors shine"
+            aria-label={open ? "סגור תפריט" : "פתח תפריט"}
             aria-expanded={open}
+            data-tooltip={open ? "סגור תפריט ניווט" : "פתח תפריט ניווט"}
+            data-tooltip-position="bottom"
           >
             <span className="material-symbols-outlined text-primary">
               {open ? "close" : "menu"}
@@ -101,7 +121,8 @@ export default function Header() {
                 <Link
                   href={item.href}
                   onClick={() => setOpen(false)}
-                  className="block px-6 py-4 text-right font-medium text-primary hover:bg-surface-container border-b border-outline-variant/30"
+                  className="block px-6 py-4 text-right font-medium text-primary hover:bg-surface-container border-b border-outline-variant/30 shine"
+                  title={item.tooltip}
                 >
                   {item.label}
                 </Link>
@@ -111,7 +132,8 @@ export default function Header() {
               <Link
                 href="/login"
                 onClick={() => setOpen(false)}
-                className="block px-6 py-4 text-right font-medium text-secondary hover:bg-surface-container"
+                className="block px-6 py-4 text-right font-medium text-secondary hover:bg-surface-container shine"
+                title='התחברות לפורטל'
               >
                 התחברות
               </Link>

@@ -52,7 +52,9 @@ export default function LoginPage() {
           {/* Primary - National Identity */}
           <Link
             href="/dashboard"
-            className="block w-full bg-gradient-to-l from-primary to-secondary text-white p-5 rounded-2xl font-bold hover:shadow-xl transition-all mb-3"
+            className="shine shine-glow block w-full bg-gradient-to-l from-primary to-secondary text-white p-5 rounded-2xl font-bold hover:shadow-xl transition-all mb-3"
+            data-tooltip="התחברות לאזרחים פרטיים בעזרת מערכת ההזדהות הלאומית של ממשלת ישראל"
+            data-tooltip-position="bottom"
           >
             <div className="flex flex-row-reverse items-center gap-4">
               <div className="w-14 h-14 bg-white/20 rounded-2xl flex items-center justify-center flex-shrink-0">
@@ -69,7 +71,9 @@ export default function LoginPage() {
           {/* SSO */}
           <Link
             href="/dashboard"
-            className="block w-full bg-white border-2 border-outline-variant hover:border-secondary text-primary p-5 rounded-2xl font-bold transition-all mb-3"
+            className="shine block w-full bg-white border-2 border-outline-variant hover:border-secondary text-primary p-5 rounded-2xl font-bold transition-all mb-3"
+            data-tooltip="התחברות לארגונים - SAML 2.0 SSO לעובדי ממשלה ורשויות מקומיות"
+            data-tooltip-position="bottom"
           >
             <div className="flex flex-row-reverse items-center gap-4">
               <div className="w-14 h-14 bg-secondary/10 text-secondary rounded-2xl flex items-center justify-center flex-shrink-0">
@@ -86,7 +90,9 @@ export default function LoginPage() {
           {/* Surveyor License */}
           <Link
             href="/dashboard"
-            className="block w-full bg-white border-2 border-outline-variant hover:border-secondary text-primary p-5 rounded-2xl font-bold transition-all"
+            className="shine block w-full bg-white border-2 border-outline-variant hover:border-secondary text-primary p-5 rounded-2xl font-bold transition-all"
+            data-tooltip='כניסה למודדים מוסמכים - יכולות נוספות לשירותי תצ"ר ו-CORS'
+            data-tooltip-position="bottom"
           >
             <div className="flex flex-row-reverse items-center gap-4">
               <div className="w-14 h-14 bg-positive-green/10 text-positive-green rounded-2xl flex items-center justify-center flex-shrink-0">
@@ -103,13 +109,25 @@ export default function LoginPage() {
           <div className="mt-8 pt-6 border-t border-outline-variant text-center">
             <p className="text-xs text-on-surface-variant mb-2">
               חדש בפורטל?{" "}
-              <a href="#" className="text-secondary font-bold hover:underline">
+              <a
+                href="https://www.gov.il/he/departments/guides/identity_card"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="shine text-secondary font-bold hover:underline px-1 rounded"
+                data-tooltip='מידע על מערכת ההזדהות הלאומית של ממשלת ישראל'
+                data-tooltip-position="bottom"
+              >
                 למד עוד על ההזדהות
               </a>
             </p>
             <p className="text-xs text-on-surface-variant">
               בעיה בהזדהות?{" "}
-              <Link href="/help" className="text-secondary font-bold hover:underline">
+              <Link
+                href="/help"
+                className="shine text-secondary font-bold hover:underline px-1 rounded"
+                data-tooltip="עבור למרכז העזרה לפתרון בעיות"
+                data-tooltip-position="bottom"
+              >
                 מרכז עזרה
               </Link>
             </p>
