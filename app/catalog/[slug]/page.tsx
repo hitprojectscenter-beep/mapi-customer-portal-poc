@@ -1,6 +1,10 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { services } from "@/lib/data";
+import GovMapEmbed from "@/components/GovMapEmbed";
+
+// Service categories where a map preview adds value
+const MAP_RELEVANT_CATEGORIES = ["maps", "cadastre", "orthophoto", "gis", "geodesy"];
 
 export function generateStaticParams() {
   return services.map((s) => ({ slug: s.slug }));
@@ -107,6 +111,33 @@ export default function ServiceDetailPage({ params }: Props) {
           </div>
         </div>
       </div>
+
+      {/* GovMap preview for geo-relevant services */}
+      {MAP_RELEVANT_CATEGORIES.includes(service.category) && (
+        <section className="max-w-container-max-width mx-auto px-4 md:px-margin-desktop py-12">
+          <div className="text-center mb-6">
+            <span className="text-secondary font-bold text-sm tracking-[0.2em] uppercase mb-2 block">
+              GovMap
+            </span>
+            <h2 className="text-2xl sm:text-3xl font-extrabold text-primary">
+              חקור את המפה
+            </h2>
+            <p className="text-on-surface-variant text-sm sm:text-base mt-2 max-w-2xl mx-auto">
+              עיין בשכבות הרלוונטיות לשירות זה דרך מערכת המפות הציבורית של ממשלת ישראל.
+            </p>
+          </div>
+          <GovMapEmbed
+            mode={
+              service.category === "cadastre" ? "cadastre" :
+              service.category === "orthophoto" ? "ortho" :
+              service.category === "geodesy" ? "cors" : "default"
+            }
+            height="420px"
+            title={service.name}
+            allowDraw={false}
+          />
+        </section>
+      )}
 
       {/* Price Table */}
       {service.priceTable && service.priceTable.length > 0 && (

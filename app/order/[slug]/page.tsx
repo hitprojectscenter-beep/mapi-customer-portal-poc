@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useMemo, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { services } from "@/lib/data";
+import GovMapEmbed from "@/components/GovMapEmbed";
 
 type Step = 1 | 2 | 3 | 4;
 
@@ -341,78 +342,33 @@ export default function OrderPage() {
                 סימון האזור על המפה (GovMap)
               </h3>
 
-              {/* Map placeholder */}
-              <div className="aspect-video bg-gradient-to-br from-secondary/10 to-primary/10 rounded-2xl border-2 border-dashed border-secondary/40 relative overflow-hidden">
-                <div className="absolute inset-0 dot-pattern opacity-20" aria-hidden="true" />
-                <div className="absolute top-4 left-4 flex flex-col gap-1">
-                  <button
-                    className="w-9 h-9 bg-white rounded-lg shadow-md flex items-center justify-center hover:bg-secondary hover:text-white transition-colors"
-                    aria-label="התקרב"
-                  >
-                    <span className="material-symbols-outlined text-[20px]">add</span>
-                  </button>
-                  <button
-                    className="w-9 h-9 bg-white rounded-lg shadow-md flex items-center justify-center hover:bg-secondary hover:text-white transition-colors"
-                    aria-label="התרחק"
-                  >
-                    <span className="material-symbols-outlined text-[20px]">remove</span>
-                  </button>
-                  <button
-                    className="w-9 h-9 bg-white rounded-lg shadow-md flex items-center justify-center hover:bg-secondary hover:text-white transition-colors"
-                    aria-label="מסך מלא"
-                  >
-                    <span className="material-symbols-outlined text-[20px]">fullscreen</span>
-                  </button>
-                </div>
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="text-center">
-                    <span className="material-symbols-outlined text-[64px] text-secondary/40 mb-2">
-                      map
-                    </span>
-                    <p className="text-sm text-on-surface-variant max-w-xs">
-                      [רכיב GovMap LWC מוטמע - במצב POC הצגה סכמטית]
+              {/* Real GovMap embed */}
+              <GovMapEmbed
+                mode={service.category === "cadastre" ? "cadastre" : service.category === "orthophoto" ? "ortho" : service.category === "geodesy" ? "cors" : "default"}
+                height="500px"
+                allowDraw={true}
+                title={`GovMap - סימון אזור עבור ${service.name}`}
+                onAreaSelected={() => setAreaMarked(true)}
+              />
+
+              <div className="mt-6 bg-secondary/5 rounded-2xl p-4 border border-secondary/20">
+                <div className="flex flex-row-reverse items-start gap-3">
+                  <span className="material-symbols-outlined text-secondary text-[24px] flex-shrink-0">
+                    info
+                  </span>
+                  <div className="text-center sm:text-right">
+                    <p className="text-sm font-bold text-primary mb-1">
+                      איך לסמן את האזור?
+                    </p>
+                    <p className="text-xs text-on-surface-variant leading-relaxed">
+                      1. נווט במפת GovMap למיקום הרצוי (גרור, זום)
+                      <br />
+                      2. השתמש בכלי הסימון של GovMap לציור פוליגון
+                      <br />
+                      3. לחץ "אשר אזור מסומן" למטה כשסיימת
                     </p>
                   </div>
                 </div>
-                {areaMarked && (
-                  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-32 bg-alert-yellow/30 border-2 border-alert-yellow rounded-lg animate-fade-in" />
-                )}
-              </div>
-
-              <div className="mt-6 grid sm:grid-cols-2 gap-3">
-                <div className="relative">
-                  <input
-                    type="text"
-                    placeholder="חיפוש מקום (לדוגמה: רחוב, גוש וחלקה...)"
-                    className="w-full bg-surface-container border border-outline-variant rounded-xl px-4 py-3 text-center focus:ring-2 focus:ring-secondary focus:outline-none pr-10"
-                  />
-                  <span className="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-[20px]">
-                    search
-                  </span>
-                </div>
-                <button
-                  type="button"
-                  onClick={() => setAreaMarked(true)}
-                  className={`shine px-4 py-3 rounded-xl font-bold transition-colors flex items-center justify-center gap-2 ${
-                    areaMarked
-                      ? "bg-positive-green text-white"
-                      : "bg-secondary text-white hover:bg-secondary/90"
-                  }`}
-                  data-tooltip={areaMarked ? "האזור סומן ונשמר בהצלחה" : "סימון פוליגון על המפה - חישוב שטח אוטומטי"}
-                  data-tooltip-position="bottom"
-                >
-                  {areaMarked ? (
-                    <>
-                      <span className="material-symbols-outlined">check</span>
-                      <span>סימון נשמר</span>
-                    </>
-                  ) : (
-                    <>
-                      <span className="material-symbols-outlined">draw</span>
-                      <span>סמן אזור</span>
-                    </>
-                  )}
-                </button>
               </div>
 
               <div className="flex flex-row-reverse items-center justify-between mt-8 pt-6 border-t border-outline-variant">

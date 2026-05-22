@@ -5,6 +5,7 @@ import { useState } from "react";
 import ServiceCard from "@/components/ServiceCard";
 import QuoteRequestModal from "@/components/QuoteRequestModal";
 import WowCounter from "@/components/WowCounter";
+import GovMapEmbed from "@/components/GovMapEmbed";
 import { services, categories, type Service } from "@/lib/data";
 
 export default function HomePage() {
@@ -382,6 +383,57 @@ export default function HomePage() {
                 <p className="text-xs font-mono">LON: 34.7748</p>
               </div>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* GovMap interactive section */}
+      <section className="py-16 sm:py-20 md:py-32 bg-surface" aria-labelledby="govmap-heading">
+        <div className="max-w-container-max-width mx-auto px-4 md:px-margin-desktop">
+          <div className="text-center mb-10 md:mb-14">
+            <span className="text-secondary font-bold text-xs sm:text-sm tracking-[0.2em] uppercase mb-3 sm:mb-4 block">
+              GovMap
+            </span>
+            <h2
+              id="govmap-heading"
+              className="text-primary text-2xl sm:text-4xl md:text-5xl font-extrabold leading-tight mb-4"
+            >
+              חקור את המפה הלאומית
+            </h2>
+            <p className="text-on-surface-variant text-sm sm:text-base md:text-lg max-w-2xl mx-auto">
+              גש למידע גיאוגרפי, גוש וחלקה, תצלומי אוויר ושכבות ממשלתיות נוספות - ישירות מתוך הפורטל. מבוסס על GovMap הרשמי של ממשלת ישראל.
+            </p>
+          </div>
+
+          <GovMapEmbed
+            mode="cadastre"
+            height="480px"
+            title="GovMap - מערכת המפות הציבורית"
+            allowDraw={false}
+          />
+
+          <div className="mt-8 grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
+            {[
+              { icon: "layers", label: "גוש וחלקה", href: "/catalog/cadastral-info" },
+              { icon: "photo_camera", label: "תצלומי אוויר", href: "/catalog/aerial-photos" },
+              { icon: "terrain", label: "מודלי גובה", href: "/catalog?category=orthophoto" },
+              { icon: "sensors", label: "תחנות CORS", href: "/catalog/cors-subscription" }
+            ].map((q) => (
+              <Link
+                key={q.href}
+                href={q.href}
+                className="shine wow-tilt bg-white rounded-2xl p-4 sm:p-5 border border-outline-variant/50 hover:border-secondary/40 hover:shadow-lg transition-all flex flex-col items-center text-center gap-2"
+                data-tooltip={`עבור לשירות "${q.label}"`}
+                data-tooltip-position="bottom"
+              >
+                <span className="material-symbols-outlined text-secondary text-[28px] sm:text-[32px]">
+                  {q.icon}
+                </span>
+                <span className="text-xs sm:text-sm font-bold text-primary">
+                  {q.label}
+                </span>
+              </Link>
+            ))}
           </div>
         </div>
       </section>
