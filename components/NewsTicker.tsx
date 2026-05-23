@@ -30,68 +30,68 @@ const NEWS: NewsItem[] = [
 // News titles dictionary inlined here (separate from generic i18n)
 const NEWS_TITLES: Record<string, Record<string, string>> = {
   "news.item.ortho": {
-    he: 'חדש! אורתופוטו ברזולוציה 20 ס"מ לפיקסל - דיוק חסר תקדים',
-    en: 'NEW! Orthophoto at 20cm/pixel resolution - unprecedented accuracy',
-    fr: 'NOUVEAU! Orthophoto 20cm/pixel - précision sans précédent',
-    es: '¡NUEVO! Ortofoto 20cm/píxel - precisión sin precedentes',
-    ru: 'НОВОЕ! Ортофото 20см/пиксель - беспрецедентная точность',
-    ar: 'جديد! صور جوية بدقة 20 سم/بكسل'
+    he: 'אורתופוטו ברזולוציה 20 ס"מ דיוק חסר תקדים...',
+    en: 'Orthophoto 20cm pixel unprecedented accuracy now...',
+    fr: 'Orthophoto 20cm pixel précision sans précédent...',
+    es: 'Ortofoto 20cm píxel precisión sin precedentes...',
+    ru: 'Ортофото 20см пиксель беспрецедентная точность...',
+    ar: 'صور جوية 20 سم لكل بكسل دقة...'
   },
   "news.item.elev": {
-    he: 'מודלי גובה DSM/DTM ברזולוציה 50 ס"מ - עדכון 2025',
-    en: 'DSM/DTM elevation models at 50cm resolution - 2025 update',
-    fr: 'Modèles d\'élévation DSM/DTM 50cm - MAJ 2025',
-    es: 'Modelos de elevación DSM/DTM a 50cm - actualización 2025',
-    ru: 'Модели высот DSM/DTM 50см - обновление 2025',
-    ar: 'نماذج الارتفاع DSM/DTM بدقة 50 سم - تحديث 2025'
+    he: 'מודלי גובה DSM ו-DTM 50 ס"מ עודכנו...',
+    en: 'DSM and DTM elevation models 50cm updated...',
+    fr: 'Modèles élévation DSM et DTM 50cm MAJ...',
+    es: 'Modelos elevación DSM y DTM 50cm 2025...',
+    ru: 'Модели высот DSM и DTM 50см обновлены...',
+    ar: 'نماذج الارتفاع DSM وDTM بدقة 50 سم...'
   },
   "news.item.poster": {
-    he: 'פוסטר שולי היבשת הים-תיכוניים - מבצע השקה ₪350',
-    en: 'Mediterranean continental shelf poster - launch promo ₪350',
-    fr: 'Poster plateau continental méditerranéen - 350₪',
-    es: 'Póster plataforma continental - 350₪',
-    ru: 'Постер континентального шельфа - 350₪',
-    ar: 'ملصق الجرف القاري المتوسطي - 350 ₪'
+    he: 'פוסטר שולי היבשת הים-תיכוניים במחיר השקה...',
+    en: 'Mediterranean continental shelf poster launch price...',
+    fr: 'Poster plateau continental méditerranéen prix lancement...',
+    es: 'Póster plataforma continental mediterránea precio lanzamiento...',
+    ru: 'Постер континентального шельфа Средиземного моря акция...',
+    ar: 'ملصق الجرف القاري المتوسطي سعر الإطلاق...'
   },
   "news.item.topo": {
-    he: 'סדרת מפות טופוגרפיות 1:50,000 - 28 מפות עודכנו 2025',
-    en: 'Topo maps 1:50,000 - 28 maps updated for 2025',
-    fr: 'Cartes topo 1:50,000 - 28 mises à jour 2025',
-    es: 'Mapas topográficos 1:50,000 - 28 actualizados 2025',
-    ru: 'Топокарты 1:50,000 - 28 обновлены в 2025',
-    ar: 'خرائط طبوغرافية 1:50,000 - 28 خريطة محدثة 2025'
+    he: '28 מפות טופוגרפיות 1:50,000 עודכנו 2025...',
+    en: '28 topographic maps 1:50,000 updated 2025...',
+    fr: '28 cartes topographiques 1:50,000 mises à jour...',
+    es: '28 mapas topográficos 1:50,000 actualizados 2025...',
+    ru: '28 топокарт 1:50,000 обновлены в 2025...',
+    ar: '28 خريطة طبوغرافية 1:50,000 محدثة 2025...'
   },
   "news.item.cors": {
-    he: 'מנוי CORS שנתי - חיסכון 17% על מחיר חודשי',
-    en: 'Annual CORS subscription - save 17% vs monthly',
-    fr: 'Abonnement CORS annuel - 17% de réduction',
-    es: 'Suscripción CORS anual - ahorro 17%',
-    ru: 'Годовой CORS - скидка 17%',
-    ar: 'اشتراك CORS سنوي - وفر 17%'
+    he: 'מנוי CORS שנתי חיסכון 17% החודש...',
+    en: 'Annual CORS subscription save 17% this month...',
+    fr: 'Abonnement CORS annuel économie 17% maintenant...',
+    es: 'Suscripción CORS anual ahorro 17% ahora...',
+    ru: 'Годовая подписка CORS экономия 17% сейчас...',
+    ar: 'اشتراك CORS سنوي توفير 17% الآن...'
   },
   "news.item.address": {
-    he: 'מאגר נקודות כתובת מורחב - ₪0.25 לכתובת בודדת',
-    en: 'Extended address points database - ₪0.25 per address',
-    fr: 'Base de points d\'adresse - 0,25₪ par adresse',
-    es: 'Base de puntos de dirección - 0,25₪/dirección',
-    ru: 'База точек адресов - 0,25₪ за адрес',
-    ar: 'قاعدة بيانات نقاط العنوان - 0.25 ₪/عنوان'
+    he: 'מאגר נקודות כתובת ₪0.25 לכל כתובת...',
+    en: 'Address points database ₪0.25 per address...',
+    fr: 'Base de points d\'adresse 0,25₪ chacun...',
+    es: 'Base de puntos de dirección 0,25₪ cada...',
+    ru: 'База точек адресов 0,25₪ за каждый...',
+    ar: 'قاعدة بيانات نقاط العنوان 0.25 ₪ لكل...'
   },
   "news.item.color": {
-    he: 'תצלומי אוויר צבעוניים משנת 2017 ועד היום זמינים',
-    en: 'Color aerial photos from 2017 onwards now available',
-    fr: 'Photos aériennes couleur depuis 2017 disponibles',
-    es: 'Fotos aéreas a color desde 2017 disponibles',
-    ru: 'Цветные аэрофото с 2017 года доступны',
-    ar: 'صور جوية ملونة من 2017 حتى اليوم'
+    he: 'תצלומי אוויר צבעוניים מ-2017 זמינים עכשיו...',
+    en: 'Color aerial photos from 2017 available now...',
+    fr: 'Photos aériennes couleur depuis 2017 disponibles...',
+    es: 'Fotos aéreas color desde 2017 disponibles ahora...',
+    ru: 'Цветные аэрофото с 2017 года доступны...',
+    ar: 'صور جوية ملونة من 2017 متاحة الآن...'
   },
   "news.item.custom": {
-    he: 'מפה בהתאמה אישית A4 - החל מ-₪160 בלבד',
-    en: 'Custom A4 map - from ₪160 only',
-    fr: 'Carte personnalisée A4 - dès 160₪',
-    es: 'Mapa personalizado A4 - desde 160₪',
-    ru: 'Персональная карта A4 - от 160₪',
-    ar: 'خريطة مخصصة A4 - ابتداء من 160 ₪'
+    he: 'מפה אישית A4 החל מ-₪160 בלבד...',
+    en: 'Custom A4 map from ₪160 only...',
+    fr: 'Carte personnalisée A4 dès 160₪ seulement...',
+    es: 'Mapa personalizado A4 desde 160₪ solamente...',
+    ru: 'Персональная карта A4 от 160₪ всего...',
+    ar: 'خريطة مخصصة A4 من 160 ₪ فقط...'
   }
 };
 
@@ -167,7 +167,6 @@ export default function NewsTicker() {
             >
               {looped.map((item, idx) => {
                 const style = TYPE_STYLES[item.type];
-                const badgeKey = BADGE_BY_TYPE[item.type];
                 return (
                   <Link
                     key={`${item.id}-${idx}`}
@@ -176,13 +175,12 @@ export default function NewsTicker() {
                     data-tooltip={t("news.cta")}
                     data-tooltip-position="bottom"
                   >
-                    <span className={`${style.bg} ${style.text} px-2 py-0.5 rounded-full text-[9px] sm:text-[10px] font-extrabold uppercase tracking-wider ring-2 ${style.ring} flex-shrink-0`}>
-                      {t(badgeKey)}
-                    </span>
                     <span className="material-symbols-outlined text-secondary-container text-[16px] sm:text-[18px] flex-shrink-0">
                       {item.icon}
                     </span>
-                    <span className="text-[11px] sm:text-xs font-medium leading-tight">
+                    <span
+                      className={`${style.bg} ${style.text} px-3 py-1 rounded-full text-[11px] sm:text-xs font-bold leading-tight ring-2 ${style.ring} flex-shrink-0`}
+                    >
                       {getTitle(item.titleKey)}
                     </span>
                     <span className="text-[10px] sm:text-xs font-bold text-secondary-container hover:text-white transition-colors flex items-center gap-0.5">
