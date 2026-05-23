@@ -25,6 +25,15 @@ function CatalogContent() {
   const [maxPrice, setMaxPrice] = useState<number>(15000);
   const [query, setQuery] = useState("");
   const [showInScopeOnly, setShowInScopeOnly] = useState(false);
+  const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
+
+  // Count active filters for mobile badge
+  const activeFiltersCount =
+    selectedCategories.size +
+    selectedTypes.size +
+    (maxPrice < 15000 ? 1 : 0) +
+    (query.trim() ? 1 : 0) +
+    (showInScopeOnly ? 1 : 0);
 
   const filtered = useMemo(() => {
     return services.filter((s) => {
@@ -123,11 +132,51 @@ function CatalogContent() {
         </div>
       </div>
 
-      <div className="max-w-container-max-width mx-auto px-4 md:px-margin-desktop py-10">
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+      <div className="max-w-container-max-width mx-auto px-4 md:px-margin-desktop py-6 md:py-10">
+        {/* Mobile filter toggle button */}
+        <div className="lg:hidden mb-4 flex items-center justify-between gap-3">
+          <button
+            type="button"
+            onClick={() => setMobileFiltersOpen(!mobileFiltersOpen)}
+            className="shine flex-1 bg-white border border-outline-variant rounded-2xl px-4 py-3 flex items-center justify-center gap-2 font-bold text-primary hover:border-secondary transition-colors min-h-[48px]"
+            aria-expanded={mobileFiltersOpen}
+            aria-controls="mobile-filters-panel"
+            data-tooltip={mobileFiltersOpen ? "סגור סינון" : "פתח סינון"}
+            data-tooltip-position="bottom"
+          >
+            <span className="material-symbols-outlined text-secondary">
+              {mobileFiltersOpen ? "close" : "tune"}
+            </span>
+            <span>{mobileFiltersOpen ? "סגור סינון" : "סנן ושנה"}</span>
+            {activeFiltersCount > 0 && (
+              <span className="bg-secondary text-white text-xs font-bold rounded-full min-w-[20px] h-5 px-1.5 flex items-center justify-center">
+                {activeFiltersCount}
+              </span>
+            )}
+          </button>
+          {activeFiltersCount > 0 && (
+            <button
+              type="button"
+              onClick={clearFilters}
+              className="shine bg-error-red/10 text-error-red px-4 py-3 rounded-2xl font-bold text-sm hover:bg-error-red hover:text-white transition-colors min-h-[48px] flex items-center gap-1"
+              data-tooltip="נקה כל הסינונים"
+              data-tooltip-position="bottom"
+            >
+              <span className="material-symbols-outlined text-[18px]">clear_all</span>
+              <span>נקה</span>
+            </button>
+          )}
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 lg:gap-8">
           {/* Sidebar Filters */}
-          <aside className="lg:col-span-1 order-2 lg:order-1">
-            <div className="bg-white rounded-3xl p-6 shadow-sm border border-outline-variant/50 sticky top-28">
+          <aside
+            id="mobile-filters-panel"
+            className={`lg:col-span-1 order-1 lg:order-1 ${
+              mobileFiltersOpen ? "block" : "hidden lg:block"
+            }`}
+          >
+            <div className="bg-white rounded-3xl p-6 shadow-sm border border-outline-variant/50 lg:sticky lg:top-32">
               <div className="flex items-center justify-between mb-6">
                 <button
                   type="button"
@@ -244,7 +293,7 @@ function CatalogContent() {
           </aside>
 
           {/* Results */}
-          <div className="lg:col-span-3 order-1 lg:order-2">
+          <div className="lg:col-span-3 order-2 lg:order-2">
             {filtered.length === 0 ? (
               <div className="bg-white rounded-3xl p-16 text-center border border-outline-variant/50">
                 <span className="material-symbols-outlined text-[64px] text-on-surface-variant mb-4">
