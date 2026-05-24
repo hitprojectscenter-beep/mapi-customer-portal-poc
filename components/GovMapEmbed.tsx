@@ -83,11 +83,16 @@ export default function GovMapEmbed({
     return query ? `${base}?${query}` : base;
   };
 
-  // Auto-detect load failure (iframe blocked, network error)
+  // Hide the loading spinner after a reasonable time (iframe is loading)
+  // We do NOT show an error on timeout — cross-origin iframes (govmap.gov.il)
+  // don't always fire the onLoad event reliably, and the iframe still loads
+  // correctly even when onLoad is silent. Only show error if onError fires.
   useEffect(() => {
+    if (loaded) return;
     const timer = setTimeout(() => {
-      if (!loaded) setError(true);
-    }, 15000);
+      // Just hide the spinner; the iframe is rendered behind it.
+      setLoaded(true);
+    }, 4000);
     return () => clearTimeout(timer);
   }, [loaded]);
 

@@ -4,7 +4,9 @@
 
 @layer base {
   :root {
-    color-scheme: light;
+    /* Force LIGHT mode only - prevent browser dark-mode color inversion */
+    color-scheme: light only;
+    forced-color-adjust: none;
     /* iOS safe-area-inset support */
     --safe-top: env(safe-area-inset-top, 0px);
     --safe-bottom: env(safe-area-inset-bottom, 0px);
@@ -18,12 +20,17 @@
     /* Prevent iOS text-size auto-adjustment on landscape rotation */
     -webkit-text-size-adjust: 100%;
     text-size-adjust: 100%;
+    /* Force light color scheme - block Chrome/Safari auto dark inversion */
+    color-scheme: light only;
+    forced-color-adjust: none;
+    background-color: #f8f9fb;
+    color: #191c1e;
   }
 
   body {
     font-family: "Public Sans", "Heebo", "Assistant", Arial, sans-serif;
-    background-color: #f8f9fb;
-    color: #191c1e;
+    background-color: #f8f9fb !important;
+    color: #191c1e !important;
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
     /* iOS tap highlight */
@@ -33,6 +40,27 @@
     padding-right: var(--safe-right);
     min-height: 100vh;
     min-height: 100dvh;
+    color-scheme: light only;
+    forced-color-adjust: none;
+  }
+
+  /* Override system dark-mode preference media query so app stays light */
+  @media (prefers-color-scheme: dark) {
+    :root,
+    html,
+    body {
+      color-scheme: light only !important;
+      background-color: #f8f9fb !important;
+      color: #191c1e !important;
+      forced-color-adjust: none !important;
+    }
+  }
+
+  /* Forced-colors / High-contrast mode safety net (Windows etc.) */
+  @media (forced-colors: active) {
+    * {
+      forced-color-adjust: none !important;
+    }
   }
 
   /* iOS: prevent zoom on input focus by forcing 16px minimum */

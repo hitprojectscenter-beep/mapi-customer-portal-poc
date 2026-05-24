@@ -12,6 +12,11 @@ export const metadata: Metadata = {
     'הפורטל הלאומי הרשמי למידע גיאוגרפי. הזמנת מפות, נתוני קדסטר, שירותי GNSS ותצלומי אוויר ישירות מהמרכז למיפוי ישראל.',
   keywords: ['מפ"י', "מיפוי", "קדסטר", "GIS", 'מפות', "אורתופוטו", "מודד", "גיאודזיה"],
   authors: [{ name: 'המרכז למיפוי ישראל' }],
+  // Force light mode in browsers (overrides device dark mode preference)
+  themeColor: "#001d35",
+  other: {
+    "color-scheme": "light only"
+  },
   openGraph: {
     title: 'MAPI - פורטל לקוחות',
     description: "פורטל השירותים של המרכז למיפוי ישראל",
@@ -28,6 +33,11 @@ export default function RootLayout({
   return (
     <html lang="he" dir="rtl">
       <head>
+        {/* Force LIGHT color scheme on all devices */}
+        <meta name="color-scheme" content="light only" />
+        <meta name="supported-color-schemes" content="light" />
+        <meta name="theme-color" content="#001d35" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="default" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
         <link
