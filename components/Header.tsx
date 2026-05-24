@@ -21,7 +21,7 @@ export default function Header() {
 
   return (
     <>
-      <header className="fixed top-10 sm:top-11 left-0 right-0 z-[100] glass-header border-b border-outline-variant/30">
+      <header className="fixed top-14 sm:top-16 left-0 right-0 z-[100] glass-header border-b border-outline-variant/30">
         <a href="#main-content" className="skip-link shine" data-tooltip={t("nav.skipToContent")}>
           {t("nav.skipToContent")}
         </a>

@@ -53,7 +53,7 @@ export default function RootLayout({
         <LanguageProvider>
           <NewsTicker />
           <Header />
-          <main id="main-content" className="pt-[120px] sm:pt-[124px] min-h-screen">
+          <main id="main-content" className="pt-[136px] sm:pt-[144px] min-h-screen">
             {children}
           </main>
           <Footer />
