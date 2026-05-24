@@ -1,5 +1,9 @@
+"use client";
+
 import Link from "next/link";
 import type { Service } from "@/lib/data";
+import { getServiceName, getServiceShortDescription, getServiceCategoryLabel } from "@/lib/data";
+import { useLanguage } from "@/lib/LanguageContext";
 
 interface Props {
   service: Service;
@@ -7,12 +11,17 @@ interface Props {
 }
 
 export default function ServiceCard({ service, variant = "default" }: Props) {
+  const { t, lang } = useLanguage();
   const isExternal = !service.inScope && service.externalUrl;
   const href = isExternal ? service.externalUrl! : `/catalog/${service.slug}`;
 
+  const localName = getServiceName(service.slug, service.name, lang);
+  const localShort = getServiceShortDescription(service.slug, service.shortDescription, lang);
+  const localCategory = getServiceCategoryLabel(service.slug, service.categoryLabel, lang);
+
   const tooltip = isExternal
-    ? `${service.name} — פתיחת הטופס באתר gov.il (לא בתכולת הפורטל)`
-    : `${service.name} — פרטים, מחירון והתחלת הזמנה`;
+    ? `${localName} — ${t("service.externalNotice")}`
+    : `${localName} — ${t("services.details")}`;
 
   const Container = ({ children }: { children: React.ReactNode }) =>
     isExternal ? (
@@ -21,7 +30,7 @@ export default function ServiceCard({ service, variant = "default" }: Props) {
         target="_blank"
         rel="noopener noreferrer"
         className="block h-full shine rounded-3xl"
-        aria-label={`${service.name} - פתיחה בחלון חדש`}
+        aria-label={localName}
         data-tooltip={tooltip}
         data-tooltip-position="bottom"
       >
@@ -48,10 +57,10 @@ export default function ServiceCard({ service, variant = "default" }: Props) {
         {isExternal && (
           <span
             className="absolute top-4 left-4 bg-alert-yellow/10 text-alert-yellow text-[10px] font-bold px-2 py-1 rounded-full uppercase tracking-wider flex items-center gap-1"
-            title='שירות זה נפתח בטופס gov.il - אינו בתכולת הפורטל הראשונית'
+            title={t("service.externalNotice")}
           >
             <span className="material-symbols-outlined text-[12px]">open_in_new</span>
-            <span>govforms</span>
+            <span>{t("service.govforms")}</span>
           </span>
         )}
         <div className="text-center flex flex-col items-center h-full">
@@ -61,17 +70,19 @@ export default function ServiceCard({ service, variant = "default" }: Props) {
             </span>
           </div>
           <span className="text-[10px] uppercase tracking-widest font-bold text-secondary/70 mb-2">
-            {service.categoryLabel}
+            {localCategory}
           </span>
           <h3 className="text-xl font-extrabold text-primary mb-3 leading-tight">
-            {service.name}
+            {localName}
           </h3>
           <p className="text-sm text-on-surface-variant mb-6 flex-1 leading-relaxed">
-            {service.shortDescription}
+            {localShort}
           </p>
           <div className="w-full flex items-center justify-between flex-row-reverse mt-auto">
             <div className="text-center">
-              <div className="text-[10px] text-on-surface-variant uppercase tracking-widest">החל מ-</div>
+              <div className="text-[10px] text-on-surface-variant uppercase tracking-widest">
+                {t("service.fromPrice")}
+              </div>
               <span className="text-lg font-extrabold text-secondary">
                 {service.priceUnit === "₪/חודש"
                   ? `${service.priceFrom.toLocaleString()} ${service.priceUnit}`

@@ -1,3 +1,13 @@
+// Re-export service translation helpers so pages can import everything from data.ts
+export {
+  getServiceName,
+  getServiceShortDescription,
+  getServiceCategoryLabel,
+  getServiceDeliveryDays,
+  getCategoryLabel,
+  getCustomerTypeLabel
+} from "./serviceTranslations";
+
 // Official MAPI catalog URL (Survey of Israel - Products Online Catalog)
 export const MAPI_OFFICIAL_CATALOG =
   "https://www.gov.il/he/departments/units/products_online_catalog_mapi/govil-landing-page";
@@ -391,93 +401,130 @@ export const customerTypeLabels: Record<string, string> = {
   surveyor: "מודד מוסמך"
 };
 
+import type { TKey } from "./i18n";
+
 export interface Order {
   id: string;
   serviceName: string;
+  serviceNameKey: TKey;
   serviceIcon: string;
   date: string;
   status: "completed" | "active" | "in-progress" | "cancelled";
   statusLabel: string;
+  statusKey: TKey;
   amount: number;
   deliverable: string;
+  deliverableKey: TKey;
 }
 
 export const mockOrders: Order[] = [
   {
     id: "ORD-2026-145",
     serviceName: 'מפה בהתאמה אישית A2',
+    serviceNameKey: "order.svc.customMapA2",
     serviceIcon: "map",
     date: "15/05/2026",
     status: "completed",
     statusLabel: "הושלמה",
+    statusKey: "order.status.completed",
     amount: 284,
-    deliverable: "PDF זמין להורדה"
+    deliverable: "PDF זמין להורדה",
+    deliverableKey: "order.deliverable.pdf"
   },
   {
     id: "ORD-2026-098",
     serviceName: "תחנות קבע - RTK",
+    serviceNameKey: "order.svc.corsRtk",
     serviceIcon: "sensors",
     date: "01/05/2026",
     status: "active",
     statusLabel: "פעיל (מנוי)",
+    statusKey: "order.status.active",
     amount: 300,
-    deliverable: "הוראות חיבור"
+    deliverable: "הוראות חיבור",
+    deliverableKey: "order.deliverable.cors"
   },
   {
     id: "ORD-2026-052",
     serviceName: "תצלום אוויר 1973",
+    serviceNameKey: "order.svc.aerial1973",
     serviceIcon: "flight",
     date: "22/04/2026",
     status: "in-progress",
     statusLabel: "בטיפול",
+    statusKey: "order.status.inProgress",
     amount: 350,
-    deliverable: "ממתין"
+    deliverable: "ממתין",
+    deliverableKey: "order.deliverable.pending"
   },
   {
     id: "ORD-2026-021",
     serviceName: 'מפת ים תיכון',
+    serviceNameKey: "order.svc.medMap",
     serviceIcon: "sailing",
     date: "10/04/2026",
     status: "completed",
     statusLabel: "הושלמה",
+    statusKey: "order.status.completed",
     amount: 130,
-    deliverable: "קבלת דואר"
+    deliverable: "קבלת דואר",
+    deliverableKey: "order.deliverable.postal"
   },
   {
     id: "ORD-2025-892",
     serviceName: "שכבת GIS - גושים וחלקות",
+    serviceNameKey: "order.svc.gisParcels",
     serviceIcon: "dataset",
     date: "28/12/2025",
     status: "completed",
     statusLabel: "הושלמה",
+    statusKey: "order.status.completed",
     amount: 1450,
-    deliverable: "GeoJSON"
+    deliverable: "GeoJSON",
+    deliverableKey: "order.deliverable.geojson"
   }
 ];
 
-export const mockNotifications = [
+export interface Notification {
+  id: string;
+  icon: string;
+  title: string;
+  titleKey: TKey;
+  cta: string;
+  ctaKey: TKey;
+  href: string;
+  type: "warning" | "info" | "success";
+}
+
+export const mockNotifications: Notification[] = [
   {
     id: "1",
     icon: "schedule",
     title: 'מנוי CORS שלך פג בעוד 14 ימים',
+    titleKey: "notif.corsExpiring",
     cta: "חדש מנוי",
+    ctaKey: "notif.corsCta",
     href: "/catalog/cors-subscription",
-    type: "warning" as const
+    type: "warning"
   },
   {
     id: "2",
     icon: "request_quote",
     title: 'הצעת מחיר QT-2026-088 ממתינה לאישורך',
+    titleKey: "notif.quotePending",
     cta: "צפה",
+    ctaKey: "notif.quoteCta",
     href: "/dashboard",
-    type: "info" as const
+    type: "info"
   },
   {
     id: "3",
     icon: "check_circle",
     title: "הזמנה ORD-2026-145 הושלמה",
+    titleKey: "notif.orderDone",
     cta: "הורד תוצר",
+    ctaKey: "notif.orderDoneCta",
     href: "/orders",
-    type: "success" as const
+    type: "success"
   }
 ];

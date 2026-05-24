@@ -1,6 +1,16 @@
+"use client";
+
 import Link from "next/link";
+import { useLanguage } from "@/lib/LanguageContext";
 
 export default function LoginPage() {
+  const { t } = useLanguage();
+  const features = [
+    t("login.feat.security"),
+    t("login.feat.idCard"),
+    t("login.feat.history"),
+    t("login.feat.itStandard")
+  ];
   return (
     <div className="bg-primary min-h-[calc(100vh-5rem)] flex items-center relative overflow-hidden">
       <div className="absolute inset-0 dot-pattern opacity-10" aria-hidden="true" />
@@ -12,24 +22,18 @@ export default function LoginPage() {
         <div className="text-white text-center">
           <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-md px-4 py-1.5 rounded-full mb-6 text-white/90 border border-white/10">
             <span className="material-symbols-outlined text-[18px]">verified_user</span>
-            <span className="text-xs font-bold tracking-wide">הזדהות לאומית מאובטחת</span>
+            <span className="text-xs font-bold tracking-wide">{t("login.national")}</span>
           </div>
           <h1 className="text-4xl md:text-6xl font-extrabold leading-tight mb-6">
-            כניסה לפורטל
+            {t("login.title")}
             <br />
-            <span className="text-secondary-container">המרכז למיפוי ישראל</span>
+            <span className="text-secondary-container">{t("login.titleSub")}</span>
           </h1>
           <p className="text-white/70 text-lg mb-8 max-w-lg">
-            הזדהה באמצעות מערכת ההזדהות הלאומית כדי לגשת לאזור האישי, ההזמנות שלך,
-            המנויים והחשבוניות.
+            {t("login.intro")}
           </p>
           <div className="space-y-3">
-            {[
-              "אבטחה ברמת המדינה (SAML 2.0)",
-              "התחברות עם ת.ז. + סיסמה / כרטיס חכם",
-              'שמירה אוטומטית של ההזמנות שלך',
-              "תקני יה\"ב 5.35"
-            ].map((feat, i) => (
+            {features.map((feat, i) => (
               <div key={i} className="flex items-center justify-center gap-3 text-sm">
                 <span>{feat}</span>
                 <span className="material-symbols-outlined text-secondary-container">
@@ -43,10 +47,10 @@ export default function LoginPage() {
         {/* Login Card */}
         <div className="bg-white rounded-3xl p-8 md:p-10 shadow-2xl">
           <h2 className="text-2xl font-extrabold text-primary mb-2 text-center">
-            בחר אופן הזדהות
+            {t("login.chooseMethod")}
           </h2>
           <p className="text-on-surface-variant text-sm mb-8 text-center">
-            השירות מאובטח. הנתונים שלך מוגנים בהצפנה.
+            {t("login.intro")}
           </p>
 
           {/* Primary - National Identity */}
@@ -61,8 +65,8 @@ export default function LoginPage() {
                 <span className="material-symbols-outlined text-[28px]">badge</span>
               </div>
               <div className="text-center flex-1">
-                <p className="text-lg font-extrabold">הזדהות לאומית</p>
-                <p className="text-xs font-normal text-white/80">לכל אזרח ישראלי</p>
+                <p className="text-lg font-extrabold">{t("login.national")}</p>
+                <p className="text-xs font-normal text-white/80">{t("login.nationalSub")}</p>
               </div>
               <span className="material-symbols-outlined">arrow_back</span>
             </div>
@@ -72,7 +76,7 @@ export default function LoginPage() {
           <Link
             href="/dashboard"
             className="shine block w-full bg-white border-2 border-outline-variant hover:border-secondary text-primary p-5 rounded-2xl font-bold transition-all mb-3"
-            data-tooltip="התחברות לארגונים - SAML 2.0 SSO לעובדי ממשלה ורשויות מקומיות"
+            data-tooltip={t("login.ssoSub")}
             data-tooltip-position="bottom"
           >
             <div className="flex flex-row-reverse items-center gap-4">
@@ -80,8 +84,8 @@ export default function LoginPage() {
                 <span className="material-symbols-outlined text-[28px]">business</span>
               </div>
               <div className="text-center flex-1">
-                <p className="text-lg font-extrabold">SSO ארגוני</p>
-                <p className="text-xs font-normal text-on-surface-variant">משרדי ממשלה ורשויות</p>
+                <p className="text-lg font-extrabold">{t("login.sso")}</p>
+                <p className="text-xs font-normal text-on-surface-variant">{t("login.ssoSub")}</p>
               </div>
               <span className="material-symbols-outlined">arrow_back</span>
             </div>
@@ -91,7 +95,7 @@ export default function LoginPage() {
           <Link
             href="/dashboard"
             className="shine block w-full bg-white border-2 border-outline-variant hover:border-secondary text-primary p-5 rounded-2xl font-bold transition-all"
-            data-tooltip='כניסה למודדים מוסמכים - יכולות נוספות לשירותי תצ"ר ו-CORS'
+            data-tooltip={t("login.surveyorSub")}
             data-tooltip-position="bottom"
           >
             <div className="flex flex-row-reverse items-center gap-4">
@@ -99,8 +103,8 @@ export default function LoginPage() {
                 <span className="material-symbols-outlined text-[28px]">engineering</span>
               </div>
               <div className="text-center flex-1">
-                <p className="text-lg font-extrabold">מודד מוסמך</p>
-                <p className="text-xs font-normal text-on-surface-variant">כניסה לאזור המקצועי</p>
+                <p className="text-lg font-extrabold">{t("login.surveyor")}</p>
+                <p className="text-xs font-normal text-on-surface-variant">{t("login.surveyorSub")}</p>
               </div>
               <span className="material-symbols-outlined">arrow_back</span>
             </div>
@@ -108,27 +112,23 @@ export default function LoginPage() {
 
           <div className="mt-8 pt-6 border-t border-outline-variant text-center">
             <p className="text-xs text-on-surface-variant mb-2">
-              חדש בפורטל?{" "}
+              {t("login.newToPortal")}{" "}
               <a
                 href="https://www.gov.il/he/departments/guides/identity_card"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="shine text-secondary font-bold hover:underline px-1 rounded"
-                data-tooltip='מידע על מערכת ההזדהות הלאומית של ממשלת ישראל'
-                data-tooltip-position="bottom"
               >
-                למד עוד על ההזדהות
+                {t("login.learnMore")}
               </a>
             </p>
             <p className="text-xs text-on-surface-variant">
-              בעיה בהזדהות?{" "}
+              {t("login.problem")}{" "}
               <Link
                 href="/help"
                 className="shine text-secondary font-bold hover:underline px-1 rounded"
-                data-tooltip="עבור למרכז העזרה לפתרון בעיות"
-                data-tooltip-position="bottom"
               >
-                מרכז עזרה
+                {t("login.helpCenter")}
               </Link>
             </p>
           </div>

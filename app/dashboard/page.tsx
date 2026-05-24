@@ -1,35 +1,15 @@
+"use client";
+
 import Link from "next/link";
 import { mockOrders, mockNotifications } from "@/lib/data";
+import { useLanguage } from "@/lib/LanguageContext";
+import { TKey } from "@/lib/i18n";
 
-const kpis = [
-  {
-    label: 'הזמנות פעילות',
-    value: 3,
-    icon: "package_2",
-    iconBg: "bg-secondary/10 text-secondary",
-    trend: "+12%"
-  },
-  {
-    label: 'הצעות ממתינות',
-    value: 1,
-    icon: "request_quote",
-    iconBg: "bg-alert-yellow/10 text-alert-yellow",
-    trend: "1 דחופה"
-  },
-  {
-    label: 'מנויים פעילים',
-    value: 2,
-    icon: "subscriptions",
-    iconBg: "bg-positive-green/10 text-positive-green",
-    trend: "CORS + WS"
-  },
-  {
-    label: 'הושלמו השנה',
-    value: 12,
-    icon: "task_alt",
-    iconBg: "bg-primary/10 text-primary",
-    trend: 'ב-5 חודשים'
-  }
+const KPI_DEFS: Array<{ labelKey: TKey; value: number; icon: string; iconBg: string; trend: string }> = [
+  { labelKey: "dash.kpi.active", value: 3, icon: "package_2", iconBg: "bg-secondary/10 text-secondary", trend: "+12%" },
+  { labelKey: "dash.kpi.quotes", value: 1, icon: "request_quote", iconBg: "bg-alert-yellow/10 text-alert-yellow", trend: "—" },
+  { labelKey: "dash.kpi.subs", value: 2, icon: "subscriptions", iconBg: "bg-positive-green/10 text-positive-green", trend: "CORS + WS" },
+  { labelKey: "dash.kpi.done", value: 12, icon: "task_alt", iconBg: "bg-primary/10 text-primary", trend: "5m" }
 ];
 
 const statusClasses: Record<string, string> = {
@@ -46,6 +26,8 @@ const notifTypeClasses: Record<string, string> = {
 };
 
 export default function DashboardPage() {
+  const { t } = useLanguage();
+  const kpis = KPI_DEFS.map(k => ({ ...k, label: t(k.labelKey) }));
   return (
     <div className="bg-surface min-h-screen">
       {/* Welcome Banner */}
@@ -58,31 +40,30 @@ export default function DashboardPage() {
               waving_hand
             </span>
             <h1 className="text-2xl md:text-4xl font-extrabold">
-              שלום, יוסי כהן <span className="font-normal text-white/70 text-lg">|</span>
-              <span className="text-secondary-container mr-2">ברוך הבא</span>
+              {t("dash.welcome")}
             </h1>
           </div>
           <p className="text-white/70 max-w-2xl text-center">
-            לוח בקרה אישי - סיכום הפעילות שלך, הזמנות אחרונות, התראות ופעולות מהירות.
+            {t("dash.welcomeSub")}
           </p>
           <div className="mt-6 flex flex-wrap gap-3">
             <Link
               href="/catalog"
               className="shine shine-glow bg-secondary text-white px-6 py-3 rounded-full font-bold flex items-center gap-2 hover:bg-secondary/90 transition-colors"
-              data-tooltip="פתיחת קטלוג השירותים והתחלת הזמנה חדשה"
+              data-tooltip={t("dash.newOrder")}
               data-tooltip-position="bottom"
             >
               <span className="material-symbols-outlined">add_shopping_cart</span>
-              <span>הזמן שירות חדש</span>
+              <span>{t("dash.newOrder")}</span>
             </Link>
             <Link
               href="/orders"
               className="shine bg-white/10 backdrop-blur-md border border-white/20 text-white px-6 py-3 rounded-full font-bold flex items-center gap-2 hover:bg-white/20 transition-colors"
-              data-tooltip="צפייה בהיסטוריית כל ההזמנות שלך"
+              data-tooltip={t("dash.history")}
               data-tooltip-position="bottom"
             >
               <span className="material-symbols-outlined">history</span>
-              <span>היסטוריה</span>
+              <span>{t("dash.history")}</span>
             </Link>
           </div>
         </div>
@@ -121,16 +102,16 @@ export default function DashboardPage() {
         <section className="lg:col-span-2 bg-white rounded-3xl p-6 border border-outline-variant/50" aria-labelledby="recent-orders-heading">
           <div className="flex flex-row-reverse items-center justify-between mb-6">
             <h2 id="recent-orders-heading" className="text-xl font-extrabold text-primary flex items-center gap-2">
-              <span>הזמנות אחרונות</span>
+              <span>{t("dash.recentOrders")}</span>
               <span className="material-symbols-outlined text-secondary">package_2</span>
             </h2>
             <Link
               href="/orders"
               className="shine text-sm font-bold text-secondary hover:underline px-2 py-1 rounded"
-              data-tooltip="צפייה ברשימת כל ההזמנות שלך"
+              data-tooltip={t("dash.allOrders")}
               data-tooltip-position="bottom"
             >
-              לכל ההזמנות ←
+              {t("dash.allOrdersArrow")}
             </Link>
           </div>
           {/* Desktop table */}
@@ -138,12 +119,12 @@ export default function DashboardPage() {
             <table className="w-full text-center">
               <thead>
                 <tr className="border-b border-outline-variant text-xs text-on-surface-variant uppercase tracking-wider">
-                  <th className="pb-3 pr-2">פעולות</th>
-                  <th className="pb-3">סכום</th>
-                  <th className="pb-3">סטטוס</th>
-                  <th className="pb-3">תאריך</th>
-                  <th className="pb-3">שירות</th>
-                  <th className="pb-3">מס' הזמנה</th>
+                  <th className="pb-3 pr-2">{t("dash.col.actions")}</th>
+                  <th className="pb-3">{t("dash.col.amount")}</th>
+                  <th className="pb-3">{t("dash.col.status")}</th>
+                  <th className="pb-3">{t("dash.col.date")}</th>
+                  <th className="pb-3">{t("dash.col.service")}</th>
+                  <th className="pb-3">{t("dash.col.id")}</th>
                 </tr>
               </thead>
               <tbody>
@@ -153,16 +134,16 @@ export default function DashboardPage() {
                       <div className="flex gap-1 justify-center">
                         <button
                           className="shine w-8 h-8 rounded-lg hover:bg-secondary/10 hover:text-secondary text-on-surface-variant flex items-center justify-center"
-                          aria-label={`צפה ב-${order.id}`}
-                          data-tooltip={`צפייה בפרטי הזמנה ${order.id}`}
+                          aria-label={`${t("dash.viewOrderAria")} ${order.id}`}
+                          data-tooltip={`${t("dash.viewOrder")} ${order.id}`}
                           data-tooltip-position="bottom"
                         >
                           <span className="material-symbols-outlined text-[18px]">visibility</span>
                         </button>
                         <button
                           className="shine w-8 h-8 rounded-lg hover:bg-secondary/10 hover:text-secondary text-on-surface-variant flex items-center justify-center"
-                          aria-label={`הורד ${order.id}`}
-                          data-tooltip={`הורדת תוצר/חשבונית ל-${order.id}`}
+                          aria-label={`${t("dash.downloadOrderAria")} ${order.id}`}
+                          data-tooltip={`${t("dash.downloadOrder")} ${order.id}`}
                           data-tooltip-position="bottom"
                         >
                           <span className="material-symbols-outlined text-[18px]">download</span>
@@ -176,13 +157,13 @@ export default function DashboardPage() {
                           statusClasses[order.status]
                         }`}
                       >
-                        {order.statusLabel}
+                        {t(order.statusKey)}
                       </span>
                     </td>
                     <td className="py-4 text-on-surface-variant text-sm">{order.date}</td>
                     <td className="py-4">
                       <span className="flex items-center gap-2 justify-center">
-                        <span>{order.serviceName}</span>
+                        <span>{t(order.serviceNameKey)}</span>
                         <span className="material-symbols-outlined text-secondary text-[20px]">
                           {order.serviceIcon}
                         </span>
@@ -208,7 +189,7 @@ export default function DashboardPage() {
                       {order.serviceIcon}
                     </span>
                     <div className="text-center min-w-0">
-                      <p className="font-bold text-primary text-sm truncate">{order.serviceName}</p>
+                      <p className="font-bold text-primary text-sm truncate">{t(order.serviceNameKey)}</p>
                       <p className="font-mono text-[10px] text-on-surface-variant">{order.id}</p>
                     </div>
                   </div>
@@ -217,7 +198,7 @@ export default function DashboardPage() {
                       statusClasses[order.status]
                     }`}
                   >
-                    {order.statusLabel}
+                    {t(order.statusKey)}
                   </span>
                 </div>
                 <div className="flex flex-row-reverse items-center justify-between pt-2 border-t border-outline-variant/30">
@@ -228,13 +209,13 @@ export default function DashboardPage() {
                   <div className="flex gap-1">
                     <button
                       className="shine w-9 h-9 rounded-lg bg-white hover:bg-secondary hover:text-white text-secondary flex items-center justify-center"
-                      aria-label={`צפה ב-${order.id}`}
+                      aria-label={`${t("dash.viewOrderAria")} ${order.id}`}
                     >
                       <span className="material-symbols-outlined text-[18px]">visibility</span>
                     </button>
                     <button
                       className="shine w-9 h-9 rounded-lg bg-white hover:bg-secondary hover:text-white text-secondary flex items-center justify-center"
-                      aria-label={`הורד ${order.id}`}
+                      aria-label={`${t("dash.downloadOrderAria")} ${order.id}`}
                     >
                       <span className="material-symbols-outlined text-[18px]">download</span>
                     </button>
@@ -254,7 +235,7 @@ export default function DashboardPage() {
           >
             <div className="flex flex-row-reverse items-center justify-between mb-6">
               <h2 id="notifications-heading" className="text-xl font-extrabold text-primary flex items-center gap-2">
-                <span>התראות</span>
+                <span>{t("dash.notifications")}</span>
                 <span className="material-symbols-outlined text-alert-yellow">notifications</span>
               </h2>
               <span className="bg-error-red text-white text-xs font-bold rounded-full px-2 py-0.5">
@@ -270,14 +251,14 @@ export default function DashboardPage() {
                   <div className="flex flex-row-reverse items-center gap-3">
                     <span className="material-symbols-outlined">{n.icon}</span>
                     <div className="flex-1 text-center">
-                      <p className="text-sm font-medium mb-2">{n.title}</p>
+                      <p className="text-sm font-medium mb-2">{t(n.titleKey)}</p>
                       <Link
                         href={n.href}
                         className="shine text-xs font-bold underline px-1 py-0.5 rounded"
-                        data-tooltip={`${n.cta} - ${n.title}`}
+                        data-tooltip={`${t(n.ctaKey)} - ${t(n.titleKey)}`}
                         data-tooltip-position="bottom"
                       >
-                        {n.cta} ←
+                        {t(n.ctaKey)} ←
                       </Link>
                     </div>
                   </div>
@@ -295,34 +276,34 @@ export default function DashboardPage() {
               id="quick-actions-heading"
               className="text-xl font-extrabold mb-4 flex items-center gap-2 justify-center"
             >
-              <span>פעולות מהירות</span>
+              <span>{t("dash.quickActions")}</span>
               <span className="material-symbols-outlined text-secondary-container">bolt</span>
             </h2>
             <div className="grid grid-cols-2 gap-3">
               {[
                 {
-                  label: 'מנוי CORS חדש',
+                  label: t("dash.quick.cors"),
                   icon: "sensors",
                   href: "/catalog/cors-subscription",
-                  tip: "פתיחת מנוי לתחנות קבע - תיקוני RTK/VRS"
+                  tip: t("dash.quick.corsTip")
                 },
                 {
-                  label: 'הזמן מפה',
+                  label: t("dash.quick.map"),
                   icon: "map",
                   href: "/catalog/custom-map",
-                  tip: "הזמנת מפה בהתאמה אישית A4-A0"
+                  tip: t("dash.quick.mapTip")
                 },
                 {
-                  label: 'פתח פנייה',
+                  label: t("dash.quick.case"),
                   icon: "support_agent",
                   href: "/cases/new",
-                  tip: "פתיחת Case חדש לשירות הלקוחות"
+                  tip: t("dash.quick.caseTip")
                 },
                 {
-                  label: 'הגדרות',
+                  label: t("dash.quick.settings"),
                   icon: "settings",
                   href: "https://www.gov.il/he/departments/survey_of_israel",
-                  tip: 'ניהול פרופיל באתר gov.il'
+                  tip: t("dash.quick.settingsTip")
                 }
               ].map((action, i) => {
                 const isExternal = action.href.startsWith("http");

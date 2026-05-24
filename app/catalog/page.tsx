@@ -4,7 +4,8 @@ import Link from "next/link";
 import { Suspense, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import ServiceCard from "@/components/ServiceCard";
-import { services, categories, customerTypeLabels, type Category } from "@/lib/data";
+import { services, categories, customerTypeLabels, getCategoryLabel, getCustomerTypeLabel, getServiceName, getServiceShortDescription, getServiceCategoryLabel, type Category } from "@/lib/data";
+import { useLanguage } from "@/lib/LanguageContext";
 
 export default function CatalogPage() {
   return (
@@ -15,6 +16,7 @@ export default function CatalogPage() {
 }
 
 function CatalogContent() {
+  const { t, lang } = useLanguage();
   const params = useSearchParams();
   const initialCategory = params.get("category") as Category | null;
 
@@ -40,23 +42,29 @@ function CatalogContent() {
       if (selectedCategories.size > 0 && !selectedCategories.has(s.category)) return false;
       if (
         selectedTypes.size > 0 &&
-        !s.customerTypes.some((t) => selectedTypes.has(t))
+        !s.customerTypes.some((ct) => selectedTypes.has(ct))
       )
         return false;
       if (s.priceFrom > maxPrice) return false;
       if (showInScopeOnly && !s.inScope) return false;
       if (query.trim()) {
         const q = query.trim().toLowerCase();
+        const localName = getServiceName(s.slug, s.name, lang).toLowerCase();
+        const localShort = getServiceShortDescription(s.slug, s.shortDescription, lang).toLowerCase();
+        const localCat = getServiceCategoryLabel(s.slug, s.categoryLabel, lang).toLowerCase();
         if (
           !s.name.toLowerCase().includes(q) &&
           !s.shortDescription.toLowerCase().includes(q) &&
-          !s.categoryLabel.toLowerCase().includes(q)
+          !s.categoryLabel.toLowerCase().includes(q) &&
+          !localName.includes(q) &&
+          !localShort.includes(q) &&
+          !localCat.includes(q)
         )
           return false;
       }
       return true;
     });
-  }, [selectedCategories, selectedTypes, maxPrice, query, showInScopeOnly]);
+  }, [selectedCategories, selectedTypes, maxPrice, query, showInScopeOnly, lang]);
 
   const toggleCategory = (id: Category) => {
     setSelectedCategories((prev) => {
@@ -87,22 +95,22 @@ function CatalogContent() {
       {/* Hero band */}
       <div className="bg-gradient-to-l from-primary to-tertiary text-white">
         <div className="max-w-container-max-width mx-auto px-4 md:px-margin-desktop py-12 md:py-16">
-          <nav aria-label="ניווט נתיב" className="text-sm text-white/70 mb-6">
+          <nav aria-label="Breadcrumb" className="text-sm text-white/70 mb-6">
             <ol className="flex flex-row-reverse items-center gap-2">
               <li>
-                <Link href="/" className="hover:text-white">דף הבית</Link>
+                <Link href="/" className="hover:text-white">{t("nav.home")}</Link>
               </li>
               <li aria-hidden="true">/</li>
-              <li className="text-white font-bold">קטלוג שירותים</li>
+              <li className="text-white font-bold">{t("nav.catalog")}</li>
             </ol>
           </nav>
           <h1 className="text-2xl sm:text-3xl md:text-5xl font-extrabold mb-3 sm:mb-4">
-            קטלוג כל שירותי המרכז למיפוי ישראל
+            {t("catalog.title")}
           </h1>
           <p className="text-white/80 text-sm sm:text-base md:text-lg max-w-2xl">
-            14 שירותים מקצועיים - מפות, קדסטר, גיאודזיה, אורתופוטו, נתוני GIS ותעודות.
+            {t("catalog.subtitle")}
             <span className="font-bold text-secondary-container mr-2">
-              {filtered.length} שירותים מוצגים
+              {filtered.length} {t("catalog.shown")}
             </span>
           </p>
           <div className="mt-4 flex flex-wrap gap-3">
@@ -111,22 +119,22 @@ function CatalogContent() {
               target="_blank"
               rel="noopener noreferrer"
               className="shine inline-flex items-center gap-2 bg-white/10 backdrop-blur-md border border-white/20 text-white px-4 py-2 rounded-full text-xs sm:text-sm font-bold hover:bg-white/20 transition-colors"
-              data-tooltip='הקטלוג הרשמי של מפ"י באתר gov.il'
+              data-tooltip={t("catalog.officialBtn")}
               data-tooltip-position="bottom"
             >
               <span className="material-symbols-outlined text-[18px]">open_in_new</span>
-              <span>לקטלוג הרשמי ב-gov.il</span>
+              <span>{t("catalog.officialBtn")}</span>
             </a>
             <a
               href="https://www.gov.il/he/departments/survey_of_israel"
               target="_blank"
               rel="noopener noreferrer"
               className="shine inline-flex items-center gap-2 bg-white/10 backdrop-blur-md border border-white/20 text-white px-4 py-2 rounded-full text-xs sm:text-sm font-bold hover:bg-white/20 transition-colors"
-              data-tooltip='אתר היחידה הממשלתית של מפ"י'
+              data-tooltip={t("catalog.mainSiteBtn")}
               data-tooltip-position="bottom"
             >
               <span className="material-symbols-outlined text-[18px]">public</span>
-              <span>אתר מפ"י הרשמי</span>
+              <span>{t("catalog.mainSiteBtn")}</span>
             </a>
           </div>
         </div>
@@ -141,13 +149,13 @@ function CatalogContent() {
             className="shine flex-1 bg-white border border-outline-variant rounded-2xl px-4 py-3 flex items-center justify-center gap-2 font-bold text-primary hover:border-secondary transition-colors min-h-[48px]"
             aria-expanded={mobileFiltersOpen}
             aria-controls="mobile-filters-panel"
-            data-tooltip={mobileFiltersOpen ? "סגור סינון" : "פתח סינון"}
+            data-tooltip={mobileFiltersOpen ? t("common.close") : t("catalog.filter")}
             data-tooltip-position="bottom"
           >
             <span className="material-symbols-outlined text-secondary">
               {mobileFiltersOpen ? "close" : "tune"}
             </span>
-            <span>{mobileFiltersOpen ? "סגור סינון" : "סנן ושנה"}</span>
+            <span>{mobileFiltersOpen ? t("common.close") : t("catalog.filter")}</span>
             {activeFiltersCount > 0 && (
               <span className="bg-secondary text-white text-xs font-bold rounded-full min-w-[20px] h-5 px-1.5 flex items-center justify-center">
                 {activeFiltersCount}
@@ -159,11 +167,11 @@ function CatalogContent() {
               type="button"
               onClick={clearFilters}
               className="shine bg-error-red/10 text-error-red px-4 py-3 rounded-2xl font-bold text-sm hover:bg-error-red hover:text-white transition-colors min-h-[48px] flex items-center gap-1"
-              data-tooltip="נקה כל הסינונים"
+              data-tooltip={t("catalog.clearAll")}
               data-tooltip-position="bottom"
             >
               <span className="material-symbols-outlined text-[18px]">clear_all</span>
-              <span>נקה</span>
+              <span>{t("catalog.clearAll")}</span>
             </button>
           )}
         </div>
@@ -182,13 +190,13 @@ function CatalogContent() {
                   type="button"
                   onClick={clearFilters}
                   className="shine text-secondary font-bold text-sm hover:underline px-2 py-1 rounded"
-                  data-tooltip="ניקוי כל הסינונים והחזרה לתצוגה מלאה"
+                  data-tooltip={t("catalog.clearAll")}
                   data-tooltip-position="bottom"
                 >
-                  נקה הכל
+                  {t("catalog.clearAll")}
                 </button>
                 <h2 className="text-lg font-extrabold text-primary flex items-center gap-2">
-                  <span>סינון</span>
+                  <span>{t("catalog.filter")}</span>
                   <span className="material-symbols-outlined text-secondary">tune</span>
                 </h2>
               </div>
@@ -196,7 +204,7 @@ function CatalogContent() {
               {/* Search */}
               <div className="mb-6">
                 <label htmlFor="filter-search" className="text-sm font-bold text-primary mb-2 block text-center">
-                  חיפוש חופשי
+                  {t("catalog.searchFree")}
                 </label>
                 <div className="relative">
                   <input
@@ -204,7 +212,7 @@ function CatalogContent() {
                     type="search"
                     value={query}
                     onChange={(e) => setQuery(e.target.value)}
-                    placeholder="הקלד..."
+                    placeholder={t("catalog.searchPlaceholder")}
                     className="w-full bg-surface-container border-0 rounded-xl px-4 py-2.5 text-center focus:ring-2 focus:ring-secondary focus:outline-none"
                   />
                   <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-[20px]">
@@ -215,7 +223,7 @@ function CatalogContent() {
 
               {/* Categories */}
               <div className="mb-6">
-                <h3 className="text-sm font-bold text-primary mb-3 text-center">קטגוריה</h3>
+                <h3 className="text-sm font-bold text-primary mb-3 text-center">{t("catalog.cat")}</h3>
                 <div className="flex flex-col gap-2">
                   {categories.map((cat) => (
                     <label
@@ -223,7 +231,7 @@ function CatalogContent() {
                       className="flex items-center justify-center gap-2 cursor-pointer text-center group"
                     >
                       <span className="text-sm group-hover:text-secondary transition-colors">
-                        {cat.label}
+                        {getCategoryLabel(cat.id, cat.label, lang)}
                       </span>
                       <input
                         type="checkbox"
@@ -238,14 +246,14 @@ function CatalogContent() {
 
               {/* Customer Type */}
               <div className="mb-6">
-                <h3 className="text-sm font-bold text-primary mb-3 text-center">סוג לקוח</h3>
+                <h3 className="text-sm font-bold text-primary mb-3 text-center">{t("catalog.custType")}</h3>
                 <div className="flex flex-col gap-2">
                   {Object.entries(customerTypeLabels).map(([id, label]) => (
                     <label
                       key={id}
                       className="flex items-center justify-center gap-2 cursor-pointer text-center group"
                     >
-                      <span className="text-sm group-hover:text-secondary transition-colors">{label}</span>
+                      <span className="text-sm group-hover:text-secondary transition-colors">{getCustomerTypeLabel(id, label, lang)}</span>
                       <input
                         type="checkbox"
                         checked={selectedTypes.has(id)}
@@ -260,7 +268,7 @@ function CatalogContent() {
               {/* Price Range */}
               <div className="mb-6">
                 <h3 className="text-sm font-bold text-primary mb-3 text-center">
-                  מחיר מקסימלי: ₪{maxPrice.toLocaleString()}
+                  {t("catalog.priceRange.label")}: ₪{maxPrice.toLocaleString()}
                 </h3>
                 <input
                   type="range"
@@ -270,14 +278,14 @@ function CatalogContent() {
                   value={maxPrice}
                   onChange={(e) => setMaxPrice(parseInt(e.target.value))}
                   className="w-full accent-secondary"
-                  aria-label="מחיר מקסימלי"
+                  aria-label={t("catalog.priceRange.label")}
                 />
               </div>
 
               {/* In Scope */}
               <div className="border-t border-outline-variant pt-4">
                 <label className="flex items-center justify-center gap-2 cursor-pointer text-center">
-                  <span className="text-sm font-bold text-primary">רק שירותים פעילים בפורטל</span>
+                  <span className="text-sm font-bold text-primary">{t("catalog.activeOnly.label")}</span>
                   <input
                     type="checkbox"
                     checked={showInScopeOnly}
@@ -286,7 +294,7 @@ function CatalogContent() {
                   />
                 </label>
                 <p className="text-xs text-on-surface-variant mt-2 text-center">
-                  שירותים שטרם בתכולה - יפתחו ב-govforms
+                  {t("catalog.govformsNote")}
                 </p>
               </div>
             </div>
@@ -299,18 +307,18 @@ function CatalogContent() {
                 <span className="material-symbols-outlined text-[64px] text-on-surface-variant mb-4">
                   search_off
                 </span>
-                <h2 className="text-2xl font-bold text-primary mb-2">לא נמצאו תוצאות</h2>
+                <h2 className="text-2xl font-bold text-primary mb-2">{t("catalog.noResults")}</h2>
                 <p className="text-on-surface-variant mb-6">
-                  נסה לשנות את הסינונים או לחפש בצורה אחרת.
+                  {t("catalog.tryAgain")}
                 </p>
                 <button
                   type="button"
                   onClick={clearFilters}
                   className="shine shine-glow bg-primary text-white px-6 py-3 rounded-full font-bold hover:bg-secondary transition-colors"
-                  data-tooltip="ניקוי הסינונים כדי לראות את כל השירותים"
+                  data-tooltip={t("catalog.clearAll")}
                   data-tooltip-position="bottom"
                 >
-                  נקה סינונים
+                  {t("catalog.clearAll")}
                 </button>
               </div>
             ) : (

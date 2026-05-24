@@ -6,9 +6,11 @@ import ServiceCard from "@/components/ServiceCard";
 import QuoteRequestModal from "@/components/QuoteRequestModal";
 import WowCounter from "@/components/WowCounter";
 import GovMapEmbed from "@/components/GovMapEmbed";
-import { services, categories, type Service } from "@/lib/data";
+import { services, categories, getServiceName, getServiceShortDescription, getServiceCategoryLabel, getCategoryLabel, type Service } from "@/lib/data";
+import { useLanguage } from "@/lib/LanguageContext";
 
 export default function HomePage() {
+  const { t, lang } = useLanguage();
   const featuredServices = services.filter((s) => s.highlight).slice(0, 4);
   const [quoteFor, setQuoteFor] = useState<Service | null>(null);
 
@@ -63,15 +65,15 @@ export default function HomePage() {
           <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-md px-3 sm:px-4 py-1.5 rounded-full mb-6 sm:mb-8 text-white/90 border border-white/10">
             <span className="material-symbols-outlined text-[16px] sm:text-[18px]">verified_user</span>
             <span className="text-[10px] sm:text-xs font-bold tracking-wide">
-              הפורטל הלאומי הרשמי למידע גיאוגרפי
+              {t("hero.badge")}
             </span>
           </div>
 
           <h1 className="text-white font-extrabold text-3xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-[88px] leading-[1.1] mb-8 sm:mb-10 max-w-5xl mx-auto">
-            העתיד של המידע
+            {t("hero.titleLine1")}
             <br />
             <span className="text-transparent bg-clip-text bg-gradient-to-l from-secondary-container to-white">
-              הגיאוגרפי בידיים שלך
+              {t("hero.titleLine2")}
             </span>
           </h1>
 
@@ -83,21 +85,21 @@ export default function HomePage() {
             className="max-w-3xl mx-auto mb-8 sm:mb-12"
           >
             <div className="glass-effect p-1.5 sm:p-2 rounded-2xl flex flex-row-reverse items-center shadow-2xl">
-              <label htmlFor="hero-search" className="sr-only">חיפוש שירות</label>
+              <label htmlFor="hero-search" className="sr-only">{t("hero.searchBtn")}</label>
               <input
                 id="hero-search"
                 name="q"
                 type="search"
-                placeholder='חיפוש מפה, תצלום, קדסטר...'
+                placeholder={t("hero.searchPlaceholder")}
                 className="bg-transparent border-none focus:ring-0 focus:outline-none text-white placeholder:text-white/50 text-center flex-grow px-3 sm:px-6 py-3 sm:py-4 text-sm sm:text-base md:text-lg w-full min-h-[44px]"
               />
               <button
                 type="submit"
                 className="shine bg-white text-primary px-4 sm:px-8 py-3 sm:py-4 rounded-xl font-bold flex items-center gap-2 hover:bg-secondary-container transition-all whitespace-nowrap min-h-[44px]"
-                data-tooltip="חיפוש שירות בקטלוג"
+                data-tooltip={t("hero.searchBtn")}
                 data-tooltip-position="bottom"
               >
-                <span className="hidden sm:inline">חיפוש</span>
+                <span className="hidden sm:inline">{t("hero.searchBtn")}</span>
                 <span className="material-symbols-outlined">search</span>
               </button>
             </div>
@@ -107,10 +109,10 @@ export default function HomePage() {
             <Link
               href="/catalog"
               className="shine shine-glow group bg-secondary text-white px-6 sm:px-10 py-3.5 sm:py-5 rounded-full font-bold flex items-center gap-3 hover:bg-secondary/90 transition-all shadow-xl shadow-secondary/20 w-full sm:w-auto justify-center min-h-[48px]"
-              data-tooltip="צפייה ב-14 השירותים והתחלת הזמנה"
+              data-tooltip={t("hero.startOrder")}
               data-tooltip-position="bottom"
             >
-              התחל הזמנה
+              {t("hero.startOrder")}
               <span className="material-symbols-outlined transition-transform group-hover:-translate-x-1">
                 arrow_back
               </span>
@@ -120,10 +122,10 @@ export default function HomePage() {
               target="_blank"
               rel="noopener noreferrer"
               className="shine text-white/80 hover:text-white font-bold flex items-center gap-2 transition-all px-3 py-2 rounded-lg min-h-[44px]"
-              data-tooltip='פתיחת GovMap - מערכת המפות הציבורית של ממשלת ישראל'
+              data-tooltip={t("hero.freeMap")}
               data-tooltip-position="bottom"
             >
-              <span>למפה החופשית</span>
+              <span>{t("hero.freeMap")}</span>
               <span className="material-symbols-outlined">open_in_new</span>
             </a>
           </div>
@@ -141,19 +143,17 @@ export default function HomePage() {
           <div className="flex flex-col md:flex-row-reverse items-center justify-between mb-12 md:mb-24 gap-6 md:gap-8">
             <div className="text-center max-w-2xl">
               <span className="text-secondary font-bold text-xs sm:text-sm tracking-[0.2em] uppercase mb-3 sm:mb-4 block">
-                השירותים שלנו
+                {t("services.eyebrow")}
               </span>
               <h2
                 id="services-heading"
                 className="text-primary text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold leading-tight"
               >
-                דיוק ללא פשרות,
-                <br />
-                בכל קנה מידה.
+                {t("services.title")}
               </h2>
             </div>
             <p className="text-on-surface-variant text-sm sm:text-base md:text-lg max-w-sm text-center leading-relaxed">
-              גישה ישירה למאגרי המידע הממשלתיים המעודכנים ביותר עבור אנשי מקצוע ומוסדות.
+              {t("services.subtitle")}
             </p>
           </div>
 
@@ -167,10 +167,10 @@ export default function HomePage() {
                   </span>
                 </div>
                 <h3 className="text-xl sm:text-2xl md:text-3xl font-extrabold text-primary mb-3 sm:mb-4">
-                  {featuredServices[0]?.name}
+                  {featuredServices[0] && getServiceName(featuredServices[0].slug, featuredServices[0].name, lang)}
                 </h3>
                 <p className="text-on-surface-variant text-sm sm:text-base md:text-lg mb-6 sm:mb-8 max-w-md">
-                  {featuredServices[0]?.shortDescription}
+                  {featuredServices[0] && getServiceShortDescription(featuredServices[0].slug, featuredServices[0].shortDescription, lang)}
                 </p>
                 <div className="mt-auto flex flex-col sm:flex-row-reverse items-stretch sm:items-center gap-2 sm:gap-3 w-full">
                   <button
@@ -181,15 +181,15 @@ export default function HomePage() {
                     data-tooltip-position="bottom"
                   >
                     <span className="material-symbols-outlined text-[20px]">request_quote</span>
-                    שלח הצעת מחיר
+                    {t("services.sendQuote")}
                   </button>
                   <Link
                     href={`/catalog/${featuredServices[0]?.slug}`}
                     className="shine flex-1 sm:flex-initial bg-surface-container hover:bg-surface-container-high text-primary px-5 py-3 sm:py-3.5 rounded-full font-bold flex items-center justify-center gap-2 transition-colors min-h-[48px]"
-                    data-tooltip="פירוט מלא של השירות, מחירון ו-FAQ"
+                    data-tooltip={t("services.details")}
                     data-tooltip-position="bottom"
                   >
-                    פרטים
+                    {t("services.details")}
                     <span className="material-symbols-outlined text-[20px]">arrow_back</span>
                   </Link>
                 </div>
@@ -206,13 +206,13 @@ export default function HomePage() {
                   </span>
                 </div>
                 <span className="bg-secondary px-3 py-1 rounded text-xs uppercase font-bold tracking-widest mb-3">
-                  מומלץ
+                  {t("services.recommended")}
                 </span>
                 <h3 className="text-xl sm:text-2xl md:text-3xl font-extrabold mb-3 sm:mb-4">
-                  {featuredServices[1]?.name}
+                  {featuredServices[1] && getServiceName(featuredServices[1].slug, featuredServices[1].name, lang)}
                 </h3>
                 <p className="text-white/70 text-sm sm:text-base md:text-lg mb-6 sm:mb-8">
-                  {featuredServices[1]?.shortDescription}
+                  {featuredServices[1] && getServiceShortDescription(featuredServices[1].slug, featuredServices[1].shortDescription, lang)}
                 </p>
                 <div className="mt-auto w-full flex flex-col gap-2">
                   <button
@@ -223,15 +223,15 @@ export default function HomePage() {
                     data-tooltip-position="bottom"
                   >
                     <span className="material-symbols-outlined text-[20px]">request_quote</span>
-                    שלח הצעת מחיר
+                    {t("services.sendQuote")}
                   </button>
                   <Link
                     href={`/catalog/${featuredServices[1]?.slug}`}
                     className="shine w-full py-2.5 sm:py-3 rounded-xl border border-white/20 font-bold hover:bg-white/10 transition-all text-center min-h-[44px] flex items-center justify-center gap-2"
-                    data-tooltip="פירוט מלא של החבילות והתעריפים"
+                    data-tooltip={t("services.details")}
                     data-tooltip-position="bottom"
                   >
-                    פרטים
+                    {t("services.details")}
                     <span className="material-symbols-outlined text-[20px]">arrow_back</span>
                   </Link>
                 </div>
@@ -254,34 +254,34 @@ export default function HomePage() {
                           </span>
                         </div>
                         <span className="text-[10px] uppercase tracking-widest font-bold text-secondary/70 mb-2">
-                          {service.categoryLabel}
+                          {getServiceCategoryLabel(service.slug, service.categoryLabel, lang)}
                         </span>
                         <h3 className="text-lg sm:text-xl font-extrabold text-primary mb-3 leading-tight">
-                          {service.name}
+                          {getServiceName(service.slug, service.name, lang)}
                         </h3>
                         <p className="text-sm text-on-surface-variant mb-5 flex-1 leading-relaxed">
-                          {service.shortDescription}
+                          {getServiceShortDescription(service.slug, service.shortDescription, lang)}
                         </p>
                         <div className="w-full flex flex-col gap-2 mt-auto">
                           <button
                             type="button"
                             onClick={() => setQuoteFor(service)}
                             className="shine shine-glow w-full bg-primary text-white py-2.5 rounded-full font-bold text-sm hover:bg-secondary transition-colors flex items-center justify-center gap-2 min-h-[44px]"
-                            data-tooltip={`קבלת הצעת מחיר ל-${service.name}`}
+                            data-tooltip={t("services.sendQuote")}
                             data-tooltip-position="bottom"
                           >
                             <span className="material-symbols-outlined text-[18px]">
                               request_quote
                             </span>
-                            שלח הצעת מחיר
+                            {t("services.sendQuote")}
                           </button>
                           <Link
                             href={`/catalog/${service.slug}`}
                             className="shine w-full bg-transparent text-secondary py-2 rounded-full font-bold text-sm hover:bg-secondary/5 transition-colors flex items-center justify-center gap-1 min-h-[40px]"
-                            data-tooltip={`פירוט מלא של ${service.name}`}
+                            data-tooltip={t("services.details")}
                             data-tooltip-position="bottom"
                           >
-                            פרטים
+                            {t("services.details")}
                             <span className="material-symbols-outlined text-[16px]">arrow_back</span>
                           </Link>
                         </div>
@@ -299,10 +299,10 @@ export default function HomePage() {
               target="_blank"
               rel="noopener noreferrer"
               className="shine inline-flex items-center gap-2 text-secondary font-bold hover:text-primary transition-colors px-4 py-2 rounded-lg text-sm sm:text-base"
-              data-tooltip="הקטלוג הרשמי המלא של מפ&quot;י באתר gov.il"
+              data-tooltip={t("services.officialCatalog")}
               data-tooltip-position="bottom"
             >
-              <span>לקטלוג המלא ב-gov.il</span>
+              <span>{t("services.officialCatalog")}</span>
               <span className="material-symbols-outlined">open_in_new</span>
             </a>
           </div>
@@ -316,13 +316,10 @@ export default function HomePage() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
             <div className="text-center">
               <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold mb-6 sm:mb-8 leading-tight">
-                הסטנדרט הלאומי
-                <br />
-                למצוינות גיאוגרפית
+                {t("stats.title")}
               </h2>
               <p className="text-white/70 text-sm sm:text-base md:text-lg mb-8 sm:mb-12 max-w-xl">
-                מערכות מפ&quot;י משרתות את המשק הישראלי בדיוק חסר תקדים, תוך שימוש בטכנולוגיות
-                הלוויין והמיפוי המתקדמות ביותר בעולם.
+                {t("stats.subtitle")}
               </p>
               <div className="grid grid-cols-2 gap-6 sm:gap-8 md:gap-10">
                 <div>
@@ -330,7 +327,7 @@ export default function HomePage() {
                     <WowCounter value={2400000} format="compact" />
                   </p>
                   <p className="text-[10px] sm:text-xs md:text-sm uppercase tracking-widest font-bold text-white/50">
-                    שאילתות מידע בשנה
+                    {t("stats.queries")}
                   </p>
                 </div>
                 <div>
@@ -338,7 +335,7 @@ export default function HomePage() {
                     <WowCounter value={15000} format="compact" />
                   </p>
                   <p className="text-[10px] sm:text-xs md:text-sm uppercase tracking-widest font-bold text-white/50">
-                    אנשי מקצוע רשומים
+                    {t("stats.professionals")}
                   </p>
                 </div>
                 <div>
@@ -346,7 +343,7 @@ export default function HomePage() {
                     <WowCounter value={97} suffix="%" format="number" />
                   </p>
                   <p className="text-[10px] sm:text-xs md:text-sm uppercase tracking-widest font-bold text-white/50">
-                    שביעות רצון לקוחות
+                    {t("stats.satisfaction")}
                   </p>
                 </div>
                 <div>
@@ -354,7 +351,7 @@ export default function HomePage() {
                     24/7
                   </p>
                   <p className="text-[10px] sm:text-xs md:text-sm uppercase tracking-widest font-bold text-white/50">
-                    זמינות הפורטל
+                    {t("stats.uptime")}
                   </p>
                 </div>
               </div>
@@ -398,42 +395,59 @@ export default function HomePage() {
               id="govmap-heading"
               className="text-primary text-2xl sm:text-4xl md:text-5xl font-extrabold leading-tight mb-4"
             >
-              חקור את המפה הלאומית
+              {lang === "he" ? "חקור את המפה הלאומית" :
+                lang === "en" ? "Explore the National Map" :
+                lang === "fr" ? "Explorez la carte nationale" :
+                lang === "es" ? "Explora el mapa nacional" :
+                lang === "ru" ? "Изучите национальную карту" :
+                "استكشف الخريطة الوطنية"}
             </h2>
             <p className="text-on-surface-variant text-sm sm:text-base md:text-lg max-w-2xl mx-auto">
-              גש למידע גיאוגרפי, גוש וחלקה, תצלומי אוויר ושכבות ממשלתיות נוספות - ישירות מתוך הפורטל. מבוסס על GovMap הרשמי של ממשלת ישראל.
+              {lang === "he" ? 'גש למידע גיאוגרפי, גוש וחלקה, תצלומי אוויר ושכבות ממשלתיות נוספות - ישירות מתוך הפורטל. מבוסס על GovMap הרשמי של ממשלת ישראל.' :
+                lang === "en" ? "Access geographic data, parcels, aerial photos and more government layers - directly from the portal. Powered by official Israel GovMap." :
+                lang === "fr" ? "Accédez aux données géographiques, parcelles, photos aériennes et plus de couches gouvernementales - directement depuis le portail. Propulsé par GovMap officiel." :
+                lang === "es" ? "Accede a datos geográficos, parcelas, fotos aéreas y más capas gubernamentales - directamente desde el portal. Impulsado por GovMap oficial." :
+                lang === "ru" ? "Доступ к географическим данным, участкам, аэрофото и другим государственным слоям прямо из портала. На базе официальной GovMap." :
+                "الوصول إلى البيانات الجغرافية والقطع والصور الجوية والمزيد من الطبقات الحكومية - مباشرة من البوابة. مدعوم بـ GovMap الرسمي."}
             </p>
           </div>
 
           <GovMapEmbed
             mode="cadastre"
             height="480px"
-            title="GovMap - מערכת המפות הציבורית"
+            title="GovMap"
             allowDraw={false}
           />
 
           <div className="mt-8 grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
             {[
-              { icon: "layers", label: "גוש וחלקה", href: "/catalog/cadastral-info" },
-              { icon: "photo_camera", label: "תצלומי אוויר", href: "/catalog/aerial-photos" },
-              { icon: "terrain", label: "מודלי גובה", href: "/catalog?category=orthophoto" },
-              { icon: "sensors", label: "תחנות CORS", href: "/catalog/cors-subscription" }
-            ].map((q) => (
-              <Link
-                key={q.href}
-                href={q.href}
-                className="shine wow-tilt bg-white rounded-2xl p-4 sm:p-5 border border-outline-variant/50 hover:border-secondary/40 hover:shadow-lg transition-all flex flex-col items-center text-center gap-2"
-                data-tooltip={`עבור לשירות "${q.label}"`}
-                data-tooltip-position="bottom"
-              >
-                <span className="material-symbols-outlined text-secondary text-[28px] sm:text-[32px]">
-                  {q.icon}
-                </span>
-                <span className="text-xs sm:text-sm font-bold text-primary">
-                  {q.label}
-                </span>
-              </Link>
-            ))}
+              { icon: "layers", labelKey: "categories.parcels", href: "/catalog/cadastral-info",
+                label: { he: 'גוש וחלקה', en: 'Block & Parcel', fr: 'Bloc & Parcelle', es: 'Bloque y Parcela', ru: 'Блок и участок', ar: 'قطعة وبلوك' } },
+              { icon: "photo_camera", labelKey: "categories.aerial", href: "/catalog/aerial-photos",
+                label: { he: 'תצלומי אוויר', en: 'Aerial Photos', fr: 'Photos aériennes', es: 'Fotos aéreas', ru: 'Аэрофото', ar: 'صور جوية' } },
+              { icon: "terrain", labelKey: "categories.elevation", href: "/catalog?category=orthophoto",
+                label: { he: 'מודלי גובה', en: 'Elevation Models', fr: 'Modèles d\'élévation', es: 'Modelos elevación', ru: 'Модели высот', ar: 'نماذج ارتفاع' } },
+              { icon: "sensors", labelKey: "categories.cors", href: "/catalog/cors-subscription",
+                label: { he: 'תחנות CORS', en: 'CORS Stations', fr: 'Stations CORS', es: 'Estaciones CORS', ru: 'Станции CORS', ar: 'محطات CORS' } }
+            ].map((q) => {
+              const label = q.label[lang] || q.label.he;
+              return (
+                <Link
+                  key={q.href}
+                  href={q.href}
+                  className="shine wow-tilt bg-white rounded-2xl p-4 sm:p-5 border border-outline-variant/50 hover:border-secondary/40 hover:shadow-lg transition-all flex flex-col items-center text-center gap-2"
+                  data-tooltip={label}
+                  data-tooltip-position="bottom"
+                >
+                  <span className="material-symbols-outlined text-secondary text-[28px] sm:text-[32px]">
+                    {q.icon}
+                  </span>
+                  <span className="text-xs sm:text-sm font-bold text-primary">
+                    {label}
+                  </span>
+                </Link>
+              );
+            })}
           </div>
         </div>
       </section>
@@ -443,27 +457,30 @@ export default function HomePage() {
         <div className="max-w-container-max-width mx-auto px-4 md:px-margin-desktop">
           <div className="text-center mb-12 sm:mb-16 md:mb-24">
             <h2 id="categories-heading" className="text-2xl sm:text-3xl md:text-4xl font-black text-primary mb-4">
-              קטלוג הקטגוריות
+              {t("categories.title")}
             </h2>
             <div className="w-16 h-1 bg-secondary mx-auto rounded-full" aria-hidden="true" />
           </div>
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4 md:gap-6">
-            {categories.map((cat) => (
-              <Link
-                key={cat.id}
-                href={`/catalog?category=${cat.id}`}
-                className="shine group flex flex-col items-center p-5 sm:p-6 md:p-10 bg-surface rounded-2xl sm:rounded-3xl hover:bg-primary transition-all duration-300 min-h-[120px] justify-center"
-                data-tooltip={`סינון הקטלוג לפי קטגוריית "${cat.label}"`}
-                data-tooltip-position="bottom"
-              >
-                <span className="material-symbols-outlined text-[28px] sm:text-[32px] md:text-[40px] text-secondary mb-3 sm:mb-4 md:mb-6 group-hover:text-white transition-colors">
-                  {cat.icon}
-                </span>
-                <span className="font-bold text-primary group-hover:text-white transition-colors text-xs sm:text-sm md:text-base text-center leading-tight">
-                  {cat.label}
-                </span>
-              </Link>
-            ))}
+            {categories.map((cat) => {
+              const localizedLabel = getCategoryLabel(cat.id, cat.label, lang);
+              return (
+                <Link
+                  key={cat.id}
+                  href={`/catalog?category=${cat.id}`}
+                  className="shine group flex flex-col items-center p-5 sm:p-6 md:p-10 bg-surface rounded-2xl sm:rounded-3xl hover:bg-primary transition-all duration-300 min-h-[120px] justify-center"
+                  data-tooltip={localizedLabel}
+                  data-tooltip-position="bottom"
+                >
+                  <span className="material-symbols-outlined text-[28px] sm:text-[32px] md:text-[40px] text-secondary mb-3 sm:mb-4 md:mb-6 group-hover:text-white transition-colors">
+                    {cat.icon}
+                  </span>
+                  <span className="font-bold text-primary group-hover:text-white transition-colors text-xs sm:text-sm md:text-base text-center leading-tight">
+                    {localizedLabel}
+                  </span>
+                </Link>
+              );
+            })}
           </div>
         </div>
       </section>
@@ -472,28 +489,28 @@ export default function HomePage() {
       <section className="py-16 sm:py-20 md:py-32 bg-surface-container relative">
         <div className="max-w-container-max-width mx-auto px-4 md:px-margin-desktop text-center">
           <h2 className="text-2xl sm:text-3xl md:text-5xl font-extrabold text-primary mb-4 sm:mb-6">
-            מוכן להתחיל?
+            {t("cta.ready")}
           </h2>
           <p className="text-on-surface-variant text-sm sm:text-base md:text-lg max-w-2xl mx-auto mb-8 sm:mb-10">
-            הצטרף לאלפי המודדים, המהנדסים ואנשי המקצוע שכבר עובדים עם הפורטל הלאומי של מפ&quot;י.
+            {t("cta.subtitle")}
           </p>
           <div className="flex flex-col sm:flex-row-reverse items-center justify-center gap-3 sm:gap-4">
             <Link
               href="/login"
               className="shine shine-glow w-full sm:w-auto bg-primary text-white px-6 sm:px-8 py-3.5 sm:py-4 rounded-full font-bold flex items-center justify-center gap-2 hover:bg-secondary transition-colors shadow-xl min-h-[48px]"
-              data-tooltip='התחברות מאובטחת באמצעות מערכת ההזדהות הלאומית'
+              data-tooltip={t("cta.loginNational")}
               data-tooltip-position="bottom"
             >
-              <span>התחבר עם הזדהות לאומית</span>
+              <span>{t("cta.loginNational")}</span>
               <span className="material-symbols-outlined">login</span>
             </Link>
             <Link
               href="/catalog"
               className="shine text-primary font-bold flex items-center gap-2 hover:text-secondary transition-colors px-3 py-2 rounded-lg min-h-[44px]"
-              data-tooltip="צפייה בקטלוג מלא - ללא צורך בהזדהות"
+              data-tooltip={t("cta.browseFree")}
               data-tooltip-position="bottom"
             >
-              <span>עיין בקטלוג ללא הזדהות</span>
+              <span>{t("cta.browseFree")}</span>
               <span className="material-symbols-outlined">arrow_back</span>
             </Link>
           </div>
