@@ -180,7 +180,77 @@ type TranslationKeys =
   // Quote modal & service hover
   | "quote.cta"
   // Login features list (was per-language object)
-  | "login.feat.security" | "login.feat.idCard" | "login.feat.history" | "login.feat.itStandard";
+  | "login.feat.security" | "login.feat.idCard" | "login.feat.history" | "login.feat.itStandard"
+  // Customer Segments (new sales-driven navigation)
+  | "nav.segments" | "nav.admin"
+  | "seg.title" | "seg.subtitle" | "seg.eyebrow" | "seg.choose"
+  | "seg.citizen.name" | "seg.citizen.short" | "seg.citizen.desc"
+  | "seg.surveyor.name" | "seg.surveyor.short" | "seg.surveyor.desc"
+  | "seg.municipality.name" | "seg.municipality.short" | "seg.municipality.desc"
+  | "seg.government.name" | "seg.government.short" | "seg.government.desc"
+  | "seg.professional.name" | "seg.professional.short" | "seg.professional.desc"
+  | "seg.business.name" | "seg.business.short" | "seg.business.desc"
+  | "seg.popular" | "seg.entry" | "seg.tier" | "seg.tierCitizen" | "seg.tierPro" | "seg.tierEnterprise" | "seg.tierGov"
+  | "seg.relevantServices" | "seg.specialPricing" | "seg.dedicatedContact" | "seg.contracts" | "seg.benefits"
+  | "seg.startHere" | "seg.talkToSales" | "seg.exampleSavings" | "seg.discount"
+  | "seg.contractsMulti" | "seg.contractsMultiSub" | "seg.subscriptionBenefit" | "seg.priorityChannel"
+  | "seg.includedKpis" | "seg.customSla" | "seg.dedicatedAccountMgr"
+  | "seg.useCase" | "seg.useCases" | "seg.salesContact" | "seg.requestProposal" | "seg.bookMeeting"
+  // Admin / Internal Sales Tool
+  | "admin.title" | "admin.subtitle" | "admin.welcomeBack"
+  | "admin.module.pricing" | "admin.module.approvals" | "admin.module.subscriptions"
+  | "admin.module.sales" | "admin.module.content" | "admin.module.dashboard"
+  | "admin.module.pricingSub" | "admin.module.approvalsSub" | "admin.module.subscriptionsSub"
+  | "admin.module.salesSub" | "admin.module.contentSub"
+  | "admin.kpi.revenueYtd" | "admin.kpi.pipeline" | "admin.kpi.winRate" | "admin.kpi.pendingApprovals"
+  | "admin.kpi.activeSubs" | "admin.kpi.renewalsDue" | "admin.kpi.avgDealSize" | "admin.kpi.salesCycle"
+  // Pricing module
+  | "price.title" | "price.subtitle" | "price.search" | "price.newRule" | "price.import" | "price.export"
+  | "price.col.service" | "price.col.segment" | "price.col.basePrice" | "price.col.discount"
+  | "price.col.indexation" | "price.col.exceptionLimit" | "price.col.effective" | "price.col.actions"
+  | "price.indexation.cpi" | "price.indexation.fixed" | "price.indexation.none"
+  | "price.formula" | "price.formulaHint" | "price.activeRules" | "price.exceptions" | "price.history"
+  | "price.bulkDiscount" | "price.bulkDiscountSub" | "price.tier.standard" | "price.tier.gold" | "price.tier.platinum"
+  // Approval workflows
+  | "appr.title" | "appr.subtitle" | "appr.queue" | "appr.history" | "appr.metrics"
+  | "appr.col.quoteId" | "appr.col.customer" | "appr.col.segment" | "appr.col.service" | "appr.col.amount"
+  | "appr.col.discount" | "appr.col.level" | "appr.col.aging" | "appr.col.action"
+  | "appr.level.sales" | "appr.level.division" | "appr.level.cfo" | "appr.level.ceo"
+  | "appr.status.pending" | "appr.status.approved" | "appr.status.rejected" | "appr.status.exception"
+  | "appr.btn.approve" | "appr.btn.reject" | "appr.btn.escalate" | "appr.btn.requestInfo"
+  | "appr.policy" | "appr.policyTitle" | "appr.policyRule1" | "appr.policyRule2"
+  | "appr.policyRule3" | "appr.policyRule4" | "appr.responsibilities" | "appr.respSales" | "appr.respDivision"
+  | "appr.flowTitle" | "appr.flow.step1" | "appr.flow.step2" | "appr.flow.step3" | "appr.flow.step4"
+  | "appr.flowStep1Sub" | "appr.flowStep2Sub" | "appr.flowStep3Sub" | "appr.flowStep4Sub"
+  // Subscriptions
+  | "sub.title" | "sub.subtitle" | "sub.active" | "sub.renewalsDue" | "sub.expired" | "sub.multiYear"
+  | "sub.col.customer" | "sub.col.service" | "sub.col.startDate" | "sub.col.endDate"
+  | "sub.col.value" | "sub.col.renewalStatus" | "sub.col.actions"
+  | "sub.renewal.active" | "sub.renewal.due60" | "sub.renewal.due30" | "sub.renewal.expired" | "sub.renewal.renewed"
+  | "sub.btn.renew" | "sub.btn.contact" | "sub.btn.viewContract"
+  | "sub.totalArr" | "sub.churnRate" | "sub.expansion" | "sub.netRetention"
+  // Sales dashboard
+  | "sales.title" | "sales.subtitle" | "sales.thisMonth" | "sales.lastMonth" | "sales.thisQuarter" | "sales.thisYear"
+  | "sales.revenueByChannel" | "sales.revenueByProduct" | "sales.revenueBySegment" | "sales.targetVsActual"
+  | "sales.topProducts" | "sales.topCustomers" | "sales.pipelineByStage" | "sales.conversionFunnel"
+  | "sales.formula.revenue" | "sales.formula.arr" | "sales.formula.winRate" | "sales.formula.cac"
+  | "sales.respMatrix" | "sales.respMatrixTitle" | "sales.respMatrixSub"
+  | "sales.role.sales" | "sales.role.division" | "sales.role.both"
+  | "sales.stage.lead" | "sales.stage.qualified" | "sales.stage.quote" | "sales.stage.negotiation" | "sales.stage.won"
+  | "sales.target" | "sales.actual" | "sales.gap" | "sales.attainment"
+  // Content management
+  | "cnt.title" | "cnt.subtitle" | "cnt.servicePages" | "cnt.faqs" | "cnt.priceLists" | "cnt.deliveryTimes"
+  | "cnt.col.page" | "cnt.col.owner" | "cnt.col.lastUpdated" | "cnt.col.nextReview" | "cnt.col.status"
+  | "cnt.status.current" | "cnt.status.review" | "cnt.status.outdated"
+  | "cnt.owner.sales" | "cnt.owner.geo" | "cnt.owner.cadastre" | "cnt.owner.it"
+  | "cnt.policies" | "cnt.policyTitle" | "cnt.policyText"
+  // Data migration (historical)
+  | "mig.title" | "mig.subtitle" | "mig.scope" | "mig.years"
+  | "mig.entity.orders" | "mig.entity.quotes" | "mig.entity.subs" | "mig.entity.customers" | "mig.entity.invoices"
+  | "mig.col.entity" | "mig.col.years" | "mig.col.records" | "mig.col.structure" | "mig.col.status"
+  | "mig.status.planned" | "mig.status.inProgress" | "mig.status.done"
+  // Home/page additions
+  | "home.shopByNeed" | "home.shopByNeedSub" | "home.salesTeam";
 
 const dict: Record<TranslationKeys, Record<Lang, string>> = {
   // Navigation
@@ -747,7 +817,276 @@ const dict: Record<TranslationKeys, Record<Lang, string>> = {
   "login.feat.security": { he: 'אבטחה ברמת המדינה (SAML 2.0)', en: 'State-level security (SAML 2.0)', fr: 'Sécurité d\'État (SAML 2.0)', es: 'Seguridad de Estado (SAML 2.0)', ru: 'Гос. безопасность (SAML 2.0)', ar: 'أمان على مستوى الدولة (SAML 2.0)' },
   "login.feat.idCard": { he: 'התחברות עם ת.ז. + סיסמה / כרטיס חכם', en: 'Login with national ID + password / smart card', fr: 'Connexion par ID national + mot de passe', es: 'Acceso con ID nacional + contraseña', ru: 'Вход по нац. ID + пароль / смарт-карта', ar: 'دخول بالهوية + كلمة مرور' },
   "login.feat.history": { he: 'שמירה אוטומטית של ההזמנות שלך', en: 'Automatic order history sync', fr: 'Synchro automatique des commandes', es: 'Sincronización automática', ru: 'Авто-синхронизация заказов', ar: 'مزامنة الطلبات تلقائياً' },
-  "login.feat.itStandard": { he: 'תקני יה"ב 5.35', en: 'Compliant with IT-Security 5.35', fr: 'Conforme IT-Security 5.35', es: 'Conforme IT-Security 5.35', ru: 'Стандарт IT-Security 5.35', ar: 'متوافق مع IT-Security 5.35' }
+  "login.feat.itStandard": { he: 'תקני יה"ב 5.35', en: 'Compliant with IT-Security 5.35', fr: 'Conforme IT-Security 5.35', es: 'Conforme IT-Security 5.35', ru: 'Стандарт IT-Security 5.35', ar: 'متوافق مع IT-Security 5.35' },
+
+  // Customer Segments
+  "nav.segments": { he: 'לפי סוג לקוח', en: 'By Customer Type', fr: 'Par type de client', es: 'Por tipo de cliente', ru: 'По типу клиента', ar: 'حسب نوع العميل' },
+  "nav.admin": { he: 'אזור ניהול', en: 'Admin', fr: 'Administration', es: 'Administración', ru: 'Администрирование', ar: 'الإدارة' },
+  "seg.title": { he: 'בחר את סוג הלקוח שלך', en: 'Choose your customer type', fr: 'Choisissez votre type de client', es: 'Elige tu tipo de cliente', ru: 'Выберите тип клиента', ar: 'اختر نوع العميل' },
+  "seg.subtitle": { he: 'התאמנו עבורך מסלול ייעודי לפי סוג הפעילות שלך - שירותים רלוונטיים, מחירונים מותאמים, ערוצי שירות ייעודיים והסכמי מסגרת.', en: 'We tailored a dedicated journey per customer type - relevant services, custom pricing, dedicated channels and framework agreements.', fr: 'Parcours dédié par type : services pertinents, tarifs adaptés, canaux dédiés et accords-cadres.', es: 'Recorrido dedicado por tipo: servicios relevantes, precios personalizados, canales dedicados y acuerdos marco.', ru: 'Персональный путь по типу: релевантные услуги, индивидуальные цены, выделенные каналы и рамочные договоры.', ar: 'مسار مخصص حسب النوع: خدمات ذات صلة، أسعار مخصصة، قنوات مخصصة، واتفاقيات إطارية.' },
+  "seg.eyebrow": { he: 'מסלולים מותאמים', en: 'Tailored Journeys', fr: 'Parcours sur mesure', es: 'Recorridos personalizados', ru: 'Персональные пути', ar: 'مسارات مخصصة' },
+  "seg.choose": { he: 'בחר את הסגמנט שמתאר אותך הכי טוב כדי לקבל חוויה ממוקדת ומחירים מותאמים', en: 'Pick the segment that fits you to get a focused experience and matched pricing', fr: 'Choisissez le segment qui vous correspond', es: 'Elige el segmento que te describe', ru: 'Выберите подходящий сегмент', ar: 'اختر القطاع الأنسب' },
+
+  "seg.citizen.name": { he: 'אזרח פרטי', en: 'Private Citizen', fr: 'Citoyen privé', es: 'Ciudadano particular', ru: 'Частное лицо', ar: 'مواطن خاص' },
+  "seg.citizen.short": { he: 'אזרח פרטי המבקש מפה, תצלום אוויר או תעודה', en: 'Need a map, aerial photo or certificate', fr: 'Pour une carte, photo aérienne ou certificat', es: 'Mapa, foto aérea o certificado', ru: 'Карта, аэрофото или сертификат', ar: 'خريطة، صورة جوية أو شهادة' },
+  "seg.citizen.desc": { he: 'הזמנת מפות, תצלומי אוויר, גושים וחלקות, תעודות מקרקעין - תוך דקות, בתשלום מאובטח ובמחירי קמעונאות.', en: 'Order maps, aerial photos, parcels and land certificates - in minutes, secure payment, retail prices.', fr: 'Commandez cartes, photos aériennes, parcelles et certificats fonciers - en quelques minutes.', es: 'Pide mapas, fotos aéreas, parcelas y certificados de tierras - en minutos.', ru: 'Заказ карт, аэрофото, участков и сертификатов - за минуты.', ar: 'اطلب الخرائط والصور الجوية وقطع الأراضي والشهادات - خلال دقائق.' },
+
+  "seg.surveyor.name": { he: 'מודד מוסמך', en: 'Licensed Surveyor', fr: 'Géomètre licencié', es: 'Topógrafo licenciado', ru: 'Лицензированный геодезист', ar: 'مساح معتمد' },
+  "seg.surveyor.short": { he: 'מודד / משרד מדידות עם פעילות שוטפת', en: 'Surveyor / measurement office with ongoing activity', fr: 'Géomètre / bureau de mesure', es: 'Topógrafo / oficina de mediciones', ru: 'Геодезист / землемерное бюро', ar: 'مساح / مكتب قياسات' },
+  "seg.surveyor.desc": { he: 'מנויי CORS, תצ"ר, גישה ל-API נתונים, מחירונים מוזלים והסכם שירות מקצועי. כולל סנכרון אוטומטי לתוכנות המדידה (AutoCAD, Civil 3D).', en: 'CORS subscriptions, cadastre plans, data API access, discounted pricing and professional SLA. Includes auto-sync to survey software (AutoCAD, Civil 3D).', fr: 'Abonnements CORS, plans cadastraux, API, tarifs préférentiels et SLA professionnel.', es: 'Suscripciones CORS, planes catastrales, API, precios reducidos y SLA profesional.', ru: 'Подписки CORS, кадастровые планы, API, льготные цены и профессиональный SLA.', ar: 'اشتراكات CORS، مخططات مساحية، واجهات API، أسعار مخفضة، ومستوى خدمة احترافي.' },
+
+  "seg.municipality.name": { he: 'רשות מקומית', en: 'Local Authority', fr: 'Collectivité locale', es: 'Autoridad local', ru: 'Местная власть', ar: 'سلطة محلية' },
+  "seg.municipality.short": { he: 'עירייה, מועצה אזורית או רשות מקומית', en: 'Municipality, regional council or local authority', fr: 'Municipalité, conseil régional', es: 'Municipio, consejo regional', ru: 'Муниципалитет, региональный совет', ar: 'بلدية، مجلس إقليمي' },
+  "seg.municipality.desc": { he: 'הסכמי מסגרת רב-שנתיים, מחירונים מיוחדים, גישה לכל שכבות ה-GIS, ערוץ שירות ייעודי ומענה מהיר. כולל הדרכות לעובדים ותמיכה בפרויקטים גדולים.', en: 'Multi-year framework agreements, special pricing, full GIS access, dedicated channel and rapid response. Includes staff training and large-project support.', fr: 'Accords-cadres pluriannuels, tarifs spéciaux, accès GIS complet, canal dédié et réponse rapide.', es: 'Acuerdos marco plurianuales, precios especiales, acceso GIS, canal dedicado y respuesta rápida.', ru: 'Многолетние рамочные договоры, спецтарифы, полный доступ к GIS, выделенный канал и быстрый отклик.', ar: 'اتفاقيات إطارية متعددة السنوات، أسعار خاصة، وصول كامل لـ GIS، قناة مخصصة، واستجابة سريعة.' },
+
+  "seg.government.name": { he: 'משרד ממשלתי', en: 'Government Ministry', fr: 'Ministère', es: 'Ministerio', ru: 'Министерство', ar: 'وزارة حكومية' },
+  "seg.government.short": { he: 'משרד ממשלתי, יחידת סמך או חברה ממשלתית', en: 'Government ministry, agency or state-owned company', fr: 'Ministère, agence ou société publique', es: 'Ministerio, agencia o empresa pública', ru: 'Министерство, агентство или госкомпания', ar: 'وزارة، هيئة، أو شركة حكومية' },
+  "seg.government.desc": { he: 'אינטגרציה מובנית עם מערכות ממשלתיות, שיתופי פעולה רגולטוריים, ניהול נכסים, סטטיסטיקה ותכנון לאומי. כפוף לחוק רכש ממשלתי - מסלול ייעודי ב-Mtuna.', en: 'Built-in integration with government systems, regulatory cooperation, asset management, statistics and national planning. Subject to gov procurement - dedicated Mtuna track.', fr: 'Intégration avec les systèmes gouvernementaux, coopération réglementaire et planification nationale.', es: 'Integración con sistemas gubernamentales, cooperación regulatoria y planificación nacional.', ru: 'Интеграция с государственными системами, регуляторное сотрудничество, нац. планирование.', ar: 'تكامل مع الأنظمة الحكومية، تعاون تنظيمي، وتخطيط وطني.' },
+
+  "seg.professional.name": { he: 'שמאי / מהנדס / אדריכל', en: 'Appraiser / Engineer / Architect', fr: 'Évaluateur / Ingénieur / Architecte', es: 'Tasador / Ingeniero / Arquitecto', ru: 'Оценщик / Инженер / Архитектор', ar: 'مثمن / مهندس / معماري' },
+  "seg.professional.short": { he: 'בעלי מקצוע שצורכים מידע גיאוגרפי תכוף', en: 'Professionals who consume geo data frequently', fr: 'Professionnels consommateurs réguliers de géo-données', es: 'Profesionales que consumen geo-datos', ru: 'Профессионалы-потребители геоданных', ar: 'متخصصون يستهلكون البيانات الجغرافية' },
+  "seg.professional.desc": { he: 'חבילות מנוי לצריכת מפות וקדסטר, תעריפים מוזלים על נפחים, יצוא ל-CAD ו-GIS, חשבונית מס למשרד. כולל גישה מהירה לשכבות תכנוניות (תב"ע, רישוי).', en: 'Subscription packages for maps & cadastre, volume discounts, CAD/GIS export, business invoicing. Includes fast access to planning layers.', fr: 'Forfaits abonnement, remises de volume, export CAD/GIS et facturation pro.', es: 'Paquetes de suscripción, descuentos por volumen, exportación CAD/GIS y facturación profesional.', ru: 'Пакеты подписки, скидки на объёмы, экспорт CAD/GIS и счёт юр. лицу.', ar: 'باقات اشتراك، خصومات حجم، تصدير CAD/GIS، وفواتير للأعمال.' },
+
+  "seg.business.name": { he: 'לקוח עסקי', en: 'Business Customer', fr: 'Client professionnel', es: 'Cliente empresarial', ru: 'Бизнес-клиент', ar: 'عميل تجاري' },
+  "seg.business.short": { he: 'חברה פרטית או ציבורית', en: 'Private or public company', fr: 'Société privée ou publique', es: 'Empresa privada o pública', ru: 'Частная или публичная компания', ar: 'شركة خاصة أو عامة' },
+  "seg.business.desc": { he: 'הסכמי שירות מותאמים, מחירונים נפחיים, מודל הזמנה דרך API, חשבונאות מרוכזת ומנהל לקוח ייעודי. מתאים לחברות נדל"ן, אנרגיה, תשתיות, היי-טק ופיננסים.', en: 'Custom service agreements, volume pricing, API ordering, central billing and dedicated account manager. Real-estate, energy, infrastructure, hi-tech, finance.', fr: 'Accords sur mesure, prix volume, API, facturation centralisée et gestionnaire de compte.', es: 'Acuerdos a medida, precios por volumen, API, facturación central y gerente de cuenta.', ru: 'Индивид. договоры, оптовые цены, API, центральный биллинг и менеджер.', ar: 'اتفاقيات مخصصة، أسعار حجمية، واجهات API، فوترة مركزية، ومدير حساب.' },
+
+  "seg.popular": { he: 'הכי פופולרי', en: 'Most popular', fr: 'Le plus populaire', es: 'Más popular', ru: 'Самый популярный', ar: 'الأكثر شيوعاً' },
+  "seg.entry": { he: 'נקודת כניסה', en: 'Entry point', fr: 'Point d\'entrée', es: 'Punto de entrada', ru: 'Точка входа', ar: 'نقطة الدخول' },
+  "seg.tier": { he: 'רמה', en: 'Tier', fr: 'Niveau', es: 'Nivel', ru: 'Уровень', ar: 'المستوى' },
+  "seg.tierCitizen": { he: 'אזרחי', en: 'Retail', fr: 'Retail', es: 'Retail', ru: 'Розничный', ar: 'فردي' },
+  "seg.tierPro": { he: 'מקצועי', en: 'Professional', fr: 'Professionnel', es: 'Profesional', ru: 'Профессиональный', ar: 'مهني' },
+  "seg.tierEnterprise": { he: 'אנטרפרייז', en: 'Enterprise', fr: 'Entreprise', es: 'Empresarial', ru: 'Корпоративный', ar: 'مؤسسي' },
+  "seg.tierGov": { he: 'ממשלתי', en: 'Government', fr: 'Gouvernement', es: 'Gobierno', ru: 'Правительственный', ar: 'حكومي' },
+  "seg.relevantServices": { he: 'השירותים הרלוונטיים עבורך', en: 'Services relevant for you', fr: 'Services pertinents', es: 'Servicios relevantes', ru: 'Релевантные услуги', ar: 'الخدمات ذات الصلة' },
+  "seg.specialPricing": { he: 'מחירונים מיוחדים', en: 'Special pricing', fr: 'Tarifs spéciaux', es: 'Precios especiales', ru: 'Спецтарифы', ar: 'أسعار خاصة' },
+  "seg.dedicatedContact": { he: 'איש קשר ייעודי', en: 'Dedicated contact', fr: 'Contact dédié', es: 'Contacto dedicado', ru: 'Выделенный контакт', ar: 'جهة اتصال مخصصة' },
+  "seg.contracts": { he: 'הסכמי מסגרת', en: 'Framework agreements', fr: 'Accords-cadres', es: 'Acuerdos marco', ru: 'Рамочные договоры', ar: 'اتفاقيات إطارية' },
+  "seg.benefits": { he: 'הטבות בסגמנט', en: 'Segment benefits', fr: 'Avantages du segment', es: 'Beneficios del segmento', ru: 'Преимущества сегмента', ar: 'مزايا القطاع' },
+  "seg.startHere": { he: 'התחל כאן', en: 'Start here', fr: 'Commencez ici', es: 'Empieza aquí', ru: 'Начать здесь', ar: 'ابدأ هنا' },
+  "seg.talkToSales": { he: 'דבר עם איש מכירות', en: 'Talk to sales', fr: 'Parler aux ventes', es: 'Hablar con ventas', ru: 'Связаться с продажами', ar: 'تحدث مع المبيعات' },
+  "seg.exampleSavings": { he: 'חיסכון לדוגמה', en: 'Example savings', fr: 'Économies exemple', es: 'Ahorros ejemplo', ru: 'Пример экономии', ar: 'مثال على التوفير' },
+  "seg.discount": { he: 'הנחה', en: 'Discount', fr: 'Remise', es: 'Descuento', ru: 'Скидка', ar: 'خصم' },
+  "seg.contractsMulti": { he: 'הסכמים רב-שנתיים', en: 'Multi-year agreements', fr: 'Accords pluriannuels', es: 'Acuerdos plurianuales', ru: 'Многолетние договоры', ar: 'اتفاقيات متعددة السنوات' },
+  "seg.contractsMultiSub": { he: 'נעילת מחיר ל-3 שנים + עדכוני שירות חינם', en: 'Price lock for 3 years + free service updates', fr: 'Prix bloqué 3 ans + MAJ gratuites', es: 'Precio fijo 3 años + actualizaciones gratis', ru: 'Фиксация цены на 3 года + бесплатные обновления', ar: 'تثبيت السعر لمدة 3 سنوات + تحديثات مجانية' },
+  "seg.subscriptionBenefit": { he: 'תשלום חודשי קבוע - ללא הפתעות', en: 'Fixed monthly fee - no surprises', fr: 'Forfait mensuel fixe', es: 'Tarifa mensual fija', ru: 'Фиксированная ежемесячная плата', ar: 'رسوم شهرية ثابتة' },
+  "seg.priorityChannel": { he: 'ערוץ עדיפות לתמיכה', en: 'Priority support channel', fr: 'Canal prioritaire', es: 'Canal prioritario', ru: 'Приоритетный канал', ar: 'قناة دعم ذات أولوية' },
+  "seg.includedKpis": { he: 'דוחות KPI חודשיים', en: 'Monthly KPI reports', fr: 'Rapports KPI mensuels', es: 'Informes KPI mensuales', ru: 'Ежемесячные отчёты KPI', ar: 'تقارير KPI شهرية' },
+  "seg.customSla": { he: 'SLA מותאם אישית', en: 'Custom SLA', fr: 'SLA personnalisé', es: 'SLA personalizado', ru: 'Индивидуальный SLA', ar: 'اتفاقية مستوى خدمة مخصصة' },
+  "seg.dedicatedAccountMgr": { he: 'מנהל לקוח אישי', en: 'Dedicated account manager', fr: 'Gestionnaire de compte dédié', es: 'Gerente de cuenta dedicado', ru: 'Персональный менеджер', ar: 'مدير حساب مخصص' },
+  "seg.useCase": { he: 'תרחיש שימוש', en: 'Use case', fr: 'Cas d\'usage', es: 'Caso de uso', ru: 'Сценарий использования', ar: 'حالة استخدام' },
+  "seg.useCases": { he: 'תרחישי שימוש פופולריים', en: 'Popular use cases', fr: 'Cas d\'usage populaires', es: 'Casos populares', ru: 'Популярные сценарии', ar: 'حالات الاستخدام الشائعة' },
+  "seg.salesContact": { he: 'צור קשר עם מנהל מכירות', en: 'Contact sales manager', fr: 'Contacter un commercial', es: 'Contactar al gerente de ventas', ru: 'Связаться с менеджером', ar: 'تواصل مع مدير المبيعات' },
+  "seg.requestProposal": { he: 'בקש הצעה מותאמת', en: 'Request tailored proposal', fr: 'Demander une proposition', es: 'Solicitar propuesta', ru: 'Запросить предложение', ar: 'طلب عرض مخصص' },
+  "seg.bookMeeting": { he: 'קבע פגישה', en: 'Book a meeting', fr: 'Réserver une réunion', es: 'Reservar reunión', ru: 'Назначить встречу', ar: 'حجز اجتماع' },
+
+  // Admin
+  "admin.title": { he: 'אזור ניהול - מערכת המכירות של מפ"י', en: 'Admin - MAPI sales system', fr: 'Administration - système commercial MAPI', es: 'Administración - sistema de ventas MAPI', ru: 'Администрирование - продажи MAPI', ar: 'الإدارة - نظام مبيعات MAPI' },
+  "admin.subtitle": { he: 'מודולים פנימיים לעובדי מפ"י: מחירונים, אישורים, מנויים, דשבורד מכירות וניהול תוכן.', en: 'Internal modules for MAPI staff: pricing, approvals, subscriptions, sales dashboard, content.', fr: 'Modules internes MAPI : tarification, approbations, abonnements, tableau de bord, contenu.', es: 'Módulos internos MAPI: precios, aprobaciones, suscripciones, panel, contenido.', ru: 'Внутренние модули MAPI: цены, утверждения, подписки, дашборд, контент.', ar: 'وحدات داخلية لـ MAPI: التسعير، الموافقات، الاشتراكات، لوحة المبيعات، المحتوى.' },
+  "admin.welcomeBack": { he: 'שלום שרון, מנהלת מכירות', en: 'Hi Sharon, Sales Manager', fr: 'Bonjour Sharon, directrice commerciale', es: 'Hola Sharon, gerente de ventas', ru: 'Здравствуйте, Шарон', ar: 'مرحباً شارون، مديرة المبيعات' },
+  "admin.module.pricing": { he: 'ניהול מחירונים', en: 'Pricing Management', fr: 'Gestion des prix', es: 'Gestión de precios', ru: 'Управление ценами', ar: 'إدارة الأسعار' },
+  "admin.module.pricingSub": { he: 'מחירונים, הצמדות, הנחות ואישורי חריגה', en: 'Price lists, indexation, discounts and exception approvals', fr: 'Tarifs, indexation, remises, dérogations', es: 'Listas de precios, indexación, descuentos, excepciones', ru: 'Прайс-листы, индексация, скидки, исключения', ar: 'قوائم الأسعار، الفهرسة، الخصومات، الاستثناءات' },
+  "admin.module.approvals": { he: 'אישורי הצעות מחיר', en: 'Quote Approvals', fr: 'Approbations devis', es: 'Aprobaciones de cotización', ru: 'Утверждение предложений', ar: 'موافقات عروض الأسعار' },
+  "admin.module.approvalsSub": { he: 'תהליך אישור לפי סוג מוצר, סכום וסוג לקוח', en: 'Workflow by product, amount and customer type', fr: 'Workflow par produit, montant, type de client', es: 'Flujo por producto, monto y cliente', ru: 'Маршрут по продукту, сумме, клиенту', ar: 'سير عمل حسب المنتج والمبلغ والعميل' },
+  "admin.module.subscriptions": { he: 'מנויים והסכמים', en: 'Subscriptions & Agreements', fr: 'Abonnements & accords', es: 'Suscripciones y acuerdos', ru: 'Подписки и договоры', ar: 'الاشتراكات والاتفاقيات' },
+  "admin.module.subscriptionsSub": { he: 'חידושים, לקוחות קבועים והסכמים רב-שנתיים', en: 'Renewals, recurring customers, multi-year agreements', fr: 'Renouvellements, clients réguliers, accords pluriannuels', es: 'Renovaciones, clientes recurrentes, acuerdos plurianuales', ru: 'Продления, постоянные клиенты, многолетние', ar: 'التجديدات، العملاء المتكررون، الاتفاقيات الممتدة' },
+  "admin.module.sales": { he: 'דשבורד מכירות', en: 'Sales Dashboard', fr: 'Tableau de bord commercial', es: 'Panel de ventas', ru: 'Дашборд продаж', ar: 'لوحة المبيعات' },
+  "admin.module.salesSub": { he: 'KPI, נוסחאות, חיבור להכנסות בפועל', en: 'KPIs, formulas, link to actual revenue', fr: 'KPI, formules, lien aux revenus réels', es: 'KPI, fórmulas, vínculo a ingresos reales', ru: 'KPI, формулы, связь с фактической выручкой', ar: 'مؤشرات الأداء، الصيغ، ربط الإيرادات الفعلية' },
+  "admin.module.content": { he: 'ניהול תוכן', en: 'Content Management', fr: 'Gestion de contenu', es: 'Gestión de contenido', ru: 'Управление контентом', ar: 'إدارة المحتوى' },
+  "admin.module.contentSub": { he: 'בעלות על דפי שירות, מחירים, FAQ וזמני אספקה', en: 'Ownership of service pages, prices, FAQs, delivery times', fr: 'Propriété des pages, prix, FAQ, délais', es: 'Propiedad de páginas, precios, FAQ, plazos', ru: 'Владение страницами, ценами, FAQ, сроками', ar: 'ملكية الصفحات والأسعار والأسئلة وأوقات التسليم' },
+  "admin.module.dashboard": { he: 'דף בית - ניהול', en: 'Admin Home', fr: 'Accueil admin', es: 'Inicio admin', ru: 'Главная админа', ar: 'الرئيسية - الإدارة' },
+  "admin.kpi.revenueYtd": { he: 'הכנסות מתחילת השנה', en: 'Revenue YTD', fr: 'CA cumulé', es: 'Ingresos YTD', ru: 'Выручка YTD', ar: 'الإيرادات منذ بداية السنة' },
+  "admin.kpi.pipeline": { he: 'פייפליין פתוח', en: 'Open pipeline', fr: 'Pipeline ouvert', es: 'Pipeline abierto', ru: 'Открытый pipeline', ar: 'خط الأنابيب المفتوح' },
+  "admin.kpi.winRate": { he: 'שיעור סגירה', en: 'Win rate', fr: 'Taux de gain', es: 'Tasa de éxito', ru: 'Win rate', ar: 'معدل الفوز' },
+  "admin.kpi.pendingApprovals": { he: 'אישורים ממתינים', en: 'Pending approvals', fr: 'Approbations en attente', es: 'Aprobaciones pendientes', ru: 'Ожидают утверждения', ar: 'موافقات معلقة' },
+  "admin.kpi.activeSubs": { he: 'מנויים פעילים', en: 'Active subscriptions', fr: 'Abonnements actifs', es: 'Suscripciones activas', ru: 'Активные подписки', ar: 'الاشتراكات النشطة' },
+  "admin.kpi.renewalsDue": { he: 'חידושים ב-60 יום', en: 'Renewals due in 60 days', fr: 'Renouvellements 60j', es: 'Renovaciones 60d', ru: 'Продления 60 дней', ar: 'تجديدات خلال 60 يوماً' },
+  "admin.kpi.avgDealSize": { he: 'שווי עסקה ממוצע', en: 'Average deal size', fr: 'Taille moyenne de deal', es: 'Tamaño promedio', ru: 'Средний размер сделки', ar: 'متوسط حجم الصفقة' },
+  "admin.kpi.salesCycle": { he: 'מחזור מכירה (ימים)', en: 'Sales cycle (days)', fr: 'Cycle de vente (j)', es: 'Ciclo de venta (d)', ru: 'Цикл продаж (дни)', ar: 'دورة المبيعات (أيام)' },
+
+  // Pricing module
+  "price.title": { he: 'ניהול מחירונים', en: 'Pricing Management', fr: 'Gestion des prix', es: 'Gestión de precios', ru: 'Управление ценами', ar: 'إدارة الأسعار' },
+  "price.subtitle": { he: 'מחירונים פעילים, הצמדות, הנחות לפי סגמנט וגבולות לאישורי חריגה', en: 'Active price lists, indexation, segment discounts and exception limits', fr: 'Tarifs actifs, indexation, remises et limites', es: 'Precios activos, indexación, descuentos y límites', ru: 'Активные цены, индексация, скидки и лимиты', ar: 'الأسعار النشطة، الفهرسة، الخصومات والحدود' },
+  "price.search": { he: 'חפש שירות / סגמנט...', en: 'Search service / segment...', fr: 'Rechercher...', es: 'Buscar...', ru: 'Поиск...', ar: 'ابحث...' },
+  "price.newRule": { he: 'הוסף כלל מחיר', en: 'Add pricing rule', fr: 'Ajouter règle', es: 'Añadir regla', ru: 'Добавить правило', ar: 'إضافة قاعدة' },
+  "price.import": { he: 'ייבא Excel', en: 'Import Excel', fr: 'Importer Excel', es: 'Importar Excel', ru: 'Импорт Excel', ar: 'استيراد Excel' },
+  "price.export": { he: 'ייצא Excel', en: 'Export Excel', fr: 'Exporter Excel', es: 'Exportar Excel', ru: 'Экспорт Excel', ar: 'تصدير Excel' },
+  "price.col.service": { he: 'שירות', en: 'Service', fr: 'Service', es: 'Servicio', ru: 'Услуга', ar: 'الخدمة' },
+  "price.col.segment": { he: 'סגמנט', en: 'Segment', fr: 'Segment', es: 'Segmento', ru: 'Сегмент', ar: 'القطاع' },
+  "price.col.basePrice": { he: 'מחיר בסיס', en: 'Base price', fr: 'Prix de base', es: 'Precio base', ru: 'Базовая цена', ar: 'السعر الأساس' },
+  "price.col.discount": { he: 'הנחה %', en: 'Discount %', fr: 'Remise %', es: 'Descuento %', ru: 'Скидка %', ar: 'خصم %' },
+  "price.col.indexation": { he: 'הצמדה', en: 'Indexation', fr: 'Indexation', es: 'Indexación', ru: 'Индексация', ar: 'الفهرسة' },
+  "price.col.exceptionLimit": { he: 'תקרת חריגה', en: 'Exception ceiling', fr: 'Plafond dérogation', es: 'Techo excepción', ru: 'Лимит исключения', ar: 'حد الاستثناء' },
+  "price.col.effective": { he: 'תקף מ-', en: 'Effective from', fr: 'Effectif depuis', es: 'Efectivo desde', ru: 'Действует с', ar: 'سارٍ من' },
+  "price.col.actions": { he: 'פעולות', en: 'Actions', fr: 'Actions', es: 'Acciones', ru: 'Действия', ar: 'الإجراءات' },
+  "price.indexation.cpi": { he: 'מדד מחירים לצרכן (CPI)', en: 'CPI', fr: 'IPC', es: 'IPC', ru: 'ИПЦ', ar: 'مؤشر أسعار المستهلك' },
+  "price.indexation.fixed": { he: 'קבוע (5%/שנה)', en: 'Fixed (5%/year)', fr: 'Fixe (5%/an)', es: 'Fijo (5%/año)', ru: 'Фикс. (5%/год)', ar: 'ثابت (5%/سنة)' },
+  "price.indexation.none": { he: 'ללא הצמדה', en: 'No indexation', fr: 'Aucune', es: 'Sin indexación', ru: 'Без индексации', ar: 'بدون فهرسة' },
+  "price.formula": { he: 'נוסחת מחיר', en: 'Pricing formula', fr: 'Formule de prix', es: 'Fórmula', ru: 'Формула цены', ar: 'صيغة السعر' },
+  "price.formulaHint": { he: 'מחיר סופי = מחיר בסיס × (1 - הנחה) × גורם הצמדה', en: 'Final price = base × (1 - discount) × indexation factor', fr: 'Prix final = base × (1 - remise) × facteur indexation', es: 'Precio final = base × (1 - desc.) × factor', ru: 'Итоговая = база × (1 - скидка) × индексация', ar: 'السعر النهائي = الأساسي × (1 - الخصم) × معامل الفهرسة' },
+  "price.activeRules": { he: 'כללים פעילים', en: 'Active rules', fr: 'Règles actives', es: 'Reglas activas', ru: 'Активные правила', ar: 'القواعد النشطة' },
+  "price.exceptions": { he: 'חריגות פתוחות', en: 'Open exceptions', fr: 'Dérogations ouvertes', es: 'Excepciones abiertas', ru: 'Открытые исключения', ar: 'الاستثناءات المفتوحة' },
+  "price.history": { he: 'היסטוריית שינויים', en: 'Change history', fr: 'Historique', es: 'Historial', ru: 'История изменений', ar: 'سجل التغييرات' },
+  "price.bulkDiscount": { he: 'הנחות נפח', en: 'Volume discounts', fr: 'Remises volume', es: 'Descuentos volumen', ru: 'Скидки на объём', ar: 'خصومات الحجم' },
+  "price.bulkDiscountSub": { he: 'מעל 50K שח/שנה - 10%, מעל 200K - 15%, מעל 1M - 25%', en: '>50K NIS/yr 10%, >200K 15%, >1M 25%', fr: '>50K NIS/an 10%, >200K 15%, >1M 25%', es: '>50K NIS/año 10%, >200K 15%, >1M 25%', ru: '>50K NIS/год 10%, >200K 15%, >1M 25%', ar: '>50K شيكل/سنة 10%، >200K 15%، >1M 25%' },
+  "price.tier.standard": { he: 'סטנדרט', en: 'Standard', fr: 'Standard', es: 'Estándar', ru: 'Стандарт', ar: 'قياسي' },
+  "price.tier.gold": { he: 'זהב', en: 'Gold', fr: 'Or', es: 'Oro', ru: 'Золото', ar: 'ذهبي' },
+  "price.tier.platinum": { he: 'פלטינום', en: 'Platinum', fr: 'Platine', es: 'Platino', ru: 'Платина', ar: 'بلاتيني' },
+
+  // Approvals
+  "appr.title": { he: 'אישורי הצעות מחיר', en: 'Quote Approvals', fr: 'Approbations devis', es: 'Aprobaciones', ru: 'Утверждения', ar: 'موافقات العروض' },
+  "appr.subtitle": { he: 'תור אישורים פתוח, היסטוריה ומדדי תהליך', en: 'Open queue, history and process metrics', fr: 'File ouverte, historique, métriques', es: 'Cola abierta, historial, métricas', ru: 'Открытая очередь, история, метрики', ar: 'الطابور المفتوح، السجل، المقاييس' },
+  "appr.queue": { he: 'תור פתוח', en: 'Open queue', fr: 'File d\'attente', es: 'Cola', ru: 'Очередь', ar: 'الطابور' },
+  "appr.history": { he: 'היסטוריה', en: 'History', fr: 'Historique', es: 'Historial', ru: 'История', ar: 'السجل' },
+  "appr.metrics": { he: 'מדדים', en: 'Metrics', fr: 'Métriques', es: 'Métricas', ru: 'Метрики', ar: 'المقاييس' },
+  "appr.col.quoteId": { he: 'מס\' הצעה', en: 'Quote #', fr: 'N° devis', es: 'Nº cotización', ru: '№ предложения', ar: 'رقم العرض' },
+  "appr.col.customer": { he: 'לקוח', en: 'Customer', fr: 'Client', es: 'Cliente', ru: 'Клиент', ar: 'العميل' },
+  "appr.col.segment": { he: 'סגמנט', en: 'Segment', fr: 'Segment', es: 'Segmento', ru: 'Сегмент', ar: 'القطاع' },
+  "appr.col.service": { he: 'שירות', en: 'Service', fr: 'Service', es: 'Servicio', ru: 'Услуга', ar: 'الخدمة' },
+  "appr.col.amount": { he: 'סכום', en: 'Amount', fr: 'Montant', es: 'Importe', ru: 'Сумма', ar: 'المبلغ' },
+  "appr.col.discount": { he: 'הנחה', en: 'Discount', fr: 'Remise', es: 'Descuento', ru: 'Скидка', ar: 'الخصم' },
+  "appr.col.level": { he: 'דרג מאשר', en: 'Approver level', fr: 'Niveau', es: 'Nivel', ru: 'Уровень', ar: 'مستوى الموافق' },
+  "appr.col.aging": { he: 'גיל (ימים)', en: 'Aging (days)', fr: 'Ancienneté', es: 'Antigüedad', ru: 'Срок (дн)', ar: 'العمر (أيام)' },
+  "appr.col.action": { he: 'פעולה', en: 'Action', fr: 'Action', es: 'Acción', ru: 'Действие', ar: 'الإجراء' },
+  "appr.level.sales": { he: 'איש מכירות', en: 'Sales rep', fr: 'Commercial', es: 'Vendedor', ru: 'Менеджер', ar: 'مندوب' },
+  "appr.level.division": { he: 'מנהל חטיבה', en: 'Division head', fr: 'Chef de division', es: 'Jefe de división', ru: 'Глава дивизиона', ar: 'رئيس القسم' },
+  "appr.level.cfo": { he: 'סמנכ"ל כספים', en: 'CFO', fr: 'DAF', es: 'CFO', ru: 'CFO', ar: 'المدير المالي' },
+  "appr.level.ceo": { he: 'מנכ"ל', en: 'CEO', fr: 'DG', es: 'CEO', ru: 'CEO', ar: 'المدير العام' },
+  "appr.status.pending": { he: 'ממתין', en: 'Pending', fr: 'En attente', es: 'Pendiente', ru: 'Ожидает', ar: 'معلق' },
+  "appr.status.approved": { he: 'אושר', en: 'Approved', fr: 'Approuvé', es: 'Aprobado', ru: 'Утверждено', ar: 'مُوافق' },
+  "appr.status.rejected": { he: 'נדחה', en: 'Rejected', fr: 'Rejeté', es: 'Rechazado', ru: 'Отклонено', ar: 'مرفوض' },
+  "appr.status.exception": { he: 'חריגה', en: 'Exception', fr: 'Dérogation', es: 'Excepción', ru: 'Исключение', ar: 'استثناء' },
+  "appr.btn.approve": { he: 'אשר', en: 'Approve', fr: 'Approuver', es: 'Aprobar', ru: 'Утвердить', ar: 'موافقة' },
+  "appr.btn.reject": { he: 'דחה', en: 'Reject', fr: 'Rejeter', es: 'Rechazar', ru: 'Отклонить', ar: 'رفض' },
+  "appr.btn.escalate": { he: 'הסלם', en: 'Escalate', fr: 'Escalader', es: 'Escalar', ru: 'Эскалировать', ar: 'تصعيد' },
+  "appr.btn.requestInfo": { he: 'בקש מידע נוסף', en: 'Request more info', fr: 'Demander des infos', es: 'Pedir más info', ru: 'Запросить инфо', ar: 'طلب معلومات' },
+  "appr.policy": { he: 'מדיניות אישורים', en: 'Approval policy', fr: 'Politique', es: 'Política', ru: 'Политика', ar: 'سياسة الموافقة' },
+  "appr.policyTitle": { he: 'תהליך אישור הצעת מחיר', en: 'Quote approval process', fr: 'Processus d\'approbation', es: 'Proceso de aprobación', ru: 'Процесс утверждения', ar: 'عملية الموافقة' },
+  "appr.policyRule1": { he: 'עד ₪10,000 והנחה עד 10% - אישור אוטומטי', en: 'Up to ₪10,000 + discount ≤10% - auto-approve', fr: 'Jusqu\'à ₪10K + remise ≤10% - auto', es: 'Hasta ₪10K + desc. ≤10% - auto', ru: 'До ₪10K + скидка ≤10% - авто', ar: 'حتى ₪10K + خصم ≤10% - تلقائي' },
+  "appr.policyRule2": { he: '₪10K-50K או הנחה 10-20% - אישור מנהל מכירות', en: '₪10K-50K or 10-20% discount - sales manager', fr: '₪10K-50K ou remise 10-20% - manager', es: '₪10K-50K o 10-20% - gerente', ru: '₪10K-50K или 10-20% - менеджер продаж', ar: '₪10K-50K أو خصم 10-20% - مدير المبيعات' },
+  "appr.policyRule3": { he: '₪50K-250K או הנחה 20-30% - מנהל חטיבה + CFO', en: '₪50K-250K or 20-30% - division head + CFO', fr: '₪50K-250K ou 20-30% - division + DAF', es: '₪50K-250K o 20-30% - división + CFO', ru: '₪50K-250K или 20-30% - дивизион + CFO', ar: '₪50K-250K أو 20-30% - رئيس القسم + المدير المالي' },
+  "appr.policyRule4": { he: 'מעל ₪250K או הנחה מעל 30% - אישור מנכ"ל', en: '>₪250K or >30% discount - CEO', fr: '>₪250K ou >30% - DG', es: '>₪250K o >30% - CEO', ru: '>₪250K или >30% - CEO', ar: '>₪250K أو >30% - المدير العام' },
+  "appr.responsibilities": { he: 'חלוקת אחריות', en: 'Responsibility split', fr: 'Répartition responsabilités', es: 'División de responsabilidad', ru: 'Разделение ответственности', ar: 'تقسيم المسؤولية' },
+  "appr.respSales": { he: 'אגף המכירות אחראי: יצירת קשר, התאמת הצעה, ניהול מו"מ, סגירת עסקה', en: 'Sales owns: lead, proposal, negotiation, closing', fr: 'Ventes : prospect, proposition, négo, closing', es: 'Ventas: lead, propuesta, negociación, cierre', ru: 'Продажи: лид, предложение, переговоры, закрытие', ar: 'المبيعات: العميل، العرض، التفاوض، الإغلاق' },
+  "appr.respDivision": { he: 'חטיבות מקצועיות אחראיות: היתכנות טכנית, תמחור מורכב, ביצוע, מסירת תוצר', en: 'Professional divisions own: technical feasibility, complex pricing, delivery', fr: 'Divisions pro : faisabilité, prix complexes, livraison', es: 'Divisiones: viabilidad, precios complejos, entrega', ru: 'Дивизионы: техническая возможность, цены, поставка', ar: 'الأقسام المهنية: الجدوى التقنية، التسعير المعقد، التسليم' },
+  "appr.flowTitle": { he: 'תהליך מקצה לקצה', en: 'End-to-end flow', fr: 'Flux complet', es: 'Flujo completo', ru: 'Полный процесс', ar: 'التدفق الكامل' },
+  "appr.flow.step1": { he: 'בקשה מהפורטל', en: 'Portal request', fr: 'Demande portail', es: 'Solicitud portal', ru: 'Запрос с портала', ar: 'طلب من البوابة' },
+  "appr.flowStep1Sub": { he: 'לקוח שולח בקשת הצעת מחיר', en: 'Customer submits quote request', fr: 'Client soumet demande', es: 'Cliente envía', ru: 'Клиент отправляет', ar: 'العميل يقدم الطلب' },
+  "appr.flow.step2": { he: 'מכירות', en: 'Sales', fr: 'Ventes', es: 'Ventas', ru: 'Продажи', ar: 'المبيعات' },
+  "appr.flowStep2Sub": { he: 'בודק תקציב, סגמנט והנחה', en: 'Validates budget, segment, discount', fr: 'Valide budget, segment, remise', es: 'Valida presupuesto', ru: 'Проверяет бюджет', ar: 'يتحقق من الميزانية' },
+  "appr.flow.step3": { he: 'חטיבה מקצועית', en: 'Professional division', fr: 'Division pro', es: 'División', ru: 'Дивизион', ar: 'القسم المهني' },
+  "appr.flowStep3Sub": { he: 'תמחור טכני וזמן אספקה', en: 'Technical pricing & lead time', fr: 'Prix technique & délai', es: 'Precio técnico', ru: 'Тех. цена и срок', ar: 'السعر الفني والوقت' },
+  "appr.flow.step4": { he: 'אישור והפצה', en: 'Approve & send', fr: 'Approuver & envoyer', es: 'Aprobar y enviar', ru: 'Утвердить и отправить', ar: 'موافقة وإرسال' },
+  "appr.flowStep4Sub": { he: 'הצעה מאושרת נשלחת ללקוח', en: 'Approved quote sent to customer', fr: 'Devis approuvé envoyé', es: 'Cotización aprobada enviada', ru: 'Утверждённое предложение отправлено', ar: 'يُرسل العرض المعتمد' },
+
+  // Subscriptions
+  "sub.title": { he: 'מנויים, חידושים והסכמים רב-שנתיים', en: 'Subscriptions, Renewals & Multi-year', fr: 'Abonnements, renouvellements, pluriannuels', es: 'Suscripciones, renovaciones, plurianuales', ru: 'Подписки, продления, многолетние', ar: 'الاشتراكات، التجديدات، متعددة السنوات' },
+  "sub.subtitle": { he: 'מנויי CORS, חוזי שירות שנתיים והסכמי מסגרת 3 שנים', en: 'CORS subscriptions, annual contracts and 3-year frameworks', fr: 'Abonnements CORS, contrats annuels, accords 3 ans', es: 'CORS, contratos anuales, marcos 3 años', ru: 'CORS, годовые, 3-летние', ar: 'CORS، عقود سنوية، اتفاقيات 3 سنوات' },
+  "sub.active": { he: 'פעילים', en: 'Active', fr: 'Actifs', es: 'Activos', ru: 'Активные', ar: 'النشطة' },
+  "sub.renewalsDue": { he: 'חידושים קרובים', en: 'Renewals due', fr: 'Renouvellements', es: 'Renovaciones', ru: 'Продления', ar: 'التجديدات' },
+  "sub.expired": { he: 'פגי תוקף', en: 'Expired', fr: 'Expirés', es: 'Vencidos', ru: 'Истекшие', ar: 'المنتهية' },
+  "sub.multiYear": { he: 'רב-שנתיים', en: 'Multi-year', fr: 'Pluriannuels', es: 'Plurianuales', ru: 'Многолетние', ar: 'متعددة السنوات' },
+  "sub.col.customer": { he: 'לקוח', en: 'Customer', fr: 'Client', es: 'Cliente', ru: 'Клиент', ar: 'العميل' },
+  "sub.col.service": { he: 'שירות', en: 'Service', fr: 'Service', es: 'Servicio', ru: 'Услуга', ar: 'الخدمة' },
+  "sub.col.startDate": { he: 'תחילה', en: 'Start', fr: 'Début', es: 'Inicio', ru: 'Начало', ar: 'البداية' },
+  "sub.col.endDate": { he: 'סיום', en: 'End', fr: 'Fin', es: 'Fin', ru: 'Конец', ar: 'النهاية' },
+  "sub.col.value": { he: 'ערך שנתי', en: 'Annual value', fr: 'Valeur annuelle', es: 'Valor anual', ru: 'Годовая стоимость', ar: 'القيمة السنوية' },
+  "sub.col.renewalStatus": { he: 'מצב חידוש', en: 'Renewal status', fr: 'Statut', es: 'Estado', ru: 'Статус', ar: 'حالة التجديد' },
+  "sub.col.actions": { he: 'פעולות', en: 'Actions', fr: 'Actions', es: 'Acciones', ru: 'Действия', ar: 'الإجراءات' },
+  "sub.renewal.active": { he: 'פעיל', en: 'Active', fr: 'Actif', es: 'Activo', ru: 'Активный', ar: 'نشط' },
+  "sub.renewal.due60": { he: 'חידוש ב-60 יום', en: 'Renewal in 60 days', fr: 'Renouv. 60j', es: 'Renov. 60d', ru: 'Через 60 дней', ar: 'تجديد خلال 60 يوماً' },
+  "sub.renewal.due30": { he: 'חידוש ב-30 יום', en: 'Renewal in 30 days', fr: 'Renouv. 30j', es: 'Renov. 30d', ru: 'Через 30 дней', ar: 'تجديد خلال 30 يوماً' },
+  "sub.renewal.expired": { he: 'פג תוקף', en: 'Expired', fr: 'Expiré', es: 'Vencido', ru: 'Истёк', ar: 'منتهي' },
+  "sub.renewal.renewed": { he: 'חודש', en: 'Renewed', fr: 'Renouvelé', es: 'Renovado', ru: 'Продлён', ar: 'مُجدد' },
+  "sub.btn.renew": { he: 'התחל חידוש', en: 'Start renewal', fr: 'Démarrer renouv.', es: 'Iniciar renov.', ru: 'Начать продление', ar: 'بدء التجديد' },
+  "sub.btn.contact": { he: 'צור קשר', en: 'Contact', fr: 'Contacter', es: 'Contactar', ru: 'Связаться', ar: 'اتصل' },
+  "sub.btn.viewContract": { he: 'הצג חוזה', en: 'View contract', fr: 'Voir contrat', es: 'Ver contrato', ru: 'Просмотр договора', ar: 'عرض العقد' },
+  "sub.totalArr": { he: 'ARR (הכנסה שנתית חוזרת)', en: 'ARR (Annual Recurring Revenue)', fr: 'ARR', es: 'ARR', ru: 'ARR', ar: 'الإيراد السنوي المتكرر' },
+  "sub.churnRate": { he: 'אחוז נטישה', en: 'Churn rate', fr: 'Taux d\'attrition', es: 'Tasa de pérdida', ru: 'Отток', ar: 'معدل التسرب' },
+  "sub.expansion": { he: 'הרחבה', en: 'Expansion', fr: 'Expansion', es: 'Expansión', ru: 'Расширение', ar: 'التوسع' },
+  "sub.netRetention": { he: 'שימור נטו', en: 'Net retention', fr: 'Rétention nette', es: 'Retención neta', ru: 'Чистая retention', ar: 'الاحتفاظ الصافي' },
+
+  // Sales dashboard
+  "sales.title": { he: 'דשבורד מכירות והכנסות', en: 'Sales & Revenue Dashboard', fr: 'Tableau ventes & revenus', es: 'Panel ventas e ingresos', ru: 'Дашборд продаж', ar: 'لوحة المبيعات والإيرادات' },
+  "sales.subtitle": { he: 'KPI חי, מטרות מול ביצוע, חיבור להכנסות בפועל ומדדי המרה לכל סגמנט', en: 'Live KPIs, target vs actual, revenue link, conversion metrics per segment', fr: 'KPI temps réel, cible vs réel, conversion par segment', es: 'KPI vivos, objetivo vs real, conversión por segmento', ru: 'Живые KPI, цель vs факт, конверсия по сегменту', ar: 'مؤشرات حية، الهدف مقابل الفعلي، تحويل لكل قطاع' },
+  "sales.thisMonth": { he: 'החודש', en: 'This month', fr: 'Ce mois', es: 'Este mes', ru: 'Этот месяц', ar: 'هذا الشهر' },
+  "sales.lastMonth": { he: 'חודש שעבר', en: 'Last month', fr: 'Mois dernier', es: 'Mes pasado', ru: 'Прошлый месяц', ar: 'الشهر الماضي' },
+  "sales.thisQuarter": { he: 'הרבעון', en: 'This quarter', fr: 'Ce trimestre', es: 'Este trimestre', ru: 'Этот квартал', ar: 'هذا الربع' },
+  "sales.thisYear": { he: 'השנה', en: 'This year', fr: 'Cette année', es: 'Este año', ru: 'Этот год', ar: 'هذا العام' },
+  "sales.revenueByChannel": { he: 'הכנסות לפי ערוץ', en: 'Revenue by channel', fr: 'CA par canal', es: 'Ingresos por canal', ru: 'Выручка по каналам', ar: 'الإيرادات حسب القناة' },
+  "sales.revenueByProduct": { he: 'הכנסות לפי מוצר', en: 'Revenue by product', fr: 'CA par produit', es: 'Ingresos por producto', ru: 'Выручка по продукту', ar: 'الإيرادات حسب المنتج' },
+  "sales.revenueBySegment": { he: 'הכנסות לפי סגמנט', en: 'Revenue by segment', fr: 'CA par segment', es: 'Ingresos por segmento', ru: 'Выручка по сегменту', ar: 'الإيرادات حسب القطاع' },
+  "sales.targetVsActual": { he: 'מטרה מול ביצוע', en: 'Target vs actual', fr: 'Cible vs réel', es: 'Objetivo vs real', ru: 'Цель vs факт', ar: 'الهدف مقابل الفعلي' },
+  "sales.topProducts": { he: 'מוצרים מובילים', en: 'Top products', fr: 'Top produits', es: 'Mejores productos', ru: 'Топ продукты', ar: 'أفضل المنتجات' },
+  "sales.topCustomers": { he: 'לקוחות מובילים', en: 'Top customers', fr: 'Top clients', es: 'Mejores clientes', ru: 'Топ клиенты', ar: 'أفضل العملاء' },
+  "sales.pipelineByStage": { he: 'פייפליין לפי שלב', en: 'Pipeline by stage', fr: 'Pipeline par étape', es: 'Pipeline por etapa', ru: 'Pipeline по этапам', ar: 'الأنبوب حسب المرحلة' },
+  "sales.conversionFunnel": { he: 'משפך המרות', en: 'Conversion funnel', fr: 'Entonnoir de conversion', es: 'Embudo de conversión', ru: 'Воронка конверсии', ar: 'قمع التحويل' },
+  "sales.formula.revenue": { he: 'הכנסה = Σ (כמות × מחיר יחידה) - הנחות + מע"מ', en: 'Revenue = Σ(qty × unit price) - discounts + VAT', fr: 'CA = Σ(qté × prix) - remises + TVA', es: 'Ingreso = Σ(cant × precio) - desc + IVA', ru: 'Выручка = Σ(кол × цена) - скидки + НДС', ar: 'الإيراد = Σ(الكمية × سعر الوحدة) - الخصومات + الضريبة' },
+  "sales.formula.arr": { he: 'ARR = Σ (ערך שנתי של כל מנוי פעיל)', en: 'ARR = Σ(annual value of active subs)', fr: 'ARR = Σ(valeur annuelle abonnements)', es: 'ARR = Σ(valor anual)', ru: 'ARR = Σ(годовая стоимость)', ar: 'ARR = Σ(القيمة السنوية للاشتراكات)' },
+  "sales.formula.winRate": { he: 'Win Rate = הצעות שזכינו ÷ הצעות שנשלחו × 100', en: 'Win Rate = Won quotes ÷ Sent quotes × 100', fr: 'Win Rate = Devis gagnés ÷ envoyés', es: 'Win Rate = Ganadas ÷ enviadas', ru: 'Win Rate = выиграны ÷ отправлены', ar: 'معدل الفوز = الفائزة ÷ المرسلة × 100' },
+  "sales.formula.cac": { he: 'CAC = הוצאות מכירה ושיווק ÷ לקוחות חדשים', en: 'CAC = Sales & marketing spend ÷ new customers', fr: 'CAC = Dépenses S&M ÷ nouveaux clients', es: 'CAC = Gastos S&M ÷ clientes nuevos', ru: 'CAC = Расходы S&M ÷ новые клиенты', ar: 'CAC = نفقات المبيعات والتسويق ÷ العملاء الجدد' },
+  "sales.respMatrix": { he: 'מטריצת אחריות', en: 'Responsibility matrix', fr: 'Matrice responsabilités', es: 'Matriz de responsabilidad', ru: 'Матрица ответственности', ar: 'مصفوفة المسؤوليات' },
+  "sales.respMatrixTitle": { he: 'מי אחראי על מה - מכירות מול חטיבות מקצועיות', en: 'Who owns what - Sales vs Professional divisions', fr: 'Qui possède quoi - Ventes vs Divisions', es: 'Quién posee qué - Ventas vs Divisiones', ru: 'Кто за что отвечает - продажи vs дивизионы', ar: 'من المسؤول - المبيعات مقابل الأقسام' },
+  "sales.respMatrixSub": { he: 'חלוקת אחריות ברורה לפי שלב בתהליך - לפי דרישת בעל היישום', en: 'Clear ownership by process stage - per business owner requirement', fr: 'Propriété claire par étape', es: 'Propiedad clara por etapa', ru: 'Чёткое владение по этапам', ar: 'ملكية واضحة حسب المرحلة' },
+  "sales.role.sales": { he: 'מכירות', en: 'Sales', fr: 'Ventes', es: 'Ventas', ru: 'Продажи', ar: 'المبيعات' },
+  "sales.role.division": { he: 'חטיבה מקצועית', en: 'Division', fr: 'Division', es: 'División', ru: 'Дивизион', ar: 'القسم' },
+  "sales.role.both": { he: 'משותף', en: 'Joint', fr: 'Conjoint', es: 'Conjunto', ru: 'Совместно', ar: 'مشترك' },
+  "sales.stage.lead": { he: 'ליד', en: 'Lead', fr: 'Lead', es: 'Lead', ru: 'Лид', ar: 'عميل محتمل' },
+  "sales.stage.qualified": { he: 'מוסמך', en: 'Qualified', fr: 'Qualifié', es: 'Calificado', ru: 'Квалифицирован', ar: 'مؤهل' },
+  "sales.stage.quote": { he: 'הצעת מחיר', en: 'Quote', fr: 'Devis', es: 'Cotización', ru: 'Предложение', ar: 'عرض السعر' },
+  "sales.stage.negotiation": { he: 'מו"מ', en: 'Negotiation', fr: 'Négociation', es: 'Negociación', ru: 'Переговоры', ar: 'تفاوض' },
+  "sales.stage.won": { he: 'נסגר', en: 'Won', fr: 'Gagné', es: 'Ganado', ru: 'Выиграно', ar: 'فائز' },
+  "sales.target": { he: 'יעד', en: 'Target', fr: 'Cible', es: 'Objetivo', ru: 'Цель', ar: 'الهدف' },
+  "sales.actual": { he: 'ביצוע', en: 'Actual', fr: 'Réel', es: 'Real', ru: 'Факт', ar: 'الفعلي' },
+  "sales.gap": { he: 'פער', en: 'Gap', fr: 'Écart', es: 'Brecha', ru: 'Разрыв', ar: 'الفجوة' },
+  "sales.attainment": { he: 'אחוז עמידה ביעד', en: 'Attainment', fr: 'Atteinte', es: 'Cumplimiento', ru: 'Достижение', ar: 'تحقيق الهدف' },
+
+  // Content
+  "cnt.title": { he: 'ניהול תוכן ובעלות', en: 'Content Management & Ownership', fr: 'Gestion contenu & propriété', es: 'Gestión y propiedad', ru: 'Управление контентом', ar: 'إدارة المحتوى والملكية' },
+  "cnt.subtitle": { he: 'מי הבעלים של כל דף בפורטל, מתי עודכן לאחרונה ומתי הביקורת הבאה', en: 'Owner per page, last update, next review date', fr: 'Propriétaire, MAJ, prochaine revue', es: 'Propietario, actualización, próxima revisión', ru: 'Владелец, обновление, ревью', ar: 'المالك، آخر تحديث، المراجعة التالية' },
+  "cnt.servicePages": { he: 'דפי שירות', en: 'Service pages', fr: 'Pages service', es: 'Páginas servicio', ru: 'Страницы услуг', ar: 'صفحات الخدمة' },
+  "cnt.faqs": { he: 'שאלות נפוצות', en: 'FAQs', fr: 'FAQ', es: 'FAQs', ru: 'FAQ', ar: 'الأسئلة الشائعة' },
+  "cnt.priceLists": { he: 'מחירונים', en: 'Price lists', fr: 'Tarifs', es: 'Listas precios', ru: 'Прайс-листы', ar: 'قوائم الأسعار' },
+  "cnt.deliveryTimes": { he: 'זמני אספקה', en: 'Delivery times', fr: 'Délais', es: 'Plazos', ru: 'Сроки', ar: 'أوقات التسليم' },
+  "cnt.col.page": { he: 'דף / סעיף', en: 'Page / section', fr: 'Page / section', es: 'Página', ru: 'Страница', ar: 'الصفحة' },
+  "cnt.col.owner": { he: 'בעלים', en: 'Owner', fr: 'Propriétaire', es: 'Propietario', ru: 'Владелец', ar: 'المالك' },
+  "cnt.col.lastUpdated": { he: 'עודכן', en: 'Updated', fr: 'Mis à jour', es: 'Actualizado', ru: 'Обновлён', ar: 'تم تحديث' },
+  "cnt.col.nextReview": { he: 'ביקורת הבאה', en: 'Next review', fr: 'Prochaine revue', es: 'Próxima revisión', ru: 'След. ревью', ar: 'المراجعة التالية' },
+  "cnt.col.status": { he: 'סטטוס', en: 'Status', fr: 'Statut', es: 'Estado', ru: 'Статус', ar: 'الحالة' },
+  "cnt.status.current": { he: 'מעודכן', en: 'Current', fr: 'À jour', es: 'Vigente', ru: 'Актуально', ar: 'محدّث' },
+  "cnt.status.review": { he: 'דורש ביקורת', en: 'Review needed', fr: 'À revoir', es: 'Revisar', ru: 'Требует ревью', ar: 'يحتاج مراجعة' },
+  "cnt.status.outdated": { he: 'לא עדכני', en: 'Outdated', fr: 'Obsolète', es: 'Obsoleto', ru: 'Устарел', ar: 'قديم' },
+  "cnt.owner.sales": { he: 'אגף המכירות', en: 'Sales department', fr: 'Direction ventes', es: 'Dpto ventas', ru: 'Отдел продаж', ar: 'قسم المبيعات' },
+  "cnt.owner.geo": { he: 'חטיבת גיאודזיה', en: 'Geodesy division', fr: 'Division géodésie', es: 'División geodesia', ru: 'Дивизион геодезии', ar: 'قسم الجيوديسيا' },
+  "cnt.owner.cadastre": { he: 'חטיבת קדסטר', en: 'Cadastre division', fr: 'Division cadastre', es: 'División catastro', ru: 'Дивизион кадастра', ar: 'قسم المساحة' },
+  "cnt.owner.it": { he: 'אגף מערכות מידע', en: 'IT department', fr: 'DSI', es: 'TI', ru: 'IT отдел', ar: 'تقنية المعلومات' },
+  "cnt.policies": { he: 'מדיניות ניהול תוכן', en: 'Content policy', fr: 'Politique contenu', es: 'Política', ru: 'Политика контента', ar: 'سياسة المحتوى' },
+  "cnt.policyTitle": { he: 'מי אחראי לעדכן את הפורטל', en: 'Who is responsible to update the portal', fr: 'Qui met à jour', es: 'Quién actualiza', ru: 'Кто обновляет', ar: 'من يحدّث' },
+  "cnt.policyText": { he: 'כל בעלי תוכן יעדכנו את הדפים תחת תחום אחריותם פעם ברבעון לפחות. אגף המכירות אחראי על מחירונים והנחות; החטיבות המקצועיות אחראיות על תוכן טכני ו-FAQ.', en: 'Each content owner must update assigned pages at least quarterly. Sales owns pricing and discounts; professional divisions own technical content and FAQs.', fr: 'Chaque propriétaire met à jour au moins par trimestre.', es: 'Cada propietario actualiza trimestralmente.', ru: 'Каждый владелец обновляет ежеквартально.', ar: 'يقوم كل مالك بالتحديث ربع سنوياً على الأقل.' },
+
+  // Migration
+  "mig.title": { he: 'הסבת נתוני עבר', en: 'Historical data migration', fr: 'Migration données', es: 'Migración datos', ru: 'Миграция данных', ar: 'هجرة البيانات التاريخية' },
+  "mig.subtitle": { he: 'איזה נתונים יוסבו ל-Salesforce, כמה שנים אחורה ובאיזה מבנה', en: 'What migrates to Salesforce, how many years back, in what structure', fr: 'Quoi migrer vers Salesforce', es: 'Qué migrar a Salesforce', ru: 'Что мигрирует в Salesforce', ar: 'ماذا يُهاجر إلى Salesforce' },
+  "mig.scope": { he: 'תכולה', en: 'Scope', fr: 'Périmètre', es: 'Alcance', ru: 'Объём', ar: 'النطاق' },
+  "mig.years": { he: 'שנים אחורה', en: 'Years back', fr: 'Années passées', es: 'Años atrás', ru: 'Лет назад', ar: 'سنوات سابقة' },
+  "mig.entity.orders": { he: 'הזמנות', en: 'Orders', fr: 'Commandes', es: 'Pedidos', ru: 'Заказы', ar: 'الطلبات' },
+  "mig.entity.quotes": { he: 'הצעות מחיר', en: 'Quotes', fr: 'Devis', es: 'Cotizaciones', ru: 'Предложения', ar: 'العروض' },
+  "mig.entity.subs": { he: 'מנויים', en: 'Subscriptions', fr: 'Abonnements', es: 'Suscripciones', ru: 'Подписки', ar: 'الاشتراكات' },
+  "mig.entity.customers": { he: 'לקוחות', en: 'Customers', fr: 'Clients', es: 'Clientes', ru: 'Клиенты', ar: 'العملاء' },
+  "mig.entity.invoices": { he: 'חשבוניות', en: 'Invoices', fr: 'Factures', es: 'Facturas', ru: 'Счета', ar: 'الفواتير' },
+  "mig.col.entity": { he: 'ישות', en: 'Entity', fr: 'Entité', es: 'Entidad', ru: 'Сущность', ar: 'الكيان' },
+  "mig.col.years": { he: 'טווח שנים', en: 'Years', fr: 'Plage', es: 'Años', ru: 'Годы', ar: 'السنوات' },
+  "mig.col.records": { he: 'רשומות (אומדן)', en: 'Records (est.)', fr: 'Enreg. (est.)', es: 'Registros', ru: 'Записи', ar: 'السجلات' },
+  "mig.col.structure": { he: 'מבנה יעד', en: 'Target structure', fr: 'Structure cible', es: 'Estructura', ru: 'Структура', ar: 'الهيكل' },
+  "mig.col.status": { he: 'סטטוס', en: 'Status', fr: 'Statut', es: 'Estado', ru: 'Статус', ar: 'الحالة' },
+  "mig.status.planned": { he: 'מתוכנן', en: 'Planned', fr: 'Planifié', es: 'Planificado', ru: 'Запланировано', ar: 'مخطط' },
+  "mig.status.inProgress": { he: 'בביצוע', en: 'In progress', fr: 'En cours', es: 'En curso', ru: 'В работе', ar: 'قيد التنفيذ' },
+  "mig.status.done": { he: 'הסתיים', en: 'Done', fr: 'Terminé', es: 'Terminado', ru: 'Завершено', ar: 'منجز' },
+
+  // Home additions
+  "home.shopByNeed": { he: 'מצא את עצמך - לפי סוג לקוח', en: 'Find yourself - by customer type', fr: 'Trouvez-vous par type', es: 'Encuéntrate por tipo', ru: 'Найдите себя по типу клиента', ar: 'اعثر على نفسك حسب نوع العميل' },
+  "home.shopByNeedSub": { he: 'אנחנו ערוכים לכל סוג של לקוח - אזרח, מודד, רשות, ממשלה, בעל מקצוע ולקוח עסקי. בחר את המסלול שלך ותקבל חוויה מותאמת.', en: 'We serve every customer type - citizen, surveyor, authority, gov, professional, business. Pick your journey.', fr: 'Nous servons chaque type de client - citoyen, géomètre, autorité, gouvernement, professionnel, business.', es: 'Servimos a cada tipo: ciudadano, topógrafo, autoridad, gobierno, profesional, business.', ru: 'Мы обслуживаем все типы клиентов - частных лиц, геодезистов, власти, госорганы, профессионалов, бизнес.', ar: 'نخدم كل نوع - مواطن، مساح، سلطة، حكومة، محترف، أعمال.' },
+  "home.salesTeam": { he: 'הצוות שלנו עומד לרשותך', en: 'Our team is here for you', fr: 'Notre équipe à votre service', es: 'Nuestro equipo a tu servicio', ru: 'Наша команда к вашим услугам', ar: 'فريقنا في خدمتك' }
 };
 
 export type TKey = keyof typeof dict;

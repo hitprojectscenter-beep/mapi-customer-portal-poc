@@ -137,6 +137,59 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* Shop by customer type */}
+      <section className="py-12 sm:py-16 md:py-20 bg-white relative" aria-labelledby="segments-heading">
+        <div className="max-w-container-max-width mx-auto px-4 md:px-margin-desktop">
+          <div className="text-center max-w-3xl mx-auto mb-10 md:mb-14">
+            <span className="text-secondary font-bold text-xs sm:text-sm tracking-[0.2em] uppercase mb-3 block">
+              {t("seg.eyebrow")}
+            </span>
+            <h2
+              id="segments-heading"
+              className="text-primary text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold leading-tight mb-4"
+            >
+              {t("home.shopByNeed")}
+            </h2>
+            <p className="text-on-surface-variant text-sm sm:text-base md:text-lg leading-relaxed">
+              {t("home.shopByNeedSub")}
+            </p>
+          </div>
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 md:gap-4">
+            {[
+              { id: "citizen", icon: "person", nameKey: "seg.citizen.name", color: "bg-secondary/10 text-secondary" },
+              { id: "surveyor", icon: "engineering", nameKey: "seg.surveyor.name", color: "bg-positive-green/10 text-positive-green" },
+              { id: "municipality", icon: "location_city", nameKey: "seg.municipality.name", color: "bg-alert-yellow/10 text-alert-yellow" },
+              { id: "government", icon: "account_balance", nameKey: "seg.government.name", color: "bg-primary/10 text-primary" },
+              { id: "professional", icon: "architecture", nameKey: "seg.professional.name", color: "bg-tertiary/10 text-tertiary" },
+              { id: "business", icon: "business_center", nameKey: "seg.business.name", color: "bg-error-red/10 text-error-red" }
+            ].map((seg) => (
+              <Link
+                key={seg.id}
+                href={`/segments/${seg.id}`}
+                className="shine group bg-surface rounded-2xl p-4 md:p-5 border border-outline-variant/50 hover:border-secondary/30 hover:shadow-xl transition-all hover:-translate-y-1 text-center"
+                data-tooltip={t(seg.nameKey as never)}
+                data-tooltip-position="bottom"
+              >
+                <div className={`w-12 h-12 mx-auto mb-3 rounded-xl flex items-center justify-center ${seg.color} group-hover:scale-110 transition-transform`}>
+                  <span className="material-symbols-outlined">{seg.icon}</span>
+                </div>
+                <p className="text-sm font-extrabold text-primary leading-tight">{t(seg.nameKey as never)}</p>
+              </Link>
+            ))}
+          </div>
+          <div className="text-center mt-8">
+            <Link
+              href="/segments"
+              className="shine inline-flex items-center gap-2 text-secondary font-bold hover:underline"
+              data-tooltip={t("seg.choose")}
+            >
+              <span>{t("seg.choose")}</span>
+              <span className="material-symbols-outlined text-[18px]">arrow_back</span>
+            </Link>
+          </div>
+        </div>
+      </section>
+
       {/* Services Section */}
       <section className="py-16 sm:py-20 md:py-32 relative bg-surface" aria-labelledby="services-heading">
         <div className="max-w-container-max-width mx-auto px-4 md:px-margin-desktop">
