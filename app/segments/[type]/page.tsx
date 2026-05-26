@@ -134,21 +134,45 @@ export default function SegmentDetailPage() {
             const localName = getServiceName(s.slug, s.name, lang);
             const localShort = getServiceShortDescription(s.slug, s.shortDescription, lang);
             const localCat = getServiceCategoryLabel(s.slug, s.categoryLabel, lang);
-            return (
-              <Link
-                key={s.slug}
-                href={s.inScope ? `/catalog/${s.slug}` : (s.externalUrl || "/catalog")}
-                target={s.inScope ? undefined : "_blank"}
-                className="shine bg-white rounded-3xl p-6 border border-outline-variant/50 hover:border-secondary/30 hover:shadow-xl transition-all text-center group"
-                data-tooltip={localShort}
-                data-tooltip-position="bottom"
-              >
+            const isExternal = !s.inScope && !!s.externalUrl;
+            const className = "shine bg-white rounded-2xl p-6 border border-outline-variant/50 hover:border-secondary/30 hover:shadow-xl transition-all text-center group cursor-pointer block";
+            const inner = (
+              <>
                 <div className="w-14 h-14 bg-secondary/5 text-secondary rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
                   <span className="material-symbols-outlined text-[28px]">{s.icon}</span>
                 </div>
-                <p className="text-[10px] uppercase tracking-widest font-bold text-secondary/70 mb-1">{localCat}</p>
-                <h3 className="font-extrabold text-primary mb-2 leading-tight">{localName}</h3>
-                <p className="text-xs text-on-surface-variant leading-relaxed">{localShort}</p>
+                <p className="text-[10px] uppercase tracking-widest font-semibold text-secondary/70 mb-1">{localCat}</p>
+                <h3 className="font-bold text-primary mb-2 leading-tight">{localName}</h3>
+                <p className="text-xs text-on-surface-variant leading-relaxed font-light">{localShort}</p>
+                {isExternal && (
+                  <p className="text-[10px] text-alert-yellow mt-2 font-semibold inline-flex items-center gap-1">
+                    <span className="material-symbols-outlined text-[12px]">open_in_new</span>
+                    govforms
+                  </p>
+                )}
+              </>
+            );
+            return isExternal ? (
+              <a
+                key={s.slug}
+                href={s.externalUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={className}
+                data-tooltip={localShort}
+                data-tooltip-position="bottom"
+              >
+                {inner}
+              </a>
+            ) : (
+              <Link
+                key={s.slug}
+                href={`/catalog/${s.slug}`}
+                className={className}
+                data-tooltip={localShort}
+                data-tooltip-position="bottom"
+              >
+                {inner}
               </Link>
             );
           })}

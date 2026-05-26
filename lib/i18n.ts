@@ -285,7 +285,44 @@ type TranslationKeys =
   | "goals.kpi.upsell" | "goals.kpi.upsellTarget"
   | "goals.measurement" | "goals.dashboardRT" | "goals.monthlyMeeting" | "goals.qbr" | "goals.executiveReport"
   // Nav additions
-  | "nav.pipeline" | "nav.strategic" | "nav.useCases" | "nav.goals";
+  | "nav.pipeline" | "nav.strategic" | "nav.useCases" | "nav.goals"
+  // Support Modal - extended
+  | "support.closeAria" | "support.closeTip" | "support.headerEyebrow"
+  | "support.altRoutes" | "support.directDial" | "support.govFormLabel"
+  | "support.done" | "support.refNum"
+  | "support.quickPhone" | "support.quickEmail" | "support.quickGov" | "support.quickGovDesc"
+  | "support.phoneTip" | "support.emailTip" | "support.govTip"
+  | "support.idHint" | "support.typeSelect"
+  | "support.type.tech" | "support.type.order" | "support.type.content"
+  | "support.type.payment" | "support.type.quote" | "support.type.other"
+  | "support.orderOptional" | "support.orderPlaceholder"
+  | "support.subjectPlaceholder" | "support.descPlaceholder"
+  | "support.privacyNote" | "support.privacyLink"
+  | "support.cancelTip" | "support.submitTip"
+  // Quote modal - extended
+  | "quote.priceRange" | "quote.priceUnit" | "quote.closeAria" | "quote.closeTip"
+  | "quote.included.short" | "quote.send.tip"
+  | "quote.notes.placeholder" | "quote.privacy"
+  // News Ticker
+  | "ticker.headline.aerial" | "ticker.headline.dem" | "ticker.headline.maps"
+  | "ticker.headline.cors" | "ticker.headline.holiday"
+  // AI Assistant
+  | "ai.greet.fallback" | "ai.btn.aria" | "ai.btn.tip" | "ai.btn.label"
+  | "ai.close" | "ai.minimize"
+  // Strategic health
+  | "strat.health.healthy" | "strat.health.watch" | "strat.health.atRisk"
+  | "strat.customersLabel" | "strat.revenueShare"
+  // Admin layout groups
+  | "admin.group.overview" | "admin.group.sales" | "admin.group.ops" | "admin.group.content"
+  // Login tooltips
+  | "login.tip.national"
+  // Pipeline page extras
+  | "pipe.routeTypes" | "pipe.stageFunnel" | "pipe.slaActionsTitle" | "pipe.activeOpps"
+  | "pipe.col.routeId" | "pipe.col.opportunity" | "pipe.col.customer"
+  | "pipe.col.type" | "pipe.col.stage" | "pipe.col.daysInStage"
+  | "pipe.col.amount" | "pipe.kpi.activeOpps" | "pipe.kpi.totalValue"
+  // Catalog/[slug] subscription
+  | "svc.priceUnitMonth" | "svc.perMonth";
 
 const dict: Record<TranslationKeys, Record<Lang, string>> = {
   // Navigation
@@ -1240,7 +1277,100 @@ const dict: Record<TranslationKeys, Record<Lang, string>> = {
   "nav.pipeline": { he: 'Pipeline', en: 'Pipeline', fr: 'Pipeline', es: 'Pipeline', ru: 'Pipeline', ar: 'مسار البيع' },
   "nav.strategic": { he: 'לקוחות אסטרטגיים', en: 'Strategic Accounts', fr: 'Comptes stratégiques', es: 'Cuentas estratégicas', ru: 'Стратег. клиенты', ar: 'الحسابات الاستراتيجية' },
   "nav.useCases": { he: 'תרחישי שימוש', en: 'Use Cases', fr: 'Cas d\'usage', es: 'Casos de uso', ru: 'Сценарии', ar: 'حالات الاستخدام' },
-  "nav.goals": { he: 'יעדי הצלחה', en: 'Success Goals', fr: 'Objectifs', es: 'Objetivos', ru: 'Цели', ar: 'الأهداف' }
+  "nav.goals": { he: 'יעדי הצלחה', en: 'Success Goals', fr: 'Objectifs', es: 'Objetivos', ru: 'Цели', ar: 'الأهداف' },
+
+  // Support Modal - extended
+  "support.closeAria": { he: 'סגור חלון', en: 'Close window', fr: 'Fermer', es: 'Cerrar', ru: 'Закрыть', ar: 'إغلاق' },
+  "support.closeTip": { he: 'סגור טופס פנייה', en: 'Close support form', fr: 'Fermer le formulaire', es: 'Cerrar formulario', ru: 'Закрыть форму', ar: 'إغلاق النموذج' },
+  "support.headerEyebrow": { he: 'שירות לקוחות', en: 'Customer Service', fr: 'Service Client', es: 'Atención al Cliente', ru: 'Служба поддержки', ar: 'خدمة العملاء' },
+  "support.altRoutes": { he: '📌 מסלולי מענה נוספים:', en: '📌 Additional contact routes:', fr: '📌 Autres canaux:', es: '📌 Otras vías:', ru: '📌 Другие каналы:', ar: '📌 قنوات تواصل إضافية:' },
+  "support.directDial": { he: 'חיוג ישיר', en: 'Direct dial', fr: 'Appel direct', es: 'Llamada directa', ru: 'Прямой звонок', ar: 'اتصال مباشر' },
+  "support.govFormLabel": { he: 'טופס gov.il המלא', en: 'Full gov.il form', fr: 'Formulaire gov.il', es: 'Formulario gov.il', ru: 'Полная форма gov.il', ar: 'نموذج gov.il الكامل' },
+  "support.done": { he: 'סיום', en: 'Done', fr: 'Terminer', es: 'Listo', ru: 'Готово', ar: 'تم' },
+  "support.refNum": { he: 'מספר אסמכתא:', en: 'Reference number:', fr: 'N° de référence:', es: 'Nº de referencia:', ru: 'Номер обращения:', ar: 'رقم المرجع:' },
+  "support.quickPhone": { he: 'טלפון', en: 'Phone', fr: 'Téléphone', es: 'Teléfono', ru: 'Телефон', ar: 'هاتف' },
+  "support.quickEmail": { he: 'מייל', en: 'Email', fr: 'E-mail', es: 'Correo', ru: 'E-mail', ar: 'بريد' },
+  "support.quickGov": { he: 'gov.il', en: 'gov.il', fr: 'gov.il', es: 'gov.il', ru: 'gov.il', ar: 'gov.il' },
+  "support.quickGovDesc": { he: 'טופס מלא', en: 'Full form', fr: 'Formulaire', es: 'Formulario', ru: 'Полная форма', ar: 'نموذج كامل' },
+  "support.phoneTip": { he: 'חיוג ישיר למוקד', en: 'Direct call to support', fr: 'Appel direct', es: 'Llamada directa', ru: 'Прямой звонок', ar: 'اتصال مباشر' },
+  "support.emailTip": { he: 'פתח מייל בתוכנת המייל שלך', en: 'Open in your mail app', fr: 'Ouvrir dans votre messagerie', es: 'Abrir en tu correo', ru: 'Открыть в почте', ar: 'افتح في تطبيق البريد' },
+  "support.govTip": { he: 'פתיחת טופס gov.il המלא', en: 'Open the full gov.il form', fr: 'Ouvrir le formulaire gov.il', es: 'Abrir formulario gov.il', ru: 'Открыть форму gov.il', ar: 'افتح نموذج gov.il' },
+  "support.idHint": { he: '9 ספרות', en: '9 digits', fr: '9 chiffres', es: '9 dígitos', ru: '9 цифр', ar: '9 أرقام' },
+  "support.typeSelect": { he: 'בחר...', en: 'Select...', fr: 'Choisir...', es: 'Seleccionar...', ru: 'Выбрать...', ar: 'اختر...' },
+  "support.type.tech": { he: 'תקלה טכנית בפורטל', en: 'Technical issue in portal', fr: 'Problème technique', es: 'Problema técnico', ru: 'Техническая проблема', ar: 'مشكلة تقنية' },
+  "support.type.order": { he: 'בעיה עם הזמנה', en: 'Order issue', fr: 'Problème de commande', es: 'Problema con pedido', ru: 'Проблема с заказом', ar: 'مشكلة في الطلب' },
+  "support.type.content": { he: 'שאלת תוכן מקצועית', en: 'Professional content query', fr: 'Question contenu', es: 'Consulta de contenido', ru: 'Содержательный вопрос', ar: 'استفسار محتوى' },
+  "support.type.payment": { he: 'חשבונית / תשלום', en: 'Invoice / payment', fr: 'Facture / paiement', es: 'Factura / pago', ru: 'Счёт / платёж', ar: 'فاتورة / دفع' },
+  "support.type.quote": { he: 'הצעת מחיר', en: 'Quote', fr: 'Devis', es: 'Cotización', ru: 'Предложение', ar: 'عرض سعر' },
+  "support.type.other": { he: 'אחר', en: 'Other', fr: 'Autre', es: 'Otro', ru: 'Другое', ar: 'أخرى' },
+  "support.orderOptional": { he: 'מספר הזמנה (אופציונלי)', en: 'Order number (optional)', fr: 'N° commande (facult.)', es: 'Nº pedido (opc.)', ru: '№ заказа (опц.)', ar: 'رقم الطلب (اختياري)' },
+  "support.orderPlaceholder": { he: 'למשל: ORD-2026-145', en: 'e.g.: ORD-2026-145', fr: 'ex.: ORD-2026-145', es: 'ej.: ORD-2026-145', ru: 'напр.: ORD-2026-145', ar: 'مثال: ORD-2026-145' },
+  "support.subjectPlaceholder": { he: 'למשל: לא קיבלתי את המפה שהזמנתי', en: 'e.g.: I did not receive my map', fr: 'ex.: je n\'ai pas reçu ma carte', es: 'ej.: no recibí mi mapa', ru: 'напр.: не получил карту', ar: 'مثال: لم أستلم الخريطة' },
+  "support.descPlaceholder": { he: 'תאר/י את הבעיה...', en: 'Describe the issue...', fr: 'Décrivez le problème...', es: 'Describe el problema...', ru: 'Опишите проблему...', ar: 'صف المشكلة...' },
+  "support.privacyNote": { he: 'הפנייה תועבר לעיבוד במערכת המוקד הארצית של מפ"י תוך כפיפות ל-', en: 'Your case will be processed by MAPI national support, subject to ', fr: 'Votre demande sera traitée par le centre national MAPI selon ', es: 'Tu caso será procesado por el centro nacional, sujeto a ', ru: 'Обработка в национальном центре MAPI согласно ', ar: 'تتم المعالجة في المركز الوطني MAPI وفق ' },
+  "support.privacyLink": { he: 'מדיניות הפרטיות', en: 'Privacy Policy', fr: 'Politique de confidentialité', es: 'Política de privacidad', ru: 'Политике конфиденциальности', ar: 'سياسة الخصوصية' },
+  "support.cancelTip": { he: 'ביטול הפנייה', en: 'Cancel case', fr: 'Annuler', es: 'Cancelar', ru: 'Отмена', ar: 'إلغاء' },
+  "support.submitTip": { he: 'שליחת הפנייה למוקד הארצי של מפ"י', en: 'Send case to MAPI national support', fr: 'Envoyer au centre national MAPI', es: 'Enviar al centro nacional MAPI', ru: 'Отправить в национальный центр', ar: 'إرسال للمركز الوطني' },
+
+  // Quote Modal extended
+  "quote.priceRange": { he: 'החל מ-', en: 'From', fr: 'À partir de', es: 'Desde', ru: 'От', ar: 'ابتداء من' },
+  "quote.priceUnit": { he: 'עד', en: 'to', fr: 'à', es: 'hasta', ru: 'до', ar: 'إلى' },
+  "quote.closeAria": { he: 'סגור חלון', en: 'Close', fr: 'Fermer', es: 'Cerrar', ru: 'Закрыть', ar: 'إغلاق' },
+  "quote.closeTip": { he: 'סגור טופס הצעת מחיר', en: 'Close quote form', fr: 'Fermer le devis', es: 'Cerrar cotización', ru: 'Закрыть форму', ar: 'إغلاق العرض' },
+  "quote.included.short": { he: 'מה כלול בהצעה', en: 'What\'s in this quote', fr: 'Inclus dans le devis', es: 'Incluido', ru: 'Включено', ar: 'متضمن' },
+  "quote.send.tip": { he: 'נציג יצור איתך קשר תוך 1 ימי עסקים עם הצעת מחיר מפורטת', en: 'A rep will contact you within 1 business day', fr: 'Un agent vous contactera sous 1 jour', es: 'Un agente te contactará en 1 día', ru: 'С вами свяжутся в течение 1 дня', ar: 'سيتواصل معك مندوب خلال يوم عمل' },
+  "quote.notes.placeholder": { he: 'למשל: גודל מסוים, אזור גיאוגרפי, פורמט מבוקש...', en: 'e.g.: specific size, area, format...', fr: 'ex. taille, zone, format...', es: 'tamaño, zona, formato...', ru: 'размер, область, формат...', ar: 'الحجم، المنطقة، الصيغة...' },
+  "quote.privacy": { he: 'בלחיצה אני מאשר/ת את מדיניות הפרטיות של מפ"י', en: 'By clicking I accept MAPI\'s privacy policy', fr: 'En cliquant j\'accepte la politique', es: 'Al hacer clic acepto la política', ru: 'Нажимая, я принимаю политику', ar: 'بالنقر أوافق على السياسة' },
+
+  // News Ticker headlines (sentence form, max ~7 words)
+  "ticker.headline.aerial": { he: 'אורתופוטו חדש זמין באזור המרכז', en: 'New orthophoto live in central region', fr: 'Nouveau orthophoto centre disponible', es: 'Nuevo ortofoto centro disponible', ru: 'Новое ортофото центрального региона', ar: 'صور جوية جديدة متاحة في المركز' },
+  "ticker.headline.dem": { he: 'מודלי גובה DSM ו-DTM עודכנו ברזולוציה גבוהה', en: 'DSM and DTM elevation models updated', fr: 'DSM et DTM mis à jour', es: 'DSM y DTM actualizados', ru: 'DSM и DTM обновлены', ar: 'تحديث نماذج الارتفاع DSM و DTM' },
+  "ticker.headline.maps": { he: 'מחירוני המפות עודכנו לקראת השנה החדשה', en: 'Map prices updated for the new year', fr: 'Prix cartes mis à jour 2026', es: 'Precios mapas actualizados 2026', ru: 'Цены карт обновлены 2026', ar: 'تحديث أسعار الخرائط 2026' },
+  "ticker.headline.cors": { he: 'מנוי CORS שנתי במחיר מבצע מיוחד', en: 'Annual CORS subscription at special price', fr: 'CORS annuel prix spécial', es: 'CORS anual precio especial', ru: 'Годовая подписка CORS со скидкой', ar: 'اشتراك CORS سنوي بسعر مميز' },
+  "ticker.headline.holiday": { he: 'מוקד השירות פתוח בחגים ובחופשות', en: 'Customer support open during holidays', fr: 'Support ouvert pendant fêtes', es: 'Soporte abierto en festivos', ru: 'Поддержка в праздники', ar: 'الدعم متاح خلال الأعياد' },
+
+  // AI Assistant
+  "ai.greet.fallback": { he: 'אני המסייע החכם של מפ"י. במה אוכל לעזור?', en: 'I am MAPI\'s smart assistant. How can I help?', fr: 'Je suis l\'assistant MAPI. Comment puis-je aider ?', es: 'Soy el asistente MAPI. ¿Cómo ayudo?', ru: 'Я ИИ-помощник MAPI. Чем помочь?', ar: 'أنا مساعد MAPI الذكي. كيف أساعدك؟' },
+  "ai.btn.aria": { he: 'פתח צ\'אט תמיכה חכם', en: 'Open smart support chat', fr: 'Ouvrir le chat', es: 'Abrir chat de soporte', ru: 'Открыть чат поддержки', ar: 'افتح محادثة الدعم الذكية' },
+  "ai.btn.tip": { he: 'צ\'אט תמיכה חכם - מענה מיידי', en: 'Smart support - instant answers', fr: 'Support intelligent', es: 'Soporte inteligente', ru: 'Умная поддержка - мгновенно', ar: 'دعم ذكي - رد فوري' },
+  "ai.btn.label": { he: 'עזרה?', en: 'Help?', fr: 'Aide ?', es: '¿Ayuda?', ru: 'Помощь?', ar: 'مساعدة؟' },
+  "ai.close": { he: 'סגור צ\'אט', en: 'Close chat', fr: 'Fermer chat', es: 'Cerrar chat', ru: 'Закрыть чат', ar: 'إغلاق المحادثة' },
+  "ai.minimize": { he: 'מזער', en: 'Minimize', fr: 'Réduire', es: 'Minimizar', ru: 'Свернуть', ar: 'تصغير' },
+
+  // Strategic health
+  "strat.health.healthy": { he: 'תקין', en: 'Healthy', fr: 'Sain', es: 'Saludable', ru: 'Здоровый', ar: 'سليم' },
+  "strat.health.watch": { he: 'מעקב', en: 'Watch', fr: 'Surveiller', es: 'Vigilar', ru: 'Наблюдение', ar: 'متابعة' },
+  "strat.health.atRisk": { he: 'בסיכון', en: 'At risk', fr: 'À risque', es: 'En riesgo', ru: 'В зоне риска', ar: 'في خطر' },
+  "strat.customersLabel": { he: 'לקוחות', en: 'customers', fr: 'clients', es: 'clientes', ru: 'клиентов', ar: 'عملاء' },
+  "strat.revenueShare": { he: 'מההכנסה', en: 'of revenue', fr: 'du CA', es: 'del ingreso', ru: 'выручки', ar: 'من الإيرادات' },
+
+  // Admin layout groups
+  "admin.group.overview": { he: 'סקירה כללית', en: 'Overview', fr: 'Vue d\'ensemble', es: 'Resumen', ru: 'Обзор', ar: 'نظرة عامة' },
+  "admin.group.sales": { he: 'מכירות', en: 'Sales', fr: 'Ventes', es: 'Ventas', ru: 'Продажи', ar: 'المبيعات' },
+  "admin.group.ops": { he: 'תפעול', en: 'Operations', fr: 'Opérations', es: 'Operaciones', ru: 'Операции', ar: 'العمليات' },
+  "admin.group.content": { he: 'תוכן', en: 'Content', fr: 'Contenu', es: 'Contenido', ru: 'Контент', ar: 'المحتوى' },
+
+  // Login tooltip
+  "login.tip.national": { he: 'התחברות לאזרחים פרטיים בעזרת מערכת ההזדהות הלאומית של ממשלת ישראל', en: 'Sign-in for citizens via Israel National Identity', fr: 'Connexion citoyens via Identité Nationale', es: 'Acceso ciudadanos via Identidad Nacional', ru: 'Вход граждан через нац. идентификацию', ar: 'دخول للمواطنين عبر الهوية الوطنية' },
+
+  // Pipeline page extras
+  "pipe.routeTypes": { he: 'סוגי מסלולים', en: 'Route types', fr: 'Types de parcours', es: 'Tipos de ruta', ru: 'Типы маршрутов', ar: 'أنواع المسارات' },
+  "pipe.stageFunnel": { he: 'משפך שלבים', en: 'Stage funnel', fr: 'Entonnoir', es: 'Embudo', ru: 'Воронка этапов', ar: 'قمع المراحل' },
+  "pipe.slaActionsTitle": { he: 'SLA + פעולות אוטומטיות לכל שלב', en: 'SLA + automated actions per stage', fr: 'SLA + actions auto par étape', es: 'SLA + acciones por etapa', ru: 'SLA + действия по этапам', ar: 'SLA + إجراءات لكل مرحلة' },
+  "pipe.activeOpps": { he: 'הזדמנויות פעילות + SLA', en: 'Active opportunities + SLA', fr: 'Opportunités actives', es: 'Oportunidades activas', ru: 'Активные возможности', ar: 'الفرص النشطة' },
+  "pipe.col.routeId": { he: 'מזהה', en: 'ID', fr: 'ID', es: 'ID', ru: 'ID', ar: 'المعرف' },
+  "pipe.col.opportunity": { he: 'הזדמנות', en: 'Opportunity', fr: 'Opportunité', es: 'Oportunidad', ru: 'Возможность', ar: 'الفرصة' },
+  "pipe.col.customer": { he: 'לקוח', en: 'Customer', fr: 'Client', es: 'Cliente', ru: 'Клиент', ar: 'العميل' },
+  "pipe.col.type": { he: 'סוג', en: 'Type', fr: 'Type', es: 'Tipo', ru: 'Тип', ar: 'النوع' },
+  "pipe.col.stage": { he: 'שלב', en: 'Stage', fr: 'Étape', es: 'Etapa', ru: 'Этап', ar: 'المرحلة' },
+  "pipe.col.daysInStage": { he: 'ימים בשלב', en: 'Days in stage', fr: 'Jours en étape', es: 'Días en etapa', ru: 'Дней в этапе', ar: 'أيام في المرحلة' },
+  "pipe.col.amount": { he: 'סכום', en: 'Amount', fr: 'Montant', es: 'Importe', ru: 'Сумма', ar: 'المبلغ' },
+  "pipe.kpi.activeOpps": { he: 'הזדמנויות פעילות', en: 'Active opportunities', fr: 'Opportunités actives', es: 'Oportunidades activas', ru: 'Активных возможностей', ar: 'الفرص النشطة' },
+  "pipe.kpi.totalValue": { he: 'שווי כולל בפייפליין', en: 'Total pipeline value', fr: 'Valeur pipeline totale', es: 'Valor total pipeline', ru: 'Общая стоимость', ar: 'القيمة الإجمالية' },
+
+  // Catalog/[slug] subscription
+  "svc.priceUnitMonth": { he: '₪/חודש', en: 'ILS/month', fr: '₪/mois', es: '₪/mes', ru: '₪/мес', ar: '₪/شهر' },
+  "svc.perMonth": { he: '/חודש', en: '/month', fr: '/mois', es: '/mes', ru: '/мес', ar: '/شهر' }
 };
 
 export type TKey = keyof typeof dict;

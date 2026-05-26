@@ -24,11 +24,11 @@ const MODULES: Array<{
   { href: "/admin/content", icon: "edit_note", labelKey: "admin.module.content", subKey: "admin.module.contentSub", group: "content" }
 ];
 
-const GROUP_LABELS: Record<string, string> = {
-  overview: "סקירה כללית",
-  sales: "מכירות",
-  ops: "תפעול",
-  content: "תוכן"
+const GROUP_KEYS: Record<string, TKey> = {
+  overview: "admin.group.overview",
+  sales: "admin.group.sales",
+  ops: "admin.group.ops",
+  content: "admin.group.content"
 };
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
@@ -70,7 +70,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           {groupedModules.map((group) => (
             <div key={group.group} className="mb-3">
               <p className="text-[10px] uppercase tracking-widest font-bold text-on-surface-variant mb-1.5 px-2">
-                {GROUP_LABELS[group.group]}
+                {t(GROUP_KEYS[group.group])}
               </p>
               <div className="space-y-1">
                 {group.items.map((m) => {

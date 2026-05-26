@@ -76,8 +76,8 @@ export default function StrategicAccountsPage() {
                   T{tier}
                 </span>
               </div>
-              <p className="text-xl font-black text-primary">{accs.length} <span className="text-xs font-normal text-on-surface-variant">לקוחות</span></p>
-              <p className="text-xs text-on-surface-variant mt-1">₪{(tierRev / 1_000_000).toFixed(2)}M • {pct}% מההכנסה</p>
+              <p className="text-xl font-black text-primary">{accs.length} <span className="text-xs font-normal text-on-surface-variant">{t("strat.customersLabel")}</span></p>
+              <p className="text-xs text-on-surface-variant mt-1">₪{(tierRev / 1_000_000).toFixed(2)}M • {pct}% {t("strat.revenueShare")}</p>
             </div>
           );
         })}
@@ -121,7 +121,7 @@ export default function StrategicAccountsPage() {
                   </td>
                   <td className="py-2.5 px-3 text-center">
                     <span className={`inline-block px-2 py-0.5 rounded-full text-[10px] font-bold ${healthClasses[a.health]}`}>
-                      {a.health === "healthy" ? "תקין" : a.health === "watch" ? "מעקב" : "בסיכון"}
+                      {t(`strat.health.${a.health}` as TKey)}
                     </span>
                   </td>
                   <td className="py-2.5 px-3 text-center">

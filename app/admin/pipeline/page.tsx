@@ -49,11 +49,11 @@ export default function PipelinePage() {
       <section className="grid grid-cols-2 md:grid-cols-4 gap-3">
         <div className="bg-white rounded-2xl p-4 border border-outline-variant/50 text-center">
           <p className="text-2xl font-black text-primary">{mockPipelineEntries.length}</p>
-          <p className="text-[11px] text-on-surface-variant mt-1">Active opportunities</p>
+          <p className="text-[11px] text-on-surface-variant mt-1">{t("pipe.kpi.activeOpps")}</p>
         </div>
         <div className="bg-white rounded-2xl p-4 border border-outline-variant/50 text-center">
           <p className="text-2xl font-black text-positive-green">₪{(totalValue / 1000).toFixed(0)}K</p>
-          <p className="text-[11px] text-on-surface-variant mt-1">Total pipeline value</p>
+          <p className="text-[11px] text-on-surface-variant mt-1">{t("pipe.kpi.totalValue")}</p>
         </div>
         <div className="bg-white rounded-2xl p-4 border border-outline-variant/50 text-center">
           <p className="text-2xl font-black text-secondary">{slaScore}%</p>
@@ -69,7 +69,7 @@ export default function PipelinePage() {
       <section className="bg-white rounded-2xl border border-outline-variant/50 p-5">
         <h2 className="text-base font-extrabold text-primary mb-3 flex items-center gap-2">
           <span className="material-symbols-outlined text-secondary text-[20px]">filter_alt</span>
-          <span>Stage funnel</span>
+          <span>{t("pipe.stageFunnel")}</span>
         </h2>
         <div className="space-y-2">
           {byStage.map(({ stage, count, value }) => {
@@ -99,7 +99,7 @@ export default function PipelinePage() {
 
       {/* Route Type Legend */}
       <section className="bg-white rounded-2xl border border-outline-variant/50 p-5">
-        <h2 className="text-base font-extrabold text-primary mb-3">סוגי מסלולים (A/B/C/D)</h2>
+        <h2 className="text-base font-extrabold text-primary mb-3">{t("pipe.routeTypes")} (A/B/C/D)</h2>
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-2">
           {ROUTE_TYPES.map((rt) => (
             <div key={rt.id} className="border border-outline-variant/40 rounded-xl p-3">
@@ -118,13 +118,13 @@ export default function PipelinePage() {
       {/* SLA Owners & actions */}
       <section className="bg-white rounded-2xl border border-outline-variant/50 overflow-hidden">
         <header className="px-5 py-3 border-b border-outline-variant/50">
-          <h2 className="text-base font-extrabold text-primary">SLA + פעולות אוטומטיות לכל שלב</h2>
+          <h2 className="text-base font-extrabold text-primary">{t("pipe.slaActionsTitle")}</h2>
         </header>
         <div className="overflow-x-auto">
           <table className="w-full text-xs">
             <thead className="bg-surface-container/50 text-on-surface-variant uppercase tracking-wider">
               <tr>
-                <th className="py-2.5 px-3 text-right">שלב</th>
+                <th className="py-2.5 px-3 text-right">{t("pipe.col.stage")}</th>
                 <th className="py-2.5 px-3">{t("pipe.sla.days")}</th>
                 <th className="py-2.5 px-3">{t("pipe.sla.owner")}</th>
                 <th className="py-2.5 px-3 text-right">{t("pipe.sla.actions")}</th>
@@ -155,20 +155,20 @@ export default function PipelinePage() {
       {/* Live entries */}
       <section className="bg-white rounded-2xl border border-outline-variant/50 overflow-hidden">
         <header className="px-5 py-3 border-b border-outline-variant/50">
-          <h2 className="text-base font-extrabold text-primary">הזדמנויות פעילות + SLA</h2>
+          <h2 className="text-base font-extrabold text-primary">{t("pipe.activeOpps")}</h2>
         </header>
         <div className="overflow-x-auto">
           <table className="w-full text-xs">
             <thead className="bg-surface-container/50 text-on-surface-variant uppercase tracking-wider">
               <tr>
-                <th className="py-2.5 px-3">#</th>
-                <th className="py-2.5 px-3 text-right">הזדמנות</th>
-                <th className="py-2.5 px-3">לקוח</th>
-                <th className="py-2.5 px-3">סוג</th>
-                <th className="py-2.5 px-3">שלב</th>
-                <th className="py-2.5 px-3">ימים בשלב</th>
+                <th className="py-2.5 px-3">{t("pipe.col.routeId")}</th>
+                <th className="py-2.5 px-3 text-right">{t("pipe.col.opportunity")}</th>
+                <th className="py-2.5 px-3">{t("pipe.col.customer")}</th>
+                <th className="py-2.5 px-3">{t("pipe.col.type")}</th>
+                <th className="py-2.5 px-3">{t("pipe.col.stage")}</th>
+                <th className="py-2.5 px-3">{t("pipe.col.daysInStage")}</th>
                 <th className="py-2.5 px-3">SLA</th>
-                <th className="py-2.5 px-3">סכום</th>
+                <th className="py-2.5 px-3">{t("pipe.col.amount")}</th>
               </tr>
             </thead>
             <tbody>

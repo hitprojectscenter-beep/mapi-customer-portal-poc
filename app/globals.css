@@ -28,15 +28,17 @@
   }
 
   body {
-    font-family: "Public Sans", "Heebo", "Assistant", Arial, sans-serif;
+    font-family: "Heebo", "Assistant", "Inter", Arial, sans-serif;
     background-color: #f8f9fb !important;
     color: #1f2937 !important;
     /* Improved readability for long sessions - softer near-black */
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
+    /* Lighter default weight - more elegant, less eye strain */
+    font-weight: 300;
     /* Better base body line-height for breathing room */
-    line-height: 1.55;
+    line-height: 1.6;
     font-size: 15px;
     /* iOS tap highlight */
     -webkit-tap-highlight-color: rgba(11, 97, 161, 0.15);
@@ -50,23 +52,53 @@
   }
 
   /* Typography refinements - reduce visual fatigue */
+  /* Headings keep their semantic weights but use lighter end of scale */
   h1 {
     line-height: 1.15;
-    letter-spacing: -0.02em;
+    letter-spacing: -0.025em;
+    font-weight: 600;
   }
   h2 {
     line-height: 1.2;
-    letter-spacing: -0.015em;
+    letter-spacing: -0.02em;
+    font-weight: 600;
   }
   h3 {
-    line-height: 1.25;
+    line-height: 1.3;
     letter-spacing: -0.01em;
+    font-weight: 600;
   }
-  p, li {
-    line-height: 1.6;
+  h4, h5, h6 {
+    font-weight: 500;
+  }
+  p, li, td, th {
+    font-weight: 300;
+    line-height: 1.65;
   }
   small, .text-xs {
+    font-weight: 400;
     line-height: 1.5;
+  }
+  /* Buttons use medium weight for legibility */
+  button, a, label {
+    font-weight: 400;
+  }
+  /* Override default extrabold/bold heaviness — use semibold instead */
+  .font-extrabold {
+    font-weight: 600 !important;
+  }
+  .font-bold {
+    font-weight: 500 !important;
+  }
+  .font-black {
+    font-weight: 700 !important;
+  }
+  .font-medium {
+    font-weight: 400 !important;
+  }
+  /* Light variants stay light */
+  .font-light, .font-thin {
+    font-weight: 300 !important;
   }
 
   /* Reduce excessive black-on-white contrast that strains eyes */
@@ -452,7 +484,7 @@
       0 8px 18px -4px rgba(0, 29, 53, 0.55),
       0 0 0 1px rgba(124, 186, 255, 0.25),
       0 0 12px rgba(124, 186, 255, 0.15);
-    font-family: "Public Sans", "Heebo", sans-serif;
+    font-family: "Heebo", "Assistant", "Inter", sans-serif;
     max-width: 280px;
     text-align: center;
   }
