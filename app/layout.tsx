@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -12,8 +12,6 @@ export const metadata: Metadata = {
     'הפורטל הלאומי הרשמי למידע גיאוגרפי. הזמנת מפות, נתוני קדסטר, שירותי GNSS ותצלומי אוויר ישירות מהמרכז למיפוי ישראל.',
   keywords: ['מפ"י', "מיפוי", "קדסטר", "GIS", 'מפות', "אורתופוטו", "מודד", "גיאודזיה"],
   authors: [{ name: 'המרכז למיפוי ישראל' }],
-  // Force light mode in browsers (overrides device dark mode preference)
-  themeColor: "#001d35",
   other: {
     "color-scheme": "light only"
   },
@@ -23,6 +21,11 @@ export const metadata: Metadata = {
     locale: "he_IL",
     type: "website"
   }
+};
+
+export const viewport: Viewport = {
+  themeColor: "#001d35",
+  colorScheme: "light"
 };
 
 export default function RootLayout({

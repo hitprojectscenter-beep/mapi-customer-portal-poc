@@ -250,7 +250,42 @@ type TranslationKeys =
   | "mig.col.entity" | "mig.col.years" | "mig.col.records" | "mig.col.structure" | "mig.col.status"
   | "mig.status.planned" | "mig.status.inProgress" | "mig.status.done"
   // Home/page additions
-  | "home.shopByNeed" | "home.shopByNeedSub" | "home.salesTeam";
+  | "home.shopByNeed" | "home.shopByNeedSub" | "home.salesTeam"
+  // Sales Routes (Spec Chapter 5)
+  | "route.type.A" | "route.type.B" | "route.type.C" | "route.type.D"
+  | "route.phase" | "route.division"
+  | "route.div.cadastre" | "route.div.mapping" | "route.div.geodesy" | "route.div.technology" | "route.div.general"
+  // Pipeline
+  | "pipe.title" | "pipe.subtitle"
+  | "pipe.stage.lead" | "pipe.stage.qualified" | "pipe.stage.needs"
+  | "pipe.stage.quote" | "pipe.stage.negotiation" | "pipe.stage.won"
+  | "pipe.stage.fulfillment" | "pipe.stage.delivered"
+  | "pipe.sla.days" | "pipe.sla.owner" | "pipe.sla.actions"
+  | "pipe.sla.onTime" | "pipe.sla.warning" | "pipe.sla.breach"
+  // Strategic Accounts
+  | "strat.title" | "strat.subtitle"
+  | "strat.tier1" | "strat.tier2" | "strat.tier3"
+  | "strat.top20" | "strat.atRisk" | "strat.growing" | "strat.crossSell"
+  | "strat.col.customer" | "strat.col.tier" | "strat.col.am"
+  | "strat.col.revenue12m" | "strat.col.contractEnd" | "strat.col.trend" | "strat.col.health"
+  // Use Cases
+  | "uc.title" | "uc.subtitle" | "uc.persona" | "uc.steps"
+  | "uc.uc1.title" | "uc.uc1.persona" | "uc.uc1.step1" | "uc.uc1.step2" | "uc.uc1.step3" | "uc.uc1.step4" | "uc.uc1.step5"
+  | "uc.uc2.title" | "uc.uc2.persona" | "uc.uc2.step1" | "uc.uc2.step2" | "uc.uc2.step3" | "uc.uc2.step4"
+  | "uc.uc3.title" | "uc.uc3.persona" | "uc.uc3.step1" | "uc.uc3.step2" | "uc.uc3.step3" | "uc.uc3.step4" | "uc.uc3.step5"
+  | "uc.uc4.title" | "uc.uc4.persona" | "uc.uc4.step1" | "uc.uc4.step2" | "uc.uc4.step3" | "uc.uc4.step4"
+  | "uc.uc5.title" | "uc.uc5.persona" | "uc.uc5.step1" | "uc.uc5.step2" | "uc.uc5.step3" | "uc.uc5.step4" | "uc.uc5.step5"
+  // Success Goals
+  | "goals.title" | "goals.subtitle"
+  | "goals.kpi.revenue" | "goals.kpi.revenueTarget"
+  | "goals.kpi.cycle" | "goals.kpi.cycleTarget"
+  | "goals.kpi.satisfaction" | "goals.kpi.satisfactionTarget"
+  | "goals.kpi.adoption" | "goals.kpi.adoptionTarget"
+  | "goals.kpi.renewal" | "goals.kpi.renewalTarget"
+  | "goals.kpi.upsell" | "goals.kpi.upsellTarget"
+  | "goals.measurement" | "goals.dashboardRT" | "goals.monthlyMeeting" | "goals.qbr" | "goals.executiveReport"
+  // Nav additions
+  | "nav.pipeline" | "nav.strategic" | "nav.useCases" | "nav.goals";
 
 const dict: Record<TranslationKeys, Record<Lang, string>> = {
   // Navigation
@@ -1086,7 +1121,126 @@ const dict: Record<TranslationKeys, Record<Lang, string>> = {
   // Home additions
   "home.shopByNeed": { he: 'מצא את עצמך - לפי סוג לקוח', en: 'Find yourself - by customer type', fr: 'Trouvez-vous par type', es: 'Encuéntrate por tipo', ru: 'Найдите себя по типу клиента', ar: 'اعثر على نفسك حسب نوع العميل' },
   "home.shopByNeedSub": { he: 'אנחנו ערוכים לכל סוג של לקוח - אזרח, מודד, רשות, ממשלה, בעל מקצוע ולקוח עסקי. בחר את המסלול שלך ותקבל חוויה מותאמת.', en: 'We serve every customer type - citizen, surveyor, authority, gov, professional, business. Pick your journey.', fr: 'Nous servons chaque type de client - citoyen, géomètre, autorité, gouvernement, professionnel, business.', es: 'Servimos a cada tipo: ciudadano, topógrafo, autoridad, gobierno, profesional, business.', ru: 'Мы обслуживаем все типы клиентов - частных лиц, геодезистов, власти, госорганы, профессионалов, бизнес.', ar: 'نخدم كل نوع - مواطن، مساح، سلطة، حكومة، محترف، أعمال.' },
-  "home.salesTeam": { he: 'הצוות שלנו עומד לרשותך', en: 'Our team is here for you', fr: 'Notre équipe à votre service', es: 'Nuestro equipo a tu servicio', ru: 'Наша команда к вашим услугам', ar: 'فريقنا في خدمتك' }
+  "home.salesTeam": { he: 'הצוות שלנו עומד לרשותך', en: 'Our team is here for you', fr: 'Notre équipe à votre service', es: 'Nuestro equipo a tu servicio', ru: 'Наша команда к вашим услугам', ar: 'فريقنا في خدمتك' },
+
+  // 14 Sales Routes (Spec Chapter 5) - extra route metadata
+  "route.type.A": { he: 'A - שירות עצמי מלא', en: 'A - Full self-service', fr: 'A - Auto libre-service', es: 'A - Autoservicio', ru: 'A - Самообслуживание', ar: 'A - خدمة ذاتية كاملة' },
+  "route.type.B": { he: 'B - שירות עצמי + אישור', en: 'B - Self-service + approval', fr: 'B - Libre + approbation', es: 'B - Auto + aprobación', ru: 'B - Самооб. + утверждение', ar: 'B - ذاتية + موافقة' },
+  "route.type.C": { he: 'C - הצעת מחיר', en: 'C - Quote required', fr: 'C - Devis requis', es: 'C - Cotización', ru: 'C - Предложение', ar: 'C - عرض سعر' },
+  "route.type.D": { he: 'D - ניהול אסטרטגי', en: 'D - Strategic management', fr: 'D - Stratégique', es: 'D - Estratégico', ru: 'D - Стратегический', ar: 'D - استراتيجي' },
+  "route.phase": { he: 'שלב יישום', en: 'Implementation phase', fr: 'Phase', es: 'Fase', ru: 'Этап', ar: 'مرحلة' },
+  "route.division": { he: 'חטיבה אחראית', en: 'Owning division', fr: 'Division', es: 'División', ru: 'Дивизион', ar: 'القسم' },
+  "route.div.cadastre": { he: 'קדסטר', en: 'Cadastre', fr: 'Cadastre', es: 'Catastro', ru: 'Кадастр', ar: 'المساحة' },
+  "route.div.mapping": { he: 'מיפוי וממ"ג', en: 'Mapping & GIS', fr: 'Cartographie & GIS', es: 'Cartografía y GIS', ru: 'Картография и GIS', ar: 'الخرائط و GIS' },
+  "route.div.geodesy": { he: 'גיאודזיה', en: 'Geodesy', fr: 'Géodésie', es: 'Geodesia', ru: 'Геодезия', ar: 'الجيوديسيا' },
+  "route.div.technology": { he: 'טכנולוגיות', en: 'Technology', fr: 'Technologie', es: 'Tecnología', ru: 'Технологии', ar: 'التقنيات' },
+  "route.div.general": { he: 'כללי', en: 'General', fr: 'Général', es: 'General', ru: 'Общее', ar: 'عام' },
+
+  // Pipeline (Sales Stages) - Spec 4.1
+  "pipe.title": { he: 'שלבי Pipeline אחידים', en: 'Unified Sales Pipeline', fr: 'Pipeline de ventes', es: 'Pipeline de ventas', ru: 'Воронка продаж', ar: 'مسار المبيعات الموحد' },
+  "pipe.subtitle": { he: 'כל מסלולי המכירה מנוהלים במערכת אחידה של שלבים. כל שלב כולל גורם אחראי, SLA ופעולות אוטומטיות.', en: 'All sales routes use one unified stage system. Each stage has an owner, SLA and auto actions.', fr: 'Tous les parcours utilisent un système unifié.', es: 'Todas las rutas usan un sistema unificado.', ru: 'Все каналы используют единую систему.', ar: 'كل المسارات تستخدم نظاماً موحداً.' },
+  "pipe.stage.lead": { he: '1. ליד חדש', en: '1. New lead', fr: '1. Nouveau lead', es: '1. Lead nuevo', ru: '1. Новый лид', ar: '1. عميل محتمل جديد' },
+  "pipe.stage.qualified": { he: '2. מוסמך', en: '2. Qualified', fr: '2. Qualifié', es: '2. Calificado', ru: '2. Квалифицирован', ar: '2. مؤهل' },
+  "pipe.stage.needs": { he: '3. אפיון צרכים', en: '3. Needs analysis', fr: '3. Analyse besoins', es: '3. Análisis', ru: '3. Анализ', ar: '3. تحليل الاحتياجات' },
+  "pipe.stage.quote": { he: '4. הצעת מחיר', en: '4. Quote sent', fr: '4. Devis envoyé', es: '4. Cotización', ru: '4. Предложение', ar: '4. عرض سعر' },
+  "pipe.stage.negotiation": { he: '5. מו"מ', en: '5. Negotiation', fr: '5. Négociation', es: '5. Negociación', ru: '5. Переговоры', ar: '5. تفاوض' },
+  "pipe.stage.won": { he: '6. סגירה (Won)', en: '6. Closed Won', fr: '6. Gagné', es: '6. Ganado', ru: '6. Выиграно', ar: '6. فوز' },
+  "pipe.stage.fulfillment": { he: '7. ביצוע / אספקה', en: '7. Fulfillment', fr: '7. Exécution', es: '7. Cumplimiento', ru: '7. Исполнение', ar: '7. التنفيذ' },
+  "pipe.stage.delivered": { he: '8. הושלם', en: '8. Delivered', fr: '8. Livré', es: '8. Entregado', ru: '8. Доставлено', ar: '8. تم التسليم' },
+  "pipe.sla.days": { he: 'SLA (ימים)', en: 'SLA (days)', fr: 'SLA (jours)', es: 'SLA (días)', ru: 'SLA (дней)', ar: 'مستوى الخدمة (أيام)' },
+  "pipe.sla.owner": { he: 'גורם אחראי', en: 'Owner', fr: 'Responsable', es: 'Responsable', ru: 'Ответственный', ar: 'المسؤول' },
+  "pipe.sla.actions": { he: 'פעולות אוטומטיות', en: 'Auto actions', fr: 'Actions auto', es: 'Acciones auto', ru: 'Авто-действия', ar: 'إجراءات تلقائية' },
+  "pipe.sla.onTime": { he: 'בזמן', en: 'On time', fr: 'À temps', es: 'A tiempo', ru: 'Вовремя', ar: 'في الوقت' },
+  "pipe.sla.warning": { he: 'סמוך לחריגה', en: 'At risk', fr: 'À risque', es: 'En riesgo', ru: 'Под угрозой', ar: 'قريب من التجاوز' },
+  "pipe.sla.breach": { he: 'חרג מ-SLA', en: 'SLA breach', fr: 'SLA dépassé', es: 'SLA superado', ru: 'Нарушение SLA', ar: 'تجاوز SLA' },
+
+  // Strategic Accounts (Spec 4.4)
+  "strat.title": { he: 'לקוחות אסטרטגיים', en: 'Strategic Accounts', fr: 'Comptes stratégiques', es: 'Cuentas estratégicas', ru: 'Стратегические клиенты', ar: 'الحسابات الاستراتيجية' },
+  "strat.subtitle": { he: 'לקוחות מהותיים - הכנסה גדולה, פוטנציאל גבוה או חשיבות עסקית מיוחדת', en: 'High-revenue or high-potential customers requiring ongoing management', fr: 'Clients à fort revenu ou potentiel élevé', es: 'Clientes de alto ingreso o potencial', ru: 'Клиенты с высоким доходом или потенциалом', ar: 'عملاء عالي الإيرادات أو الإمكانات' },
+  "strat.tier1": { he: 'Tier 1 - חיוני', en: 'Tier 1 - Critical', fr: 'Niveau 1 - Critique', es: 'Nivel 1 - Crítico', ru: 'Уровень 1 - Критический', ar: 'الفئة 1 - حرج' },
+  "strat.tier2": { he: 'Tier 2 - חשוב', en: 'Tier 2 - Important', fr: 'Niveau 2 - Important', es: 'Nivel 2 - Importante', ru: 'Уровень 2 - Важный', ar: 'الفئة 2 - مهم' },
+  "strat.tier3": { he: 'Tier 3 - סטנדרטי', en: 'Tier 3 - Standard', fr: 'Niveau 3 - Standard', es: 'Nivel 3 - Estándar', ru: 'Уровень 3 - Стандарт', ar: 'الفئة 3 - قياسي' },
+  "strat.top20": { he: 'Top 20 לפי הכנסה (12 חודשים)', en: 'Top 20 by revenue (12 months)', fr: 'Top 20 par revenu', es: 'Top 20 por ingresos', ru: 'Топ 20 по выручке', ar: 'أفضل 20 حسب الإيرادات' },
+  "strat.atRisk": { he: 'לקוחות בסיכון', en: 'At-risk customers', fr: 'Clients à risque', es: 'Clientes en riesgo', ru: 'Клиенты в группе риска', ar: 'العملاء المعرضون للخطر' },
+  "strat.growing": { he: 'לקוחות בצמיחה', en: 'Growing customers', fr: 'Clients en croissance', es: 'Clientes en crecimiento', ru: 'Растущие клиенты', ar: 'العملاء النامون' },
+  "strat.crossSell": { he: 'הזדמנויות Cross-sell', en: 'Cross-sell opportunities', fr: 'Opportunités Cross-sell', es: 'Cross-sell', ru: 'Возможности Cross-sell', ar: 'فرص البيع المتقاطع' },
+  "strat.col.customer": { he: 'לקוח', en: 'Customer', fr: 'Client', es: 'Cliente', ru: 'Клиент', ar: 'العميل' },
+  "strat.col.tier": { he: 'דרגה', en: 'Tier', fr: 'Niveau', es: 'Nivel', ru: 'Уровень', ar: 'المستوى' },
+  "strat.col.am": { he: 'מנהל לקוח', en: 'Account Manager', fr: 'Gestionnaire', es: 'Gerente', ru: 'Менеджер', ar: 'مدير الحساب' },
+  "strat.col.revenue12m": { he: 'הכנסה 12 חודשים', en: 'Revenue (12m)', fr: 'CA (12m)', es: 'Ingresos (12m)', ru: 'Выручка (12 мес)', ar: 'الإيرادات (12 شهر)' },
+  "strat.col.contractEnd": { he: 'סיום חוזה', en: 'Contract end', fr: 'Fin contrat', es: 'Fin contrato', ru: 'Окончание', ar: 'نهاية العقد' },
+  "strat.col.trend": { he: 'מגמה', en: 'Trend', fr: 'Tendance', es: 'Tendencia', ru: 'Тренд', ar: 'الاتجاه' },
+  "strat.col.health": { he: 'בריאות לקוח', en: 'Health', fr: 'Santé', es: 'Salud', ru: 'Здоровье', ar: 'الصحة' },
+
+  // Use Cases (Spec 4.13)
+  "uc.title": { he: 'תרחישי שימוש יומיומיים', en: 'Daily Use Cases', fr: 'Cas d\'usage', es: 'Casos de uso', ru: 'Сценарии использования', ar: 'حالات الاستخدام اليومية' },
+  "uc.subtitle": { he: '5 תרחישים מתארים אינטראקציה טיפוסית של פרסונה עם המערכת', en: '5 scenarios describing typical persona interactions', fr: '5 scénarios d\'interaction', es: '5 escenarios típicos', ru: '5 типовых сценариев', ar: '5 سيناريوهات نموذجية' },
+  "uc.persona": { he: 'פרסונה', en: 'Persona', fr: 'Persona', es: 'Persona', ru: 'Персона', ar: 'الشخصية' },
+  "uc.steps": { he: 'שלבים', en: 'Steps', fr: 'Étapes', es: 'Pasos', ru: 'Шаги', ar: 'الخطوات' },
+  "uc.uc1.title": { he: 'מנהל אגף המכירות - יום עבודה', en: 'Sales Manager - typical day', fr: 'Manager - jour type', es: 'Gerente de ventas - día típico', ru: 'Менеджер по продажам - день', ar: 'مدير المبيعات - يوم نموذجي' },
+  "uc.uc1.persona": { he: 'אלעד אסרף - ראש אגף מכירות', en: 'Sales Department Head', fr: 'Chef ventes', es: 'Jefe de ventas', ru: 'Глава отдела продаж', ar: 'رئيس قسم المبيعات' },
+  "uc.uc1.step1": { he: 'בוקר: סקירת דשבורד Pipeline ו-SLA', en: 'Morning: Review pipeline + SLA dashboards', fr: 'Matin: revue pipeline', es: 'Mañana: revisar pipeline', ru: 'Утро: проверка pipeline', ar: 'الصباح: مراجعة المسار' },
+  "uc.uc1.step2": { he: 'אישור 4 הצעות מחיר ממתינות (Approval Process)', en: 'Approve 4 pending quotes', fr: 'Approuver 4 devis', es: 'Aprobar 4 cotizaciones', ru: 'Утвердить 4 предложения', ar: 'الموافقة على 4 عروض' },
+  "uc.uc1.step3": { he: 'פגישת סטטוס עם מנהלי חטיבות (Chatter)', en: 'Status meeting with division heads', fr: 'Réunion divisions', es: 'Reunión de estado', ru: 'Встреча с руководителями', ar: 'اجتماع رؤساء الأقسام' },
+  "uc.uc1.step4": { he: 'סקירת לקוחות אסטרטגיים בסיכון - יצירת תוכניות פעולה', en: 'Review at-risk strategic accounts', fr: 'Revue comptes stratégiques', es: 'Revisar cuentas estratégicas', ru: 'Анализ риск-клиентов', ar: 'مراجعة الحسابات المعرضة للخطر' },
+  "uc.uc1.step5": { he: 'בקרת חידושי מנוי (90/60/30 יום קדימה)', en: 'Subscription renewal review (90/60/30 days)', fr: 'Revue renouvellements', es: 'Revisión renovaciones', ru: 'Проверка продлений', ar: 'مراجعة التجديدات' },
+
+  "uc.uc2.title": { he: 'איש מכירות - עיבוד ליד חדש', en: 'Sales Rep - new lead processing', fr: 'Commercial - nouveau lead', es: 'Vendedor - lead nuevo', ru: 'Менеджер - новый лид', ar: 'مندوب - عميل محتمل جديد' },
+  "uc.uc2.persona": { he: 'איש מכירות - תיק עסקים פרטיים', en: 'Sales Rep - business accounts', fr: 'Commercial B2B', es: 'Vendedor B2B', ru: 'B2B менеджер', ar: 'مندوب B2B' },
+  "uc.uc2.step1": { he: 'קבלת התראה על ליד חדש שהוקצה (Round Robin)', en: 'Receive new-lead alert (assignment)', fr: 'Notification nouveau lead', es: 'Notificación lead nuevo', ru: 'Уведомление о новом лиде', ar: 'تنبيه عميل جديد' },
+  "uc.uc2.step2": { he: 'בדיקת פרטי הליד וניקוד אוטומטי (Lead Score)', en: 'Review lead details & auto-score', fr: 'Vérifier lead', es: 'Revisar lead', ru: 'Проверка лида', ar: 'مراجعة العميل' },
+  "uc.uc2.step3": { he: 'יצירת קשר ראשוני (Call/Email) ותיעוד במערכת', en: 'Initial contact & log activity', fr: 'Premier contact', es: 'Primer contacto', ru: 'Первичный контакт', ar: 'الاتصال الأولي' },
+  "uc.uc2.step4": { he: 'המרת ליד ל-Opportunity + יצירת Quote', en: 'Convert lead → Opportunity + Quote', fr: 'Convertir lead', es: 'Convertir lead', ru: 'Конвертация в сделку', ar: 'تحويل العميل المحتمل' },
+
+  "uc.uc3.title": { he: 'אזרח פרטי - רכישת מפה ראשונה', en: 'Private Citizen - first map purchase', fr: 'Citoyen - première carte', es: 'Ciudadano - primer mapa', ru: 'Гражданин - первая карта', ar: 'مواطن - أول خريطة' },
+  "uc.uc3.persona": { he: 'אזרח שזקוק למפת תיור', en: 'Citizen needing a tourist map', fr: 'Citoyen', es: 'Ciudadano', ru: 'Гражданин', ar: 'مواطن' },
+  "uc.uc3.step1": { he: 'כניסה לפורטל בלי הזדהות, עיון בקטלוג', en: 'Browse catalog without sign-in', fr: 'Parcourir sans connexion', es: 'Navegar sin sesión', ru: 'Просмотр без входа', ar: 'تصفح بدون تسجيل' },
+  "uc.uc3.step2": { he: 'בחירת מפה - הוספה לעגלה', en: 'Pick map - add to cart', fr: 'Choisir carte', es: 'Elegir mapa', ru: 'Выбрать карту', ar: 'اختر الخريطة' },
+  "uc.uc3.step3": { he: 'הזדהות לאומית + מילוי כתובת משלוח', en: 'National identity sign-in + delivery info', fr: 'Connexion + adresse', es: 'Identidad + dirección', ru: 'Вход + адрес', ar: 'تسجيل + عنوان' },
+  "uc.uc3.step4": { he: 'תשלום ב-shrut התשלומים הממשלתי', en: 'Pay via government payment server', fr: 'Paiement gouvernemental', es: 'Pago gubernamental', ru: 'Госуд. оплата', ar: 'دفع حكومي' },
+  "uc.uc3.step5": { he: 'קבלת אישור במייל + SMS, מעקב משלוח באזור אישי', en: 'Email+SMS confirmation, track shipment', fr: 'Confirmation + suivi', es: 'Confirmación + seguimiento', ru: 'Подтверждение + отслеживание', ar: 'تأكيد ومتابعة' },
+
+  "uc.uc4.title": { he: 'מודד מוסמך - חידוש מנוי CORS', en: 'Licensed Surveyor - CORS renewal', fr: 'Géomètre - renouv. CORS', es: 'Topógrafo - renovación CORS', ru: 'Геодезист - продление CORS', ar: 'مساح - تجديد CORS' },
+  "uc.uc4.persona": { he: 'מודד פעיל עם מנוי שמסתיים', en: 'Active surveyor with expiring subscription', fr: 'Géomètre actif', es: 'Topógrafo activo', ru: 'Активный геодезист', ar: 'مساح نشط' },
+  "uc.uc4.step1": { he: 'קבלת SMS 14 ימים לפני תום מנוי', en: 'Receive SMS 14 days before expiry', fr: 'SMS 14 jours avant', es: 'SMS 14 días antes', ru: 'SMS за 14 дней', ar: 'SMS قبل 14 يوماً' },
+  "uc.uc4.step2": { he: 'כניסה לפורטל - אזור אישי', en: 'Login to portal - dashboard', fr: 'Espace personnel', es: 'Panel personal', ru: 'Личный кабинет', ar: 'حساب شخصي' },
+  "uc.uc4.step3": { he: 'לחיצה על "חדש מנוי" - הצגת המלצות', en: 'Click "Renew" - see recommendations', fr: 'Cliquer Renouv.', es: 'Renovar - recomendaciones', ru: 'Продлить - рекомендации', ar: 'تجديد - توصيات' },
+  "uc.uc4.step4": { he: 'תשלום + הפעלה אוטומטית של geo++', en: 'Pay + auto-activate geo++', fr: 'Paiement + activation', es: 'Pagar + activar', ru: 'Оплата + активация', ar: 'الدفع والتفعيل' },
+
+  "uc.uc5.title": { he: 'לקוח אסטרטגי - הסכם רב-שנתי', en: 'Strategic Account - multi-year contract', fr: 'Compte stratégique', es: 'Cuenta estratégica', ru: 'Стратег. клиент - договор', ar: 'حساب استراتيجي - اتفاقية' },
+  "uc.uc5.persona": { he: 'משרד ממשלתי - מנכ"ל ראש פרויקט', en: 'Government ministry CTO', fr: 'CTO ministère', es: 'CTO ministerio', ru: 'CTO министерства', ar: 'مدير تقني وزاري' },
+  "uc.uc5.step1": { he: 'פגישת היכרות עם מנהל אגף המכירות', en: 'Intro meeting with sales head', fr: 'Réunion intro', es: 'Reunión inicial', ru: 'Встреча', ar: 'اجتماع تعارف' },
+  "uc.uc5.step2": { he: 'יצירת Account Plan + הזדמנות', en: 'Build Account Plan + Opportunity', fr: 'Plan compte', es: 'Plan de cuenta', ru: 'Account plan', ar: 'خطة حساب' },
+  "uc.uc5.step3": { he: 'הצעת מחיר מורכבת - אישור CFO + CEO', en: 'Complex quote - CFO+CEO approval', fr: 'Devis complexe', es: 'Cotización compleja', ru: 'Сложное предложение', ar: 'عرض معقد' },
+  "uc.uc5.step4": { he: 'חתימה דיגיטלית, יצירת Contract + Subscription', en: 'Digital sign, create Contract + Subscription', fr: 'Signature digitale', es: 'Firma digital', ru: 'Цифровая подпись', ar: 'توقيع رقمي' },
+  "uc.uc5.step5": { he: 'מעקב ביצוע + פגישות סטטוס רבעוניות', en: 'Track delivery + quarterly QBRs', fr: 'Suivi + QBR', es: 'Seguimiento + QBR', ru: 'Контроль + QBR', ar: 'متابعة + اجتماعات ربعية' },
+
+  // Success Goals (Spec 4.14)
+  "goals.title": { he: 'יעדי הצלחה לשנה ראשונה', en: 'Year-1 Success Goals', fr: 'Objectifs an 1', es: 'Objetivos año 1', ru: 'Цели на 1-й год', ar: 'أهداف السنة الأولى' },
+  "goals.subtitle": { he: '12 חודשים מ-Go-Live - מדדים עסקיים, ניהוליים וטכניים', en: '12 months from Go-Live - business, ops & tech KPIs', fr: '12 mois Go-Live', es: '12 meses Go-Live', ru: '12 месяцев с запуска', ar: '12 شهراً من الإطلاق' },
+  "goals.kpi.revenue": { he: 'גידול הכנסות', en: 'Revenue growth', fr: 'Croissance CA', es: 'Crecimiento ingresos', ru: 'Рост выручки', ar: 'نمو الإيرادات' },
+  "goals.kpi.revenueTarget": { he: '+15% מול שנה קודמת', en: '+15% YoY', fr: '+15% A/A', es: '+15% interanual', ru: '+15% YoY', ar: '+15% سنوياً' },
+  "goals.kpi.cycle": { he: 'קיצור זמן מחזור מכירה', en: 'Sales cycle reduction', fr: 'Réduction cycle', es: 'Reducción ciclo', ru: 'Сокращение цикла', ar: 'تقليص الدورة' },
+  "goals.kpi.cycleTarget": { he: '-30% (מ-60 ל-42 ימים)', en: '-30% (60 → 42 days)', fr: '-30% (60 → 42j)', es: '-30% (60 → 42d)', ru: '-30% (60 → 42 дн)', ar: '-30% (60 → 42 يوم)' },
+  "goals.kpi.satisfaction": { he: 'שביעות רצון לקוחות', en: 'Customer satisfaction', fr: 'Satisfaction', es: 'Satisfacción', ru: 'Удовлетворённость', ar: 'رضا العملاء' },
+  "goals.kpi.satisfactionTarget": { he: 'CSAT ≥ 4.2/5', en: 'CSAT ≥ 4.2/5', fr: 'CSAT ≥ 4.2/5', es: 'CSAT ≥ 4.2/5', ru: 'CSAT ≥ 4.2/5', ar: 'رضا ≥ 4.2/5' },
+  "goals.kpi.adoption": { he: 'אימוץ הפורטל', en: 'Portal adoption', fr: 'Adoption portail', es: 'Adopción portal', ru: 'Адопция портала', ar: 'تبني البوابة' },
+  "goals.kpi.adoptionTarget": { he: '60% מההזמנות דרך הפורטל', en: '60% of orders via portal', fr: '60% via portail', es: '60% por portal', ru: '60% через портал', ar: '60% عبر البوابة' },
+  "goals.kpi.renewal": { he: 'שיעור חידוש מנויים', en: 'Renewal rate', fr: 'Taux renouv.', es: 'Tasa renovación', ru: 'Renewal Rate', ar: 'معدل التجديد' },
+  "goals.kpi.renewalTarget": { he: '≥ 85%', en: '≥ 85%', fr: '≥ 85%', es: '≥ 85%', ru: '≥ 85%', ar: '≥ 85%' },
+  "goals.kpi.upsell": { he: 'הזדמנויות Upsell/Cross-sell', en: 'Upsell/Cross-sell opps', fr: 'Opps Cross-sell', es: 'Opps Cross-sell', ru: 'Доп. возможности', ar: 'فرص البيع' },
+  "goals.kpi.upsellTarget": { he: '+25% מסך ההכנסה', en: '+25% of total revenue', fr: '+25% du CA', es: '+25% ingresos', ru: '+25% выручки', ar: '+25% الإيرادات' },
+  "goals.measurement": { he: 'מנגנון מדידה', en: 'Measurement', fr: 'Mesure', es: 'Medición', ru: 'Измерение', ar: 'القياس' },
+  "goals.dashboardRT": { he: 'דשבורד "יעדי הצלחה" - בזמן אמת', en: '"Success goals" dashboard - real time', fr: 'Tableau objectifs - temps réel', es: 'Panel objetivos - tiempo real', ru: 'Дашборд целей - в реальном времени', ar: 'لوحة أهداف - فورية' },
+  "goals.monthlyMeeting": { he: 'פגישת סטטוס חודשית עם מנכ"ל', en: 'Monthly status with CEO', fr: 'Statut mensuel DG', es: 'Estado mensual CEO', ru: 'Ежемес. статус с CEO', ar: 'حالة شهرية مع المدير' },
+  "goals.qbr": { he: 'QBR רבעוני עם הספק', en: 'Quarterly Business Review', fr: 'QBR trimestriel', es: 'QBR trimestral', ru: 'QBR ежекв.', ar: 'مراجعة ربعية' },
+  "goals.executiveReport": { he: 'דוח רבעוני להנהלה הבכירה', en: 'Quarterly executive report', fr: 'Rapport exécutif', es: 'Informe ejecutivo', ru: 'Отчёт руководству', ar: 'تقرير تنفيذي ربعي' },
+
+  // Nav additions
+  "nav.pipeline": { he: 'Pipeline', en: 'Pipeline', fr: 'Pipeline', es: 'Pipeline', ru: 'Pipeline', ar: 'مسار البيع' },
+  "nav.strategic": { he: 'לקוחות אסטרטגיים', en: 'Strategic Accounts', fr: 'Comptes stratégiques', es: 'Cuentas estratégicas', ru: 'Стратег. клиенты', ar: 'الحسابات الاستراتيجية' },
+  "nav.useCases": { he: 'תרחישי שימוש', en: 'Use Cases', fr: 'Cas d\'usage', es: 'Casos de uso', ru: 'Сценарии', ar: 'حالات الاستخدام' },
+  "nav.goals": { he: 'יעדי הצלחה', en: 'Success Goals', fr: 'Objectifs', es: 'Objetivos', ru: 'Цели', ar: 'الأهداف' }
 };
 
 export type TKey = keyof typeof dict;

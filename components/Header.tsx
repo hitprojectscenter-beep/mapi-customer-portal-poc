@@ -20,6 +20,14 @@ export default function Header() {
     { label: t("nav.admin"), href: "/admin" },
     { label: t("nav.help"), href: "/help" }
   ];
+  const adminQuickLinks = [
+    { label: t("nav.pipeline"), href: "/admin/pipeline", icon: "filter_alt" },
+    { label: t("nav.strategic"), href: "/admin/strategic", icon: "stars" },
+    { label: t("nav.useCases"), href: "/admin/use-cases", icon: "menu_book" },
+    { label: t("nav.goals"), href: "/admin/goals", icon: "flag" }
+  ];
+  // Used in mobile drawer below
+  void adminQuickLinks;
 
   return (
     <>

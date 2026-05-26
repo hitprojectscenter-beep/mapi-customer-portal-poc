@@ -1,0 +1,204 @@
+"use client";
+
+import { useLanguage } from "@/lib/LanguageContext";
+import { PIPELINE_STAGES, ROUTE_TYPES, mockPipelineEntries } from "@/lib/pipeline";
+import type { TKey } from "@/lib/i18n";
+
+const slaClasses: Record<string, string> = {
+  onTime: "bg-positive-green/10 text-positive-green",
+  warning: "bg-alert-yellow/10 text-alert-yellow",
+  breach: "bg-error-red/10 text-error-red"
+};
+
+const routeClasses: Record<string, string> = {
+  A: "bg-positive-green/10 text-positive-green",
+  B: "bg-secondary/10 text-secondary",
+  C: "bg-alert-yellow/10 text-alert-yellow",
+  D: "bg-tertiary/10 text-tertiary"
+};
+
+export default function PipelinePage() {
+  const { t } = useLanguage();
+
+  // Count by stage
+  const byStage = PIPELINE_STAGES.map((s) => ({
+    stage: s,
+    count: mockPipelineEntries.filter((e) => e.currentStage === s.id).length,
+    value: mockPipelineEntries
+      .filter((e) => e.currentStage === s.id)
+      .reduce((sum, e) => sum + e.amount, 0)
+  }));
+
+  const maxCount = Math.max(...byStage.map((s) => s.count), 1);
+  const totalValue = mockPipelineEntries.reduce((sum, e) => sum + e.amount, 0);
+
+  // SLA stats
+  const onTime = mockPipelineEntries.filter((e) => e.slaStatus === "onTime").length;
+  const warning = mockPipelineEntries.filter((e) => e.slaStatus === "warning").length;
+  const breach = mockPipelineEntries.filter((e) => e.slaStatus === "breach").length;
+  const slaScore = ((onTime / mockPipelineEntries.length) * 100).toFixed(0);
+
+  return (
+    <div className="space-y-6">
+      <header>
+        <h1 className="text-2xl md:text-3xl font-extrabold text-primary mb-2">{t("pipe.title")}</h1>
+        <p className="text-sm text-on-surface-variant max-w-3xl">{t("pipe.subtitle")}</p>
+      </header>
+
+      {/* SLA KPI Strip */}
+      <section className="grid grid-cols-2 md:grid-cols-4 gap-3">
+        <div className="bg-white rounded-2xl p-4 border border-outline-variant/50 text-center">
+          <p className="text-2xl font-black text-primary">{mockPipelineEntries.length}</p>
+          <p className="text-[11px] text-on-surface-variant mt-1">Active opportunities</p>
+        </div>
+        <div className="bg-white rounded-2xl p-4 border border-outline-variant/50 text-center">
+          <p className="text-2xl font-black text-positive-green">₪{(totalValue / 1000).toFixed(0)}K</p>
+          <p className="text-[11px] text-on-surface-variant mt-1">Total pipeline value</p>
+        </div>
+        <div className="bg-white rounded-2xl p-4 border border-outline-variant/50 text-center">
+          <p className="text-2xl font-black text-secondary">{slaScore}%</p>
+          <p className="text-[11px] text-on-surface-variant mt-1">{t("pipe.sla.onTime")}</p>
+        </div>
+        <div className="bg-white rounded-2xl p-4 border border-outline-variant/50 text-center">
+          <p className="text-2xl font-black text-error-red">{breach}</p>
+          <p className="text-[11px] text-on-surface-variant mt-1">{t("pipe.sla.breach")}</p>
+        </div>
+      </section>
+
+      {/* Visual funnel by stage */}
+      <section className="bg-white rounded-2xl border border-outline-variant/50 p-5">
+        <h2 className="text-base font-extrabold text-primary mb-3 flex items-center gap-2">
+          <span className="material-symbols-outlined text-secondary text-[20px]">filter_alt</span>
+          <span>Stage funnel</span>
+        </h2>
+        <div className="space-y-2">
+          {byStage.map(({ stage, count, value }) => {
+            const widthPct = (count / maxCount) * 100;
+            return (
+              <div key={stage.id} className="flex items-center gap-3">
+                <span className="w-32 text-xs font-medium text-primary truncate">{t(stage.labelKey)}</span>
+                <div className="flex-1 bg-surface-container rounded-lg h-8 overflow-hidden relative">
+                  <div
+                    className="h-full bg-gradient-to-l from-secondary/80 to-primary/80 flex items-center px-3 text-white text-xs font-bold transition-all"
+                    style={{ width: `${Math.max(widthPct, 8)}%` }}
+                  >
+                    {count > 0 && count}
+                  </div>
+                </div>
+                <span className="w-20 text-right text-xs text-on-surface-variant font-mono">
+                  ₪{(value / 1000).toFixed(0)}K
+                </span>
+                <span className="w-12 text-right text-[11px] text-on-surface-variant">
+                  {stage.slaDays}d
+                </span>
+              </div>
+            );
+          })}
+        </div>
+      </section>
+
+      {/* Route Type Legend */}
+      <section className="bg-white rounded-2xl border border-outline-variant/50 p-5">
+        <h2 className="text-base font-extrabold text-primary mb-3">סוגי מסלולים (A/B/C/D)</h2>
+        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-2">
+          {ROUTE_TYPES.map((rt) => (
+            <div key={rt.id} className="border border-outline-variant/40 rounded-xl p-3">
+              <div className="flex items-center gap-2 mb-1">
+                <span className={`inline-block px-2 py-0.5 rounded-full text-[11px] font-bold ${routeClasses[rt.id]}`}>
+                  {rt.id}
+                </span>
+                <p className="text-xs font-bold text-primary">{t(rt.labelKey)}</p>
+              </div>
+              <p className="text-[11px] text-on-surface-variant">{rt.description}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* SLA Owners & actions */}
+      <section className="bg-white rounded-2xl border border-outline-variant/50 overflow-hidden">
+        <header className="px-5 py-3 border-b border-outline-variant/50">
+          <h2 className="text-base font-extrabold text-primary">SLA + פעולות אוטומטיות לכל שלב</h2>
+        </header>
+        <div className="overflow-x-auto">
+          <table className="w-full text-xs">
+            <thead className="bg-surface-container/50 text-on-surface-variant uppercase tracking-wider">
+              <tr>
+                <th className="py-2.5 px-3 text-right">שלב</th>
+                <th className="py-2.5 px-3">{t("pipe.sla.days")}</th>
+                <th className="py-2.5 px-3">{t("pipe.sla.owner")}</th>
+                <th className="py-2.5 px-3 text-right">{t("pipe.sla.actions")}</th>
+              </tr>
+            </thead>
+            <tbody>
+              {PIPELINE_STAGES.map((s) => (
+                <tr key={s.id} className="border-b border-outline-variant/30">
+                  <td className="py-2.5 px-3 font-medium text-primary">{t(s.labelKey)}</td>
+                  <td className="py-2.5 px-3 text-center font-mono font-bold text-secondary">{s.slaDays}d</td>
+                  <td className="py-2.5 px-3 text-center text-on-surface-variant">{s.ownerRole}</td>
+                  <td className="py-2.5 px-3">
+                    <div className="flex flex-wrap gap-1.5 justify-end">
+                      {s.autoActions.map((a, i) => (
+                        <span key={i} className="bg-secondary/5 text-secondary text-[10px] font-mono px-2 py-0.5 rounded-full">
+                          {a}
+                        </span>
+                      ))}
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      {/* Live entries */}
+      <section className="bg-white rounded-2xl border border-outline-variant/50 overflow-hidden">
+        <header className="px-5 py-3 border-b border-outline-variant/50">
+          <h2 className="text-base font-extrabold text-primary">הזדמנויות פעילות + SLA</h2>
+        </header>
+        <div className="overflow-x-auto">
+          <table className="w-full text-xs">
+            <thead className="bg-surface-container/50 text-on-surface-variant uppercase tracking-wider">
+              <tr>
+                <th className="py-2.5 px-3">#</th>
+                <th className="py-2.5 px-3 text-right">הזדמנות</th>
+                <th className="py-2.5 px-3">לקוח</th>
+                <th className="py-2.5 px-3">סוג</th>
+                <th className="py-2.5 px-3">שלב</th>
+                <th className="py-2.5 px-3">ימים בשלב</th>
+                <th className="py-2.5 px-3">SLA</th>
+                <th className="py-2.5 px-3">סכום</th>
+              </tr>
+            </thead>
+            <tbody>
+              {mockPipelineEntries.map((e) => {
+                const stage = PIPELINE_STAGES.find((s) => s.id === e.currentStage);
+                return (
+                  <tr key={e.routeId} className="border-b border-outline-variant/30 hover:bg-surface-container/30">
+                    <td className="py-2.5 px-3 font-mono text-on-surface-variant">{e.routeId}</td>
+                    <td className="py-2.5 px-3 font-medium">{e.routeName}</td>
+                    <td className="py-2.5 px-3 text-on-surface-variant">{e.customerName}</td>
+                    <td className="py-2.5 px-3 text-center">
+                      <span className={`inline-block px-2 py-0.5 rounded-full text-[10px] font-bold ${routeClasses[e.routeType]}`}>
+                        {e.routeType}
+                      </span>
+                    </td>
+                    <td className="py-2.5 px-3 text-center text-xs">{stage ? t(stage.labelKey) : e.currentStage}</td>
+                    <td className="py-2.5 px-3 text-center font-mono">{e.daysInStage}d</td>
+                    <td className="py-2.5 px-3 text-center">
+                      <span className={`inline-block px-2 py-0.5 rounded-full text-[10px] font-bold ${slaClasses[e.slaStatus]}`}>
+                        {t(`pipe.sla.${e.slaStatus}` as TKey)}
+                      </span>
+                    </td>
+                    <td className="py-2.5 px-3 text-center font-bold">₪{e.amount.toLocaleString()}</td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+  );
+}
