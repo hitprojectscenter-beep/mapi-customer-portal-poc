@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
+import { useState } from "react";
 import { useLanguage } from "@/lib/LanguageContext";
 
 const MAPI_SITE = "https://www.gov.il/he/departments/survey_of_israel";
@@ -11,10 +12,85 @@ const GOV_TERMS = "https://www.gov.il/he/policies/terms_of_use";
 
 export default function Footer() {
   const { t } = useLanguage();
+  const [email, setEmail] = useState("");
+  const [subscribed, setSubscribed] = useState(false);
+
+  const handleSubscribe = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!email.trim()) return;
+    setSubscribed(true);
+    setEmail("");
+    setTimeout(() => setSubscribed(false), 4000);
+  };
+
   return (
-    <footer className="bg-primary text-white pt-20 pb-10 relative overflow-hidden">
+    <footer className="bg-primary text-white relative overflow-hidden">
       <div className="absolute inset-0 dot-pattern opacity-5" aria-hidden="true" />
-      <div className="max-w-container-max-width mx-auto px-4 md:px-margin-desktop relative">
+
+      {/* Newsletter strip (SFCC-style hero band above footer) */}
+      <div className="border-b border-white/10 relative">
+        <div className="max-w-container-max-width mx-auto px-4 md:px-margin-desktop py-10">
+          <div className="grid md:grid-cols-2 gap-6 items-center">
+            <div className="text-center md:text-start">
+              <p className="text-secondary-container text-xs uppercase tracking-widest font-semibold mb-2">
+                {t("footer.newsletter")}
+              </p>
+              <h3 className="text-xl md:text-2xl font-bold text-white leading-tight">
+                {t("newsletter.title")}
+              </h3>
+              <p className="text-white/70 text-sm mt-2 font-light">
+                {t("newsletter.sub")}
+              </p>
+            </div>
+            <form onSubmit={handleSubscribe} className="flex flex-col sm:flex-row gap-2">
+              <label htmlFor="newsletter-email" className="sr-only">{t("newsletter.placeholder")}</label>
+              <input
+                id="newsletter-email"
+                type="email"
+                required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder={t("newsletter.placeholder")}
+                className="flex-1 bg-white/10 border border-white/20 rounded-full px-5 py-3 text-white placeholder:text-white/50 focus:ring-2 focus:ring-secondary-container focus:outline-none min-h-[48px]"
+                dir="ltr"
+              />
+              <button
+                type="submit"
+                className={`shine shine-glow whitespace-nowrap px-6 py-3 rounded-full font-semibold transition-colors min-h-[48px] flex items-center justify-center gap-2 ${
+                  subscribed ? "bg-positive-green text-white" : "bg-white text-primary hover:bg-secondary-container"
+                }`}
+              >
+                <span className="material-symbols-outlined text-[18px]">
+                  {subscribed ? "check_circle" : "mail"}
+                </span>
+                <span>{subscribed ? t("newsletter.success") : t("newsletter.subscribe")}</span>
+              </button>
+            </form>
+          </div>
+          <p className="text-[11px] text-white/40 text-center md:text-end mt-3 font-light">
+            🔒 {t("newsletter.privacy")}
+          </p>
+        </div>
+      </div>
+
+      {/* Trust badges strip */}
+      <div className="border-b border-white/10 relative">
+        <div className="max-w-container-max-width mx-auto px-4 md:px-margin-desktop py-5 grid grid-cols-2 md:grid-cols-4 gap-4">
+          {[
+            { icon: "verified_user", label: t("trust.national") },
+            { icon: "shield", label: t("trust.security") },
+            { icon: "lock", label: t("svc.securePayment") },
+            { icon: "accessibility", label: "WCAG 2.1 AA" }
+          ].map((b, i) => (
+            <div key={i} className="flex items-center gap-2 justify-center md:justify-start">
+              <span className="material-symbols-outlined text-secondary-container text-[24px]">{b.icon}</span>
+              <span className="text-xs text-white/80 font-light">{b.label}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div className="max-w-container-max-width mx-auto px-4 md:px-margin-desktop relative pt-14 pb-8">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-10 md:gap-16 mb-16">
           <div className="col-span-2 md:col-span-1 flex flex-col items-center gap-5">
             <a
@@ -26,7 +102,7 @@ export default function Footer() {
               data-tooltip-position="bottom"
             >
               <div className="flex flex-col items-center leading-tight">
-                <span className="font-extrabold text-2xl tracking-tight text-white">MAPI</span>
+                <span className="font-extrabold text-2xl tracking-tight text-white" dir="rtl">מפ&quot;י</span>
                 <span className="text-[10px] font-semibold text-secondary-container">
                   {t("header.brandSub")}
                 </span>

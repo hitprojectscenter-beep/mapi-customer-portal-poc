@@ -4,10 +4,14 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import AIAssistant from "@/components/AIAssistant";
 import NewsTicker from "@/components/NewsTicker";
+import UtilityBar from "@/components/UtilityBar";
+import MiniCartDrawer from "@/components/MiniCartDrawer";
 import { LanguageProvider } from "@/lib/LanguageContext";
+import { CartProvider } from "@/lib/CartContext";
+import { WishlistProvider } from "@/lib/WishlistContext";
 
 export const metadata: Metadata = {
-  title: 'MAPI - המרכז למיפוי ישראל | פורטל לקוחות',
+  title: 'מפ"י - המרכז למיפוי ישראל | פורטל לקוחות',
   description:
     'הפורטל הלאומי הרשמי למידע גיאוגרפי. הזמנת מפות, נתוני קדסטר, שירותי GNSS ותצלומי אוויר ישירות מהמרכז למיפוי ישראל.',
   keywords: ['מפ"י', "מיפוי", "קדסטר", "GIS", 'מפות', "אורתופוטו", "מודד", "גיאודזיה"],
@@ -16,7 +20,7 @@ export const metadata: Metadata = {
     "color-scheme": "light only"
   },
   openGraph: {
-    title: 'MAPI - פורטל לקוחות',
+    title: 'מפ"י - פורטל לקוחות',
     description: "פורטל השירותים של המרכז למיפוי ישראל",
     locale: "he_IL",
     type: "website"
@@ -54,13 +58,19 @@ export default function RootLayout({
       </head>
       <body className="bg-surface text-on-surface font-body selection:bg-secondary/30 antialiased">
         <LanguageProvider>
-          <NewsTicker />
-          <Header />
-          <main id="main-content" className="pt-[136px] sm:pt-[144px] min-h-screen">
-            {children}
-          </main>
-          <Footer />
-          <AIAssistant />
+          <WishlistProvider>
+            <CartProvider>
+              <NewsTicker />
+              <UtilityBar />
+              <Header />
+              <main id="main-content" className="pt-[168px] sm:pt-[176px] min-h-screen">
+                {children}
+              </main>
+              <Footer />
+              <AIAssistant />
+              <MiniCartDrawer />
+            </CartProvider>
+          </WishlistProvider>
         </LanguageProvider>
       </body>
     </html>

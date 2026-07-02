@@ -286,6 +286,42 @@ type TranslationKeys =
   | "goals.measurement" | "goals.dashboardRT" | "goals.monthlyMeeting" | "goals.qbr" | "goals.executiveReport"
   // Nav additions
   | "nav.pipeline" | "nav.strategic" | "nav.useCases" | "nav.goals"
+  // SFCC-style commerce
+  | "utility.support" | "utility.storeLocator" | "utility.help" | "utility.trackOrder"
+  | "cart.mini.title" | "cart.empty.title" | "cart.empty.sub" | "cart.empty.browse"
+  | "cart.close" | "cart.decrease" | "cart.increase" | "cart.remove"
+  | "cart.subtotal" | "cart.tax" | "cart.total" | "cart.checkout" | "cart.continue"
+  | "cart.page.title" | "cart.page.subtitle" | "cart.page.qty" | "cart.page.unitPrice"
+  | "cart.page.lineTotal" | "cart.page.promoCode" | "cart.page.applyPromo"
+  | "cart.page.orderSummary" | "cart.page.shipping" | "cart.page.free"
+  | "cart.page.proceedCheckout" | "cart.page.secure" | "cart.page.emptyAction"
+  | "wish.title" | "wish.empty" | "wish.emptySub" | "wish.aria.add" | "wish.aria.remove"
+  | "wish.moveToCart" | "wish.removeAll" | "wish.share"
+  | "review.title" | "review.based" | "review.write" | "review.helpful"
+  | "review.verified" | "review.filter.all" | "review.filter.5" | "review.filter.4"
+  | "review.sort.recent" | "review.sort.helpful" | "review.sort.high" | "review.sort.low"
+  | "review.showMore" | "review.of" | "review.stars"
+  | "svc.addToCart" | "svc.addingToCart" | "svc.addedToCart" | "svc.quantity"
+  | "svc.wishlistAdd" | "svc.wishlistRemove" | "svc.share" | "svc.sku"
+  | "svc.inStock" | "svc.deliveryFast" | "svc.securePayment" | "svc.satisfaction"
+  | "svc.tabs.desc" | "svc.tabs.specs" | "svc.tabs.delivery" | "svc.tabs.reviews"
+  | "svc.gallery.thumbnail" | "svc.relatedTitle" | "svc.relatedSub"
+  | "svc.recentTitle" | "svc.recommended"
+  | "plp.showing" | "plp.of" | "plp.results" | "plp.sortBy"
+  | "plp.sort.relevance" | "plp.sort.priceAsc" | "plp.sort.priceDesc"
+  | "plp.sort.newest" | "plp.sort.rating"
+  | "plp.filters" | "plp.filtersActive" | "plp.filtersClear"
+  | "plp.filter.price" | "plp.filter.delivery" | "plp.filter.rating"
+  | "plp.filter.customer" | "plp.filter.available"
+  | "plp.viewGrid" | "plp.viewList" | "plp.quickView"
+  | "plp.noResults" | "plp.noResultsSub" | "plp.trending"
+  | "newsletter.title" | "newsletter.sub" | "newsletter.placeholder"
+  | "newsletter.subscribe" | "newsletter.success" | "newsletter.privacy"
+  | "footer.newsletter" | "footer.follow" | "footer.trust" | "footer.certified"
+  | "trust.security" | "trust.national" | "trust.gdpr" | "trust.support"
+  | "header.search.placeholder" | "header.search.recent" | "header.search.suggestions"
+  | "header.search.viewAll" | "header.search.aria"
+  | "header.account" | "header.wishlist" | "header.cart" | "header.cartCount"
   // Support Modal - extended
   | "support.closeAria" | "support.closeTip" | "support.headerEyebrow"
   | "support.altRoutes" | "support.directDial" | "support.govFormLabel"
@@ -1370,7 +1406,138 @@ const dict: Record<TranslationKeys, Record<Lang, string>> = {
 
   // Catalog/[slug] subscription
   "svc.priceUnitMonth": { he: '₪/חודש', en: 'ILS/month', fr: '₪/mois', es: '₪/mes', ru: '₪/мес', ar: '₪/شهر' },
-  "svc.perMonth": { he: '/חודש', en: '/month', fr: '/mois', es: '/mes', ru: '/мес', ar: '/شهر' }
+  "svc.perMonth": { he: '/חודש', en: '/month', fr: '/mois', es: '/mes', ru: '/мес', ar: '/شهر' },
+
+  // SFCC-style commerce
+  "utility.support": { he: 'מוקד תמיכה', en: 'Support', fr: 'Support', es: 'Soporte', ru: 'Поддержка', ar: 'الدعم' },
+  "utility.storeLocator": { he: 'מרכזי שירות', en: 'Service Locations', fr: 'Centres', es: 'Centros', ru: 'Центры', ar: 'المراكز' },
+  "utility.help": { he: 'עזרה', en: 'Help', fr: 'Aide', es: 'Ayuda', ru: 'Помощь', ar: 'مساعدة' },
+  "utility.trackOrder": { he: 'עקוב אחר הזמנה', en: 'Track Order', fr: 'Suivi', es: 'Seguimiento', ru: 'Отслеживать', ar: 'تتبع الطلب' },
+
+  "cart.mini.title": { he: 'עגלת ההזמנות', en: 'Your Cart', fr: 'Votre panier', es: 'Tu carrito', ru: 'Ваша корзина', ar: 'سلة التسوق' },
+  "cart.empty.title": { he: 'העגלה שלך ריקה', en: 'Your cart is empty', fr: 'Panier vide', es: 'Carrito vacío', ru: 'Корзина пуста', ar: 'السلة فارغة' },
+  "cart.empty.sub": { he: 'הוסף שירותים כדי להתחיל', en: 'Add services to get started', fr: 'Ajoutez des services', es: 'Añade servicios', ru: 'Добавьте услуги', ar: 'أضف خدمات' },
+  "cart.empty.browse": { he: 'עיין בקטלוג', en: 'Browse catalog', fr: 'Parcourir', es: 'Explorar', ru: 'Каталог', ar: 'استعرض الكتالوج' },
+  "cart.close": { he: 'סגור עגלה', en: 'Close cart', fr: 'Fermer', es: 'Cerrar', ru: 'Закрыть', ar: 'إغلاق' },
+  "cart.decrease": { he: 'הפחת כמות', en: 'Decrease', fr: 'Diminuer', es: 'Disminuir', ru: 'Уменьшить', ar: 'تقليل' },
+  "cart.increase": { he: 'הוסף כמות', en: 'Increase', fr: 'Augmenter', es: 'Aumentar', ru: 'Увеличить', ar: 'زيادة' },
+  "cart.remove": { he: 'הסר פריט', en: 'Remove item', fr: 'Retirer', es: 'Eliminar', ru: 'Удалить', ar: 'إزالة' },
+  "cart.subtotal": { he: 'ביניים', en: 'Subtotal', fr: 'Sous-total', es: 'Subtotal', ru: 'Промежуточный', ar: 'المجموع الفرعي' },
+  "cart.tax": { he: 'מע"מ (17%)', en: 'VAT (17%)', fr: 'TVA (17%)', es: 'IVA (17%)', ru: 'НДС (17%)', ar: 'ضريبة (17%)' },
+  "cart.total": { he: 'סה"כ לתשלום', en: 'Total', fr: 'Total', es: 'Total', ru: 'Итого', ar: 'الإجمالي' },
+  "cart.checkout": { he: 'המשך לתשלום', en: 'Checkout', fr: 'Payer', es: 'Pagar', ru: 'Оформить', ar: 'الدفع' },
+  "cart.continue": { he: 'המשך קנייה', en: 'Continue shopping', fr: 'Continuer', es: 'Seguir', ru: 'Продолжить', ar: 'استمرار' },
+  "cart.page.title": { he: 'סל ההזמנות שלי', en: 'My Cart', fr: 'Mon panier', es: 'Mi carrito', ru: 'Моя корзина', ar: 'سلتي' },
+  "cart.page.subtitle": { he: 'בדוק את הפריטים לפני מעבר לתשלום', en: 'Review items before checkout', fr: 'Vérifiez avant paiement', es: 'Revisa antes del pago', ru: 'Проверьте перед оплатой', ar: 'راجع قبل الدفع' },
+  "cart.page.qty": { he: 'כמות', en: 'Quantity', fr: 'Quantité', es: 'Cantidad', ru: 'Кол-во', ar: 'الكمية' },
+  "cart.page.unitPrice": { he: 'מחיר יחידה', en: 'Unit Price', fr: 'Prix unitaire', es: 'Precio unitario', ru: 'Цена', ar: 'السعر' },
+  "cart.page.lineTotal": { he: 'סה"כ שורה', en: 'Total', fr: 'Total', es: 'Total', ru: 'Итого', ar: 'المجموع' },
+  "cart.page.promoCode": { he: 'קוד קופון / הנחה', en: 'Promo code', fr: 'Code promo', es: 'Código promo', ru: 'Промокод', ar: 'كود الخصم' },
+  "cart.page.applyPromo": { he: 'הפעל', en: 'Apply', fr: 'Appliquer', es: 'Aplicar', ru: 'Применить', ar: 'تطبيق' },
+  "cart.page.orderSummary": { he: 'סיכום הזמנה', en: 'Order Summary', fr: 'Résumé', es: 'Resumen', ru: 'Итог заказа', ar: 'ملخص الطلب' },
+  "cart.page.shipping": { he: 'משלוח', en: 'Shipping', fr: 'Livraison', es: 'Envío', ru: 'Доставка', ar: 'الشحن' },
+  "cart.page.free": { he: 'חינם', en: 'Free', fr: 'Gratuit', es: 'Gratis', ru: 'Бесплатно', ar: 'مجاني' },
+  "cart.page.proceedCheckout": { he: 'המשך לתשלום מאובטח', en: 'Secure Checkout', fr: 'Paiement sécurisé', es: 'Pago seguro', ru: 'Оформить заказ', ar: 'دفع آمن' },
+  "cart.page.secure": { he: 'תשלום מאובטח על שרת ממשלתי', en: 'Secure payment via GovIL', fr: 'Paiement gouv.', es: 'Pago gubernamental', ru: 'Гос. оплата', ar: 'دفع حكومي آمن' },
+  "cart.page.emptyAction": { he: 'התחל לעיין בקטלוג השירותים', en: 'Start browsing the catalog', fr: 'Parcourir', es: 'Explorar', ru: 'Каталог', ar: 'استعرض' },
+
+  "wish.title": { he: 'רשימת המשאלות שלי', en: 'My Wishlist', fr: 'Ma liste de souhaits', es: 'Mi lista', ru: 'Избранное', ar: 'قائمة الأمنيات' },
+  "wish.empty": { he: 'הרשימה שלך ריקה', en: 'Your wishlist is empty', fr: 'Liste vide', es: 'Lista vacía', ru: 'Список пуст', ar: 'قائمة فارغة' },
+  "wish.emptySub": { he: 'שמור שירותים מעניינים לקנייה מאוחרת', en: 'Save services for later', fr: 'Enregistrez pour plus tard', es: 'Guarda para después', ru: 'Сохранить на потом', ar: 'احفظ لوقت لاحق' },
+  "wish.aria.add": { he: 'הוסף לרשימת משאלות', en: 'Add to wishlist', fr: 'Ajouter à la liste', es: 'Añadir a lista', ru: 'В избранное', ar: 'أضف للأمنيات' },
+  "wish.aria.remove": { he: 'הסר מרשימת משאלות', en: 'Remove from wishlist', fr: 'Retirer', es: 'Eliminar', ru: 'Убрать', ar: 'إزالة' },
+  "wish.moveToCart": { he: 'הוסף לעגלה', en: 'Move to cart', fr: 'Ajouter au panier', es: 'Al carrito', ru: 'В корзину', ar: 'إلى السلة' },
+  "wish.removeAll": { he: 'נקה הכל', en: 'Clear all', fr: 'Tout effacer', es: 'Vaciar', ru: 'Очистить', ar: 'مسح الكل' },
+  "wish.share": { he: 'שתף רשימה', en: 'Share list', fr: 'Partager', es: 'Compartir', ru: 'Поделиться', ar: 'مشاركة' },
+
+  "review.title": { he: 'ביקורות לקוחות', en: 'Customer Reviews', fr: 'Avis clients', es: 'Opiniones', ru: 'Отзывы', ar: 'المراجعات' },
+  "review.based": { he: 'מבוסס על', en: 'Based on', fr: 'Basé sur', es: 'Basado en', ru: 'На основе', ar: 'استناداً إلى' },
+  "review.write": { he: 'כתוב ביקורת', en: 'Write a review', fr: 'Écrire un avis', es: 'Escribir opinión', ru: 'Написать отзыв', ar: 'اكتب مراجعة' },
+  "review.helpful": { he: 'שימושי', en: 'Helpful', fr: 'Utile', es: 'Útil', ru: 'Полезно', ar: 'مفيد' },
+  "review.verified": { he: 'רכישה מאומתת', en: 'Verified purchase', fr: 'Achat vérifié', es: 'Compra verificada', ru: 'Подтвержд. покупка', ar: 'شراء موثق' },
+  "review.filter.all": { he: 'הכל', en: 'All', fr: 'Tout', es: 'Todos', ru: 'Все', ar: 'الكل' },
+  "review.filter.5": { he: '5 כוכבים', en: '5 stars', fr: '5 étoiles', es: '5 estrellas', ru: '5 звёзд', ar: '5 نجوم' },
+  "review.filter.4": { he: '4 כוכבים', en: '4 stars', fr: '4 étoiles', es: '4 estrellas', ru: '4 звезды', ar: '4 نجوم' },
+  "review.sort.recent": { he: 'החדשים ביותר', en: 'Most recent', fr: 'Plus récent', es: 'Más recientes', ru: 'Новые', ar: 'الأحدث' },
+  "review.sort.helpful": { he: 'הכי שימושיות', en: 'Most helpful', fr: 'Plus utiles', es: 'Más útiles', ru: 'Полезные', ar: 'الأكثر فائدة' },
+  "review.sort.high": { he: 'דירוג גבוה', en: 'Highest rated', fr: 'Meilleures notes', es: 'Mejor valoradas', ru: 'Высокий рейтинг', ar: 'الأعلى تقييماً' },
+  "review.sort.low": { he: 'דירוג נמוך', en: 'Lowest rated', fr: 'Notes basses', es: 'Peor valoradas', ru: 'Низкий рейтинг', ar: 'الأقل تقييماً' },
+  "review.showMore": { he: 'הצג עוד ביקורות', en: 'Show more reviews', fr: 'Voir plus', es: 'Ver más', ru: 'Показать ещё', ar: 'عرض المزيد' },
+  "review.of": { he: 'מתוך 5', en: 'out of 5', fr: 'sur 5', es: 'de 5', ru: 'из 5', ar: 'من 5' },
+  "review.stars": { he: 'כוכבים', en: 'stars', fr: 'étoiles', es: 'estrellas', ru: 'звёзд', ar: 'نجوم' },
+
+  "svc.addToCart": { he: 'הוסף לעגלה', en: 'Add to Cart', fr: 'Ajouter au panier', es: 'Añadir al carrito', ru: 'В корзину', ar: 'أضف للسلة' },
+  "svc.addingToCart": { he: 'מוסיף...', en: 'Adding...', fr: 'Ajout...', es: 'Añadiendo...', ru: 'Добавление...', ar: 'يُضاف...' },
+  "svc.addedToCart": { he: '✓ נוסף לעגלה', en: '✓ Added', fr: '✓ Ajouté', es: '✓ Añadido', ru: '✓ Добавлено', ar: '✓ أُضيف' },
+  "svc.quantity": { he: 'כמות', en: 'Quantity', fr: 'Quantité', es: 'Cantidad', ru: 'Количество', ar: 'الكمية' },
+  "svc.wishlistAdd": { he: 'הוסף לרשימת משאלות', en: 'Add to Wishlist', fr: 'Liste souhaits', es: 'A lista', ru: 'В избранное', ar: 'قائمة الأمنيات' },
+  "svc.wishlistRemove": { he: 'הסר מרשימת משאלות', en: 'Remove from Wishlist', fr: 'Retirer', es: 'Quitar', ru: 'Убрать', ar: 'إزالة' },
+  "svc.share": { he: 'שתף', en: 'Share', fr: 'Partager', es: 'Compartir', ru: 'Поделиться', ar: 'مشاركة' },
+  "svc.sku": { he: 'מק"ט', en: 'SKU', fr: 'SKU', es: 'SKU', ru: 'Артикул', ar: 'الرمز' },
+  "svc.inStock": { he: 'זמין להזמנה', en: 'In Stock', fr: 'En stock', es: 'En stock', ru: 'В наличии', ar: 'متوفر' },
+  "svc.deliveryFast": { he: 'משלוח מהיר', en: 'Fast delivery', fr: 'Livraison rapide', es: 'Envío rápido', ru: 'Быстрая доставка', ar: 'شحن سريع' },
+  "svc.securePayment": { he: 'תשלום מאובטח', en: 'Secure payment', fr: 'Paiement sécurisé', es: 'Pago seguro', ru: 'Безопасная оплата', ar: 'دفع آمن' },
+  "svc.satisfaction": { he: 'שביעות רצון מובטחת', en: 'Satisfaction guaranteed', fr: 'Satisfaction garantie', es: 'Satisfacción', ru: 'Гарантия', ar: 'الرضا مضمون' },
+  "svc.tabs.desc": { he: 'תיאור', en: 'Description', fr: 'Description', es: 'Descripción', ru: 'Описание', ar: 'الوصف' },
+  "svc.tabs.specs": { he: 'מפרט', en: 'Specifications', fr: 'Spécifications', es: 'Especificaciones', ru: 'Характеристики', ar: 'المواصفات' },
+  "svc.tabs.delivery": { he: 'משלוח והחזרות', en: 'Delivery & Returns', fr: 'Livraison', es: 'Envío', ru: 'Доставка', ar: 'الشحن والإرجاع' },
+  "svc.tabs.reviews": { he: 'ביקורות', en: 'Reviews', fr: 'Avis', es: 'Opiniones', ru: 'Отзывы', ar: 'المراجعات' },
+  "svc.gallery.thumbnail": { he: 'תמונה ממוזערת', en: 'Thumbnail', fr: 'Miniature', es: 'Miniatura', ru: 'Миниатюра', ar: 'مصغرة' },
+  "svc.relatedTitle": { he: 'ייתכן שיעניין אותך גם', en: 'You May Also Like', fr: 'Vous aimerez aussi', es: 'También te puede gustar', ru: 'Вам может понравиться', ar: 'قد يعجبك أيضاً' },
+  "svc.relatedSub": { he: 'שירותים משלימים המומלצים לרכישה משותפת', en: 'Complementary services', fr: 'Services complémentaires', es: 'Complementarios', ru: 'Дополнительные', ar: 'خدمات مكملة' },
+  "svc.recentTitle": { he: 'נצפו לאחרונה', en: 'Recently Viewed', fr: 'Récemment vus', es: 'Vistos recientemente', ru: 'Недавно просмотренные', ar: 'شوهدت مؤخراً' },
+  "svc.recommended": { he: 'מומלץ בהתאמה אישית', en: 'Recommended for You', fr: 'Recommandé pour vous', es: 'Recomendado para ti', ru: 'Для вас', ar: 'موصى به لك' },
+
+  "plp.showing": { he: 'מציג', en: 'Showing', fr: 'Affichage', es: 'Mostrando', ru: 'Показано', ar: 'يعرض' },
+  "plp.of": { he: 'מתוך', en: 'of', fr: 'sur', es: 'de', ru: 'из', ar: 'من' },
+  "plp.results": { he: 'תוצאות', en: 'results', fr: 'résultats', es: 'resultados', ru: 'результатов', ar: 'نتائج' },
+  "plp.sortBy": { he: 'מיין לפי', en: 'Sort by', fr: 'Trier par', es: 'Ordenar', ru: 'Сортировать', ar: 'رتب حسب' },
+  "plp.sort.relevance": { he: 'רלוונטיות', en: 'Relevance', fr: 'Pertinence', es: 'Relevancia', ru: 'Актуальность', ar: 'الصلة' },
+  "plp.sort.priceAsc": { he: 'מחיר: נמוך לגבוה', en: 'Price: Low to High', fr: 'Prix croissant', es: 'Precio: bajo a alto', ru: 'Цена: возр.', ar: 'السعر: منخفض إلى مرتفع' },
+  "plp.sort.priceDesc": { he: 'מחיר: גבוה לנמוך', en: 'Price: High to Low', fr: 'Prix décroissant', es: 'Precio: alto a bajo', ru: 'Цена: убыв.', ar: 'السعر: مرتفع إلى منخفض' },
+  "plp.sort.newest": { he: 'החדשים ביותר', en: 'Newest', fr: 'Nouveautés', es: 'Más nuevos', ru: 'Новинки', ar: 'الأحدث' },
+  "plp.sort.rating": { he: 'הכי מדורגים', en: 'Highest Rated', fr: 'Mieux notés', es: 'Mejor valorados', ru: 'По рейтингу', ar: 'الأعلى تقييماً' },
+  "plp.filters": { he: 'מסננים', en: 'Filters', fr: 'Filtres', es: 'Filtros', ru: 'Фильтры', ar: 'المرشحات' },
+  "plp.filtersActive": { he: 'מסננים פעילים', en: 'Active filters', fr: 'Filtres actifs', es: 'Filtros activos', ru: 'Активные фильтры', ar: 'مرشحات نشطة' },
+  "plp.filtersClear": { he: 'נקה מסננים', en: 'Clear filters', fr: 'Effacer', es: 'Limpiar', ru: 'Очистить', ar: 'مسح المرشحات' },
+  "plp.filter.price": { he: 'טווח מחירים', en: 'Price Range', fr: 'Prix', es: 'Precio', ru: 'Цена', ar: 'السعر' },
+  "plp.filter.delivery": { he: 'זמן אספקה', en: 'Delivery Time', fr: 'Délai', es: 'Entrega', ru: 'Доставка', ar: 'وقت التسليم' },
+  "plp.filter.rating": { he: 'דירוג', en: 'Rating', fr: 'Note', es: 'Valoración', ru: 'Рейтинг', ar: 'التقييم' },
+  "plp.filter.customer": { he: 'סוג לקוח', en: 'Customer Type', fr: 'Type client', es: 'Cliente', ru: 'Тип клиента', ar: 'نوع العميل' },
+  "plp.filter.available": { he: 'זמין בפורטל', en: 'Available in portal', fr: 'Dans le portail', es: 'En portal', ru: 'В портале', ar: 'في البوابة' },
+  "plp.viewGrid": { he: 'תצוגת רשת', en: 'Grid view', fr: 'Grille', es: 'Cuadrícula', ru: 'Сетка', ar: 'شبكة' },
+  "plp.viewList": { he: 'תצוגת רשימה', en: 'List view', fr: 'Liste', es: 'Lista', ru: 'Список', ar: 'قائمة' },
+  "plp.quickView": { he: 'תצוגה מהירה', en: 'Quick View', fr: 'Aperçu', es: 'Vista rápida', ru: 'Быстрый просмотр', ar: 'عرض سريع' },
+  "plp.noResults": { he: 'לא נמצאו תוצאות', en: 'No results found', fr: 'Aucun résultat', es: 'Sin resultados', ru: 'Ничего не найдено', ar: 'لا توجد نتائج' },
+  "plp.noResultsSub": { he: 'נסה לשנות את המסננים או לחפש מונחים אחרים', en: 'Try adjusting filters or searching different terms', fr: 'Ajustez les filtres', es: 'Prueba otros filtros', ru: 'Измените фильтры', ar: 'جرب مرشحات أخرى' },
+  "plp.trending": { he: 'טרנדים', en: 'Trending', fr: 'Tendances', es: 'Tendencias', ru: 'В тренде', ar: 'الرائج' },
+
+  "newsletter.title": { he: 'עדכונים אישיים על שירותי מפ"י', en: 'MAPI Insider Updates', fr: 'Actualités MAPI', es: 'Novedades MAPI', ru: 'Новости MAPI', ar: 'أخبار MAPI' },
+  "newsletter.sub": { he: 'הצטרף לניוזלטר וקבל ראשון עדכוני מוצרים, מבצעים ותוכן מקצועי', en: 'Get first access to product updates, promotions, and expert content', fr: 'Recevez les nouveautés en premier', es: 'Recibe novedades primero', ru: 'Первым узнавайте о новинках', ar: 'كن أول من يعرف' },
+  "newsletter.placeholder": { he: 'כתובת המייל שלך', en: 'Your email address', fr: 'Votre e-mail', es: 'Tu correo', ru: 'Ваш e-mail', ar: 'بريدك الإلكتروني' },
+  "newsletter.subscribe": { he: 'הצטרפות לניוזלטר', en: 'Subscribe', fr: 'S\'abonner', es: 'Suscribirse', ru: 'Подписаться', ar: 'اشتراك' },
+  "newsletter.success": { he: '✓ נרשמת בהצלחה!', en: '✓ Successfully subscribed!', fr: '✓ Inscrit !', es: '✓ ¡Suscrito!', ru: '✓ Подписаны!', ar: '✓ تم!' },
+  "newsletter.privacy": { he: 'לחיצה על הצטרפות מהווה אישור למדיניות הפרטיות', en: 'By subscribing you accept our privacy policy', fr: 'Politique de confidentialité', es: 'Política de privacidad', ru: 'Согласны с политикой', ar: 'سياسة الخصوصية' },
+
+  "footer.newsletter": { he: 'ניוזלטר', en: 'Newsletter', fr: 'Newsletter', es: 'Newsletter', ru: 'Рассылка', ar: 'النشرة' },
+  "footer.follow": { he: 'עקוב אחרינו', en: 'Follow Us', fr: 'Suivez-nous', es: 'Síguenos', ru: 'Мы в соцсетях', ar: 'تابعنا' },
+  "footer.trust": { he: 'תעודות ואישורים', en: 'Trust & Certifications', fr: 'Certifications', es: 'Certificaciones', ru: 'Сертификаты', ar: 'الشهادات' },
+  "footer.certified": { he: 'מוסמך על ידי ממשלת ישראל', en: 'Certified by Israel Government', fr: 'Certifié par le gouvernement', es: 'Certificado por el gobierno', ru: 'Сертифицирован', ar: 'معتمد حكومياً' },
+
+  "trust.security": { he: 'אבטחת מידע לאומית', en: 'National-grade Security', fr: 'Sécurité nationale', es: 'Seguridad nacional', ru: 'Гос. безопасность', ar: 'أمن وطني' },
+  "trust.national": { he: 'שירות ממשלתי רשמי', en: 'Official Government Service', fr: 'Service gouvernemental', es: 'Servicio oficial', ru: 'Гос. служба', ar: 'خدمة رسمية' },
+  "trust.gdpr": { he: 'הגנת פרטיות מלאה', en: 'Privacy Protected', fr: 'Confidentialité', es: 'Privacidad', ru: 'Конфиденциальность', ar: 'حماية الخصوصية' },
+  "trust.support": { he: 'תמיכה בעברית', en: 'Hebrew Support', fr: 'Support hébreu', es: 'Soporte hebreo', ru: 'Поддержка на иврите', ar: 'دعم بالعبرية' },
+
+  "header.search.placeholder": { he: 'חפש שירות, מוצר או קטגוריה...', en: 'Search services, products, categories...', fr: 'Rechercher...', es: 'Buscar...', ru: 'Поиск...', ar: 'ابحث عن خدمة، منتج، فئة...' },
+  "header.search.recent": { he: 'חיפושים אחרונים', en: 'Recent searches', fr: 'Recherches récentes', es: 'Búsquedas recientes', ru: 'Недавние', ar: 'الأخيرة' },
+  "header.search.suggestions": { he: 'הצעות חיפוש', en: 'Suggestions', fr: 'Suggestions', es: 'Sugerencias', ru: 'Предложения', ar: 'اقتراحات' },
+  "header.search.viewAll": { he: 'הצג את כל התוצאות', en: 'View all results', fr: 'Voir tous', es: 'Ver todos', ru: 'Все результаты', ar: 'كل النتائج' },
+  "header.search.aria": { he: 'חפש באתר', en: 'Search site', fr: 'Recherche', es: 'Buscar', ru: 'Поиск', ar: 'بحث' },
+  "header.account": { he: 'החשבון שלי', en: 'My Account', fr: 'Mon compte', es: 'Mi cuenta', ru: 'Аккаунт', ar: 'حسابي' },
+  "header.wishlist": { he: 'רשימת משאלות', en: 'Wishlist', fr: 'Souhaits', es: 'Lista', ru: 'Избранное', ar: 'الأمنيات' },
+  "header.cart": { he: 'עגלת הזמנות', en: 'Cart', fr: 'Panier', es: 'Carrito', ru: 'Корзина', ar: 'السلة' },
+  "header.cartCount": { he: 'פריטים בעגלה', en: 'items in cart', fr: 'articles', es: 'artículos', ru: 'товаров', ar: 'عناصر' }
 };
 
 export type TKey = keyof typeof dict;

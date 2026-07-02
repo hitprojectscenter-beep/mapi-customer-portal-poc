@@ -114,11 +114,31 @@ const config: Config = {
         "fade-in": {
           "0%": { opacity: "0", transform: "translateY(8px)" },
           "100%": { opacity: "1", transform: "translateY(0)" }
+        },
+        "slide-down": {
+          "0%": { opacity: "0", transform: "translateY(-16px)" },
+          "100%": { opacity: "1", transform: "translateY(0)" }
+        },
+        "slide-in-left": {
+          "0%": { opacity: "0", transform: "translateX(-100%)" },
+          "100%": { opacity: "1", transform: "translateX(0)" }
+        },
+        "slide-in-right": {
+          "0%": { opacity: "0", transform: "translateX(100%)" },
+          "100%": { opacity: "1", transform: "translateX(0)" }
+        },
+        "scale-in": {
+          "0%": { opacity: "0", transform: "scale(0.95)" },
+          "100%": { opacity: "1", transform: "scale(1)" }
         }
       },
       animation: {
         float: "float 6s ease-in-out infinite",
-        "fade-in": "fade-in 0.4s ease-out"
+        "fade-in": "fade-in 0.4s ease-out",
+        "slide-down": "slide-down 0.35s cubic-bezier(0.22, 1, 0.36, 1)",
+        "slide-in-left": "slide-in-left 0.35s cubic-bezier(0.22, 1, 0.36, 1)",
+        "slide-in-right": "slide-in-right 0.35s cubic-bezier(0.22, 1, 0.36, 1)",
+        "scale-in": "scale-in 0.25s cubic-bezier(0.22, 1, 0.36, 1)"
       }
     }
   },

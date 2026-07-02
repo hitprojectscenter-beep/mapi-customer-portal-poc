@@ -5,12 +5,18 @@ import Image from "next/image";
 import { useState } from "react";
 import SupportFormModal from "./SupportFormModal";
 import LanguageSwitcher from "./LanguageSwitcher";
+import SearchBar from "./SearchBar";
 import { useLanguage } from "@/lib/LanguageContext";
+import { useCart } from "@/lib/CartContext";
+import { useWishlist } from "@/lib/WishlistContext";
 
 export default function Header() {
   const { t } = useLanguage();
+  const cart = useCart();
+  const wish = useWishlist();
   const [open, setOpen] = useState(false);
   const [supportOpen, setSupportOpen] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
 
   const navItems = [
     { label: t("nav.home"), href: "/" },
@@ -31,18 +37,17 @@ export default function Header() {
 
   return (
     <>
-      <header className="fixed top-14 sm:top-16 left-0 right-0 z-[100] glass-header border-b border-outline-variant/30">
+      <header className="fixed top-[88px] sm:top-[96px] left-0 right-0 z-[100] glass-header border-b border-outline-variant/30">
         <a href="#main-content" className="skip-link shine" data-tooltip={t("nav.skipToContent")}>
           {t("nav.skipToContent")}
         </a>
         <div className="max-w-container-max-width mx-auto px-3 md:px-margin-desktop h-20 flex flex-row-reverse rtl:flex-row-reverse ltr:flex-row items-center justify-between gap-2">
           {/* Logo */}
           <div className="flex items-center gap-2 sm:gap-4">
-            <div className="text-center flex flex-col justify-center border-l border-outline-variant pl-4 ml-4 hidden md:flex">
+            <div className="text-center flex-col justify-center hidden md:flex">
               <span className="text-[10px] uppercase tracking-widest font-bold text-secondary">
                 {t("header.country")}
               </span>
-              <span className="text-xs font-medium text-primary">{t("header.ministry")}</span>
             </div>
             <Link
               href="/"
@@ -52,8 +57,8 @@ export default function Header() {
               data-tooltip-position="bottom"
             >
               <div className="flex flex-col items-center leading-tight">
-                <span className="font-extrabold text-lg sm:text-xl tracking-tight text-primary group-hover:text-secondary transition-colors">
-                  MAPI
+                <span className="font-extrabold text-lg sm:text-xl tracking-tight text-primary group-hover:text-secondary transition-colors" dir="rtl">
+                  מפ&quot;י
                 </span>
                 <span className="text-[9px] sm:text-[10px] font-semibold text-secondary">
                   {t("header.brandSub")}
@@ -88,43 +93,83 @@ export default function Header() {
             ))}
           </nav>
 
-          {/* CTAs */}
-          <div className="flex items-center gap-1.5 sm:gap-3">
+          {/* SFCC-style utility icons: search / wishlist / account / cart */}
+          <div className="flex items-center gap-0.5 sm:gap-1">
             <LanguageSwitcher compact />
 
+            {/* Search icon (opens SearchBar overlay) */}
+            <button
+              type="button"
+              onClick={() => setSearchOpen(true)}
+              className="shine w-10 h-10 rounded-full hover:bg-surface-container flex items-center justify-center transition-colors"
+              aria-label={t("header.search.aria")}
+              data-tooltip={t("header.search.aria")}
+              data-tooltip-position="bottom"
+            >
+              <span className="material-symbols-outlined text-primary text-[22px]">search</span>
+            </button>
+
+            {/* Support button */}
             <button
               type="button"
               onClick={() => setSupportOpen(true)}
-              className="shine flex items-center justify-center gap-2 bg-secondary/10 hover:bg-secondary hover:text-white text-secondary px-3 sm:px-4 py-2 rounded-full text-sm font-bold transition-colors min-h-[40px] min-w-[40px]"
+              className="shine w-10 h-10 rounded-full hover:bg-surface-container flex items-center justify-center transition-colors hidden sm:flex"
               aria-label={t("nav.support")}
               data-tooltip={t("nav.support")}
               data-tooltip-position="bottom"
             >
-              <span className="material-symbols-outlined text-[20px]">support_agent</span>
-              <span className="hidden md:inline">{t("nav.support")}</span>
+              <span className="material-symbols-outlined text-primary text-[22px]">support_agent</span>
             </button>
 
+            {/* Wishlist */}
             <Link
-              href="/login"
-              className="text-sm font-bold text-primary hover:text-secondary hidden sm:block transition-colors shine px-2 py-1 rounded-lg"
-              data-tooltip={t("nav.login")}
+              href="/wishlist"
+              className="shine w-10 h-10 rounded-full hover:bg-surface-container flex items-center justify-center transition-colors relative"
+              aria-label={t("header.wishlist")}
+              data-tooltip={t("header.wishlist")}
               data-tooltip-position="bottom"
             >
-              {t("nav.login")}
+              <span className="material-symbols-outlined text-primary text-[22px]">favorite</span>
+              {wish.count > 0 && (
+                <span className="absolute -top-0.5 -right-0.5 bg-error-red text-white text-[10px] font-bold rounded-full min-w-[18px] h-[18px] flex items-center justify-center px-1" dir="ltr">
+                  {wish.count}
+                </span>
+              )}
             </Link>
+
+            {/* Account */}
             <Link
               href="/dashboard"
-              className="shine shine-glow bg-primary text-white px-3 sm:px-5 py-2 sm:py-2.5 rounded-full text-sm font-bold shadow-lg hover:-translate-y-0.5 transition-all active:scale-95 flex items-center gap-2 min-h-[40px]"
-              data-tooltip={t("nav.dashboard")}
+              className="shine w-10 h-10 rounded-full hover:bg-surface-container flex items-center justify-center transition-colors"
+              aria-label={t("header.account")}
+              data-tooltip={t("header.account")}
               data-tooltip-position="bottom"
             >
-              <span className="hidden sm:inline">{t("nav.dashboard")}</span>
-              <span className="material-symbols-outlined text-[18px]">person</span>
+              <span className="material-symbols-outlined text-primary text-[22px]">person</span>
             </Link>
+
+            {/* Cart with count badge */}
+            <button
+              type="button"
+              onClick={cart.open}
+              className="shine w-10 h-10 rounded-full hover:bg-surface-container flex items-center justify-center transition-colors relative"
+              aria-label={`${t("header.cart")} (${cart.itemCount} ${t("header.cartCount")})`}
+              data-tooltip={t("header.cart")}
+              data-tooltip-position="bottom"
+            >
+              <span className="material-symbols-outlined text-primary text-[22px]">shopping_bag</span>
+              {cart.itemCount > 0 && (
+                <span className="absolute -top-0.5 -right-0.5 bg-secondary text-white text-[10px] font-bold rounded-full min-w-[18px] h-[18px] flex items-center justify-center px-1" dir="ltr">
+                  {cart.itemCount}
+                </span>
+              )}
+            </button>
+
+            {/* Mobile menu button */}
             <button
               type="button"
               onClick={() => setOpen(!open)}
-              className="lg:hidden p-2 rounded-lg hover:bg-surface-container transition-colors shine min-h-[40px] min-w-[40px] flex items-center justify-center"
+              className="lg:hidden w-10 h-10 rounded-full hover:bg-surface-container transition-colors shine flex items-center justify-center"
               aria-label={open ? t("header.closeMenu") : t("header.openMenu")}
               aria-expanded={open}
               data-tooltip={open ? t("header.closeMenu") : t("header.openMenu")}
@@ -181,6 +226,7 @@ export default function Header() {
       </header>
 
       <SupportFormModal open={supportOpen} onClose={() => setSupportOpen(false)} />
+      <SearchBar open={searchOpen} onClose={() => setSearchOpen(false)} />
     </>
   );
 }
