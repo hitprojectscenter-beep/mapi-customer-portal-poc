@@ -31,7 +31,10 @@ export default function MiniCartDrawer() {
         onClick={cart.close}
         aria-hidden="true"
       />
-      <aside className="absolute inset-y-0 start-0 w-full sm:w-[420px] bg-white shadow-2xl flex flex-col animate-slide-in-left">
+      <aside
+        style={{ paddingBottom: "var(--safe-bottom)", paddingTop: "var(--safe-top)" }}
+        className="absolute inset-y-0 start-0 w-full sm:w-[420px] bg-white shadow-2xl flex flex-col animate-slide-in-left"
+      >
         <header className="flex items-center justify-between px-5 py-4 border-b border-outline-variant">
           <button
             type="button"

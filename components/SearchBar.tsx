@@ -71,7 +71,10 @@ export default function SearchBar({ open, onClose }: Props) {
   return (
     <div className="fixed inset-0 z-[300] animate-fade-in" role="dialog" aria-modal="true">
       <div className="absolute inset-0 bg-primary/60 backdrop-blur-sm" onClick={onClose} aria-hidden="true" />
-      <div className="absolute inset-x-0 top-0 bg-white shadow-2xl max-h-[90vh] overflow-y-auto animate-slide-down">
+      <div
+        style={{ paddingTop: "var(--safe-top)" }}
+        className="absolute inset-x-0 top-0 bg-white shadow-2xl max-h-[90vh] max-h-[90dvh] overflow-y-auto animate-slide-down"
+      >
         <div className="max-w-3xl mx-auto px-4 md:px-8 py-6">
           <form onSubmit={handleSubmit} className="flex items-center gap-3 border-b-2 border-primary pb-3 mb-4">
             <span className="material-symbols-outlined text-secondary text-[28px]">search</span>

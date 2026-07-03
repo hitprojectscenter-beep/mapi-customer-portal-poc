@@ -63,7 +63,11 @@ export default function RootLayout({
               <NewsTicker />
               <UtilityBar />
               <Header />
-              <main id="main-content" className="pt-[168px] sm:pt-[176px] min-h-screen">
+              <main
+                id="main-content"
+                className="min-h-screen"
+                style={{ paddingTop: "calc(168px + var(--safe-top))" }}
+              >
                 {children}
               </main>
               <Footer />

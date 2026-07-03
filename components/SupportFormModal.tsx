@@ -72,7 +72,10 @@ export default function SupportFormModal({ open, onClose }: Props) {
         onClick={onClose}
       />
 
-      <div className="relative bg-white w-full sm:w-auto sm:max-w-2xl sm:rounded-2xl rounded-t-2xl shadow-2xl max-h-[92vh] sm:max-h-[88vh] overflow-y-auto">
+      <div
+        style={{ paddingBottom: "var(--safe-bottom)" }}
+        className="relative bg-white w-full sm:w-auto sm:max-w-2xl sm:rounded-2xl rounded-t-2xl shadow-2xl max-h-[92vh] max-h-[92dvh] sm:max-h-[88vh] sm:max-h-[88dvh] overflow-y-auto"
+      >
         <button
           type="button"
           onClick={onClose}

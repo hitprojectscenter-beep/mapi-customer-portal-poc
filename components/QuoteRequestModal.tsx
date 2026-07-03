@@ -83,7 +83,8 @@ export default function QuoteRequestModal({ service, open, onClose }: Props) {
 
       <div
         ref={dialogRef}
-        className="relative bg-white w-full sm:w-auto sm:max-w-2xl sm:rounded-2xl rounded-t-2xl shadow-2xl max-h-[92vh] sm:max-h-[88vh] overflow-y-auto"
+        style={{ paddingBottom: "var(--safe-bottom)" }}
+        className="relative bg-white w-full sm:w-auto sm:max-w-2xl sm:rounded-2xl rounded-t-2xl shadow-2xl max-h-[92vh] max-h-[92dvh] sm:max-h-[88vh] sm:max-h-[88dvh] overflow-y-auto"
       >
         <button
           type="button"

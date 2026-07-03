@@ -31,24 +31,68 @@
     font-family: "Heebo", "Assistant", "Inter", Arial, sans-serif;
     background-color: #f8f9fb !important;
     color: #1f2937 !important;
-    /* Improved readability for long sessions - softer near-black */
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
-    /* Lighter default weight - more elegant, less eye strain */
     font-weight: 300;
-    /* Better base body line-height for breathing room */
     line-height: 1.6;
     font-size: 15px;
-    /* iOS tap highlight */
     -webkit-tap-highlight-color: rgba(11, 97, 161, 0.15);
-    /* iOS bounce safe area */
     padding-left: var(--safe-left);
     padding-right: var(--safe-right);
     min-height: 100vh;
     min-height: 100dvh;
     color-scheme: light only;
     forced-color-adjust: none;
+    /* Prevent horizontal overflow that breaks mobile */
+    overflow-x: hidden;
+    /* iOS bounce/rubber-band control */
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-y: contain;
+  }
+
+  /* Prevent horizontal scrollbar/scroll from any child */
+  html {
+    overflow-x: hidden;
+  }
+
+  /* iOS: prevent input auto-zoom by ensuring min font-size 16px on focus */
+  @supports (-webkit-touch-callout: none) {
+    input, select, textarea {
+      font-size: 16px !important;
+    }
+  }
+
+  /* Touch targets — minimum 44x44 px per Apple HIG / WCAG 2.5.5 */
+  @media (pointer: coarse) {
+    button, a[role="button"], [role="tab"], [role="menuitem"],
+    input[type="button"], input[type="submit"], input[type="reset"],
+    label[for], select {
+      min-height: 44px;
+    }
+    /* Small icon buttons keep at 40px but retain adequate hit-area via padding */
+    .icon-btn-sm { min-height: 40px; min-width: 40px; }
+  }
+
+  /* Better focus-visible for keyboard users */
+  :focus-visible {
+    outline: 2px solid #1D8DDA;
+    outline-offset: 2px;
+    border-radius: 8px;
+  }
+  /* Remove default focus outline only when mouse-clicking */
+  :focus:not(:focus-visible) {
+    outline: none;
+  }
+
+  /* Reduced motion (accessibility) */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
   }
 
   /* Typography refinements - reduce visual fatigue */
@@ -244,6 +288,50 @@
     background: rgba(255, 255, 255, 0.85);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
+    /* Fallback for browsers without backdrop-filter (Firefox <103) */
+    @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+      background: rgba(255, 255, 255, 0.97);
+    }
+  }
+
+  /* Scrollable containers get momentum scrolling on iOS */
+  .overflow-x-auto,
+  .overflow-y-auto,
+  .overflow-auto {
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Prevent word-break issues on Hebrew mixed with English */
+  .break-hebrew {
+    word-break: keep-all;
+    overflow-wrap: anywhere;
+  }
+
+  /* Anchor scroll offset — accounts for sticky header (168px + safe area) */
+  html {
+    scroll-padding-top: 180px;
+  }
+  @media (min-width: 640px) {
+    html { scroll-padding-top: 190px; }
+  }
+
+  /* Universal image handling — never overflow parent */
+  img, svg, video, iframe {
+    max-width: 100%;
+    height: auto;
+  }
+  iframe {
+    height: auto;
+  }
+
+  /* Prevent long unbreakable strings from breaking mobile layout */
+  p, h1, h2, h3, h4, h5, h6, a, span, div {
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+  }
+  /* Long-form Hebrew paragraphs — keep hyphenation off for readability */
+  p, li {
+    hyphens: none;
   }
 
   .hero-gradient {

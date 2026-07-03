@@ -183,7 +183,8 @@ export default function Header() {
         {/* Mobile menu */}
         {open && (
           <nav
-            className="lg:hidden absolute top-20 left-0 right-0 bg-white border-b border-outline-variant shadow-2xl animate-fade-in max-h-[calc(100vh-5rem)] overflow-y-auto"
+            style={{ maxHeight: "calc(100dvh - 5rem - var(--safe-top))", paddingBottom: "var(--safe-bottom)" }}
+            className="lg:hidden absolute top-20 left-0 right-0 bg-white border-b border-outline-variant shadow-2xl animate-fade-in overflow-y-auto"
             aria-label="Mobile"
           >
             <ul className="flex flex-col py-2">

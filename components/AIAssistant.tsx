@@ -230,7 +230,8 @@ export default function AIAssistant() {
       <button
         type="button"
         onClick={() => setOpen(true)}
-        className={`fixed bottom-8 left-8 w-16 h-16 bg-gradient-to-br from-secondary to-primary text-white rounded-full flex items-center justify-center shadow-2xl hover:scale-110 active:scale-95 transition-all z-40 group shine shine-glow ${
+        style={{ bottom: "calc(1.5rem + var(--safe-bottom))" }}
+        className={`fixed left-4 sm:left-8 w-14 h-14 sm:w-16 sm:h-16 bg-gradient-to-br from-secondary to-primary text-white rounded-full flex items-center justify-center shadow-2xl hover:scale-110 active:scale-95 transition-all z-40 group shine shine-glow ${
           open ? "scale-0 opacity-0 pointer-events-none" : ""
         }`}
         aria-label={t("ai.title")}
@@ -253,7 +254,8 @@ export default function AIAssistant() {
       {/* Chat panel */}
       {open && (
         <div
-          className="fixed bottom-0 left-0 right-0 sm:bottom-8 sm:left-8 sm:right-auto sm:w-[420px] sm:max-w-[calc(100vw-4rem)] h-[90vh] sm:h-[640px] sm:max-h-[calc(100vh-6rem)] bg-white sm:rounded-3xl rounded-t-3xl shadow-2xl border border-outline-variant z-50 animate-fade-in flex flex-col overflow-hidden"
+          style={{ paddingBottom: "var(--safe-bottom)" }}
+          className="fixed bottom-0 left-0 right-0 sm:bottom-8 sm:left-8 sm:right-auto sm:w-[420px] sm:max-w-[calc(100vw-4rem)] h-[90vh] h-[90dvh] sm:h-[640px] sm:max-h-[calc(100vh-6rem)] sm:max-h-[calc(100dvh-6rem)] bg-white sm:rounded-3xl rounded-t-3xl shadow-2xl border border-outline-variant z-50 animate-fade-in flex flex-col overflow-hidden"
           role="dialog"
           aria-label={t("ai.title")}
           aria-modal="false"

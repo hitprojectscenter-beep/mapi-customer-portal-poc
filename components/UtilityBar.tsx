@@ -7,7 +7,7 @@ export default function UtilityBar() {
   const { t } = useLanguage();
   return (
     <div className="bg-primary text-white text-xs border-b border-white/10">
-      <div className="max-w-container-max-width mx-auto px-4 md:px-margin-desktop h-8 flex items-center justify-between">
+      <div className="max-w-container-max-width mx-auto px-3 sm:px-4 md:px-margin-desktop h-8 flex items-center justify-between gap-2">
         <div className="flex items-center gap-4">
           <span className="hidden sm:inline-flex items-center gap-1.5 text-white/80">
             <span className="material-symbols-outlined text-[14px]">verified</span>

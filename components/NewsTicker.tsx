@@ -127,6 +127,7 @@ export default function NewsTicker() {
 
   return (
     <div
+      style={{ paddingTop: "var(--safe-top)" }}
       className="fixed top-0 left-0 right-0 z-[110] bg-white border-b border-outline-variant shadow-sm"
       role="region"
       aria-label={t("news.label")}
@@ -223,48 +224,52 @@ export default function NewsTicker() {
 
           {/* Left side: navigation arrows (RTL: appear on the left) + close */}
           <div className="flex items-center px-2 gap-1 border-r border-outline-variant flex-shrink-0">
-            {/* Mobile-only navigation (prev/next) */}
+            {/* Mobile-only navigation (prev/next) — 40px min for touch */}
             <button
               type="button"
               onClick={prevItem}
-              className="shine md:hidden w-7 h-7 rounded-full border border-outline-variant text-on-surface-variant hover:text-primary hover:border-primary hover:bg-surface-container flex items-center justify-center transition-colors"
+              className="shine md:hidden w-10 h-10 rounded-full border border-outline-variant text-on-surface-variant hover:text-primary hover:border-primary hover:bg-surface-container flex items-center justify-center transition-colors"
               aria-label="הקודם"
             >
-              <span className="material-symbols-outlined text-[16px]">chevron_right</span>
+              <span className="material-symbols-outlined text-[18px]">chevron_right</span>
             </button>
             <button
               type="button"
               onClick={nextItem}
-              className="shine md:hidden w-7 h-7 rounded-full border border-outline-variant text-on-surface-variant hover:text-primary hover:border-primary hover:bg-surface-container flex items-center justify-center transition-colors"
+              className="shine md:hidden w-10 h-10 rounded-full border border-outline-variant text-on-surface-variant hover:text-primary hover:border-primary hover:bg-surface-container flex items-center justify-center transition-colors"
               aria-label="הבא"
             >
-              <span className="material-symbols-outlined text-[16px]">chevron_left</span>
+              <span className="material-symbols-outlined text-[18px]">chevron_left</span>
             </button>
 
-            {/* Mobile dot indicators */}
-            <div className="md:hidden flex items-center gap-1 px-1" role="tablist" aria-label="חדשות">
+            {/* Mobile dot indicators — 24px touch target with 6px visible dot inside */}
+            <div className="md:hidden flex items-center px-1" role="tablist" aria-label="חדשות">
               {NEWS.map((item, idx) => (
                 <button
                   key={item.id}
                   type="button"
                   onClick={() => setMobileIndex(idx)}
-                  className={`w-1.5 h-1.5 rounded-full transition-all ${
-                    idx === mobileIndex
-                      ? `${TYPE_COLORS[item.type].dot} scale-125`
-                      : "bg-outline-variant"
-                  }`}
+                  className="w-6 h-6 flex items-center justify-center"
                   aria-label={`חדשה ${idx + 1}`}
                   aria-selected={idx === mobileIndex}
                   role="tab"
-                />
+                >
+                  <span
+                    className={`block w-1.5 h-1.5 rounded-full transition-all ${
+                      idx === mobileIndex
+                        ? `${TYPE_COLORS[item.type].dot} scale-125`
+                        : "bg-outline-variant"
+                    }`}
+                  />
+                </button>
               ))}
             </div>
 
-            {/* Close button */}
+            {/* Close button — 40px min for touch */}
             <button
               type="button"
               onClick={() => setHidden(true)}
-              className="shine w-7 h-7 rounded-full hover:bg-surface-container flex items-center justify-center text-on-surface-variant hover:text-error-red transition-colors mr-1"
+              className="shine w-10 h-10 rounded-full hover:bg-surface-container flex items-center justify-center text-on-surface-variant hover:text-error-red transition-colors mr-1"
               aria-label={t("news.hide")}
               data-tooltip={t("news.hide")}
               data-tooltip-position="bottom"
