@@ -322,6 +322,55 @@ type TranslationKeys =
   | "header.search.placeholder" | "header.search.recent" | "header.search.suggestions"
   | "header.search.viewAll" | "header.search.aria"
   | "header.account" | "header.wishlist" | "header.cart" | "header.cartCount"
+  // Nav for new pages
+  | "nav.plans" | "nav.bundles" | "nav.apiHub" | "nav.trial"
+  // Plans page (3-tier: Open/Premium/Public)
+  | "plans.title" | "plans.subtitle" | "plans.compare" | "plans.faq"
+  | "plans.mostPopular" | "plans.perMonth" | "plans.perYear" | "plans.custom"
+  | "plans.tryFree" | "plans.startNow" | "plans.contactSales"
+  | "plan.open.name" | "plan.open.tagline" | "plan.open.price" | "plan.open.unit" | "plan.open.cta"
+  | "plan.open.f1" | "plan.open.f2" | "plan.open.f3" | "plan.open.f4" | "plan.open.f5"
+  | "plan.premium.name" | "plan.premium.tagline" | "plan.premium.price" | "plan.premium.unit" | "plan.premium.cta"
+  | "plan.premium.f1" | "plan.premium.f2" | "plan.premium.f3" | "plan.premium.f4" | "plan.premium.f5"
+  | "plan.premium.f6" | "plan.premium.f7"
+  | "plan.public.name" | "plan.public.tagline" | "plan.public.price" | "plan.public.unit" | "plan.public.cta"
+  | "plan.public.f1" | "plan.public.f2" | "plan.public.f3" | "plan.public.f4" | "plan.public.f5" | "plan.public.f6"
+  | "planCmp.title" | "planCmp.feature"
+  | "planCmp.mapsDownload" | "planCmp.resolution" | "planCmp.apiCalls"
+  | "planCmp.historicMaps" | "planCmp.corsRTK" | "planCmp.dataFormats"
+  | "planCmp.commercialUse" | "planCmp.support" | "planCmp.customMaps" | "planCmp.teamSeats"
+  | "planFaq.q1" | "planFaq.a1" | "planFaq.q2" | "planFaq.a2"
+  | "planFaq.q3" | "planFaq.a3" | "planFaq.q4" | "planFaq.a4"
+  // Bundles page
+  | "bundles.title" | "bundles.subtitle" | "bundles.savings" | "bundles.included"
+  | "bundles.regularPrice" | "bundles.bundlePrice" | "bundles.buyBundle"
+  | "bundles.featured" | "bundles.allBundles" | "bundles.filterBy"
+  | "bundle.galilee.name" | "bundle.galilee.desc"
+  | "bundle.coastal.name" | "bundle.coastal.desc"
+  | "bundle.jerusalem.name" | "bundle.jerusalem.desc"
+  | "bundle.negev.name" | "bundle.negev.desc"
+  | "bundle.surveyor.name" | "bundle.surveyor.desc"
+  | "bundle.developer.name" | "bundle.developer.desc"
+  // API Hub
+  | "api.hub.title" | "api.hub.subtitle" | "api.hub.newProject"
+  | "api.hub.summary" | "api.hub.projects" | "api.hub.usage" | "api.hub.docs"
+  | "api.hub.kpi.projects" | "api.hub.kpi.keys" | "api.hub.kpi.calls" | "api.hub.kpi.maps"
+  | "api.hub.kpi.data" | "api.hub.kpi.cost"
+  | "api.hub.usage30d" | "api.hub.calls" | "api.hub.mapsLabel"
+  | "api.hub.est" | "api.hub.vs" | "api.hub.lastMonth"
+  | "api.hub.projName" | "api.hub.projDesc" | "api.hub.plan" | "api.hub.env"
+  | "api.hub.created" | "api.hub.lastUsed" | "api.hub.keys"
+  | "api.hub.viewProject" | "api.hub.env.prod" | "api.hub.env.staging" | "api.hub.env.dev"
+  | "api.hub.docsTitle" | "api.hub.docsSub" | "api.hub.docs.gettingStarted"
+  | "api.hub.docs.mapsAPI" | "api.hub.docs.gisAPI" | "api.hub.docs.corsAPI"
+  | "api.hub.docs.errors" | "api.hub.docs.rateLimits"
+  | "api.hub.reportError" | "api.hub.reportErrorSub"
+  // Trial & error report & sample
+  | "svc.trial.title" | "svc.trial.days" | "svc.trial.start" | "svc.trial.terms"
+  | "svc.sample.title" | "svc.sample.download"
+  | "svc.error.report" | "svc.error.reportSub" | "svc.error.submit"
+  // Nav: hide behind more menu
+  | "nav.more"
   // Support Modal - extended
   | "support.closeAria" | "support.closeTip" | "support.headerEyebrow"
   | "support.altRoutes" | "support.directDial" | "support.govFormLabel"
@@ -1537,7 +1586,167 @@ const dict: Record<TranslationKeys, Record<Lang, string>> = {
   "header.account": { he: 'החשבון שלי', en: 'My Account', fr: 'Mon compte', es: 'Mi cuenta', ru: 'Аккаунт', ar: 'حسابي' },
   "header.wishlist": { he: 'רשימת משאלות', en: 'Wishlist', fr: 'Souhaits', es: 'Lista', ru: 'Избранное', ar: 'الأمنيات' },
   "header.cart": { he: 'עגלת הזמנות', en: 'Cart', fr: 'Panier', es: 'Carrito', ru: 'Корзина', ar: 'السلة' },
-  "header.cartCount": { he: 'פריטים בעגלה', en: 'items in cart', fr: 'articles', es: 'artículos', ru: 'товаров', ar: 'عناصر' }
+  "header.cartCount": { he: 'פריטים בעגלה', en: 'items in cart', fr: 'articles', es: 'artículos', ru: 'товаров', ar: 'عناصر' },
+
+  // Nav (new pages)
+  "nav.plans": { he: 'מסלולים', en: 'Plans', fr: 'Forfaits', es: 'Planes', ru: 'Планы', ar: 'الخطط' },
+  "nav.bundles": { he: 'חבילות אזוריות', en: 'Regional Bundles', fr: 'Packs Régionaux', es: 'Paquetes Regionales', ru: 'Регион. пакеты', ar: 'حزم إقليمية' },
+  "nav.apiHub": { he: 'API Hub', en: 'API Hub', fr: 'API Hub', es: 'API Hub', ru: 'API-хаб', ar: 'مركز API' },
+  "nav.trial": { he: '14 יום ניסיון חינם', en: '14-day Free Trial', fr: 'Essai 14 jours', es: 'Prueba 14 días', ru: '14 дней бесплатно', ar: 'تجربة 14 يوماً' },
+  "nav.more": { he: 'עוד', en: 'More', fr: 'Plus', es: 'Más', ru: 'Ещё', ar: 'المزيد' },
+
+  // Plans page
+  "plans.title": { he: 'בחר את המסלול המתאים לך', en: 'Choose Your Plan', fr: 'Choisissez votre forfait', es: 'Elige tu plan', ru: 'Выберите план', ar: 'اختر خطتك' },
+  "plans.subtitle": { he: 'מסלולי גישה למפ"י — לפי צרכי השימוש שלך. שדרג, שנה או בטל בכל עת.', en: 'MAPI access plans — matched to how you use them. Upgrade, downgrade, or cancel anytime.', fr: 'Plans d\'accès MAPI — modifiables à tout moment.', es: 'Planes de acceso MAPI — modificables en cualquier momento.', ru: 'Планы доступа MAPI — меняйте в любое время.', ar: 'خطط الوصول MAPI — قابلة للتغيير في أي وقت.' },
+  "plans.compare": { he: 'השוואת יכולות', en: 'Compare Features', fr: 'Comparer', es: 'Comparar', ru: 'Сравнить', ar: 'قارن الميزات' },
+  "plans.faq": { he: 'שאלות נפוצות על מסלולים', en: 'Plan FAQ', fr: 'FAQ Forfaits', es: 'FAQ Planes', ru: 'FAQ по планам', ar: 'أسئلة الخطط' },
+  "plans.mostPopular": { he: 'הכי פופולרי', en: 'Most Popular', fr: 'Le plus populaire', es: 'Más popular', ru: 'Популярный', ar: 'الأكثر شعبية' },
+  "plans.perMonth": { he: '/חודש', en: '/month', fr: '/mois', es: '/mes', ru: '/мес.', ar: '/شهر' },
+  "plans.perYear": { he: '/שנה', en: '/year', fr: '/an', es: '/año', ru: '/год', ar: '/سنة' },
+  "plans.custom": { he: 'מותאם', en: 'Custom', fr: 'Personnalisé', es: 'Personalizado', ru: 'Индивид.', ar: 'مخصص' },
+  "plans.tryFree": { he: 'התחל בחינם', en: 'Start free', fr: 'Commencer gratuitement', es: 'Empezar gratis', ru: 'Начать бесплатно', ar: 'ابدأ مجاناً' },
+  "plans.startNow": { he: 'התחל עכשיו', en: 'Start now', fr: 'Commencer', es: 'Empezar', ru: 'Начать', ar: 'ابدأ الآن' },
+  "plans.contactSales": { he: 'צור קשר עם המכירות', en: 'Contact Sales', fr: 'Contactez les ventes', es: 'Contactar ventas', ru: 'Связаться с продажами', ar: 'اتصل بالمبيعات' },
+
+  // Plan: Open
+  "plan.open.name": { he: 'פתוח לציבור', en: 'Open Data', fr: 'Données Ouvertes', es: 'Datos Abiertos', ru: 'Открытые данные', ar: 'بيانات مفتوحة' },
+  "plan.open.tagline": { he: 'לגישה חופשית לתוכן בסיסי — ללא עלות', en: 'Free access to core content', fr: 'Accès gratuit', es: 'Acceso gratuito', ru: 'Бесплатный доступ', ar: 'وصول مجاني' },
+  "plan.open.price": { he: 'חינם', en: 'Free', fr: 'Gratuit', es: 'Gratis', ru: 'Бесплатно', ar: 'مجاني' },
+  "plan.open.unit": { he: 'לעולם', en: 'forever', fr: 'à vie', es: 'para siempre', ru: 'навсегда', ar: 'إلى الأبد' },
+  "plan.open.cta": { he: 'הצטרף חינם', en: 'Sign up free', fr: 'Inscription gratuite', es: 'Registrarse gratis', ru: 'Регистр. беспл.', ar: 'سجل مجاناً' },
+  "plan.open.f1": { he: '10 הורדות מפה בחודש', en: '10 map downloads/month', fr: '10 téléchargements/mois', es: '10 descargas/mes', ru: '10 карт/мес.', ar: '10 تنزيلات/شهر' },
+  "plan.open.f2": { he: 'רזולוציה בסיסית (50 ס"מ)', en: 'Basic resolution (50 cm)', fr: 'Résolution 50 cm', es: 'Resolución 50 cm', ru: 'Разрешение 50 см', ar: 'دقة 50 سم' },
+  "plan.open.f3": { he: '1,000 קריאות API ליום', en: '1,000 API calls/day', fr: '1 000 appels API/jour', es: '1.000 llamadas API/día', ru: '1000 API-вызовов/день', ar: '1,000 استدعاء/يوم' },
+  "plan.open.f4": { he: 'פורמט PDF בלבד', en: 'PDF format only', fr: 'PDF uniquement', es: 'Solo PDF', ru: 'Только PDF', ar: 'PDF فقط' },
+  "plan.open.f5": { he: 'תמיכה במייל', en: 'Email support', fr: 'Support e-mail', es: 'Soporte por correo', ru: 'Поддержка по e-mail', ar: 'دعم بريد إلكتروني' },
+
+  // Plan: Premium
+  "plan.premium.name": { he: 'פרימיום', en: 'Premium', fr: 'Premium', es: 'Premium', ru: 'Премиум', ar: 'المميز' },
+  "plan.premium.tagline": { he: 'לאנשי מקצוע, מודדים ומהנדסים — עם מדדי דיוק גבוהים', en: 'For professionals — high precision access', fr: 'Pour professionnels', es: 'Para profesionales', ru: 'Для профи', ar: 'للمحترفين' },
+  "plan.premium.price": { he: '₪300', en: '₪300', fr: '₪300', es: '₪300', ru: '₪300', ar: '₪300' },
+  "plan.premium.unit": { he: '/חודש', en: '/month', fr: '/mois', es: '/mes', ru: '/мес.', ar: '/شهر' },
+  "plan.premium.cta": { he: 'התחל 14 יום חינם', en: 'Start 14-day trial', fr: '14 jours gratuits', es: '14 días gratis', ru: '14 дней беспл.', ar: '14 يوماً مجاناً' },
+  "plan.premium.f1": { he: '500 הורדות מפה בחודש', en: '500 map downloads/month', fr: '500 téléchargements/mois', es: '500 descargas/mes', ru: '500 карт/мес.', ar: '500 تنزيل/شهر' },
+  "plan.premium.f2": { he: 'רזולוציה גבוהה (20 ס"מ)', en: 'High resolution (20 cm)', fr: 'Résolution 20 cm', es: 'Resolución 20 cm', ru: 'Разрешение 20 см', ar: 'دقة 20 سم' },
+  "plan.premium.f3": { he: '50,000 קריאות API ליום', en: '50,000 API calls/day', fr: '50 000 appels/jour', es: '50.000 llamadas/día', ru: '50000 API/день', ar: '50,000 استدعاء/يوم' },
+  "plan.premium.f4": { he: 'CORS + RTK מלא', en: 'Full CORS + RTK access', fr: 'CORS + RTK complet', es: 'CORS + RTK completo', ru: 'Полный CORS + RTK', ar: 'CORS + RTK كامل' },
+  "plan.premium.f5": { he: 'כל הפורמטים (GeoTIFF, DWG, Shapefile)', en: 'All formats (GeoTIFF, DWG, Shapefile)', fr: 'Tous formats', es: 'Todos los formatos', ru: 'Все форматы', ar: 'كل التنسيقات' },
+  "plan.premium.f6": { he: 'שימוש מסחרי מותר', en: 'Commercial use allowed', fr: 'Usage commercial autorisé', es: 'Uso comercial', ru: 'Коммерч. использ.', ar: 'استخدام تجاري' },
+  "plan.premium.f7": { he: 'תמיכה במייל וטלפון', en: 'Email + phone support', fr: 'Support e-mail + téléphone', es: 'Soporte e-mail + teléfono', ru: 'E-mail + телефон', ar: 'دعم بريد + هاتف' },
+
+  // Plan: Public Sector
+  "plan.public.name": { he: 'מגזר ציבורי', en: 'Public Sector', fr: 'Secteur Public', es: 'Sector Público', ru: 'Гос. сектор', ar: 'القطاع العام' },
+  "plan.public.tagline": { he: 'לרשויות מקומיות, משרדי ממשלה וגופים ציבוריים — גישה ללא הגבלה', en: 'For public authorities — unlimited access', fr: 'Pour autorités publiques', es: 'Para autoridades públicas', ru: 'Для гос. организаций', ar: 'للجهات العامة' },
+  "plan.public.price": { he: 'חינם', en: 'Free', fr: 'Gratuit', es: 'Gratis', ru: 'Бесплатно', ar: 'مجاني' },
+  "plan.public.unit": { he: 'לרשויות', en: 'for authorities', fr: 'aux autorités', es: 'para autoridades', ru: 'для властей', ar: 'للسلطات' },
+  "plan.public.cta": { he: 'בקש גישה', en: 'Request access', fr: 'Demander accès', es: 'Solicitar acceso', ru: 'Запросить доступ', ar: 'اطلب الوصول' },
+  "plan.public.f1": { he: 'הורדות ללא הגבלה', en: 'Unlimited downloads', fr: 'Téléchargements illimités', es: 'Descargas ilimitadas', ru: 'Без ограничений', ar: 'تنزيلات غير محدودة' },
+  "plan.public.f2": { he: 'רזולוציה אולטרה (10 ס"מ)', en: 'Ultra-high resolution (10 cm)', fr: 'Résolution 10 cm', es: 'Resolución 10 cm', ru: 'Разрешение 10 см', ar: 'دقة 10 سم' },
+  "plan.public.f3": { he: 'API ללא הגבלה', en: 'Unlimited API access', fr: 'API illimitée', es: 'API ilimitada', ru: 'API без огранич.', ar: 'API غير محدود' },
+  "plan.public.f4": { he: 'WMS/WFS Live Services', en: 'WMS/WFS live services', fr: 'Services WMS/WFS', es: 'Servicios WMS/WFS', ru: 'WMS/WFS сервисы', ar: 'خدمات WMS/WFS' },
+  "plan.public.f5": { he: 'Account Manager ייעודי + SLA', en: 'Dedicated Account Manager + SLA', fr: 'Chargé de compte + SLA', es: 'Gerente + SLA', ru: 'Персон. менеджер + SLA', ar: 'مدير حساب + SLA' },
+  "plan.public.f6": { he: 'מספר משתמשים ללא הגבלה', en: 'Unlimited team seats', fr: 'Utilisateurs illimités', es: 'Usuarios ilimitados', ru: 'Пользователей неогр.', ar: 'مستخدمون غير محدودون' },
+
+  // Comparison
+  "planCmp.title": { he: 'השוואת המסלולים במלואם', en: 'Full Feature Comparison', fr: 'Comparaison complète', es: 'Comparación completa', ru: 'Полное сравнение', ar: 'مقارنة شاملة' },
+  "planCmp.feature": { he: 'תכונה', en: 'Feature', fr: 'Fonctionnalité', es: 'Característica', ru: 'Функция', ar: 'الميزة' },
+  "planCmp.mapsDownload": { he: 'הורדות מפה בחודש', en: 'Map downloads/month', fr: 'Cartes/mois', es: 'Mapas/mes', ru: 'Карт/мес.', ar: 'تنزيلات/شهر' },
+  "planCmp.resolution": { he: 'רזולוציה מקסימלית', en: 'Max resolution', fr: 'Résolution max', es: 'Resolución máx.', ru: 'Макс. разрешение', ar: 'أعلى دقة' },
+  "planCmp.apiCalls": { he: 'קריאות API ליום', en: 'API calls/day', fr: 'Appels API/jour', es: 'Llamadas/día', ru: 'API/день', ar: 'استدعاءات/يوم' },
+  "planCmp.historicMaps": { he: 'מפות היסטוריות', en: 'Historic maps', fr: 'Cartes historiques', es: 'Mapas históricos', ru: 'Историч. карты', ar: 'خرائط تاريخية' },
+  "planCmp.corsRTK": { he: 'CORS / RTK', en: 'CORS / RTK', fr: 'CORS / RTK', es: 'CORS / RTK', ru: 'CORS / RTK', ar: 'CORS / RTK' },
+  "planCmp.dataFormats": { he: 'פורמטים נתמכים', en: 'Supported formats', fr: 'Formats', es: 'Formatos', ru: 'Форматы', ar: 'التنسيقات' },
+  "planCmp.commercialUse": { he: 'שימוש מסחרי', en: 'Commercial use', fr: 'Usage commercial', es: 'Uso comercial', ru: 'Коммерч. использ.', ar: 'استخدام تجاري' },
+  "planCmp.support": { he: 'תמיכה', en: 'Support', fr: 'Support', es: 'Soporte', ru: 'Поддержка', ar: 'الدعم' },
+  "planCmp.customMaps": { he: 'מפות מותאמות בחודש', en: 'Custom maps/month', fr: 'Cartes perso./mois', es: 'Mapas person./mes', ru: 'Персон. карт/мес.', ar: 'خرائط مخصصة/شهر' },
+  "planCmp.teamSeats": { he: 'משתמשים בצוות', en: 'Team seats', fr: 'Sièges', es: 'Usuarios', ru: 'Пользователей', ar: 'مستخدمون' },
+
+  // Plan FAQ
+  "planFaq.q1": { he: 'מה ההבדל בין Open ל-Premium?', en: 'What\'s the difference between Open and Premium?', fr: 'Quelle différence ?', es: '¿Cuál es la diferencia?', ru: 'В чём разница?', ar: 'ما الفرق؟' },
+  "planFaq.a1": { he: 'Open נותן גישה חינמית לתוכן בסיסי (50 ס"מ, PDF, 1,000 API/יום). Premium מאפשר רזולוציה של 20 ס"מ, כל הפורמטים, שימוש מסחרי ו-50 אלף API/יום.', en: 'Open gives free access to basic content. Premium unlocks high-resolution data, all formats, commercial use, and 50x more API calls.', fr: 'Open est gratuit. Premium débloque haute résolution.', es: 'Open es gratis. Premium desbloquea alta resolución.', ru: 'Open бесплатен. Premium разблокирует высокое разрешение.', ar: 'Open مجاني. Premium يفتح دقة أعلى.' },
+  "planFaq.q2": { he: 'האם ניתן לבטל בכל עת?', en: 'Can I cancel anytime?', fr: 'Puis-je annuler à tout moment ?', es: '¿Puedo cancelar?', ru: 'Можно отменить?', ar: 'هل يمكن الإلغاء؟' },
+  "planFaq.a2": { he: 'כן. Premium ניתן לביטול בכל עת דרך אזור החשבון, ללא קנסות. הגישה תישאר עד סוף תקופת החיוב.', en: 'Yes. Premium can be cancelled anytime via account settings — no fees. Access continues to end of billing period.', fr: 'Oui, annulation à tout moment.', es: 'Sí, cancela cuando quieras.', ru: 'Да, отмена в любое время.', ar: 'نعم، إلغاء متى شئت.' },
+  "planFaq.q3": { he: 'איך יודעים אם אנחנו זכאים ל-Public Sector?', en: 'How do I qualify for Public Sector?', fr: 'Comment se qualifier ?', es: '¿Cómo calificar?', ru: 'Как претендовать?', ar: 'كيف نتأهل؟' },
+  "planFaq.a3": { he: 'רשויות מקומיות, משרדי ממשלה, גופי חירום וסוכנויות ציבוריות אחרות זכאים אוטומטית. יש להשלים הרשמה עם מספר זיהוי ארגוני.', en: 'Local authorities, government ministries, and public agencies qualify automatically. Register with your organizational ID.', fr: 'Autorités locales/ministères éligibles.', es: 'Autoridades locales calificados.', ru: 'Гос. органы допущены.', ar: 'الجهات الحكومية مؤهلة.' },
+  "planFaq.q4": { he: 'האם המחירים כוללים מע"מ?', en: 'Do prices include VAT?', fr: 'TVA incluse ?', es: '¿IVA incluido?', ru: 'НДС включён?', ar: 'هل تشمل الأسعار الضريبة؟' },
+  "planFaq.a4": { he: 'כל המחירים כוללים מע"מ 17%. חשבונית מס נשלחת אוטומטית בכל תשלום.', en: 'All prices include 17% VAT. Tax invoice is auto-generated for every payment.', fr: 'TVA 17% incluse.', es: 'IVA 17% incluido.', ru: 'НДС 17% включён.', ar: 'شامل ضريبة 17%.' },
+
+  // Bundles page
+  "bundles.title": { he: 'חבילות אזוריות מיוחדות', en: 'Regional Map Bundles', fr: 'Packs Régionaux', es: 'Paquetes Regionales', ru: 'Регион. пакеты', ar: 'حزم إقليمية' },
+  "bundles.subtitle": { he: 'שילוב של מפות, נתוני GIS ותצלומי אוויר לאזור שלם — במחיר משתלם משמעותית מרכישה נפרדת.', en: 'Curated bundles of maps, GIS data & aerial imagery — significantly cheaper than buying individually.', fr: 'Cartes + GIS + aérien à prix réduit.', es: 'Mapas + GIS + aéreo con descuento.', ru: 'Карты + GIS + аэро со скидкой.', ar: 'خرائط + GIS + جوية بخصم.' },
+  "bundles.savings": { he: 'חיסכון', en: 'Savings', fr: 'Économie', es: 'Ahorro', ru: 'Экономия', ar: 'التوفير' },
+  "bundles.included": { he: 'כלול בחבילה', en: 'Included', fr: 'Inclus', es: 'Incluido', ru: 'Включено', ar: 'مشمول' },
+  "bundles.regularPrice": { he: 'מחיר רגיל', en: 'Regular price', fr: 'Prix normal', es: 'Precio normal', ru: 'Обычная цена', ar: 'السعر الاعتيادي' },
+  "bundles.bundlePrice": { he: 'מחיר חבילה', en: 'Bundle price', fr: 'Prix pack', es: 'Precio paquete', ru: 'Цена пакета', ar: 'سعر الحزمة' },
+  "bundles.buyBundle": { he: 'רכוש חבילה', en: 'Buy bundle', fr: 'Acheter le pack', es: 'Comprar paquete', ru: 'Купить пакет', ar: 'اشترِ الحزمة' },
+  "bundles.featured": { he: 'מומלץ', en: 'Featured', fr: 'En vedette', es: 'Destacado', ru: 'Рекомендуем', ar: 'مميز' },
+  "bundles.allBundles": { he: 'כל החבילות', en: 'All bundles', fr: 'Tous', es: 'Todos', ru: 'Все', ar: 'الكل' },
+  "bundles.filterBy": { he: 'סנן לפי אזור', en: 'Filter by region', fr: 'Par région', es: 'Por región', ru: 'По региону', ar: 'حسب المنطقة' },
+  "bundle.galilee.name": { he: 'חבילת גליל', en: 'Galilee Bundle', fr: 'Pack Galilée', es: 'Paquete Galilea', ru: 'Пакет Галилея', ar: 'حزمة الجليل' },
+  "bundle.galilee.desc": { he: 'כל הצפון — 4 שירותי מיפוי גיאוגרפיים לכל הגליל, הגולן והכינרת. מפות, אורתופוטו וGIS.', en: 'Complete North — 4 mapping services for Galilee, Golan and Kinneret region.', fr: 'Nord complet.', es: 'Norte completo.', ru: 'Полный север.', ar: 'الشمال كاملاً.' },
+  "bundle.coastal.name": { he: 'מרכז וחוף הים', en: 'Central & Coastal Plain', fr: 'Plaine Côtière', es: 'Llanura Costera', ru: 'Прибрежная равнина', ar: 'السهل الساحلي' },
+  "bundle.coastal.desc": { he: 'תל אביב עד חדרה — 5 מוצרים כולל מפות עירוניות, נתוני חוף ותצלומי אוויר.', en: 'Tel Aviv to Hadera — 5 products incl. urban maps, coastal data & aerial imagery.', fr: 'Tel Aviv à Hadera.', es: 'Tel Aviv a Hadera.', ru: 'Тель-Авив – Хадера.', ar: 'تل أبيب إلى حديرة.' },
+  "bundle.jerusalem.name": { he: 'ירושלים והרים', en: 'Jerusalem & Judean Hills', fr: 'Jérusalem', es: 'Jerusalén', ru: 'Иерусалим и горы', ar: 'القدس والجبال' },
+  "bundle.jerusalem.desc": { he: 'ירושלים, בית שמש והרי יהודה — 6 מוצרים כולל מפות היסטוריות ומודלי גובה.', en: 'Jerusalem, Beit Shemesh & Judean Hills — 6 products incl. historic maps + DEM.', fr: 'Jérusalem & Judée.', es: 'Jerusalén y Judea.', ru: 'Иерусалим и Иудея.', ar: 'القدس ويهودا.' },
+  "bundle.negev.name": { he: 'נגב ודרום', en: 'Negev & Southern Desert', fr: 'Néguev', es: 'Néguev', ru: 'Негев', ar: 'النقب' },
+  "bundle.negev.desc": { he: 'מפות מפורטות של הנגב מבאר שבע עד אילת. אידיאלי לתיירות, חקלאות ובנייה.', en: 'Detailed Negev maps from Beer Sheva to Eilat. Ideal for tourism, agriculture, construction.', fr: 'Néguev complet.', es: 'Néguev completo.', ru: 'Полный Негев.', ar: 'النقب كاملاً.' },
+  "bundle.surveyor.name": { he: 'חבילת מודדים מקצועית', en: 'Professional Surveyor Bundle', fr: 'Pack Géomètre', es: 'Pack Topógrafo', ru: 'Пакет геодезиста', ar: 'حزمة المساح' },
+  "bundle.surveyor.desc": { he: 'CORS + מודד מבקר + נקודות גיאודטיות + תעודות גבולות — כל מה שמודד צריך במקום אחד.', en: 'CORS + surveyor inspector + geodetic points + boundary certs — all surveyor essentials.', fr: 'Essentiels géomètre.', es: 'Esenciales topógrafo.', ru: 'Всё для геодезиста.', ar: 'أساسيات المساح.' },
+  "bundle.developer.name": { he: 'חבילת מפתחי GIS', en: 'GIS Developer Suite', fr: 'Suite Développeur GIS', es: 'Suite Desarrollador GIS', ru: 'Набор GIS-разраб.', ar: 'حزمة مطور GIS' },
+  "bundle.developer.desc": { he: 'שכבות GIS + WMS/WFS + נקודות גיאודטיות — פורמטים סטנדרטיים לאינטגרציה בכל מערכת.', en: 'GIS layers + WMS/WFS + geodetic points — standards-ready for integration.', fr: 'Prêt à intégrer.', es: 'Listo para integrar.', ru: 'Готово к интеграции.', ar: 'جاهز للتكامل.' },
+
+  // API Hub
+  "api.hub.title": { he: 'API Hub — מרכז הפיתוח שלך', en: 'API Hub — Your Developer Center', fr: 'API Hub', es: 'API Hub', ru: 'API-хаб', ar: 'مركز API' },
+  "api.hub.subtitle": { he: 'ניהול מפתחות API, פרויקטים ומדדי שימוש בזמן אמת', en: 'Manage API keys, projects and real-time usage', fr: 'Gestion des clés et projets', es: 'Gestión de claves', ru: 'Ключи и проекты', ar: 'إدارة المفاتيح والمشاريع' },
+  "api.hub.newProject": { he: '+ פרויקט חדש', en: '+ New Project', fr: '+ Nouveau projet', es: '+ Nuevo proyecto', ru: '+ Новый проект', ar: '+ مشروع جديد' },
+  "api.hub.summary": { he: 'סיכום', en: 'Summary', fr: 'Résumé', es: 'Resumen', ru: 'Сводка', ar: 'ملخص' },
+  "api.hub.projects": { he: 'פרויקטים', en: 'Projects', fr: 'Projets', es: 'Proyectos', ru: 'Проекты', ar: 'المشاريع' },
+  "api.hub.usage": { he: 'שימוש', en: 'Usage', fr: 'Utilisation', es: 'Uso', ru: 'Использование', ar: 'الاستخدام' },
+  "api.hub.docs": { he: 'תיעוד', en: 'Docs', fr: 'Docs', es: 'Docs', ru: 'Документация', ar: 'التوثيق' },
+  "api.hub.kpi.projects": { he: 'פרויקטים פעילים', en: 'Active projects', fr: 'Projets actifs', es: 'Proyectos activos', ru: 'Активные проекты', ar: 'مشاريع نشطة' },
+  "api.hub.kpi.keys": { he: 'מפתחות API', en: 'API keys', fr: 'Clés API', es: 'Claves API', ru: 'API-ключи', ar: 'مفاتيح API' },
+  "api.hub.kpi.calls": { he: 'קריאות בחודש', en: 'Calls this month', fr: 'Appels/mois', es: 'Llamadas/mes', ru: 'Вызовов/мес.', ar: 'استدعاءات/شهر' },
+  "api.hub.kpi.maps": { he: 'מפות שהורדו', en: 'Maps downloaded', fr: 'Cartes tél.', es: 'Mapas descargados', ru: 'Карт скачано', ar: 'خرائط منزلة' },
+  "api.hub.kpi.data": { he: 'נפח נתונים (GB)', en: 'Data volume (GB)', fr: 'Volume (Go)', es: 'Volumen (GB)', ru: 'Объём (ГБ)', ar: 'الحجم (GB)' },
+  "api.hub.kpi.cost": { he: 'עלות מוערכת', en: 'Estimated cost', fr: 'Coût estimé', es: 'Coste estimado', ru: 'Оценка стоим.', ar: 'التكلفة المقدرة' },
+  "api.hub.usage30d": { he: 'שימוש 30 ימים אחרונים', en: 'Usage — last 30 days', fr: 'Utilisation 30 jours', es: 'Uso 30 días', ru: 'Использ. 30 дней', ar: 'استخدام 30 يوماً' },
+  "api.hub.calls": { he: 'קריאות', en: 'Calls', fr: 'Appels', es: 'Llamadas', ru: 'Вызовы', ar: 'استدعاءات' },
+  "api.hub.mapsLabel": { he: 'מפות', en: 'Maps', fr: 'Cartes', es: 'Mapas', ru: 'Карты', ar: 'الخرائط' },
+  "api.hub.est": { he: 'הערכה חודש נוכחי:', en: 'Current month est.:', fr: 'Est. mois en cours :', es: 'Est. mes actual:', ru: 'Оценка текущ. мес.:', ar: 'تقدير الشهر:' },
+  "api.hub.vs": { he: 'לעומת', en: 'vs', fr: 'vs', es: 'vs', ru: 'против', ar: 'مقابل' },
+  "api.hub.lastMonth": { he: 'החודש שעבר', en: 'last month', fr: 'mois dernier', es: 'mes anterior', ru: 'прошл. мес.', ar: 'الشهر الماضي' },
+  "api.hub.projName": { he: 'שם', en: 'Name', fr: 'Nom', es: 'Nombre', ru: 'Название', ar: 'الاسم' },
+  "api.hub.projDesc": { he: 'תיאור', en: 'Description', fr: 'Description', es: 'Descripción', ru: 'Описание', ar: 'الوصف' },
+  "api.hub.plan": { he: 'מסלול', en: 'Plan', fr: 'Forfait', es: 'Plan', ru: 'План', ar: 'الخطة' },
+  "api.hub.env": { he: 'סביבה', en: 'Environment', fr: 'Env.', es: 'Entorno', ru: 'Среда', ar: 'البيئة' },
+  "api.hub.created": { he: 'נוצר', en: 'Created', fr: 'Créé', es: 'Creado', ru: 'Создан', ar: 'أُنشئ' },
+  "api.hub.lastUsed": { he: 'שימוש אחרון', en: 'Last used', fr: 'Dern. utilisation', es: 'Último uso', ru: 'Посл. использ.', ar: 'آخر استخدام' },
+  "api.hub.keys": { he: 'מפתחות', en: 'Keys', fr: 'Clés', es: 'Claves', ru: 'Ключи', ar: 'المفاتيح' },
+  "api.hub.viewProject": { he: 'צפה בפרויקט', en: 'View project', fr: 'Voir', es: 'Ver', ru: 'Смотреть', ar: 'عرض' },
+  "api.hub.env.prod": { he: 'ייצור', en: 'Production', fr: 'Production', es: 'Producción', ru: 'Продакшн', ar: 'إنتاج' },
+  "api.hub.env.staging": { he: 'הרצה', en: 'Staging', fr: 'Staging', es: 'Staging', ru: 'Стейджинг', ar: 'اختبار' },
+  "api.hub.env.dev": { he: 'פיתוח', en: 'Development', fr: 'Dev', es: 'Desarrollo', ru: 'Разработка', ar: 'تطوير' },
+  "api.hub.docsTitle": { he: 'תיעוד וקוד לדוגמה', en: 'Docs & Code Samples', fr: 'Docs & exemples', es: 'Docs & ejemplos', ru: 'Документация', ar: 'التوثيق' },
+  "api.hub.docsSub": { he: 'העתק-הדבק את המפתח שלך והתחל תוך דקות', en: 'Copy-paste your key and get started in minutes', fr: 'Démarrez en quelques minutes', es: 'Empieza en minutos', ru: 'Начните за минуты', ar: 'ابدأ في دقائق' },
+  "api.hub.docs.gettingStarted": { he: 'צעדים ראשונים', en: 'Getting Started', fr: 'Premiers pas', es: 'Primeros pasos', ru: 'Начало работы', ar: 'البدء' },
+  "api.hub.docs.mapsAPI": { he: 'Maps API', en: 'Maps API', fr: 'Maps API', es: 'Maps API', ru: 'Maps API', ar: 'Maps API' },
+  "api.hub.docs.gisAPI": { he: 'GIS API', en: 'GIS API', fr: 'GIS API', es: 'GIS API', ru: 'GIS API', ar: 'GIS API' },
+  "api.hub.docs.corsAPI": { he: 'CORS API', en: 'CORS API', fr: 'CORS API', es: 'CORS API', ru: 'CORS API', ar: 'CORS API' },
+  "api.hub.docs.errors": { he: 'טיפול בשגיאות', en: 'Error handling', fr: 'Gestion erreurs', es: 'Errores', ru: 'Обработка ошибок', ar: 'معالجة الأخطاء' },
+  "api.hub.docs.rateLimits": { he: 'מגבלות שימוש', en: 'Rate limits', fr: 'Limites', es: 'Límites', ru: 'Лимиты', ar: 'الحدود' },
+  "api.hub.reportError": { he: 'דיווח על שגיאה בנתונים', en: 'Report Data Error', fr: 'Signaler une erreur', es: 'Reportar error', ru: 'Сообщить об ошибке', ar: 'الإبلاغ عن خطأ' },
+  "api.hub.reportErrorSub": { he: 'זיהית שגיאה במפה או נתון? עזור לנו לשפר', en: 'Spotted an error? Help us improve', fr: 'Aidez-nous à améliorer', es: 'Ayúdanos a mejorar', ru: 'Помогите улучшить', ar: 'ساعدنا على التحسين' },
+
+  // Trial / Sample / Error report
+  "svc.trial.title": { he: '🎁 נסה 14 יום חינם', en: '🎁 Try 14 days free', fr: '🎁 14 jours gratuits', es: '🎁 14 días gratis', ru: '🎁 14 дней бесплатно', ar: '🎁 14 يوماً مجاناً' },
+  "svc.trial.days": { he: '14 יום', en: '14 days', fr: '14 jours', es: '14 días', ru: '14 дней', ar: '14 يوماً' },
+  "svc.trial.start": { he: 'התחל תקופת ניסיון', en: 'Start trial', fr: 'Commencer', es: 'Iniciar', ru: 'Начать', ar: 'ابدأ' },
+  "svc.trial.terms": { he: 'ניתן לביטול בכל עת. לא נדרש אשראי לפתיחת ניסיון.', en: 'Cancel anytime. No credit card required.', fr: 'Annulation à tout moment.', es: 'Cancela cuando quieras.', ru: 'Отмена в любое время.', ar: 'إلغاء في أي وقت.' },
+  "svc.sample.title": { he: '📥 הורד דגימה חינם', en: '📥 Download free sample', fr: '📥 Échantillon gratuit', es: '📥 Muestra gratis', ru: '📥 Скачать образец', ar: '📥 عينة مجانية' },
+  "svc.sample.download": { he: 'הורד דגימה', en: 'Download sample', fr: 'Télécharger', es: 'Descargar', ru: 'Скачать', ar: 'تنزيل' },
+  "svc.error.report": { he: 'דיווח על שגיאה', en: 'Report an error', fr: 'Signaler', es: 'Reportar', ru: 'Сообщить', ar: 'الإبلاغ' },
+  "svc.error.reportSub": { he: 'זיהית טעות במפה או בנתון? עזור לנו לשפר', en: 'Spotted an error? Help us improve', fr: 'Aidez-nous', es: 'Ayúdanos', ru: 'Помогите', ar: 'ساعدنا' },
+  "svc.error.submit": { he: 'שלח דיווח', en: 'Submit report', fr: 'Envoyer', es: 'Enviar', ru: 'Отправить', ar: 'إرسال' }
 };
 
 export type TKey = keyof typeof dict;

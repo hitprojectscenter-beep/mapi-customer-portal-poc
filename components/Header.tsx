@@ -20,10 +20,11 @@ export default function Header() {
 
   const navItems = [
     { label: t("nav.home"), href: "/" },
-    { label: t("nav.segments"), href: "/segments" },
     { label: t("nav.catalog"), href: "/catalog" },
+    { label: t("nav.bundles"), href: "/bundles" },
+    { label: t("nav.plans"), href: "/plans" },
+    { label: t("nav.apiHub"), href: "/api-hub" },
     { label: t("nav.dashboard"), href: "/dashboard" },
-    { label: t("nav.admin"), href: "/admin" },
     { label: t("nav.help"), href: "/help" }
   ];
   const adminQuickLinks = [

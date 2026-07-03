@@ -285,6 +285,37 @@ export default function ServiceDetailPage() {
               </a>
             )}
 
+            {/* Secondary CTAs — Trial + Sample + Report Error (inspired by OS Data Hub) */}
+            {service.inScope && (
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 mb-6">
+                {service.slug === "cors-subscription" && (
+                  <button
+                    type="button"
+                    className="shine flex items-center justify-center gap-1.5 bg-alert-yellow/10 hover:bg-alert-yellow hover:text-white text-alert-yellow py-2.5 rounded-full text-xs font-semibold transition-colors border border-alert-yellow/30"
+                    data-tooltip={t("svc.trial.terms")}
+                    data-tooltip-position="bottom"
+                  >
+                    <span className="material-symbols-outlined text-[16px]">gift</span>
+                    <span>{t("svc.trial.title")}</span>
+                  </button>
+                )}
+                <button
+                  type="button"
+                  className="shine flex items-center justify-center gap-1.5 bg-secondary/10 hover:bg-secondary hover:text-white text-secondary py-2.5 rounded-full text-xs font-semibold transition-colors border border-secondary/30"
+                >
+                  <span className="material-symbols-outlined text-[16px]">download</span>
+                  <span>{t("svc.sample.download")}</span>
+                </button>
+                <Link
+                  href={`/cases/new?type=data-error&sku=${service.slug}`}
+                  className="shine flex items-center justify-center gap-1.5 bg-surface-container hover:bg-primary hover:text-white text-primary py-2.5 rounded-full text-xs font-semibold transition-colors border border-outline-variant"
+                >
+                  <span className="material-symbols-outlined text-[16px]">flag</span>
+                  <span>{t("svc.error.report")}</span>
+                </Link>
+              </div>
+            )}
+
             {/* Trust badges strip */}
             <div className="grid grid-cols-4 gap-3 pt-4 border-t border-outline-variant">
               {[
