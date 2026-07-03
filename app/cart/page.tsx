@@ -147,6 +147,7 @@ export default function CartPage() {
                     value={promo}
                     onChange={(e) => setPromo(e.target.value)}
                     placeholder="MAPI15"
+                    aria-label="קוד קופון"
                     className="flex-1 bg-surface-container border border-outline-variant rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-secondary focus:outline-none"
                     dir="ltr"
                   />
