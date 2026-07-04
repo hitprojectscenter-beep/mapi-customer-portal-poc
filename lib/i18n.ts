@@ -371,6 +371,12 @@ type TranslationKeys =
   | "svc.error.report" | "svc.error.reportSub" | "svc.error.submit"
   // Scroll hint bubble
   | "scrollHint.label" | "scrollHint.aria"
+  // GovMap embed controls
+  | "govmap.mapSettings" | "govmap.basemap" | "govmap.layers"
+  | "govmap.basemap.standard" | "govmap.basemap.ortho" | "govmap.basemap.topo" | "govmap.basemap.hybrid"
+  | "govmap.layer.parcels" | "govmap.layer.buildings" | "govmap.layer.gnss"
+  | "govmap.layer.contours" | "govmap.layer.nature" | "govmap.layer.trails"
+  | "govmap.openSite" | "govmap.refreshing"
   // Nav: hide behind more menu
   | "nav.more"
   // Support Modal - extended
@@ -1752,7 +1758,24 @@ const dict: Record<TranslationKeys, Record<Lang, string>> = {
 
   // Scroll hint bubble
   "scrollHint.label": { he: 'גלול למטה כדי לגלות אפשרויות נוספות', en: 'Scroll down to discover more options', fr: 'Défilez pour découvrir plus d\'options', es: 'Desplázate para descubrir más opciones', ru: 'Прокрутите вниз для доп. опций', ar: 'مرر للأسفل لاكتشاف المزيد' },
-  "scrollHint.aria": { he: 'לחץ לגלילה למטה', en: 'Click to scroll down', fr: 'Cliquez pour défiler', es: 'Haz clic para desplazar', ru: 'Прокрутить вниз', ar: 'انقر للتمرير' }
+  "scrollHint.aria": { he: 'לחץ לגלילה למטה', en: 'Click to scroll down', fr: 'Cliquez pour défiler', es: 'Haz clic para desplazar', ru: 'Прокрутить вниз', ar: 'انقر للتمرير' },
+
+  // GovMap embed controls
+  "govmap.mapSettings": { he: 'רקעים ושכבות', en: 'Basemaps & Layers', fr: 'Fonds & Couches', es: 'Fondos y Capas', ru: 'Фоны и слои', ar: 'الخلفيات والطبقات' },
+  "govmap.basemap": { he: 'מפת רקע', en: 'Basemap', fr: 'Fond de carte', es: 'Mapa base', ru: 'Базовая карта', ar: 'خريطة الأساس' },
+  "govmap.layers": { he: 'שכבות מידע', en: 'Info Layers', fr: 'Couches d\'info', es: 'Capas de info', ru: 'Инфо-слои', ar: 'طبقات المعلومات' },
+  "govmap.basemap.standard": { he: 'מפה רגילה', en: 'Standard', fr: 'Standard', es: 'Estándar', ru: 'Обычная', ar: 'قياسية' },
+  "govmap.basemap.ortho": { he: 'תצלום אוויר', en: 'Aerial', fr: 'Aérien', es: 'Aérea', ru: 'Аэрофото', ar: 'جوية' },
+  "govmap.basemap.topo": { he: 'טופוגרפי', en: 'Topographic', fr: 'Topographique', es: 'Topográfico', ru: 'Топография', ar: 'طبوغرافية' },
+  "govmap.basemap.hybrid": { he: 'משולב', en: 'Hybrid', fr: 'Hybride', es: 'Híbrido', ru: 'Гибрид', ar: 'مختلطة' },
+  "govmap.layer.parcels": { he: 'גושים וחלקות', en: 'Parcels & Blocks', fr: 'Parcelles', es: 'Parcelas', ru: 'Участки', ar: 'القطع والأحواض' },
+  "govmap.layer.buildings": { he: 'מבנים', en: 'Buildings', fr: 'Bâtiments', es: 'Edificios', ru: 'Здания', ar: 'المباني' },
+  "govmap.layer.gnss": { he: 'תחנות קבע GNSS', en: 'GNSS Stations', fr: 'Stations GNSS', es: 'Estaciones GNSS', ru: 'Станции GNSS', ar: 'محطات GNSS' },
+  "govmap.layer.contours": { he: 'קווי גובה', en: 'Contour Lines', fr: 'Courbes de niveau', es: 'Curvas de nivel', ru: 'Изолинии', ar: 'خطوط الارتفاع' },
+  "govmap.layer.nature": { he: 'שמורות טבע', en: 'Nature Reserves', fr: 'Réserves naturelles', es: 'Reservas naturales', ru: 'Заповедники', ar: 'محميات طبيعية' },
+  "govmap.layer.trails": { he: 'שבילים מסומנים', en: 'Marked Trails', fr: 'Sentiers balisés', es: 'Senderos', ru: 'Тропы', ar: 'مسارات معلمة' },
+  "govmap.openSite": { he: 'מעבר לאתר GovMap', en: 'Open GovMap website', fr: 'Ouvrir le site GovMap', es: 'Abrir sitio GovMap', ru: 'Открыть сайт GovMap', ar: 'فتح موقع GovMap' },
+  "govmap.refreshing": { he: 'מעדכן מפה...', en: 'Updating map...', fr: 'Mise à jour...', es: 'Actualizando...', ru: 'Обновление...', ar: 'تحديث الخريطة...' }
 };
 
 export type TKey = keyof typeof dict;

@@ -1,7 +1,8 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useLanguage } from "@/lib/LanguageContext";
+import type { TKey } from "@/lib/i18n";
 
 interface Props {
   /** Map mode preset */
@@ -24,14 +25,42 @@ interface Props {
   onAreaSelected?: (area: { sqkm: number; lat: number; lng: number }) => void;
 }
 
+type BasemapId = "standard" | "ortho" | "topo" | "hybrid";
+
+// GovMap background codes (b= URL param). Production: GovMap JS SDK setBackground().
+const BASEMAPS: Array<{ id: BasemapId; labelKey: TKey; icon: string; code: string }> = [
+  { id: "standard", labelKey: "govmap.basemap.standard", icon: "map", code: "0" },
+  { id: "ortho", labelKey: "govmap.basemap.ortho", icon: "satellite_alt", code: "1" },
+  { id: "topo", labelKey: "govmap.basemap.topo", icon: "terrain", code: "2" },
+  { id: "hybrid", labelKey: "govmap.basemap.hybrid", icon: "layers", code: "3" }
+];
+
+// GovMap info layers (lyrs= URL param codes). Production: SDK toggleLayer().
+const LAYERS: Array<{ id: string; labelKey: TKey; icon: string }> = [
+  { id: "PARCEL_ALL", labelKey: "govmap.layer.parcels", icon: "grid_on" },
+  { id: "BUILDINGS", labelKey: "govmap.layer.buildings", icon: "domain" },
+  { id: "GNSS_STATIONS", labelKey: "govmap.layer.gnss", icon: "satellite" },
+  { id: "CONTOUR_LINES", labelKey: "govmap.layer.contours", icon: "line_curve" },
+  { id: "NATURE_RESERVES", labelKey: "govmap.layer.nature", icon: "forest" },
+  { id: "NATIONAL_TRAILS", labelKey: "govmap.layer.trails", icon: "hiking" }
+];
+
+// Mode presets → initial basemap + pre-checked layers
+const MODE_PRESETS: Record<string, { basemap: BasemapId; layers: string[] }> = {
+  default: { basemap: "standard", layers: [] },
+  cadastre: { basemap: "standard", layers: ["PARCEL_ALL", "BUILDINGS"] },
+  ortho: { basemap: "ortho", layers: [] },
+  marine: { basemap: "standard", layers: [] },
+  cors: { basemap: "standard", layers: ["GNSS_STATIONS"] },
+  topo: { basemap: "topo", layers: ["CONTOUR_LINES"] }
+};
+
 /**
- * GovMap iframe embed.
+ * GovMap iframe embed with basemap switcher + info-layer toggles.
  *
- * For POC purposes we embed the public GovMap site. In production this will be
- * upgraded to the official GovMap JS SDK with a token, allowing programmatic
- * polygon retrieval, layer control, and feature info.
- *
- * Modes map to different layer presets that GovMap supports via URL params.
+ * Cross-origin iframes can't be controlled directly, so switching rebuilds
+ * the iframe URL with the chosen background (b=) and layers (lyrs=) params.
+ * In production this upgrades to the official GovMap JS SDK with a token.
  */
 export default function GovMapEmbed({
   mode = "default",
@@ -44,7 +73,7 @@ export default function GovMapEmbed({
   title,
   onAreaSelected
 }: Props) {
-  const { t, lang } = useLanguage();
+  const { t } = useLanguage();
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const [loaded, setLoaded] = useState(false);
@@ -52,28 +81,27 @@ export default function GovMapEmbed({
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [areaMarked, setAreaMarked] = useState(false);
 
-  // Build GovMap URL with mode-specific layers
-  const buildUrl = () => {
+  // Map controls state (initialized from mode preset)
+  const preset = MODE_PRESETS[mode] || MODE_PRESETS.default;
+  const [basemap, setBasemap] = useState<BasemapId>(preset.basemap);
+  const [activeLayers, setActiveLayers] = useState<Set<string>>(new Set(preset.layers));
+  const [panelOpen, setPanelOpen] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
+  const firstLoadDone = useRef(false);
+
+  // Build GovMap URL from current basemap + layers selection
+  const iframeSrc = useMemo(() => {
     const base = "https://www.govmap.gov.il/";
     const params = new URLSearchParams();
 
-    // Mode-specific layer presets (GovMap layer codes)
-    const modeLayers: Record<string, string> = {
-      default: "",
-      cadastre: "PARCEL_ALL,BUILDINGS",
-      ortho: "OrthoPhotos2023,OrthoPhotos2022",
-      marine: "MARINE_HIDRO,MARINE_TOPO",
-      cors: "GNSS_STATIONS",
-      topo: "TOPOGRAPHIC_BACKGROUND"
-    };
+    const bm = BASEMAPS.find(b => b.id === basemap);
+    if (bm && bm.code !== "0") params.set("b", bm.code);
 
-    if (modeLayers[mode]) {
-      params.set("lyrs", modeLayers[mode]);
+    if (activeLayers.size > 0) {
+      params.set("lyrs", Array.from(activeLayers).join(","));
     }
 
-    // Center coordinates
     if (center) {
-      // Convert WGS84 to ITM if needed (GovMap uses ITM by default)
       params.set("lon", String(center[0]));
       params.set("lat", String(center[1]));
     }
@@ -81,28 +109,31 @@ export default function GovMapEmbed({
 
     const query = params.toString();
     return query ? `${base}?${query}` : base;
-  };
+  }, [basemap, activeLayers, center, zoom]);
 
-  // Hide the loading spinner after a reasonable time (iframe is loading)
-  // We do NOT show an error on timeout — cross-origin iframes (govmap.gov.il)
-  // don't always fire the onLoad event reliably, and the iframe still loads
-  // correctly even when onLoad is silent. Only show error if onError fires.
+  // Show a small "updating map" chip when src changes after the initial load
+  useEffect(() => {
+    if (!firstLoadDone.current) return;
+    setRefreshing(true);
+    const timer = setTimeout(() => setRefreshing(false), 3500);
+    return () => clearTimeout(timer);
+  }, [iframeSrc]);
+
+  // Hide the loading spinner after a reasonable time (cross-origin iframes
+  // don't always fire onLoad). Only show error if onError actually fires.
   useEffect(() => {
     if (loaded) return;
     const timer = setTimeout(() => {
-      // Just hide the spinner; the iframe is rendered behind it.
       setLoaded(true);
+      firstLoadDone.current = true;
     }, 4000);
     return () => clearTimeout(timer);
   }, [loaded]);
 
-  // Listen for messages from GovMap (postMessage API - production-ready)
   useEffect(() => {
     const handleMessage = (event: MessageEvent) => {
       if (event.origin !== "https://www.govmap.gov.il") return;
-      // In production: parse polygon/feature data from event.data
-      // For POC: just log
-      // console.log("GovMap event:", event.data);
+      // Production: parse polygon/feature data from event.data
     };
     window.addEventListener("message", handleMessage);
     return () => window.removeEventListener("message", handleMessage);
@@ -119,7 +150,15 @@ export default function GovMapEmbed({
     }
   };
 
-  // Simulate area selection (POC; production reads polygon from GovMap)
+  const toggleLayer = (id: string) => {
+    setActiveLayers(prev => {
+      const next = new Set(prev);
+      next.has(id) ? next.delete(id) : next.add(id);
+      return next;
+    });
+  };
+
+  // Simulate area selection (POC; production reads polygon from GovMap SDK)
   const handleConfirmArea = () => {
     const mockArea = {
       sqkm: parseFloat((Math.random() * 2 + 0.5).toFixed(2)),
@@ -138,28 +177,106 @@ export default function GovMapEmbed({
       }`}
       style={{ height: isFullscreen ? "100vh" : height }}
     >
-      {title && !compact && (
-        <div className="absolute top-3 right-3 left-3 z-20 flex items-center justify-between flex-row-reverse gap-2 pointer-events-none">
-          <div className="bg-white/95 backdrop-blur-sm rounded-full px-4 py-1.5 shadow-md flex items-center gap-2 pointer-events-auto">
-            <span className="material-symbols-outlined text-secondary text-[18px]">
-              public
-            </span>
-            <span className="text-xs font-bold text-primary">{title}</span>
-          </div>
-          {showFullscreen && (
-            <button
-              type="button"
-              onClick={toggleFullscreen}
-              className="shine bg-white/95 backdrop-blur-sm rounded-full w-9 h-9 shadow-md flex items-center justify-center hover:bg-secondary hover:text-white transition-colors pointer-events-auto"
-              aria-label={isFullscreen ? "צא ממסך מלא" : "מסך מלא"}
-              data-tooltip={isFullscreen ? "צא ממסך מלא" : "מסך מלא"}
-              data-tooltip-position="bottom"
-            >
-              <span className="material-symbols-outlined text-[20px]">
-                {isFullscreen ? "fullscreen_exit" : "fullscreen"}
-              </span>
-            </button>
+      {/* Top toolbar: title + map-settings + fullscreen */}
+      {!compact && (
+        <div className="absolute top-3 right-3 left-3 z-20 flex items-start justify-between flex-row-reverse gap-2 pointer-events-none">
+          {title && (
+            <div className="bg-white/95 backdrop-blur-sm rounded-full px-4 py-1.5 shadow-md flex items-center gap-2 pointer-events-auto">
+              <span className="material-symbols-outlined text-secondary text-[18px]">public</span>
+              <span className="text-xs font-bold text-primary">{title}</span>
+            </div>
           )}
+
+          <div className="flex items-start gap-2 pointer-events-auto">
+            {/* Map settings (basemap + layers) */}
+            <div className="relative">
+              <button
+                type="button"
+                onClick={() => setPanelOpen(!panelOpen)}
+                className={`shine backdrop-blur-sm rounded-full w-9 h-9 shadow-md flex items-center justify-center transition-colors ${
+                  panelOpen ? "bg-secondary text-white" : "bg-white/95 hover:bg-secondary hover:text-white"
+                }`}
+                aria-label={t("govmap.mapSettings")}
+                aria-expanded={panelOpen}
+                data-tooltip={t("govmap.mapSettings")}
+                data-tooltip-position="bottom"
+              >
+                <span className="material-symbols-outlined text-[20px]">stacks</span>
+              </button>
+
+              {/* Control panel dropdown */}
+              {panelOpen && (
+                <div className="absolute top-11 end-0 w-64 bg-white rounded-2xl shadow-2xl border border-outline-variant/50 p-4 animate-scale-in max-h-[70vh] overflow-y-auto">
+                  {/* Basemap section */}
+                  <p className="text-[10px] uppercase tracking-widest font-bold text-on-surface-variant mb-2">
+                    {t("govmap.basemap")}
+                  </p>
+                  <div className="grid grid-cols-2 gap-1.5 mb-4">
+                    {BASEMAPS.map(bm => (
+                      <button
+                        key={bm.id}
+                        type="button"
+                        onClick={() => setBasemap(bm.id)}
+                        className={`shine flex flex-col items-center gap-1 rounded-xl px-2 py-2.5 text-[11px] font-semibold transition-colors border ${
+                          basemap === bm.id
+                            ? "bg-secondary text-white border-secondary"
+                            : "bg-surface-container/50 text-primary border-transparent hover:border-secondary"
+                        }`}
+                        aria-pressed={basemap === bm.id}
+                      >
+                        <span className="material-symbols-outlined text-[20px]">{bm.icon}</span>
+                        <span>{t(bm.labelKey)}</span>
+                      </button>
+                    ))}
+                  </div>
+
+                  {/* Layers section */}
+                  <p className="text-[10px] uppercase tracking-widest font-bold text-on-surface-variant mb-2 pt-3 border-t border-outline-variant/50">
+                    {t("govmap.layers")}
+                  </p>
+                  <div className="space-y-1">
+                    {LAYERS.map(layer => {
+                      const active = activeLayers.has(layer.id);
+                      return (
+                        <label
+                          key={layer.id}
+                          className="flex items-center gap-2 cursor-pointer rounded-lg px-2 py-1.5 hover:bg-surface-container/50 transition-colors"
+                        >
+                          <input
+                            type="checkbox"
+                            checked={active}
+                            onChange={() => toggleLayer(layer.id)}
+                            className="w-4 h-4 rounded text-secondary focus:ring-secondary"
+                          />
+                          <span className={`material-symbols-outlined text-[18px] ${active ? "text-secondary" : "text-on-surface-variant"}`}>
+                            {layer.icon}
+                          </span>
+                          <span className={`text-xs ${active ? "font-semibold text-primary" : "text-on-surface"}`}>
+                            {t(layer.labelKey)}
+                          </span>
+                        </label>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {showFullscreen && (
+              <button
+                type="button"
+                onClick={toggleFullscreen}
+                className="shine bg-white/95 backdrop-blur-sm rounded-full w-9 h-9 shadow-md flex items-center justify-center hover:bg-secondary hover:text-white transition-colors"
+                aria-label={isFullscreen ? "צא ממסך מלא" : "מסך מלא"}
+                data-tooltip={isFullscreen ? "צא ממסך מלא" : "מסך מלא"}
+                data-tooltip-position="bottom"
+              >
+                <span className="material-symbols-outlined text-[20px]">
+                  {isFullscreen ? "fullscreen_exit" : "fullscreen"}
+                </span>
+              </button>
+            )}
+          </div>
         </div>
       )}
 
@@ -168,10 +285,16 @@ export default function GovMapEmbed({
           <div className="text-center">
             <div className="inline-block w-12 h-12 border-4 border-secondary border-t-transparent rounded-full animate-spin mb-3" />
             <p className="text-sm text-on-surface-variant">טוען GovMap...</p>
-            <p className="text-xs text-on-surface-variant mt-1 opacity-60">
-              www.govmap.gov.il
-            </p>
+            <p className="text-xs text-on-surface-variant mt-1 opacity-60">www.govmap.gov.il</p>
           </div>
+        </div>
+      )}
+
+      {/* Refreshing chip (after basemap/layer change) */}
+      {refreshing && loaded && !error && (
+        <div className="absolute top-16 left-1/2 -translate-x-1/2 z-20 bg-primary/90 backdrop-blur-sm text-white text-xs font-semibold px-4 py-1.5 rounded-full shadow-lg flex items-center gap-2 pointer-events-none animate-fade-in">
+          <span className="inline-block w-3 h-3 border-2 border-white border-t-transparent rounded-full animate-spin" />
+          <span>{t("govmap.refreshing")}</span>
         </div>
       )}
 
@@ -179,16 +302,14 @@ export default function GovMapEmbed({
         <div className="absolute inset-0 z-10 flex items-center justify-center bg-surface-container p-6">
           <div className="text-center max-w-md">
             <div className="w-16 h-16 bg-alert-yellow/10 rounded-full mx-auto mb-4 flex items-center justify-center">
-              <span className="material-symbols-outlined text-[36px] text-alert-yellow">
-                map
-              </span>
+              <span className="material-symbols-outlined text-[36px] text-alert-yellow">map</span>
             </div>
             <h3 className="font-bold text-primary mb-2">GovMap לא נטען</h3>
             <p className="text-sm text-on-surface-variant mb-4">
               ייתכן שיש בעיית רשת או חסימה של iframes. ניתן לפתוח את GovMap בחלון חדש:
             </p>
             <a
-              href={buildUrl()}
+              href={iframeSrc}
               target="_blank"
               rel="noopener noreferrer"
               className="shine inline-flex items-center gap-2 bg-secondary text-white px-5 py-2.5 rounded-full text-sm font-bold hover:bg-primary transition-colors"
@@ -200,14 +321,19 @@ export default function GovMapEmbed({
         </div>
       ) : (
         <iframe
+          key={iframeSrc}
           ref={iframeRef}
-          src={buildUrl()}
+          src={iframeSrc}
           title={title || "GovMap - מערכת המפות הציבורית"}
           className="w-full h-full border-0"
           loading="lazy"
           allow="geolocation; fullscreen"
           referrerPolicy="strict-origin-when-cross-origin"
-          onLoad={() => setLoaded(true)}
+          onLoad={() => {
+            setLoaded(true);
+            firstLoadDone.current = true;
+            setRefreshing(false);
+          }}
           onError={() => setError(true)}
         />
       )}
@@ -222,9 +348,7 @@ export default function GovMapEmbed({
             <p className="text-xs text-on-surface leading-relaxed">
               סמן את האזור הגאוגרפי שלך במפה למעלה (כלי הציור של GovMap).
               {areaMarked && (
-                <span className="block mt-1 text-positive-green font-bold">
-                  ✓ אזור נשמר
-                </span>
+                <span className="block mt-1 text-positive-green font-bold">✓ אזור נשמר</span>
               )}
             </p>
           </div>
@@ -254,16 +378,23 @@ export default function GovMapEmbed({
         </div>
       )}
 
-      {/* Attribution footer */}
-      {loaded && !error && !compact && (
-        <div className="absolute bottom-1 right-1 z-20 pointer-events-none">
+      {/* GovMap logo badge — clicking opens the GovMap site */}
+      {loaded && !error && (
+        <div className="absolute bottom-2 right-2 z-20">
           <a
             href="https://www.govmap.gov.il/"
             target="_blank"
             rel="noopener noreferrer"
-            className="pointer-events-auto bg-white/80 backdrop-blur-sm text-[9px] font-bold text-primary px-2 py-0.5 rounded-tl-md hover:bg-white transition-colors"
+            className="shine flex items-center gap-1.5 bg-white/95 backdrop-blur-sm rounded-full ps-1.5 pe-3 py-1 shadow-md hover:bg-white hover:shadow-lg transition-all group"
+            aria-label={t("govmap.openSite")}
+            data-tooltip={t("govmap.openSite")}
+            data-tooltip-position="bottom"
           >
-            powered by GovMap • gov.il
+            <span className="w-6 h-6 bg-gradient-to-br from-secondary to-primary rounded-full flex items-center justify-center">
+              <span className="material-symbols-outlined text-white text-[14px]">public</span>
+            </span>
+            <span className="text-[11px] font-bold text-primary group-hover:text-secondary transition-colors">GovMap</span>
+            <span className="material-symbols-outlined text-on-surface-variant group-hover:text-secondary text-[12px] transition-colors">open_in_new</span>
           </a>
         </div>
       )}
