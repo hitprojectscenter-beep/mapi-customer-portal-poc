@@ -369,6 +369,8 @@ type TranslationKeys =
   | "svc.trial.title" | "svc.trial.days" | "svc.trial.start" | "svc.trial.terms"
   | "svc.sample.title" | "svc.sample.download"
   | "svc.error.report" | "svc.error.reportSub" | "svc.error.submit"
+  // Scroll hint bubble
+  | "scrollHint.label" | "scrollHint.aria"
   // Nav: hide behind more menu
   | "nav.more"
   // Support Modal - extended
@@ -1746,7 +1748,11 @@ const dict: Record<TranslationKeys, Record<Lang, string>> = {
   "svc.sample.download": { he: 'הורד דגימה', en: 'Download sample', fr: 'Télécharger', es: 'Descargar', ru: 'Скачать', ar: 'تنزيل' },
   "svc.error.report": { he: 'דיווח על שגיאה', en: 'Report an error', fr: 'Signaler', es: 'Reportar', ru: 'Сообщить', ar: 'الإبلاغ' },
   "svc.error.reportSub": { he: 'זיהית טעות במפה או בנתון? עזור לנו לשפר', en: 'Spotted an error? Help us improve', fr: 'Aidez-nous', es: 'Ayúdanos', ru: 'Помогите', ar: 'ساعدنا' },
-  "svc.error.submit": { he: 'שלח דיווח', en: 'Submit report', fr: 'Envoyer', es: 'Enviar', ru: 'Отправить', ar: 'إرسال' }
+  "svc.error.submit": { he: 'שלח דיווח', en: 'Submit report', fr: 'Envoyer', es: 'Enviar', ru: 'Отправить', ar: 'إرسال' },
+
+  // Scroll hint bubble
+  "scrollHint.label": { he: 'גלול למטה כדי לגלות אפשרויות נוספות', en: 'Scroll down to discover more options', fr: 'Défilez pour découvrir plus d\'options', es: 'Desplázate para descubrir más opciones', ru: 'Прокрутите вниз для доп. опций', ar: 'مرر للأسفل لاكتشاف المزيد' },
+  "scrollHint.aria": { he: 'לחץ לגלילה למטה', en: 'Click to scroll down', fr: 'Cliquez pour défiler', es: 'Haz clic para desplazar', ru: 'Прокрутить вниз', ar: 'انقر للتمرير' }
 };
 
 export type TKey = keyof typeof dict;

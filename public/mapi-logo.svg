@@ -2,49 +2,71 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" role="img" aria-label="לוגו המרכז למיפוי ישראל">
   <title>המרכז למיפוי ישראל</title>
   <defs>
-    <!-- Circular text path — text sits *above* this arc, going clockwise -->
-    <path id="mapi-text-arc" d="M 30 120 A 90 90 0 1 1 210 120 A 90 90 0 1 1 30 120" fill="none" />
+    <!-- Text arc — a full circle path so text goes around the top and can spill both sides -->
+    <path id="mapi-arc-top" d="M 40 120 A 80 80 0 0 1 200 120" fill="none" />
+    <path id="mapi-arc-bottom" d="M 200 120 A 80 80 0 0 1 40 120" fill="none" />
+    <!-- Clip mask for globe interior -->
+    <clipPath id="globe-clip">
+      <circle cx="120" cy="120" r="52" />
+    </clipPath>
   </defs>
 
-  <!-- Hebrew text arranged around the circle: "המרכז למיפוי ישראל" -->
-  <text font-family="Heebo, 'David Libre', Arial, sans-serif" font-size="20" font-weight="700" fill="#1e4a7d" letter-spacing="0.5">
-    <textPath href="#mapi-text-arc" startOffset="26%" text-anchor="middle">המרכז למיפוי ישראל</textPath>
+  <!-- Hebrew text arranged around the top half of the circle -->
+  <text font-family="Heebo, 'David Libre', 'Frank Ruehl', Arial, sans-serif" font-size="17" font-weight="700" fill="#1a4a7d" letter-spacing="0.5">
+    <textPath href="#mapi-arc-bottom" startOffset="50%" text-anchor="middle">המרכז למיפוי ישראל</textPath>
   </text>
 
-  <!-- Main globe emblem -->
+  <!-- Main circular emblem -->
   <g transform="translate(120 120)">
-    <!-- Outer subtle ring -->
-    <circle cx="0" cy="0" r="72" fill="none" stroke="#1e4a7d" stroke-width="1.5" />
+    <!-- Outer thin ring -->
+    <circle cx="0" cy="0" r="72" fill="none" stroke="#1a4a7d" stroke-width="1.2" />
 
-    <!-- Inner globe -->
-    <circle cx="0" cy="0" r="60" fill="#ffffff" stroke="#1e4a7d" stroke-width="3.5" />
+    <!-- Inner globe circle -->
+    <circle cx="0" cy="0" r="52" fill="#ffffff" stroke="#1a4a7d" stroke-width="3.5" />
 
-    <!-- Globe meridians (vertical curves suggesting a sphere) -->
-    <g fill="none" stroke="#1e4a7d" stroke-width="2" stroke-linecap="round">
-      <ellipse cx="0" cy="0" rx="20" ry="60" />
-      <ellipse cx="0" cy="0" rx="40" ry="60" />
-      <line x1="0" y1="-60" x2="0" y2="60" />
-      <!-- Horizontal latitudes -->
-      <line x1="-60" y1="0" x2="60" y2="0" />
-      <ellipse cx="0" cy="0" rx="60" ry="20" />
-      <ellipse cx="0" cy="0" rx="60" ry="40" />
+    <!-- Globe interior — meridians giving 3D effect. All clipped to inside circle. -->
+    <g clip-path="url(#globe-clip)" fill="none" stroke="#1a4a7d" stroke-width="2" stroke-linecap="round">
+      <!-- Central vertical line -->
+      <line x1="0" y1="-52" x2="0" y2="52" />
+      <!-- Meridian ellipses (like longitude lines on a sphere) -->
+      <ellipse cx="0" cy="0" rx="16" ry="52" />
+      <ellipse cx="0" cy="0" rx="32" ry="52" />
+      <ellipse cx="0" cy="0" rx="46" ry="52" />
+      <!-- Equator -->
+      <line x1="-52" y1="0" x2="52" y2="0" />
+      <!-- Latitude ellipses -->
+      <ellipse cx="0" cy="0" rx="52" ry="18" />
+      <ellipse cx="0" cy="0" rx="52" ry="34" />
+      <ellipse cx="0" cy="0" rx="52" ry="46" />
     </g>
 
-    <!-- Diagonal olive/wheat branch (traditional Israeli symbol) sweeping from bottom-left to top-right -->
-    <g stroke="#1e4a7d" stroke-width="3" stroke-linecap="round" fill="#1e4a7d">
-      <!-- Main stem -->
-      <path d="M -42 38 Q -22 8 18 -36" fill="none" />
-      <!-- 6 pointed olive leaves along the stem -->
-      <ellipse cx="-34" cy="26" rx="4.5" ry="9" transform="rotate(-42 -34 26)" />
-      <ellipse cx="-22" cy="12" rx="4.5" ry="8.5" transform="rotate(-42 -22 12)" />
-      <ellipse cx="-10" cy="-2" rx="4.5" ry="8.5" transform="rotate(-42 -10 -2)" />
-      <ellipse cx="2" cy="-14" rx="4.5" ry="8.5" transform="rotate(-42 2 -14)" />
-      <ellipse cx="12" cy="-26" rx="4.5" ry="8" transform="rotate(-42 12 -26)" />
-      <!-- Small berries/details -->
-      <circle cx="-28" cy="18" r="1.5" fill="#ffffff" stroke="none" />
-      <circle cx="-16" cy="4" r="1.5" fill="#ffffff" stroke="none" />
-      <circle cx="-4" cy="-8" r="1.5" fill="#ffffff" stroke="none" />
-      <circle cx="8" cy="-20" r="1.5" fill="#ffffff" stroke="none" />
+    <!-- Wheat/grain stalk diagonal — traditional Israeli emblem element.
+         Placed OVER the globe, going from lower-left to upper-right. -->
+    <g transform="rotate(-38)">
+      <!-- Main stalk shaft -->
+      <line x1="-42" y1="0" x2="30" y2="0" stroke="#1a4a7d" stroke-width="2.8" stroke-linecap="round" />
+
+      <!-- Wheat kernels arranged in chevron pattern along stalk (both sides) -->
+      <g fill="#1a4a7d">
+        <!-- Top row (7 kernels going up-left along stalk) -->
+        <g>
+          <ellipse cx="-30" cy="-6" rx="5" ry="3" transform="rotate(-15 -30 -6)" />
+          <ellipse cx="-20" cy="-6" rx="5" ry="3" transform="rotate(-15 -20 -6)" />
+          <ellipse cx="-10" cy="-6" rx="5" ry="3" transform="rotate(-15 -10 -6)" />
+          <ellipse cx="0" cy="-6"  rx="5" ry="3" transform="rotate(-15 0 -6)" />
+          <ellipse cx="10" cy="-6" rx="5" ry="3" transform="rotate(-15 10 -6)" />
+          <ellipse cx="20" cy="-6" rx="5" ry="3" transform="rotate(-15 20 -6)" />
+        </g>
+        <!-- Bottom row (mirror, staggered) -->
+        <g>
+          <ellipse cx="-25" cy="6" rx="5" ry="3" transform="rotate(15 -25 6)" />
+          <ellipse cx="-15" cy="6" rx="5" ry="3" transform="rotate(15 -15 6)" />
+          <ellipse cx="-5"  cy="6" rx="5" ry="3" transform="rotate(15 -5 6)" />
+          <ellipse cx="5"   cy="6" rx="5" ry="3" transform="rotate(15 5 6)" />
+          <ellipse cx="15"  cy="6" rx="5" ry="3" transform="rotate(15 15 6)" />
+          <ellipse cx="25"  cy="6" rx="5" ry="3" transform="rotate(15 25 6)" />
+        </g>
+      </g>
     </g>
   </g>
 </svg>

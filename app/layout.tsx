@@ -6,6 +6,7 @@ import AIAssistant from "@/components/AIAssistant";
 import NewsTicker from "@/components/NewsTicker";
 import UtilityBar from "@/components/UtilityBar";
 import MiniCartDrawer from "@/components/MiniCartDrawer";
+import ScrollHintBubble from "@/components/ScrollHintBubble";
 import { LanguageProvider } from "@/lib/LanguageContext";
 import { CartProvider } from "@/lib/CartContext";
 import { WishlistProvider } from "@/lib/WishlistContext";
@@ -73,6 +74,7 @@ export default function RootLayout({
               <Footer />
               <AIAssistant />
               <MiniCartDrawer />
+              <ScrollHintBubble />
             </CartProvider>
           </WishlistProvider>
         </LanguageProvider>
