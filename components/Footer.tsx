@@ -107,11 +107,11 @@ export default function Footer() {
                   {t("header.brandSub")}
                 </span>
               </div>
-              <div className="h-14 w-14 rounded-2xl bg-white/10 flex items-center justify-center backdrop-blur-sm border border-white/20 group-hover:bg-white/20 group-hover:scale-105 transition-all overflow-hidden p-1">
+              <div className="h-14 w-16 rounded-2xl bg-white flex items-center justify-center border border-white/20 group-hover:scale-105 transition-all overflow-hidden p-1">
                 <Image
-                  src="/mapi-logo-white.svg"
+                  src="/mapi-logo.png"
                   alt={t("header.brandSub")}
-                  width={56}
+                  width={64}
                   height={56}
                   className="w-full h-full object-contain"
                 />

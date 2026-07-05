@@ -65,14 +65,14 @@ export default function Header() {
                   {t("header.brandSub")}
                 </span>
               </div>
-              <div className="h-10 w-10 sm:h-12 sm:w-12 rounded-2xl bg-white border border-outline-variant/50 flex items-center justify-center shadow-md group-hover:shadow-xl group-hover:scale-105 transition-all overflow-hidden">
+              <div className="h-11 w-12 sm:h-13 sm:w-14 rounded-2xl bg-white border border-outline-variant/50 flex items-center justify-center shadow-md group-hover:shadow-xl group-hover:scale-105 transition-all overflow-hidden">
                 <Image
-                  src="/mapi-logo.svg"
+                  src="/mapi-logo.png"
                   alt={t("header.brandSub")}
-                  width={48}
+                  width={56}
                   height={48}
                   priority
-                  className="w-full h-full object-contain p-1"
+                  className="w-full h-full object-contain p-0.5"
                 />
               </div>
             </Link>

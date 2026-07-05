@@ -2,51 +2,44 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" role="img" aria-label="לוגו המרכז למיפוי ישראל">
   <title>המרכז למיפוי ישראל</title>
   <defs>
-    <path id="mapi-arc-bottom-w" d="M 200 120 A 80 80 0 0 1 40 120" fill="none" />
-    <clipPath id="globe-clip-w">
-      <circle cx="120" cy="120" r="52" />
+    <path id="mapi-left-arc-w" d="M 52 186 A 104 104 0 0 0 52 52" fill="none" />
+    <clipPath id="mapi-globe-clip-w">
+      <circle cx="130" cy="120" r="45" />
     </clipPath>
   </defs>
 
-  <text font-family="Heebo, 'David Libre', Arial, sans-serif" font-size="17" font-weight="700" fill="#ffffff" letter-spacing="0.5">
-    <textPath href="#mapi-arc-bottom-w" startOffset="50%" text-anchor="middle">המרכז למיפוי ישראל</textPath>
-  </text>
-
-  <g transform="translate(120 120)">
-    <circle cx="0" cy="0" r="72" fill="none" stroke="#ffffff" stroke-width="1.2" />
-    <circle cx="0" cy="0" r="52" fill="none" stroke="#ffffff" stroke-width="3.5" />
-
-    <g clip-path="url(#globe-clip-w)" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round">
-      <line x1="0" y1="-52" x2="0" y2="52" />
-      <ellipse cx="0" cy="0" rx="16" ry="52" />
-      <ellipse cx="0" cy="0" rx="32" ry="52" />
-      <ellipse cx="0" cy="0" rx="46" ry="52" />
-      <line x1="-52" y1="0" x2="52" y2="0" />
-      <ellipse cx="0" cy="0" rx="52" ry="18" />
-      <ellipse cx="0" cy="0" rx="52" ry="34" />
-      <ellipse cx="0" cy="0" rx="52" ry="46" />
-    </g>
-
-    <g transform="rotate(-38)">
-      <line x1="-42" y1="0" x2="30" y2="0" stroke="#ffffff" stroke-width="2.8" stroke-linecap="round" />
-      <g fill="#ffffff">
-        <g>
-          <ellipse cx="-30" cy="-6" rx="5" ry="3" transform="rotate(-15 -30 -6)" />
-          <ellipse cx="-20" cy="-6" rx="5" ry="3" transform="rotate(-15 -20 -6)" />
-          <ellipse cx="-10" cy="-6" rx="5" ry="3" transform="rotate(-15 -10 -6)" />
-          <ellipse cx="0" cy="-6"  rx="5" ry="3" transform="rotate(-15 0 -6)" />
-          <ellipse cx="10" cy="-6" rx="5" ry="3" transform="rotate(-15 10 -6)" />
-          <ellipse cx="20" cy="-6" rx="5" ry="3" transform="rotate(-15 20 -6)" />
-        </g>
-        <g>
-          <ellipse cx="-25" cy="6" rx="5" ry="3" transform="rotate(15 -25 6)" />
-          <ellipse cx="-15" cy="6" rx="5" ry="3" transform="rotate(15 -15 6)" />
-          <ellipse cx="-5"  cy="6" rx="5" ry="3" transform="rotate(15 -5 6)" />
-          <ellipse cx="5"   cy="6" rx="5" ry="3" transform="rotate(15 5 6)" />
-          <ellipse cx="15"  cy="6" rx="5" ry="3" transform="rotate(15 15 6)" />
-          <ellipse cx="25"  cy="6" rx="5" ry="3" transform="rotate(15 25 6)" />
-        </g>
-      </g>
-    </g>
+  <g stroke="#ffffff" fill="none">
+    <ellipse cx="130" cy="118" rx="92" ry="34" stroke-width="7.5" transform="rotate(-28 130 118)" />
+    <ellipse cx="128" cy="120" rx="88" ry="40" stroke-width="7.5" transform="rotate(-64 128 120)" />
+    <ellipse cx="132" cy="120" rx="95" ry="29" stroke-width="6" transform="rotate(6 132 120)" opacity="0.85" />
   </g>
+
+  <circle cx="130" cy="120" r="45" fill="none" stroke="#ffffff" stroke-width="2.5" />
+  <g clip-path="url(#mapi-globe-clip-w)" stroke="#ffffff" stroke-width="1.5" fill="none">
+    <line x1="130" y1="75" x2="130" y2="165" />
+    <ellipse cx="130" cy="120" rx="11" ry="45" />
+    <ellipse cx="130" cy="120" rx="22" ry="45" />
+    <ellipse cx="130" cy="120" rx="33" ry="45" />
+    <ellipse cx="130" cy="120" rx="42" ry="45" />
+    <line x1="85" y1="120" x2="175" y2="120" />
+    <ellipse cx="130" cy="120" rx="45" ry="11" />
+    <ellipse cx="130" cy="120" rx="45" ry="22" />
+    <ellipse cx="130" cy="120" rx="45" ry="33" />
+    <ellipse cx="130" cy="120" rx="45" ry="42" />
+  </g>
+
+  <g clip-path="url(#mapi-globe-clip-w)" stroke="#ffffff" stroke-width="1.8" fill="none" opacity="0.95">
+    <line x1="104" y1="70" x2="96"  y2="150" />
+    <line x1="104" y1="70" x2="106" y2="155" />
+    <line x1="104" y1="70" x2="118" y2="158" />
+    <line x1="104" y1="70" x2="130" y2="158" />
+    <line x1="104" y1="70" x2="142" y2="154" />
+    <line x1="104" y1="70" x2="153" y2="146" />
+    <line x1="104" y1="70" x2="162" y2="135" />
+    <line x1="104" y1="70" x2="168" y2="121" />
+  </g>
+
+  <text font-family="Heebo, 'David Libre', Arial, sans-serif" font-size="19" font-weight="700" fill="#ffffff" letter-spacing="0.5">
+    <textPath href="#mapi-left-arc-w" startOffset="50%" text-anchor="middle">המרכז למיפוי ישראל</textPath>
+  </text>
 </svg>

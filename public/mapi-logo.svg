@@ -2,71 +2,52 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" role="img" aria-label="לוגו המרכז למיפוי ישראל">
   <title>המרכז למיפוי ישראל</title>
   <defs>
-    <!-- Text arc — a full circle path so text goes around the top and can spill both sides -->
-    <path id="mapi-arc-top" d="M 40 120 A 80 80 0 0 1 200 120" fill="none" />
-    <path id="mapi-arc-bottom" d="M 200 120 A 80 80 0 0 1 40 120" fill="none" />
-    <!-- Clip mask for globe interior -->
-    <clipPath id="globe-clip">
-      <circle cx="120" cy="120" r="52" />
+    <!-- Text arc — left side, reading bottom-to-top following the rim -->
+    <path id="mapi-left-arc" d="M 52 186 A 104 104 0 0 0 52 52" fill="none" />
+    <clipPath id="mapi-globe-clip">
+      <circle cx="130" cy="120" r="45" />
     </clipPath>
   </defs>
 
-  <!-- Hebrew text arranged around the top half of the circle -->
-  <text font-family="Heebo, 'David Libre', 'Frank Ruehl', Arial, sans-serif" font-size="17" font-weight="700" fill="#1a4a7d" letter-spacing="0.5">
-    <textPath href="#mapi-arc-bottom" startOffset="50%" text-anchor="middle">המרכז למיפוי ישראל</textPath>
-  </text>
-
-  <!-- Main circular emblem -->
-  <g transform="translate(120 120)">
-    <!-- Outer thin ring -->
-    <circle cx="0" cy="0" r="72" fill="none" stroke="#1a4a7d" stroke-width="1.2" />
-
-    <!-- Inner globe circle -->
-    <circle cx="0" cy="0" r="52" fill="#ffffff" stroke="#1a4a7d" stroke-width="3.5" />
-
-    <!-- Globe interior — meridians giving 3D effect. All clipped to inside circle. -->
-    <g clip-path="url(#globe-clip)" fill="none" stroke="#1a4a7d" stroke-width="2" stroke-linecap="round">
-      <!-- Central vertical line -->
-      <line x1="0" y1="-52" x2="0" y2="52" />
-      <!-- Meridian ellipses (like longitude lines on a sphere) -->
-      <ellipse cx="0" cy="0" rx="16" ry="52" />
-      <ellipse cx="0" cy="0" rx="32" ry="52" />
-      <ellipse cx="0" cy="0" rx="46" ry="52" />
-      <!-- Equator -->
-      <line x1="-52" y1="0" x2="52" y2="0" />
-      <!-- Latitude ellipses -->
-      <ellipse cx="0" cy="0" rx="52" ry="18" />
-      <ellipse cx="0" cy="0" rx="52" ry="34" />
-      <ellipse cx="0" cy="0" rx="52" ry="46" />
-    </g>
-
-    <!-- Wheat/grain stalk diagonal — traditional Israeli emblem element.
-         Placed OVER the globe, going from lower-left to upper-right. -->
-    <g transform="rotate(-38)">
-      <!-- Main stalk shaft -->
-      <line x1="-42" y1="0" x2="30" y2="0" stroke="#1a4a7d" stroke-width="2.8" stroke-linecap="round" />
-
-      <!-- Wheat kernels arranged in chevron pattern along stalk (both sides) -->
-      <g fill="#1a4a7d">
-        <!-- Top row (7 kernels going up-left along stalk) -->
-        <g>
-          <ellipse cx="-30" cy="-6" rx="5" ry="3" transform="rotate(-15 -30 -6)" />
-          <ellipse cx="-20" cy="-6" rx="5" ry="3" transform="rotate(-15 -20 -6)" />
-          <ellipse cx="-10" cy="-6" rx="5" ry="3" transform="rotate(-15 -10 -6)" />
-          <ellipse cx="0" cy="-6"  rx="5" ry="3" transform="rotate(-15 0 -6)" />
-          <ellipse cx="10" cy="-6" rx="5" ry="3" transform="rotate(-15 10 -6)" />
-          <ellipse cx="20" cy="-6" rx="5" ry="3" transform="rotate(-15 20 -6)" />
-        </g>
-        <!-- Bottom row (mirror, staggered) -->
-        <g>
-          <ellipse cx="-25" cy="6" rx="5" ry="3" transform="rotate(15 -25 6)" />
-          <ellipse cx="-15" cy="6" rx="5" ry="3" transform="rotate(15 -15 6)" />
-          <ellipse cx="-5"  cy="6" rx="5" ry="3" transform="rotate(15 -5 6)" />
-          <ellipse cx="5"   cy="6" rx="5" ry="3" transform="rotate(15 5 6)" />
-          <ellipse cx="15"  cy="6" rx="5" ry="3" transform="rotate(15 15 6)" />
-          <ellipse cx="25"  cy="6" rx="5" ry="3" transform="rotate(15 25 6)" />
-        </g>
-      </g>
-    </g>
+  <!-- Brand color: MAPI blue -->
+  <g stroke="#3D6FA8" fill="none">
+    <!-- Dynamic orbit ellipses swirling around the globe -->
+    <ellipse cx="130" cy="118" rx="92" ry="34" stroke-width="7.5" transform="rotate(-28 130 118)" />
+    <ellipse cx="128" cy="120" rx="88" ry="40" stroke-width="7.5" transform="rotate(-64 128 120)" />
+    <ellipse cx="132" cy="120" rx="95" ry="29" stroke-width="6" transform="rotate(6 132 120)" opacity="0.85" />
   </g>
+
+  <!-- Globe with graticule grid -->
+  <circle cx="130" cy="120" r="45" fill="#ffffff" stroke="#3D6FA8" stroke-width="2.5" />
+  <g clip-path="url(#mapi-globe-clip)" stroke="#3D6FA8" stroke-width="1.5" fill="none">
+    <!-- Meridians -->
+    <line x1="130" y1="75" x2="130" y2="165" />
+    <ellipse cx="130" cy="120" rx="11" ry="45" />
+    <ellipse cx="130" cy="120" rx="22" ry="45" />
+    <ellipse cx="130" cy="120" rx="33" ry="45" />
+    <ellipse cx="130" cy="120" rx="42" ry="45" />
+    <!-- Parallels -->
+    <line x1="85" y1="120" x2="175" y2="120" />
+    <ellipse cx="130" cy="120" rx="45" ry="11" />
+    <ellipse cx="130" cy="120" rx="45" ry="22" />
+    <ellipse cx="130" cy="120" rx="45" ry="33" />
+    <ellipse cx="130" cy="120" rx="45" ry="42" />
+  </g>
+
+  <!-- Survey-ray fan: beams from a point above the globe sweeping across its face -->
+  <g clip-path="url(#mapi-globe-clip)" stroke="#3D6FA8" stroke-width="1.8" fill="none" opacity="0.95">
+    <line x1="104" y1="70" x2="96"  y2="150" />
+    <line x1="104" y1="70" x2="106" y2="155" />
+    <line x1="104" y1="70" x2="118" y2="158" />
+    <line x1="104" y1="70" x2="130" y2="158" />
+    <line x1="104" y1="70" x2="142" y2="154" />
+    <line x1="104" y1="70" x2="153" y2="146" />
+    <line x1="104" y1="70" x2="162" y2="135" />
+    <line x1="104" y1="70" x2="168" y2="121" />
+  </g>
+
+  <!-- Hebrew name curving along the left rim (reads bottom-to-top) -->
+  <text font-family="Heebo, 'David Libre', 'Frank Ruehl CLM', Arial, sans-serif" font-size="19" font-weight="700" fill="#3D6FA8" letter-spacing="0.5">
+    <textPath href="#mapi-left-arc" startOffset="50%" text-anchor="middle">המרכז למיפוי ישראל</textPath>
+  </text>
 </svg>
