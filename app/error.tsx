@@ -6,6 +6,7 @@
 // Static bilingual (Hebrew + English) text.
 
 import { useEffect } from "react";
+import { capture } from "@/lib/monitoring";
 
 export default function Error({
   error,
@@ -15,8 +16,8 @@ export default function Error({
   reset: () => void;
 }) {
   useEffect(() => {
-    // Hook point for production error monitoring (e.g., Sentry.captureException)
     console.error("[MAPI Portal] Route error:", error);
+    capture(error, "boundary");
   }, [error]);
 
   return (

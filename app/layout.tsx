@@ -7,6 +7,7 @@ import NewsTicker from "@/components/NewsTicker";
 import UtilityBar from "@/components/UtilityBar";
 import MiniCartDrawer from "@/components/MiniCartDrawer";
 import ScrollHintBubble from "@/components/ScrollHintBubble";
+import MonitoringInit from "@/components/MonitoringInit";
 import { LanguageProvider } from "@/lib/LanguageContext";
 import { CartProvider } from "@/lib/CartContext";
 import { WishlistProvider } from "@/lib/WishlistContext";
@@ -59,6 +60,7 @@ export default function RootLayout({
       </head>
       <body className="bg-surface text-on-surface font-body selection:bg-secondary/30 antialiased">
         <LanguageProvider>
+          <MonitoringInit />
           <WishlistProvider>
             <CartProvider>
               <NewsTicker />

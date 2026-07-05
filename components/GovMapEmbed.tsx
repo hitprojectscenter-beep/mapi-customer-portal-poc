@@ -177,16 +177,27 @@ export default function GovMapEmbed({
       }`}
       style={{ height: isFullscreen ? "100vh" : height }}
     >
-      {/* Top toolbar: title + map-settings + fullscreen */}
+      {/* Single GovMap brand pill — top-left, clickable → GovMap site */}
       {!compact && (
-        <div className="absolute top-3 right-3 left-3 z-20 flex items-start justify-between flex-row-reverse gap-2 pointer-events-none">
-          {title && (
-            <div className="bg-white/95 backdrop-blur-sm rounded-full px-4 py-1.5 shadow-md flex items-center gap-2 pointer-events-auto">
-              <span className="material-symbols-outlined text-secondary text-[18px]">public</span>
-              <span className="text-xs font-bold text-primary">{title}</span>
-            </div>
-          )}
+        <a
+          href="https://www.govmap.gov.il/"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="shine absolute top-3 left-3 z-20 bg-white/95 backdrop-blur-sm rounded-full px-3.5 py-1.5 shadow-md flex items-center gap-2 hover:bg-white hover:shadow-lg transition-all group"
+          aria-label={t("govmap.openSite")}
+          data-tooltip={t("govmap.openSite")}
+          data-tooltip-position="bottom"
+        >
+          <span className="w-6 h-6 bg-gradient-to-br from-secondary to-primary rounded-full flex items-center justify-center">
+            <span className="material-symbols-outlined text-white text-[14px]">public</span>
+          </span>
+          <span className="text-xs font-bold text-primary group-hover:text-secondary transition-colors">GovMap</span>
+        </a>
+      )}
 
+      {/* Top toolbar: map-settings + fullscreen */}
+      {!compact && (
+        <div className="absolute top-3 right-3 z-20 pointer-events-none">
           <div className="flex items-start gap-2 pointer-events-auto">
             {/* Map settings (basemap + layers) */}
             <div className="relative">
@@ -204,9 +215,10 @@ export default function GovMapEmbed({
                 <span className="material-symbols-outlined text-[20px]">stacks</span>
               </button>
 
-              {/* Control panel dropdown */}
+              {/* Control panel dropdown — anchored to physical right so it grows
+                  leftward INTO the map (the container is overflow-hidden) */}
               {panelOpen && (
-                <div className="absolute top-11 end-0 w-64 bg-white rounded-2xl shadow-2xl border border-outline-variant/50 p-4 animate-scale-in max-h-[70vh] overflow-y-auto">
+                <div className="absolute top-11 right-0 left-auto w-64 bg-white rounded-2xl shadow-2xl border border-outline-variant/50 p-4 animate-scale-in max-h-72 overflow-y-auto">
                   {/* Basemap section */}
                   <p className="text-[10px] uppercase tracking-widest font-bold text-on-surface-variant mb-2">
                     {t("govmap.basemap")}
@@ -378,26 +390,6 @@ export default function GovMapEmbed({
         </div>
       )}
 
-      {/* GovMap logo badge — clicking opens the GovMap site */}
-      {loaded && !error && (
-        <div className="absolute bottom-2 right-2 z-20">
-          <a
-            href="https://www.govmap.gov.il/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="shine flex items-center gap-1.5 bg-white/95 backdrop-blur-sm rounded-full ps-1.5 pe-3 py-1 shadow-md hover:bg-white hover:shadow-lg transition-all group"
-            aria-label={t("govmap.openSite")}
-            data-tooltip={t("govmap.openSite")}
-            data-tooltip-position="bottom"
-          >
-            <span className="w-6 h-6 bg-gradient-to-br from-secondary to-primary rounded-full flex items-center justify-center">
-              <span className="material-symbols-outlined text-white text-[14px]">public</span>
-            </span>
-            <span className="text-[11px] font-bold text-primary group-hover:text-secondary transition-colors">GovMap</span>
-            <span className="material-symbols-outlined text-on-surface-variant group-hover:text-secondary text-[12px] transition-colors">open_in_new</span>
-          </a>
-        </div>
-      )}
     </div>
   );
 }

@@ -371,6 +371,10 @@ type TranslationKeys =
   | "svc.error.report" | "svc.error.reportSub" | "svc.error.submit"
   // Scroll hint bubble
   | "scrollHint.label" | "scrollHint.aria"
+  // Error monitoring admin page
+  | "monitor.title" | "monitor.subtitle" | "monitor.testError" | "monitor.clear"
+  | "monitor.kpi.total" | "monitor.kpi.today" | "monitor.kpi.healthy" | "monitor.kpi.attention"
+  | "monitor.empty" | "monitor.emptySub" | "monitor.prodNote"
   // GovMap embed controls
   | "govmap.mapSettings" | "govmap.basemap" | "govmap.layers"
   | "govmap.basemap.standard" | "govmap.basemap.ortho" | "govmap.basemap.topo" | "govmap.basemap.hybrid"
@@ -1759,6 +1763,19 @@ const dict: Record<TranslationKeys, Record<Lang, string>> = {
   // Scroll hint bubble
   "scrollHint.label": { he: 'גלול למטה כדי לגלות אפשרויות נוספות', en: 'Scroll down to discover more options', fr: 'Défilez pour découvrir plus d\'options', es: 'Desplázate para descubrir más opciones', ru: 'Прокрутите вниз для доп. опций', ar: 'مرر للأسفل لاكتشاف المزيد' },
   "scrollHint.aria": { he: 'לחץ לגלילה למטה', en: 'Click to scroll down', fr: 'Cliquez pour défiler', es: 'Haz clic para desplazar', ru: 'Прокрутить вниз', ar: 'انقر للتمرير' },
+
+  // Error monitoring admin page
+  "monitor.title": { he: 'ניטור שגיאות', en: 'Error Monitoring', fr: 'Surveillance des erreurs', es: 'Monitoreo de errores', ru: 'Мониторинг ошибок', ar: 'مراقبة الأخطاء' },
+  "monitor.subtitle": { he: 'שגיאות שנתפסו בדפדפני המשתמשים (50 אחרונות)', en: 'Errors captured in user browsers (last 50)', fr: 'Erreurs capturées (50 dernières)', es: 'Errores capturados (últimos 50)', ru: 'Ошибки браузеров (последние 50)', ar: 'أخطاء المتصفح (آخر 50)' },
+  "monitor.testError": { he: 'צור שגיאת בדיקה', en: 'Trigger test error', fr: 'Erreur de test', es: 'Error de prueba', ru: 'Тестовая ошибка', ar: 'خطأ اختباري' },
+  "monitor.clear": { he: 'נקה יומן', en: 'Clear log', fr: 'Vider le journal', es: 'Limpiar registro', ru: 'Очистить журнал', ar: 'مسح السجل' },
+  "monitor.kpi.total": { he: 'סה"כ שגיאות ביומן', en: 'Total errors in log', fr: 'Total des erreurs', es: 'Total de errores', ru: 'Всего ошибок', ar: 'إجمالي الأخطاء' },
+  "monitor.kpi.today": { he: 'שגיאות היום', en: 'Errors today', fr: 'Erreurs aujourd\'hui', es: 'Errores hoy', ru: 'Ошибок сегодня', ar: 'أخطاء اليوم' },
+  "monitor.kpi.healthy": { he: 'המערכת תקינה', en: 'System healthy', fr: 'Système sain', es: 'Sistema saludable', ru: 'Система в норме', ar: 'النظام سليم' },
+  "monitor.kpi.attention": { he: 'דורש בדיקה', en: 'Needs attention', fr: 'Attention requise', es: 'Requiere atención', ru: 'Требует внимания', ar: 'يتطلب انتباهاً' },
+  "monitor.empty": { he: 'אין שגיאות ביומן', en: 'No errors logged', fr: 'Aucune erreur', es: 'Sin errores', ru: 'Ошибок нет', ar: 'لا توجد أخطاء' },
+  "monitor.emptySub": { he: 'כל השגיאות בדפדפן ייתפסו ויוצגו כאן אוטומטית', en: 'Browser errors will be captured and shown here automatically', fr: 'Les erreurs seront capturées automatiquement', es: 'Los errores se capturarán automáticamente', ru: 'Ошибки будут фиксироваться автоматически', ar: 'سيتم التقاط الأخطاء تلقائياً' },
+  "monitor.prodNote": { he: 'ב-POC היומן נשמר מקומית בדפדפן (localStorage). בסביבת ייצור המנגנון מתחבר ל-Sentry או Salesforce Event Monitoring — נקודות החיבור מוכנות בקוד (lib/monitoring.ts).', en: 'In this POC the log is stored locally (localStorage). In production this connects to Sentry or Salesforce Event Monitoring — hook points are ready in lib/monitoring.ts.', fr: 'En production : Sentry ou Salesforce Event Monitoring.', es: 'En producción: Sentry o Salesforce Event Monitoring.', ru: 'В продакшне: Sentry или Salesforce Event Monitoring.', ar: 'في الإنتاج: Sentry أو مراقبة أحداث Salesforce.' },
 
   // GovMap embed controls
   "govmap.mapSettings": { he: 'רקעים ושכבות', en: 'Basemaps & Layers', fr: 'Fonds & Couches', es: 'Fondos y Capas', ru: 'Фоны и слои', ar: 'الخلفيات والطبقات' },
