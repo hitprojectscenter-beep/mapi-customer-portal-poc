@@ -45,11 +45,6 @@ export default function Header() {
         <div className="max-w-container-max-width mx-auto px-3 md:px-margin-desktop h-20 flex flex-row-reverse rtl:flex-row-reverse ltr:flex-row items-center justify-between gap-2">
           {/* Logo */}
           <div className="flex items-center gap-2 sm:gap-4">
-            <div className="text-center flex-col justify-center hidden md:flex">
-              <span className="text-[10px] uppercase tracking-widest font-bold text-secondary">
-                {t("header.country")}
-              </span>
-            </div>
             <Link
               href="/"
               className="flex items-center gap-2 sm:gap-3 group shine rounded-2xl p-1 -m-1"
