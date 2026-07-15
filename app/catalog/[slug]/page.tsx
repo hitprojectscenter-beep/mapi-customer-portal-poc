@@ -16,6 +16,7 @@ import { useCart } from "@/lib/CartContext";
 import { useWishlist } from "@/lib/WishlistContext";
 import { useRecentlyViewed } from "@/lib/useRecentlyViewed";
 import { getRatingSummary } from "@/lib/reviews";
+import { getCrossSell, CORS_ANNUAL_UPSELL } from "@/lib/recommendations";
 
 const MAP_RELEVANT = ["maps", "cadastre", "orthophoto", "gis", "geodesy"];
 
@@ -214,6 +215,27 @@ export default function ServiceDetailPage() {
                 </div>
               </div>
             </div>
+
+            {/* CORS annual-vs-monthly upsell (spec v7 scenario 4) */}
+            {service.slug === "cors-subscription" && (
+              <div className="bg-gradient-to-l from-positive-green/10 to-secondary/5 rounded-xl p-4 border-2 border-positive-green/40 mb-6">
+                <div className="flex items-start gap-3">
+                  <span className="material-symbols-outlined text-positive-green text-[26px]">savings</span>
+                  <div className="flex-1">
+                    <p className="text-sm font-bold text-primary">{t("cors.upsell.title")}</p>
+                    <p className="text-xs text-on-surface-variant mt-1 leading-relaxed">
+                      {t("cors.upsell.body")
+                        .replace("{annual}", CORS_ANNUAL_UPSELL.annualPrice.toLocaleString())
+                        .replace("{monthly}", CORS_ANNUAL_UPSELL.monthlyPrice.toLocaleString())
+                        .replace("{yearly}", CORS_ANNUAL_UPSELL.yearlyEquivalent.toLocaleString())}
+                    </p>
+                    <p className="text-sm font-bold text-positive-green mt-1.5" dir="ltr">
+                      ₪{CORS_ANNUAL_UPSELL.savings} — {t("cors.upsell.savings")}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            )}
 
             {/* Quantity + Add-to-Cart or Govforms */}
             {service.inScope ? (
@@ -525,7 +547,11 @@ export default function ServiceDetailPage() {
       )}
 
       {/* You may also like (SFCC signature) */}
-      <RelatedProducts currentSlug={service.slug} category={service.category} />
+      <RelatedProducts
+        currentSlug={service.slug}
+        category={service.category}
+        slugs={getCrossSell(service.slug)}
+      />
 
       {/* Recently viewed */}
       {recent.filter(s => s !== service.slug).length > 0 && (

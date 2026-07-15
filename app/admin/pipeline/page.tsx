@@ -1,7 +1,11 @@
 "use client";
 
 import { useLanguage } from "@/lib/LanguageContext";
-import { PIPELINE_STAGES, ROUTE_TYPES, mockPipelineEntries } from "@/lib/pipeline";
+import {
+  PIPELINE_STAGES, ROUTE_TYPES, mockPipelineEntries,
+  QUOTE_APPROVAL_THRESHOLDS, DISCOUNT_LEVELS, PRICE_BOOKS,
+  PRICE_INDEXATION, RENEWAL_TIMELINE
+} from "@/lib/pipeline";
 import type { TKey } from "@/lib/i18n";
 
 const slaClasses: Record<string, string> = {
@@ -88,8 +92,8 @@ export default function PipelinePage() {
                 <span className="w-20 text-right text-xs text-on-surface-variant font-mono">
                   ₪{(value / 1000).toFixed(0)}K
                 </span>
-                <span className="w-12 text-right text-[11px] text-on-surface-variant">
-                  {stage.slaDays}d
+                <span className="w-12 text-right text-[11px] font-bold text-secondary font-mono">
+                  {stage.probability}%
                 </span>
               </div>
             );
@@ -97,10 +101,10 @@ export default function PipelinePage() {
         </div>
       </section>
 
-      {/* Route Type Legend */}
+      {/* Route Type Legend (v7: includes route assignments) */}
       <section className="bg-white rounded-2xl border border-outline-variant/50 p-5">
         <h2 className="text-base font-extrabold text-primary mb-3">{t("pipe.routeTypes")} (A/B/C/D)</h2>
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-2">
+        <div className="grid sm:grid-cols-2 gap-2">
           {ROUTE_TYPES.map((rt) => (
             <div key={rt.id} className="border border-outline-variant/40 rounded-xl p-3">
               <div className="flex items-center gap-2 mb-1">
@@ -109,13 +113,14 @@ export default function PipelinePage() {
                 </span>
                 <p className="text-xs font-bold text-primary">{t(rt.labelKey)}</p>
               </div>
-              <p className="text-[11px] text-on-surface-variant">{rt.description}</p>
+              <p className="text-[11px] text-on-surface-variant mb-1.5">{rt.description}</p>
+              <p className="text-[10px] text-secondary font-medium">{rt.routes}</p>
             </div>
           ))}
         </div>
       </section>
 
-      {/* SLA Owners & actions */}
+      {/* 11-stage SLA table (v7 4.1 + 4.2) */}
       <section className="bg-white rounded-2xl border border-outline-variant/50 overflow-hidden">
         <header className="px-5 py-3 border-b border-outline-variant/50">
           <h2 className="text-base font-extrabold text-primary">{t("pipe.slaActionsTitle")}</h2>
@@ -125,30 +130,145 @@ export default function PipelinePage() {
             <thead className="bg-surface-container/50 text-on-surface-variant uppercase tracking-wider">
               <tr>
                 <th className="py-2.5 px-3 text-right">{t("pipe.col.stage")}</th>
-                <th className="py-2.5 px-3">{t("pipe.sla.days")}</th>
+                <th className="py-2.5 px-3">{t("pipe.probability")}</th>
+                <th className="py-2.5 px-3">{t("pipe.slaTarget")}</th>
                 <th className="py-2.5 px-3">{t("pipe.sla.owner")}</th>
-                <th className="py-2.5 px-3 text-right">{t("pipe.sla.actions")}</th>
+                <th className="py-2.5 px-3 text-right">{t("pipe.breachAction")}</th>
               </tr>
             </thead>
             <tbody>
               {PIPELINE_STAGES.map((s) => (
-                <tr key={s.id} className="border-b border-outline-variant/30">
-                  <td className="py-2.5 px-3 font-medium text-primary">{t(s.labelKey)}</td>
-                  <td className="py-2.5 px-3 text-center font-mono font-bold text-secondary">{s.slaDays}d</td>
-                  <td className="py-2.5 px-3 text-center text-on-surface-variant">{s.ownerRole}</td>
-                  <td className="py-2.5 px-3">
-                    <div className="flex flex-wrap gap-1.5 justify-end">
-                      {s.autoActions.map((a, i) => (
-                        <span key={i} className="bg-secondary/5 text-secondary text-[10px] font-mono px-2 py-0.5 rounded-full">
-                          {a}
-                        </span>
-                      ))}
-                    </div>
+                <tr key={s.id} className={`border-b border-outline-variant/30 ${s.terminal ? "bg-surface-container/20" : ""}`}>
+                  <td className="py-2.5 px-3 font-medium text-primary">
+                    {t(s.labelKey)}
+                    <span className="block text-[10px] text-on-surface-variant font-normal mt-0.5">{s.transition}</span>
                   </td>
+                  <td className="py-2.5 px-3 text-center font-mono font-bold text-secondary">{s.probability}%</td>
+                  <td className="py-2.5 px-3 text-center text-on-surface-variant whitespace-nowrap">{s.slaTarget}</td>
+                  <td className="py-2.5 px-3 text-center text-on-surface-variant">{s.ownerRole}</td>
+                  <td className="py-2.5 px-3 text-right text-[11px] text-on-surface-variant">{s.breachAction}</td>
                 </tr>
               ))}
             </tbody>
           </table>
+        </div>
+      </section>
+
+      {/* Quote approval thresholds (v7 4.7) */}
+      <section className="bg-white rounded-2xl border border-outline-variant/50 overflow-hidden">
+        <header className="px-5 py-3 border-b border-outline-variant/50 flex items-center gap-2">
+          <span className="material-symbols-outlined text-secondary text-[20px]">approval</span>
+          <h2 className="text-base font-extrabold text-primary">{t("pipe.approvalThresholds")}</h2>
+        </header>
+        <div className="overflow-x-auto">
+          <table className="w-full text-xs">
+            <thead className="bg-surface-container/50 text-on-surface-variant uppercase tracking-wider">
+              <tr>
+                <th className="py-2.5 px-3">{t("pipe.col.tier")}</th>
+                <th className="py-2.5 px-3">{t("pipe.col.range")}</th>
+                <th className="py-2.5 px-3 text-right">{t("pipe.col.approver")}</th>
+                <th className="py-2.5 px-3">{t("pipe.col.slaApproval")}</th>
+              </tr>
+            </thead>
+            <tbody>
+              {QUOTE_APPROVAL_THRESHOLDS.map((th) => (
+                <tr key={th.tier} className="border-b border-outline-variant/30">
+                  <td className="py-2.5 px-3 text-center">
+                    <span className="inline-block w-6 h-6 rounded-full bg-primary text-white text-[11px] font-bold leading-6">{th.tier}</span>
+                  </td>
+                  <td className="py-2.5 px-3 text-center font-mono font-bold text-primary whitespace-nowrap">{th.range}</td>
+                  <td className="py-2.5 px-3 text-right">{th.approver}</td>
+                  <td className="py-2.5 px-3 text-center text-secondary font-bold whitespace-nowrap">{th.slaHours}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        <p className="px-5 py-2.5 text-[11px] text-alert-yellow bg-alert-yellow/5 border-t border-alert-yellow/20">
+          ⚠ הצעת מחיר ללקוח אסטרטגי תמיד תדרוש אישור Account Manager, גם אם הסכום נמוך.
+        </p>
+      </section>
+
+      {/* Discount levels + Price books (v7 4.7) */}
+      <div className="grid lg:grid-cols-2 gap-6">
+        <section className="bg-white rounded-2xl border border-outline-variant/50 overflow-hidden">
+          <header className="px-5 py-3 border-b border-outline-variant/50 flex items-center gap-2">
+            <span className="material-symbols-outlined text-secondary text-[20px]">percent</span>
+            <h2 className="text-base font-extrabold text-primary">{t("pipe.discountLevels")}</h2>
+          </header>
+          <div className="overflow-x-auto">
+            <table className="w-full text-xs">
+              <thead className="bg-surface-container/50 text-on-surface-variant uppercase tracking-wider">
+                <tr>
+                  <th className="py-2.5 px-3 text-right">{t("pipe.col.range")}</th>
+                  <th className="py-2.5 px-3">{t("pipe.col.approver")}</th>
+                  <th className="py-2.5 px-3 text-right">{t("pipe.col.docs")}</th>
+                </tr>
+              </thead>
+              <tbody>
+                {DISCOUNT_LEVELS.map((d, i) => (
+                  <tr key={i} className="border-b border-outline-variant/30">
+                    <td className="py-2.5 px-3 font-medium text-primary">{d.range}</td>
+                    <td className="py-2.5 px-3 text-center text-on-surface-variant whitespace-nowrap">{d.approver}</td>
+                    <td className="py-2.5 px-3 text-right text-[11px] text-on-surface-variant">{d.documentation}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section className="bg-white rounded-2xl border border-outline-variant/50 overflow-hidden">
+          <header className="px-5 py-3 border-b border-outline-variant/50 flex items-center gap-2">
+            <span className="material-symbols-outlined text-secondary text-[20px]">menu_book</span>
+            <h2 className="text-base font-extrabold text-primary">{t("pipe.priceBooks")}</h2>
+          </header>
+          <div className="overflow-x-auto">
+            <table className="w-full text-xs">
+              <thead className="bg-surface-container/50 text-on-surface-variant uppercase tracking-wider">
+                <tr>
+                  <th className="py-2.5 px-3 text-right">{t("pipe.col.priceBook")}</th>
+                  <th className="py-2.5 px-3">{t("pipe.col.discount")}</th>
+                  <th className="py-2.5 px-3 text-right">{t("pipe.col.custType")}</th>
+                </tr>
+              </thead>
+              <tbody>
+                {PRICE_BOOKS.map((pb, i) => (
+                  <tr key={i} className="border-b border-outline-variant/30">
+                    <td className="py-2.5 px-3 font-medium text-primary">{pb.name}</td>
+                    <td className="py-2.5 px-3 text-center font-bold text-secondary whitespace-nowrap">{pb.discount}</td>
+                    <td className="py-2.5 px-3 text-right text-[11px] text-on-surface-variant">{pb.customerType}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <p className="px-5 py-2.5 text-[11px] text-on-surface-variant bg-surface-container/30 border-t border-outline-variant/30">
+            📈 {t("pipe.indexation")}: {PRICE_INDEXATION}
+          </p>
+        </section>
+      </div>
+
+      {/* Renewal timeline (v7 4.9) */}
+      <section className="bg-white rounded-2xl border border-outline-variant/50 p-5">
+        <h2 className="text-base font-extrabold text-primary mb-4 flex items-center gap-2">
+          <span className="material-symbols-outlined text-secondary text-[20px]">update</span>
+          <span>{t("pipe.renewalTimeline")}</span>
+        </h2>
+        <div className="grid sm:grid-cols-2 lg:grid-cols-5 gap-2">
+          {RENEWAL_TIMELINE.map((m, i) => (
+            <div key={m.offset} className="relative border border-outline-variant/40 rounded-xl p-3 bg-gradient-to-b from-white to-surface-container/20">
+              <div className="flex items-center gap-2 mb-1.5">
+                <span className={`inline-block px-2 py-0.5 rounded-full text-[11px] font-mono font-bold ${
+                  i < 2 ? "bg-positive-green/10 text-positive-green" : i < 4 ? "bg-alert-yellow/10 text-alert-yellow" : "bg-error-red/10 text-error-red"
+                }`}>
+                  {m.offset}
+                </span>
+                <p className="text-xs font-bold text-primary">{m.title}</p>
+              </div>
+              <p className="text-[11px] text-on-surface-variant leading-relaxed">{m.action}</p>
+            </div>
+          ))}
         </div>
       </section>
 

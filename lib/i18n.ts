@@ -257,9 +257,16 @@ type TranslationKeys =
   | "route.div.cadastre" | "route.div.mapping" | "route.div.geodesy" | "route.div.technology" | "route.div.general"
   // Pipeline
   | "pipe.title" | "pipe.subtitle"
-  | "pipe.stage.lead" | "pipe.stage.qualified" | "pipe.stage.needs"
-  | "pipe.stage.quote" | "pipe.stage.negotiation" | "pipe.stage.won"
-  | "pipe.stage.fulfillment" | "pipe.stage.delivered"
+  | "pipe.st.newLead" | "pipe.st.review" | "pipe.st.needsInfo"
+  | "pipe.st.quoteSent" | "pipe.st.negotiation" | "pipe.st.pendingPayment"
+  | "pipe.st.paid" | "pipe.st.fulfillment" | "pipe.st.won"
+  | "pipe.st.lost" | "pipe.st.cancelled"
+  | "pipe.probability" | "pipe.slaTarget" | "pipe.breachAction" | "pipe.transition"
+  | "pipe.approvalThresholds" | "pipe.discountLevels" | "pipe.priceBooks"
+  | "pipe.renewalTimeline" | "pipe.col.tier" | "pipe.col.range" | "pipe.col.approver"
+  | "pipe.col.slaApproval" | "pipe.col.docs" | "pipe.col.priceBook" | "pipe.col.discount"
+  | "pipe.col.custType" | "pipe.col.source" | "pipe.indexation"
+  | "cors.upsell.title" | "cors.upsell.body" | "cors.upsell.savings"
   | "pipe.sla.days" | "pipe.sla.owner" | "pipe.sla.actions"
   | "pipe.sla.onTime" | "pipe.sla.warning" | "pipe.sla.breach"
   // Strategic Accounts
@@ -1273,14 +1280,38 @@ const dict: Record<TranslationKeys, Record<Lang, string>> = {
   // Pipeline (Sales Stages) - Spec 4.1
   "pipe.title": { he: 'שלבי Pipeline אחידים', en: 'Unified Sales Pipeline', fr: 'Pipeline de ventes', es: 'Pipeline de ventas', ru: 'Воронка продаж', ar: 'مسار المبيعات الموحد' },
   "pipe.subtitle": { he: 'כל מסלולי המכירה מנוהלים במערכת אחידה של שלבים. כל שלב כולל גורם אחראי, SLA ופעולות אוטומטיות.', en: 'All sales routes use one unified stage system. Each stage has an owner, SLA and auto actions.', fr: 'Tous les parcours utilisent un système unifié.', es: 'Todas las rutas usan un sistema unificado.', ru: 'Все каналы используют единую систему.', ar: 'كل المسارات تستخدم نظاماً موحداً.' },
-  "pipe.stage.lead": { he: '1. ליד חדש', en: '1. New lead', fr: '1. Nouveau lead', es: '1. Lead nuevo', ru: '1. Новый лид', ar: '1. عميل محتمل جديد' },
-  "pipe.stage.qualified": { he: '2. מוסמך', en: '2. Qualified', fr: '2. Qualifié', es: '2. Calificado', ru: '2. Квалифицирован', ar: '2. مؤهل' },
-  "pipe.stage.needs": { he: '3. אפיון צרכים', en: '3. Needs analysis', fr: '3. Analyse besoins', es: '3. Análisis', ru: '3. Анализ', ar: '3. تحليل الاحتياجات' },
-  "pipe.stage.quote": { he: '4. הצעת מחיר', en: '4. Quote sent', fr: '4. Devis envoyé', es: '4. Cotización', ru: '4. Предложение', ar: '4. عرض سعر' },
-  "pipe.stage.negotiation": { he: '5. מו"מ', en: '5. Negotiation', fr: '5. Négociation', es: '5. Negociación', ru: '5. Переговоры', ar: '5. تفاوض' },
-  "pipe.stage.won": { he: '6. סגירה (Won)', en: '6. Closed Won', fr: '6. Gagné', es: '6. Ganado', ru: '6. Выиграно', ar: '6. فوز' },
-  "pipe.stage.fulfillment": { he: '7. ביצוע / אספקה', en: '7. Fulfillment', fr: '7. Exécution', es: '7. Cumplimiento', ru: '7. Исполнение', ar: '7. التنفيذ' },
-  "pipe.stage.delivered": { he: '8. הושלם', en: '8. Delivered', fr: '8. Livré', es: '8. Entregado', ru: '8. Доставлено', ar: '8. تم التسليم' },
+  "pipe.st.newLead": { he: '1. ליד חדש', en: '1. New Lead', fr: '1. Nouveau lead', es: '1. Lead nuevo', ru: '1. Новый лид', ar: '1. عميل محتمل جديد' },
+  "pipe.st.review": { he: '2. בבדיקה', en: '2. Under Review', fr: '2. En examen', es: '2. En revisión', ru: '2. На проверке', ar: '2. قيد المراجعة' },
+  "pipe.st.needsInfo": { he: '3. נדרש מידע נוסף', en: '3. Needs Info', fr: '3. Infos requises', es: '3. Falta info', ru: '3. Нужна информация', ar: '3. معلومات مطلوبة' },
+  "pipe.st.quoteSent": { he: '4. הצעת מחיר נשלחה', en: '4. Quote Sent', fr: '4. Devis envoyé', es: '4. Cotización enviada', ru: '4. Предложение отправлено', ar: '4. أُرسل عرض السعر' },
+  "pipe.st.negotiation": { he: '5. במשא ומתן', en: '5. Negotiation', fr: '5. Négociation', es: '5. Negociación', ru: '5. Переговоры', ar: '5. تفاوض' },
+  "pipe.st.pendingPayment": { he: '6. ממתין לתשלום', en: '6. Pending Payment', fr: '6. Attente paiement', es: '6. Pago pendiente', ru: '6. Ожидание оплаты', ar: '6. بانتظار الدفع' },
+  "pipe.st.paid": { he: '7. שולם', en: '7. Paid', fr: '7. Payé', es: '7. Pagado', ru: '7. Оплачено', ar: '7. مدفوع' },
+  "pipe.st.fulfillment": { he: '8. באספקה', en: '8. In Fulfillment', fr: '8. En exécution', es: '8. En entrega', ru: '8. Исполнение', ar: '8. قيد التنفيذ' },
+  "pipe.st.won": { he: '9. הושלם (Won)', en: '9. Closed Won', fr: '9. Gagné', es: '9. Ganado', ru: '9. Выиграно', ar: '9. فوز' },
+  "pipe.st.lost": { he: '10. נסגר ללא רכישה', en: '10. Closed Lost', fr: '10. Perdu', es: '10. Perdido', ru: '10. Проиграно', ar: '10. خسارة' },
+  "pipe.st.cancelled": { he: '11. מבוטל / זיכוי', en: '11. Cancelled / Refund', fr: '11. Annulé', es: '11. Cancelado', ru: '11. Отменено', ar: '11. ملغى / استرداد' },
+  "pipe.probability": { he: '% סיכוי', en: 'Probability %', fr: '% probabilité', es: '% probabilidad', ru: '% вероятности', ar: '% الاحتمال' },
+  "pipe.slaTarget": { he: 'יעד SLA', en: 'SLA Target', fr: 'Objectif SLA', es: 'Objetivo SLA', ru: 'Цель SLA', ar: 'هدف SLA' },
+  "pipe.breachAction": { he: 'פעולה בחריגה', en: 'Breach Action', fr: 'Action en dépassement', es: 'Acción por incumplimiento', ru: 'Действие при нарушении', ar: 'إجراء التجاوز' },
+  "pipe.transition": { he: 'תנאי מעבר', en: 'Transition Condition', fr: 'Condition de passage', es: 'Condición de avance', ru: 'Условие перехода', ar: 'شرط الانتقال' },
+  "pipe.approvalThresholds": { he: 'ספי אישור הצעת מחיר (5 רמות)', en: 'Quote Approval Thresholds (5 tiers)', fr: 'Seuils d\'approbation (5)', es: 'Umbrales de aprobación (5)', ru: 'Пороги утверждения (5)', ar: 'حدود الموافقة (5)' },
+  "pipe.discountLevels": { he: 'מדיניות הנחות — סמכויות אישור', en: 'Discount Policy — Approval Authority', fr: 'Politique de remise', es: 'Política de descuentos', ru: 'Политика скидок', ar: 'سياسة الخصومات' },
+  "pipe.priceBooks": { he: 'מבנה המחירונים (7 מחירונים)', en: 'Price Books (7)', fr: 'Grilles tarifaires (7)', es: 'Listas de precios (7)', ru: 'Прайс-листы (7)', ar: 'قوائم الأسعار (7)' },
+  "pipe.renewalTimeline": { he: 'ציר חידושים T-90 → T-0', en: 'Renewal Timeline T-90 → T-0', fr: 'Chronologie renouvellement', es: 'Cronología de renovación', ru: 'График продлений', ar: 'جدول التجديد' },
+  "pipe.col.tier": { he: 'סף', en: 'Tier', fr: 'Palier', es: 'Nivel', ru: 'Уровень', ar: 'المستوى' },
+  "pipe.col.range": { he: 'טווח', en: 'Range', fr: 'Plage', es: 'Rango', ru: 'Диапазон', ar: 'النطاق' },
+  "pipe.col.approver": { he: 'מאשר', en: 'Approver', fr: 'Approbateur', es: 'Aprobador', ru: 'Утверждающий', ar: 'الموافق' },
+  "pipe.col.slaApproval": { he: 'SLA אישור', en: 'Approval SLA', fr: 'SLA approbation', es: 'SLA aprobación', ru: 'SLA утверждения', ar: 'SLA الموافقة' },
+  "pipe.col.docs": { he: 'תיעוד', en: 'Documentation', fr: 'Documentation', es: 'Documentación', ru: 'Документация', ar: 'التوثيق' },
+  "pipe.col.priceBook": { he: 'מחירון', en: 'Price Book', fr: 'Grille', es: 'Lista', ru: 'Прайс', ar: 'قائمة الأسعار' },
+  "pipe.col.discount": { he: 'הנחה', en: 'Discount', fr: 'Remise', es: 'Descuento', ru: 'Скидка', ar: 'الخصم' },
+  "pipe.col.custType": { he: 'סוג לקוח', en: 'Customer Type', fr: 'Type client', es: 'Tipo cliente', ru: 'Тип клиента', ar: 'نوع العميل' },
+  "pipe.col.source": { he: 'מקור', en: 'Source', fr: 'Source', es: 'Fuente', ru: 'Источник', ar: 'المصدر' },
+  "pipe.indexation": { he: 'הצמדה למדד', en: 'CPI Indexation', fr: 'Indexation CPI', es: 'Indexación CPI', ru: 'Индексация CPI', ar: 'ربط بالمؤشر' },
+  "cors.upsell.title": { he: '💡 שדרג למנוי שנתי וחסוך', en: '💡 Upgrade to annual & save', fr: '💡 Passez à l\'annuel et économisez', es: '💡 Cambia a anual y ahorra', ru: '💡 Годовая подписка — выгоднее', ar: '💡 قم بالترقية إلى سنوي ووفر' },
+  "cors.upsell.body": { he: 'מנוי שנתי ₪{annual} במקום חודשי ₪{monthly} × 12 = ₪{yearly}', en: 'Annual ₪{annual} instead of monthly ₪{monthly} × 12 = ₪{yearly}', fr: 'Annuel ₪{annual} au lieu de ₪{monthly} × 12 = ₪{yearly}', es: 'Anual ₪{annual} en vez de ₪{monthly} × 12 = ₪{yearly}', ru: 'Годовая ₪{annual} вместо ₪{monthly} × 12 = ₪{yearly}', ar: 'سنوي ₪{annual} بدلاً من ₪{monthly} × 12 = ₪{yearly}' },
+  "cors.upsell.savings": { he: 'חיסכון שנתי', en: 'yearly savings', fr: 'économie annuelle', es: 'ahorro anual', ru: 'экономия в год', ar: 'توفير سنوي' },
   "pipe.sla.days": { he: 'SLA (ימים)', en: 'SLA (days)', fr: 'SLA (jours)', es: 'SLA (días)', ru: 'SLA (дней)', ar: 'مستوى الخدمة (أيام)' },
   "pipe.sla.owner": { he: 'גורם אחראי', en: 'Owner', fr: 'Responsable', es: 'Responsable', ru: 'Ответственный', ar: 'المسؤول' },
   "pipe.sla.actions": { he: 'פעולות אוטומטיות', en: 'Auto actions', fr: 'Actions auto', es: 'Acciones auto', ru: 'Авто-действия', ar: 'إجراءات تلقائية' },

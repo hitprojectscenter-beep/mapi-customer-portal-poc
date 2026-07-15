@@ -10,14 +10,18 @@ interface Props {
   title?: string;
   subtitle?: string;
   limit?: number;
+  /** Explicit service slugs (e.g., rule-based cross-sell per spec 4.5). Overrides category. */
+  slugs?: string[];
 }
 
-export default function RelatedProducts({ currentSlug, category, title, subtitle, limit = 4 }: Props) {
+export default function RelatedProducts({ currentSlug, category, title, subtitle, limit = 4, slugs }: Props) {
   const { t } = useLanguage();
-  const list = services
-    .filter(s => s.slug !== currentSlug)
-    .filter(s => !category || s.category === category)
-    .slice(0, limit);
+  const list = (slugs && slugs.length > 0
+    ? slugs.map(sl => services.find(s => s.slug === sl)).filter((s): s is Service => !!s)
+    : services
+        .filter(s => s.slug !== currentSlug)
+        .filter(s => !category || s.category === category)
+  ).slice(0, limit);
 
   if (list.length === 0) return null;
 
