@@ -13,8 +13,21 @@ import { LanguageProvider } from "@/lib/LanguageContext";
 import { CartProvider } from "@/lib/CartContext";
 import { WishlistProvider } from "@/lib/WishlistContext";
 
+const FALLBACK_SITE_URL = "https://mapi-customer-portal-poc.vercel.app";
+
+// Env values set via CLI pipes can carry stray whitespace/CR — sanitize,
+// and never let a malformed value break the build.
+function siteUrl(): URL {
+  const raw = (process.env.NEXT_PUBLIC_SITE_URL || "").trim();
+  try {
+    return new URL(raw || FALLBACK_SITE_URL);
+  } catch {
+    return new URL(FALLBACK_SITE_URL);
+  }
+}
+
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://mapi-customer-portal-poc.vercel.app"),
+  metadataBase: siteUrl(),
   title: 'מפ"י - המרכז למיפוי ישראל | פורטל לקוחות',
   description:
     'הפורטל הלאומי הרשמי למידע גיאוגרפי. הזמנת מפות, נתוני קדסטר, שירותי GNSS ותצלומי אוויר ישירות מהמרכז למיפוי ישראל.',

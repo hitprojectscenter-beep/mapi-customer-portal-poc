@@ -9,15 +9,20 @@ import { createHash, createHmac, timingSafeEqual } from "crypto";
 
 // -- Credentials ------------------------------------------------------------
 
+// Env values set via CLI pipes can carry stray whitespace/CR — trim them.
+function env(name: string): string {
+  return (process.env[name] || "").trim();
+}
+
 // Fallbacks = the demo manager account (same hashes as the original POC gate)
 const EMAIL_HASH =
-  process.env.CMS_EMAIL_HASH ||
+  env("CMS_EMAIL_HASH") ||
   "26b98d010dc8ce83ed05af9b95f6456b59c72bb7cac8cce0a771f46f298b4183";
 const PASSWORD_HASH =
-  process.env.CMS_PASSWORD_HASH ||
+  env("CMS_PASSWORD_HASH") ||
   "3be2b71f27d50b5d49dfcd1173e6bbacdb8ef4fece6d758a24e69affac7a2a67";
 
-const SESSION_SECRET = process.env.CMS_SESSION_SECRET || "mapi-poc-dev-secret-not-for-real-use";
+const SESSION_SECRET = env("CMS_SESSION_SECRET") || "mapi-poc-dev-secret-not-for-real-use";
 if (process.env.NODE_ENV === "production" && !process.env.CMS_SESSION_SECRET) {
   console.warn("[CMS] CMS_SESSION_SECRET is not set — using the dev fallback. Set it in Vercel env.");
 }
@@ -25,8 +30,8 @@ if (process.env.NODE_ENV === "production" && !process.env.CMS_SESSION_SECRET) {
 export const SESSION_COOKIE = "mapi_cms_token";
 export const SESSION_TTL_SECONDS = 8 * 60 * 60; // 8h workday
 
-const MANAGER_NAME = process.env.CMS_MANAGER_NAME || "אלעד אסרף";
-const MANAGER_ROLE = process.env.CMS_MANAGER_ROLE || "ראש אגף שיווק ומכירות";
+const MANAGER_NAME = env("CMS_MANAGER_NAME") || "אלעד אסרף";
+const MANAGER_ROLE = env("CMS_MANAGER_ROLE") || "ראש אגף שיווק ומכירות";
 
 function sha256Hex(input: string): string {
   return createHash("sha256").update(input).digest("hex");
