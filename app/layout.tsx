@@ -8,11 +8,13 @@ import UtilityBar from "@/components/UtilityBar";
 import MiniCartDrawer from "@/components/MiniCartDrawer";
 import ScrollHintBubble from "@/components/ScrollHintBubble";
 import MonitoringInit from "@/components/MonitoringInit";
+import Analytics from "@/components/Analytics";
 import { LanguageProvider } from "@/lib/LanguageContext";
 import { CartProvider } from "@/lib/CartContext";
 import { WishlistProvider } from "@/lib/WishlistContext";
 
 export const metadata: Metadata = {
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://mapi-customer-portal-poc.vercel.app"),
   title: 'מפ"י - המרכז למיפוי ישראל | פורטל לקוחות',
   description:
     'הפורטל הלאומי הרשמי למידע גיאוגרפי. הזמנת מפות, נתוני קדסטר, שירותי GNSS ותצלומי אוויר ישירות מהמרכז למיפוי ישראל.',
@@ -59,6 +61,7 @@ export default function RootLayout({
         />
       </head>
       <body className="bg-surface text-on-surface font-body selection:bg-secondary/30 antialiased">
+        <Analytics />
         <LanguageProvider>
           <MonitoringInit />
           <WishlistProvider>

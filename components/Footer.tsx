@@ -6,7 +6,6 @@ import { useState } from "react";
 import { useLanguage } from "@/lib/LanguageContext";
 
 const MAPI_SITE = "https://www.gov.il/he/departments/survey_of_israel";
-const GOV_ACCESSIBILITY = "https://www.gov.il/he/policies/accessibility";
 const GOV_PRIVACY = "https://www.gov.il/he/policies/privacy_policy";
 const GOV_TERMS = "https://www.gov.il/he/policies/terms_of_use";
 
@@ -153,9 +152,9 @@ export default function Footer() {
               <a href={GOV_PRIVACY} target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors shine px-2 py-0.5 rounded">
                 {t("footer.privacy")}
               </a>
-              <a href={GOV_ACCESSIBILITY} target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors shine px-2 py-0.5 rounded">
+              <Link href="/accessibility" className="hover:text-white transition-colors shine px-2 py-0.5 rounded">
                 {t("footer.accessibility")}
-              </a>
+              </Link>
               <a href={MAPI_SITE} target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors shine px-2 py-0.5 rounded">
                 {t("footer.mainSite")}
               </a>

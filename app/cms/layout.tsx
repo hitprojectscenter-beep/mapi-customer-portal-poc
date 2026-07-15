@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { cmsGetSession, cmsLogout, type CmsSession } from "@/lib/cms";
+import { cmsVerifySession, cmsLogout, type CmsSession } from "@/lib/cms";
 
 const NAV = [
   { href: "/cms", icon: "dashboard", label: "לוח בקרה" },
@@ -20,10 +20,15 @@ export default function CmsLayout({ children }: { children: React.ReactNode }) {
   const [checked, setChecked] = useState(false);
 
   useEffect(() => {
-    const s = cmsGetSession();
-    setSession(s);
-    setChecked(true);
-    if (!s && !isLogin) router.replace("/cms/login");
+    let cancelled = false;
+    // The real gate: validates the httpOnly session cookie server-side
+    cmsVerifySession().then(s => {
+      if (cancelled) return;
+      setSession(s);
+      setChecked(true);
+      if (!s && !isLogin) router.replace("/cms/login");
+    });
+    return () => { cancelled = true; };
   }, [pathname, isLogin, router]);
 
   const handleLogout = () => {

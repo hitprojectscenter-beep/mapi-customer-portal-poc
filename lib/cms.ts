@@ -3,17 +3,15 @@
 // Portal CMS — content-manager back-office (POC).
 // Owner: ראש אגף שיווק ומכירות. Data persists in localStorage.
 //
-// SECURITY NOTE (POC): the credential gate runs client-side and stores only
-// SHA-256 hashes — the plaintext password is never in the bundle. This is
-// demo-grade protection; production replaces it with Salesforce SSO + roles.
+// SECURITY: authentication is verified server-side (/api/cms/*) against
+// SHA-256 hashes from env vars; the session is an HMAC-signed httpOnly
+// cookie that page JS cannot read. The sessionStorage copy below is a
+// display-only cache (name/role for the header and audit log) — the actual
+// gate is the cookie check in cmsVerifySession().
 
 // ---------------------------------------------------------------------------
-// Auth
+// Auth (client side of /api/cms/*)
 // ---------------------------------------------------------------------------
-
-// sha256("mapicomportal@gmail.com") / sha256 of the manager password
-const EMAIL_HASH = "26b98d010dc8ce83ed05af9b95f6456b59c72bb7cac8cce0a771f46f298b4183";
-const PASSWORD_HASH = "3be2b71f27d50b5d49dfcd1173e6bbacdb8ef4fece6d758a24e69affac7a2a67";
 
 const SESSION_KEY = "mapi_cms_session_v1";
 
@@ -24,30 +22,55 @@ export interface CmsSession {
   loginAt: number;
 }
 
-async function sha256Hex(input: string): Promise<string> {
-  const data = new TextEncoder().encode(input);
-  const digest = await crypto.subtle.digest("SHA-256", data);
-  return Array.from(new Uint8Array(digest))
-    .map(b => b.toString(16).padStart(2, "0"))
-    .join("");
+function cacheSession(session: CmsSession | null): void {
+  try {
+    if (session) sessionStorage.setItem(SESSION_KEY, JSON.stringify(session));
+    else sessionStorage.removeItem(SESSION_KEY);
+  } catch { /* ignore */ }
 }
 
 export async function cmsLogin(email: string, password: string): Promise<CmsSession | null> {
-  const [e, p] = await Promise.all([
-    sha256Hex(email.trim().toLowerCase()),
-    sha256Hex(password)
-  ]);
-  if (e !== EMAIL_HASH || p !== PASSWORD_HASH) return null;
-  const session: CmsSession = {
-    email: email.trim().toLowerCase(),
-    name: "אלעד אסרף",
-    role: "ראש אגף שיווק ומכירות",
-    loginAt: Date.now()
-  };
-  try { sessionStorage.setItem(SESSION_KEY, JSON.stringify(session)); } catch { /* ignore */ }
-  return session;
+  try {
+    const res = await fetch("/api/cms/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, password })
+    });
+    if (!res.ok) return null;
+    const data = await res.json();
+    if (!data?.ok || !data.session) return null;
+    const session: CmsSession = { ...data.session, loginAt: Date.now() };
+    cacheSession(session);
+    return session;
+  } catch {
+    return null;
+  }
 }
 
+/** Server-verified session check (validates the httpOnly cookie). */
+export async function cmsVerifySession(): Promise<CmsSession | null> {
+  try {
+    const res = await fetch("/api/cms/session", { cache: "no-store" });
+    if (!res.ok) {
+      cacheSession(null);
+      return null;
+    }
+    const data = await res.json();
+    if (!data?.ok || !data.session) {
+      cacheSession(null);
+      return null;
+    }
+    const session: CmsSession = { ...data.session, loginAt: Date.now() };
+    cacheSession(session);
+    return session;
+  } catch {
+    // Network failure: fall back to the cached copy so the manager
+    // isn't kicked out mid-edit by a transient error.
+    return cmsGetSession();
+  }
+}
+
+/** Fast display-only read (header strip, audit actor name). Not a security gate. */
 export function cmsGetSession(): CmsSession | null {
   try {
     const raw = sessionStorage.getItem(SESSION_KEY);
@@ -58,7 +81,9 @@ export function cmsGetSession(): CmsSession | null {
 }
 
 export function cmsLogout(): void {
-  try { sessionStorage.removeItem(SESSION_KEY); } catch { /* ignore */ }
+  cacheSession(null);
+  // Fire-and-forget: clear the httpOnly cookie server-side
+  try { void fetch("/api/cms/logout", { method: "POST" }); } catch { /* ignore */ }
 }
 
 // ---------------------------------------------------------------------------
