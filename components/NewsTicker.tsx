@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useLanguage } from "@/lib/LanguageContext";
 import { TKey } from "@/lib/i18n";
+import { hasCmsNews, loadCmsNews, type CmsNewsItem } from "@/lib/cms";
 
 interface NewsItem {
   id: string;
@@ -94,12 +95,31 @@ const TYPE_COLORS: Record<NewsItem["type"], { dot: string; ring: string }> = {
   alert: { dot: "bg-error-red", ring: "ring-error-red/30" }
 };
 
+// Icon per news type — used for CMS-managed items (which carry no icon)
+const TYPE_ICON: Record<NewsItem["type"], string> = {
+  new: "new_releases",
+  update: "autorenew",
+  promo: "local_offer",
+  alert: "schedule"
+};
+
+// Unified display shape: built-in translated items or CMS-managed items
+interface DisplayNewsItem {
+  id: string;
+  type: NewsItem["type"];
+  icon: string;
+  title: string;
+  href: string;
+  time: string;
+}
+
 export default function NewsTicker() {
   const { t, lang } = useLanguage();
   const [hidden, setHidden] = useState(false);
   const [mobileIndex, setMobileIndex] = useState(0);
   const [paused, setPaused] = useState(false);
   const [reducedMotion, setReducedMotion] = useState(false);
+  const [cmsItems, setCmsItems] = useState<CmsNewsItem[] | null>(null);
 
   useEffect(() => {
     const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -109,21 +129,50 @@ export default function NewsTicker() {
     return () => mq.removeEventListener("change", handler);
   }, []);
 
-  // Mobile carousel: auto-rotate every 5s, paused on hover/focus
+  // Load CMS-managed news (only when the content manager actually saved some)
   useEffect(() => {
-    if (reducedMotion || paused) return;
-    const interval = setInterval(() => {
-      setMobileIndex((i) => (i + 1) % NEWS.length);
-    }, 5000);
-    return () => clearInterval(interval);
-  }, [reducedMotion, paused]);
-
-  if (hidden) return null;
+    if (hasCmsNews()) {
+      setCmsItems(loadCmsNews().filter(n => n.active));
+    }
+  }, []);
 
   const getTitle = (key: string) => NEWS_TITLES[key]?.[lang] || NEWS_TITLES[key]?.he || key;
 
-  const prevItem = () => setMobileIndex((i) => (i - 1 + NEWS.length) % NEWS.length);
-  const nextItem = () => setMobileIndex((i) => (i + 1) % NEWS.length);
+  // CMS items override the built-in translated defaults
+  const displayItems: DisplayNewsItem[] =
+    cmsItems && cmsItems.length > 0
+      ? cmsItems.map(n => ({
+          id: n.id,
+          type: n.type,
+          icon: TYPE_ICON[n.type],
+          title: n.title,
+          href: n.href,
+          time: n.publishedAt.slice(5).split("-").reverse().join("/")
+        }))
+      : NEWS.map(n => ({
+          id: n.id,
+          type: n.type,
+          icon: n.icon,
+          title: getTitle(n.titleKey),
+          href: n.href,
+          time: n.time
+        }));
+
+  const count = displayItems.length;
+
+  // Mobile carousel: auto-rotate every 5s, paused on hover/focus
+  useEffect(() => {
+    if (reducedMotion || paused || count === 0) return;
+    const interval = setInterval(() => {
+      setMobileIndex((i) => (i + 1) % count);
+    }, 5000);
+    return () => clearInterval(interval);
+  }, [reducedMotion, paused, count]);
+
+  if (hidden || count === 0) return null;
+
+  const prevItem = () => setMobileIndex((i) => (i - 1 + count) % count);
+  const nextItem = () => setMobileIndex((i) => (i + 1) % count);
 
   return (
     <div
@@ -150,7 +199,7 @@ export default function NewsTicker() {
 
           {/* News cards — desktop: 4 visible side-by-side */}
           <div className="hidden md:flex flex-1 items-stretch min-w-0">
-            {NEWS.map((item) => {
+            {displayItems.map((item) => {
               const colors = TYPE_COLORS[item.type];
               return (
                 <Link
@@ -166,7 +215,7 @@ export default function NewsTicker() {
                       aria-hidden="true"
                     />
                     <p className="text-[12px] lg:text-[13px] text-primary leading-snug line-clamp-2 text-right flex-1 group-hover:text-secondary transition-colors font-medium">
-                      {getTitle(item.titleKey)}
+                      {item.title}
                     </p>
                   </div>
                   <div className="flex items-center justify-center gap-1 mt-1">
@@ -188,7 +237,7 @@ export default function NewsTicker() {
             onFocusCapture={() => setPaused(true)}
             onBlurCapture={() => setPaused(false)}
           >
-            {NEWS.map((item, idx) => {
+            {displayItems.map((item, idx) => {
               const colors = TYPE_COLORS[item.type];
               return (
                 <Link
@@ -206,7 +255,7 @@ export default function NewsTicker() {
                       aria-hidden="true"
                     />
                     <p className="text-[12px] text-primary leading-snug line-clamp-2 text-right flex-1 font-medium">
-                      {getTitle(item.titleKey)}
+                      {item.title}
                     </p>
                   </div>
                   <div className="flex items-center justify-center gap-1 mt-1">
@@ -244,7 +293,7 @@ export default function NewsTicker() {
 
             {/* Mobile dot indicators — 24px touch target with 6px visible dot inside */}
             <div className="md:hidden flex items-center px-1" role="tablist" aria-label="חדשות">
-              {NEWS.map((item, idx) => (
+              {displayItems.map((item, idx) => (
                 <button
                   key={item.id}
                   type="button"

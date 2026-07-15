@@ -189,7 +189,13 @@ export default function Footer() {
         </div>
 
         <div className="border-t border-white/10 pt-8 flex flex-col md:flex-row-reverse justify-between items-center gap-4">
-          <p className="text-white/50 text-xs">{t("footer.copyright")}</p>
+          <p className="text-white/50 text-xs">
+            {t("footer.copyright")}
+            {" · "}
+            <Link href="/cms/login" className="hover:text-white/80 underline decoration-white/20">
+              ניהול תוכן
+            </Link>
+          </p>
           <div className="flex gap-4">
             <a
               href="https://www.facebook.com/MAPI.SURVEY/"
