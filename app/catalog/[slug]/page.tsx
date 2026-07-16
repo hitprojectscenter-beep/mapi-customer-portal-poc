@@ -16,7 +16,7 @@ import { useCart } from "@/lib/CartContext";
 import { useWishlist } from "@/lib/WishlistContext";
 import { useRecentlyViewed } from "@/lib/useRecentlyViewed";
 import { getRatingSummary } from "@/lib/reviews";
-import { getCrossSell, CORS_ANNUAL_UPSELL } from "@/lib/recommendations";
+import { getCrossSell } from "@/lib/recommendations";
 
 const MAP_RELEVANT = ["maps", "cadastre", "orthophoto", "gis", "geodesy"];
 
@@ -216,21 +216,22 @@ export default function ServiceDetailPage() {
               </div>
             </div>
 
-            {/* CORS annual-vs-monthly upsell (spec v7 scenario 4) */}
+            {/* CORS PRE-PAID usage-bank model (HLD V8 §5.1): the customer buys a
+                monthly usage bank; renewal opens automatically at 93% (VRS) or
+                when ≤2 months remain (RTK). Replaces the V7 annual-upsell nudge. */}
             {service.slug === "cors-subscription" && (
-              <div className="bg-gradient-to-l from-positive-green/10 to-secondary/5 rounded-xl p-4 border-2 border-positive-green/40 mb-6">
+              <div className="bg-gradient-to-l from-secondary/10 to-primary/5 rounded-xl p-4 border-2 border-secondary/30 mb-6">
                 <div className="flex items-start gap-3">
-                  <span className="material-symbols-outlined text-positive-green text-[26px]">savings</span>
+                  <span className="material-symbols-outlined text-secondary text-[26px]">account_balance_wallet</span>
                   <div className="flex-1">
-                    <p className="text-sm font-bold text-primary">{t("cors.upsell.title")}</p>
+                    <p className="text-sm font-bold text-primary">מנוי PRE-PAID — בנק שימוש חודשי</p>
                     <p className="text-xs text-on-surface-variant mt-1 leading-relaxed">
-                      {t("cors.upsell.body")
-                        .replace("{annual}", CORS_ANNUAL_UPSELL.annualPrice.toLocaleString())
-                        .replace("{monthly}", CORS_ANNUAL_UPSELL.monthlyPrice.toLocaleString())
-                        .replace("{yearly}", CORS_ANNUAL_UPSELL.yearlyEquivalent.toLocaleString())}
+                      רוכשים בנק חודשי שימוש מראש והמערכת מאזנת חיוב מול שימוש בפועל.
+                      RTK: ‏300 ₪ למנוי פעיל לחודש · VRS: ‏0.7 ₪ לדקת שימוש.
+                      דוח שימוש חודשי מפורט נשלח אוטומטית למייל.
                     </p>
-                    <p className="text-sm font-bold text-positive-green mt-1.5" dir="ltr">
-                      ₪{CORS_ANNUAL_UPSELL.savings} — {t("cors.upsell.savings")}
+                    <p className="text-xs font-bold text-secondary mt-1.5">
+                      חידוש אוטומטי: הצעת חידוש נפתחת בחציית 93% מהמכסה (VRS) או ביתרה של חודשיים (RTK)
                     </p>
                   </div>
                 </div>

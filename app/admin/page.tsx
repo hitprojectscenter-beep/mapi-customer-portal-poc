@@ -158,6 +158,16 @@ export default function AdminDashboardPage() {
       {/* Quick Actions */}
       <section className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
         <Link
+          href="/admin/leads"
+          className="shine bg-gradient-to-br from-secondary/10 to-primary/5 border border-secondary/20 rounded-2xl p-5 hover:shadow-xl transition-all"
+        >
+          <div className="flex items-center gap-3 mb-2">
+            <span className="material-symbols-outlined text-secondary">psychology</span>
+            <h3 className="font-extrabold text-primary">{t("nav.leads")}</h3>
+          </div>
+          <p className="text-sm text-on-surface-variant">{t("leads.admin.quickSub")}</p>
+        </Link>
+        <Link
           href="/admin/approvals"
           className="shine bg-gradient-to-br from-alert-yellow/10 to-alert-yellow/5 border border-alert-yellow/20 rounded-2xl p-5 hover:shadow-xl transition-all"
         >

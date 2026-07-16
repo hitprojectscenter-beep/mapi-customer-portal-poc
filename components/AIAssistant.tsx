@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { useLanguage } from "@/lib/LanguageContext";
 import { TKey } from "@/lib/i18n";
+import { captureLead, meetsLeadMinimum } from "@/lib/leads";
 
 interface ChatMessage {
   id: string;
@@ -150,6 +151,10 @@ export default function AIAssistant() {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [input, setInput] = useState("");
   const [typing, setTyping] = useState(false);
+  // Lead capture mini-form (source: chatbot — HLD 4.2 capture channel)
+  const [leadMode, setLeadMode] = useState(false);
+  const [leadForm, setLeadForm] = useState({ first: "", last: "", contact: "" });
+  const [leadError, setLeadError] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -220,6 +225,38 @@ export default function AIAssistant() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     sendMessage(input);
+  };
+
+  const handleLeadSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    const contact = leadForm.contact.trim();
+    const isEmail = contact.includes("@");
+    const candidate = {
+      firstName: leadForm.first,
+      lastName: leadForm.last,
+      email: isEmail ? contact : "",
+      phone: isEmail ? "" : contact
+    };
+    if (!meetsLeadMinimum(candidate)) {
+      setLeadError(true);
+      return;
+    }
+    const lastUserMsg = [...messages].reverse().find(m => m.role === "user")?.text || "";
+    const res = captureLead({
+      ...candidate,
+      family: "maps",
+      interest: lastUserMsg.slice(0, 80) || "פנייה מהצ'אטבוט",
+      source: "chatbot"
+    });
+    setLeadMode(false);
+    setLeadError(false);
+    setLeadForm({ first: "", last: "", contact: "" });
+    setMessages(prev => [...prev, {
+      id: `b-lead-${Date.now()}`,
+      role: "bot",
+      text: `${t("ai.lead.done")}${res?.lead.id || ""}`,
+      timestamp: Date.now()
+    }]);
   };
 
   const suggestedKeys: TKey[] = ["ai.q1", "ai.q2", "ai.q3", "ai.q4", "ai.q5"];
@@ -354,35 +391,93 @@ export default function AIAssistant() {
             )}
           </div>
 
-          {/* Input */}
-          <form
-            onSubmit={handleSubmit}
-            className="border-t border-outline-variant p-3 flex items-center gap-2 flex-shrink-0 bg-white"
-          >
-            <label htmlFor="ai-chat-input" className="sr-only">
-              {t("ai.placeholder")}
-            </label>
-            <input
-              ref={inputRef}
-              id="ai-chat-input"
-              type="text"
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              placeholder={t("ai.placeholder")}
-              className="flex-1 bg-surface-container border-0 rounded-full px-4 py-3 text-sm focus:ring-2 focus:ring-secondary focus:outline-none min-h-[44px]"
-              aria-label={t("ai.placeholder")}
-            />
+          {/* Lead-capture CTA (chatbot → lead, HLD 4.2) */}
+          <div className="border-t border-outline-variant bg-white px-3 pt-2 flex-shrink-0">
             <button
-              type="submit"
-              disabled={!input.trim()}
-              className="shine shine-glow w-11 h-11 bg-primary text-white rounded-full flex items-center justify-center hover:bg-secondary transition-colors disabled:bg-outline-variant disabled:cursor-not-allowed flex-shrink-0"
-              aria-label={t("ai.send")}
-              data-tooltip={t("ai.send")}
-              data-tooltip-position="bottom"
+              type="button"
+              onClick={() => { setLeadMode(v => !v); setLeadError(false); }}
+              aria-expanded={leadMode}
+              className="shine w-full text-xs font-bold text-secondary hover:text-primary bg-secondary/5 hover:bg-secondary/10 rounded-full px-3 py-2 transition-colors"
             >
-              <span className="material-symbols-outlined text-[20px]">send</span>
+              {t("ai.lead.cta")}
             </button>
-          </form>
+          </div>
+
+          {leadMode ? (
+            <form onSubmit={handleLeadSubmit} className="p-3 flex-shrink-0 bg-white space-y-2">
+              <p className="text-[11px] text-on-surface-variant text-center font-light">{t("ai.lead.title")}</p>
+              <div className="grid grid-cols-2 gap-2">
+                <label htmlFor="ai-lead-first" className="sr-only">{t("ai.lead.first")}</label>
+                <input
+                  id="ai-lead-first"
+                  type="text"
+                  value={leadForm.first}
+                  onChange={e => setLeadForm({ ...leadForm, first: e.target.value })}
+                  placeholder={t("ai.lead.first")}
+                  className="bg-surface-container border-0 rounded-full px-4 py-2.5 text-sm focus:ring-2 focus:ring-secondary focus:outline-none min-h-[44px]"
+                />
+                <label htmlFor="ai-lead-last" className="sr-only">{t("ai.lead.last")}</label>
+                <input
+                  id="ai-lead-last"
+                  type="text"
+                  value={leadForm.last}
+                  onChange={e => setLeadForm({ ...leadForm, last: e.target.value })}
+                  placeholder={t("ai.lead.last")}
+                  className="bg-surface-container border-0 rounded-full px-4 py-2.5 text-sm focus:ring-2 focus:ring-secondary focus:outline-none min-h-[44px]"
+                />
+              </div>
+              <div className="flex items-center gap-2">
+                <label htmlFor="ai-lead-contact" className="sr-only">{t("ai.lead.contact")}</label>
+                <input
+                  id="ai-lead-contact"
+                  type="text"
+                  value={leadForm.contact}
+                  onChange={e => setLeadForm({ ...leadForm, contact: e.target.value })}
+                  placeholder={t("ai.lead.contact")}
+                  dir="ltr"
+                  className="flex-1 bg-surface-container border-0 rounded-full px-4 py-2.5 text-sm focus:ring-2 focus:ring-secondary focus:outline-none min-h-[44px]"
+                />
+                <button
+                  type="submit"
+                  className="shine shine-glow bg-primary text-white rounded-full px-4 min-h-[44px] text-xs font-bold hover:bg-secondary transition-colors whitespace-nowrap"
+                >
+                  {t("ai.lead.submit")}
+                </button>
+              </div>
+              {leadError && (
+                <p className="text-[11px] text-error-red text-center font-semibold">{t("ai.lead.invalid")}</p>
+              )}
+            </form>
+          ) : (
+            <form
+              onSubmit={handleSubmit}
+              className="p-3 flex items-center gap-2 flex-shrink-0 bg-white"
+            >
+              <label htmlFor="ai-chat-input" className="sr-only">
+                {t("ai.placeholder")}
+              </label>
+              <input
+                ref={inputRef}
+                id="ai-chat-input"
+                type="text"
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                placeholder={t("ai.placeholder")}
+                className="flex-1 bg-surface-container border-0 rounded-full px-4 py-3 text-sm focus:ring-2 focus:ring-secondary focus:outline-none min-h-[44px]"
+                aria-label={t("ai.placeholder")}
+              />
+              <button
+                type="submit"
+                disabled={!input.trim()}
+                className="shine shine-glow w-11 h-11 bg-primary text-white rounded-full flex items-center justify-center hover:bg-secondary transition-colors disabled:bg-outline-variant disabled:cursor-not-allowed flex-shrink-0"
+                aria-label={t("ai.send")}
+                data-tooltip={t("ai.send")}
+                data-tooltip-position="bottom"
+              >
+                <span className="material-symbols-outlined text-[20px]">send</span>
+              </button>
+            </form>
+          )}
         </div>
       )}
     </>

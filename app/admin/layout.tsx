@@ -15,6 +15,7 @@ const MODULES: Array<{
   { href: "/admin", icon: "dashboard", labelKey: "admin.module.dashboard", subKey: "admin.subtitle", group: "overview" },
   { href: "/admin/sales", icon: "trending_up", labelKey: "admin.module.sales", subKey: "admin.module.salesSub", group: "overview" },
   { href: "/admin/goals", icon: "flag", labelKey: "nav.goals", subKey: "goals.subtitle", group: "overview" },
+  { href: "/admin/leads", icon: "psychology", labelKey: "nav.leads", subKey: "leads.subtitle", group: "sales" },
   { href: "/admin/pipeline", icon: "filter_alt", labelKey: "nav.pipeline", subKey: "pipe.subtitle", group: "sales" },
   { href: "/admin/strategic", icon: "stars", labelKey: "nav.strategic", subKey: "strat.subtitle", group: "sales" },
   { href: "/admin/approvals", icon: "task_alt", labelKey: "admin.module.approvals", subKey: "admin.module.approvalsSub", group: "sales" },

@@ -2,6 +2,7 @@
 
 import { useEffect, useId, useRef, useState } from "react";
 import { useLanguage } from "@/lib/LanguageContext";
+import { captureLead } from "@/lib/leads";
 
 const MAPI_SUPPORT_URL = "https://www.gov.il/he/pages/mapi_support";
 
@@ -53,6 +54,20 @@ export default function SupportFormModal({ open, onClose }: Props) {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    // [HLD 13] "טופס יצירת קשר → יוצר Lead / Case": a quote inquiry becomes a
+    // sales lead; every other inquiry type remains a service Case.
+    if (form.inquiryType === "quote") {
+      const [firstName, ...rest] = form.fullName.trim().split(/\s+/);
+      captureLead({
+        firstName: firstName || "",
+        lastName: rest.join(" ") || "",
+        email: form.email,
+        phone: form.phone,
+        family: "maps",
+        interest: form.subject || form.message.slice(0, 80),
+        source: "form"
+      });
+    }
     setSubmitted(true);
   };
 

@@ -4,6 +4,7 @@ import { useEffect, useId, useRef, useState } from "react";
 import type { Service } from "@/lib/data";
 import { getServiceName, getServiceShortDescription, getServiceCategoryLabel, getServiceDeliveryDays } from "@/lib/data";
 import { useLanguage } from "@/lib/LanguageContext";
+import { captureLead, familyFromCategory, meetsLeadMinimum } from "@/lib/leads";
 
 interface Props {
   service: Service | null;
@@ -48,10 +49,50 @@ export default function QuoteRequestModal({ service, open, onClose }: Props) {
     }
   }, [open]);
 
+  // Mirror volatile state into refs for the abandonment check below
+  const formRef = useRef(form);
+  formRef.current = form;
+  const submittedRef = useRef(submitted);
+  submittedRef.current = submitted;
+  const serviceRef = useRef(service);
+  if (service) serviceRef.current = service;
+
+  // [HLD 4.2] נטישת טופס: מולאו פרטי המינימום (שם פרטי + משפחה + מייל/טלפון)
+  // והטופס לא נשלח — נוצר ליד אוטומטית על משפחת המוצרים הרלוונטית.
+  useEffect(() => {
+    if (open) return;
+    const f = formRef.current;
+    const svc = serviceRef.current;
+    if (submittedRef.current || !svc) return;
+    if (!meetsLeadMinimum({ firstName: f.firstName, lastName: f.lastName, email: f.email })) return;
+    captureLead({
+      firstName: f.firstName,
+      lastName: f.lastName,
+      email: f.email,
+      organization: f.organization,
+      family: familyFromCategory(svc.slug, svc.category),
+      interest: svc.name,
+      source: "formAbandon",
+      estimatedValue: svc.priceFrom
+    });
+    setForm({ firstName: "", lastName: "", email: "", organization: "", businessId: "", notes: "" });
+  }, [open]);
+
   if (!open || !service) return null;
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    // Completed inquiry — a full-intent lead (routed + scored by A2/A3)
+    captureLead({
+      firstName: form.firstName,
+      lastName: form.lastName,
+      email: form.email,
+      organization: form.organization,
+      family: familyFromCategory(service.slug, service.category),
+      interest: service.name,
+      source: "form",
+      estimatedValue: service.priceTo || service.priceFrom
+    });
     setSubmitted(true);
   };
 

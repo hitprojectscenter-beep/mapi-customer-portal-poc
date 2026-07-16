@@ -426,7 +426,31 @@ type TranslationKeys =
   | "pipe.col.type" | "pipe.col.stage" | "pipe.col.daysInStage"
   | "pipe.col.amount" | "pipe.kpi.activeOpps" | "pipe.kpi.totalValue"
   // Catalog/[slug] subscription
-  | "svc.priceUnitMonth" | "svc.perMonth";
+  | "svc.priceUnitMonth" | "svc.perMonth"
+  // Lead management (HLD V8 ch. 4.2 / 8.1 / 14.5 / 15.6-R3)
+  | "nav.leads" | "leads.subtitle" | "leads.title" | "leads.specRef"
+  | "leads.kpi.active" | "leads.kpi.newWeek" | "leads.kpi.treatment" | "leads.kpi.slaBreach" | "leads.kpi.conversion"
+  | "leads.chart.scoring" | "leads.chart.scoringSub" | "leads.chart.source" | "leads.chart.status"
+  | "leads.band.high" | "leads.band.med" | "leads.band.low"
+  | "leads.status.new" | "leads.status.working" | "leads.status.qualified"
+  | "leads.status.unqualified" | "leads.status.noResponse" | "leads.status.converted"
+  | "leads.col.lead" | "leads.col.family" | "leads.col.source" | "leads.col.score"
+  | "leads.col.status" | "leads.col.assignee" | "leads.col.age" | "leads.col.actions"
+  | "leads.action.touch" | "leads.action.qualify" | "leads.action.disqualify" | "leads.action.reEngage"
+  | "leads.action.details" | "leads.action.close"
+  | "leads.sla.ok" | "leads.sla.breach" | "leads.slaNote"
+  | "leads.score.breakdown" | "leads.score.serviceType" | "leads.score.scope" | "leads.score.sourceFactor"
+  | "leads.converted.to" | "leads.timeline" | "leads.estValue" | "leads.campaignLabel"
+  | "leads.automations.title" | "leads.automations.sub" | "leads.automations.active"
+  | "leads.intake.title" | "leads.intake.sub" | "leads.intake.placeholder" | "leads.intake.analyze"
+  | "leads.intake.analyzing" | "leads.intake.resultTitle" | "leads.intake.confidence"
+  | "leads.intake.keywords" | "leads.intake.createLead" | "leads.intake.created"
+  | "leads.intake.missingMin" | "leads.intake.supportIntent" | "leads.intake.example"
+  | "leads.filter.all" | "leads.reset" | "leads.empty"
+  | "leads.admin.kpiLabel" | "leads.admin.quickSub"
+  // Chatbot lead capture
+  | "ai.lead.cta" | "ai.lead.title" | "ai.lead.first" | "ai.lead.last"
+  | "ai.lead.contact" | "ai.lead.submit" | "ai.lead.done" | "ai.lead.invalid";
 
 const dict: Record<TranslationKeys, Record<Lang, string>> = {
   // Navigation
@@ -1823,7 +1847,85 @@ const dict: Record<TranslationKeys, Record<Lang, string>> = {
   "govmap.layer.nature": { he: 'שמורות טבע', en: 'Nature Reserves', fr: 'Réserves naturelles', es: 'Reservas naturales', ru: 'Заповедники', ar: 'محميات طبيعية' },
   "govmap.layer.trails": { he: 'שבילים מסומנים', en: 'Marked Trails', fr: 'Sentiers balisés', es: 'Senderos', ru: 'Тропы', ar: 'مسارات معلمة' },
   "govmap.openSite": { he: 'מעבר לאתר GovMap', en: 'Open GovMap website', fr: 'Ouvrir le site GovMap', es: 'Abrir sitio GovMap', ru: 'Открыть сайт GovMap', ar: 'فتح موقع GovMap' },
-  "govmap.refreshing": { he: 'מעדכן מפה...', en: 'Updating map...', fr: 'Mise à jour...', es: 'Actualizando...', ru: 'Обновление...', ar: 'تحديث الخريطة...' }
+  "govmap.refreshing": { he: 'מעדכן מפה...', en: 'Updating map...', fr: 'Mise à jour...', es: 'Actualizando...', ru: 'Обновление...', ar: 'تحديث الخريطة...' },
+
+  // --- Lead management (HLD V8) ---
+  "nav.leads": { he: 'ניהול לידים AI', en: 'AI Lead Management', fr: 'Gestion des leads IA', es: 'Gestión de leads IA', ru: 'AI-управление лидами', ar: 'إدارة العملاء المحتملين AI' },
+  "leads.subtitle": { he: 'קליטה, ניקוד, ניתוב והמרה — לפי אפיון 4.2', en: 'Capture, scoring, routing & conversion — per spec 4.2', fr: 'Capture, scoring, routage et conversion', es: 'Captura, puntuación, enrutamiento y conversión', ru: 'Приём, скоринг, маршрутизация и конверсия', ar: 'الالتقاط والتقييم والتوجيه والتحويل' },
+  "leads.title": { he: 'ניהול לידים חכם (AI)', en: 'AI Lead Management', fr: 'Gestion intelligente des leads (IA)', es: 'Gestión inteligente de leads (IA)', ru: 'Интеллектуальное управление лидами (AI)', ar: 'إدارة ذكية للعملاء المحتملين (AI)' },
+  "leads.specRef": { he: 'לפי אפיון HLD: פרק 4.2 (ניהול לידים), 8.1 (אוטומציות A1-A5), 14.5 (דשבורד), 15.6-R3 (עיבוד מיילים AI)', en: 'Per HLD spec: ch. 4.2 (leads), 8.1 (automations A1-A5), 14.5 (dashboard), 15.6-R3 (AI email processing)', fr: 'Selon la spécification HLD : ch. 4.2, 8.1, 14.5, 15.6-R3', es: 'Según la especificación HLD: cap. 4.2, 8.1, 14.5, 15.6-R3', ru: 'По спецификации HLD: гл. 4.2, 8.1, 14.5, 15.6-R3', ar: 'وفق مواصفة HLD: الفصول 4.2 و8.1 و14.5 و15.6-R3' },
+  "leads.kpi.active": { he: 'לידים פעילים', en: 'Active leads', fr: 'Leads actifs', es: 'Leads activos', ru: 'Активные лиды', ar: 'عملاء محتملون نشطون' },
+  "leads.kpi.newWeek": { he: 'חדשים השבוע', en: 'New this week', fr: 'Nouveaux cette semaine', es: 'Nuevos esta semana', ru: 'Новых за неделю', ar: 'جدد هذا الأسبوع' },
+  "leads.kpi.treatment": { he: 'בטיפול פעיל', en: 'In active treatment', fr: 'En traitement actif', es: 'En tratamiento activo', ru: 'В активной работе', ar: 'قيد المعالجة النشطة' },
+  "leads.kpi.slaBreach": { he: 'חורגי SLA', en: 'SLA breaches', fr: 'Dépassements SLA', es: 'Incumplimientos SLA', ru: 'Нарушения SLA', ar: 'تجاوزات SLA' },
+  "leads.kpi.conversion": { he: 'שיעור המרה', en: 'Conversion rate', fr: 'Taux de conversion', es: 'Tasa de conversión', ru: 'Конверсия', ar: 'معدل التحويل' },
+  "leads.chart.scoring": { he: 'Lead Scoring Distribution', en: 'Lead Scoring Distribution', fr: 'Distribution des scores', es: 'Distribución de puntuación', ru: 'Распределение скоринга', ar: 'توزيع تقييم العملاء' },
+  "leads.chart.scoringSub": { he: 'פילוח לפי ציון הליד — תיעדוף טיפול (אפיון 14.5)', en: 'Breakdown by lead score — treatment priority (spec 14.5)', fr: 'Répartition par score — priorité de traitement', es: 'Desglose por puntuación — prioridad de tratamiento', ru: 'Разбивка по баллам — приоритет обработки', ar: 'تصنيف حسب النقاط — أولوية المعالجة' },
+  "leads.chart.source": { he: 'לידים לפי מקור', en: 'Leads by source', fr: 'Leads par source', es: 'Leads por fuente', ru: 'Лиды по источникам', ar: 'العملاء حسب المصدر' },
+  "leads.chart.status": { he: 'פילוח לפי סטטוס', en: 'Breakdown by status', fr: 'Répartition par statut', es: 'Desglose por estado', ru: 'Разбивка по статусам', ar: 'تصنيف حسب الحالة' },
+  "leads.band.high": { he: 'High', en: 'High', fr: 'High', es: 'High', ru: 'High', ar: 'High' },
+  "leads.band.med": { he: 'Med', en: 'Med', fr: 'Med', es: 'Med', ru: 'Med', ar: 'Med' },
+  "leads.band.low": { he: 'Low', en: 'Low', fr: 'Low', es: 'Low', ru: 'Low', ar: 'Low' },
+  "leads.status.new": { he: 'חדש', en: 'New', fr: 'Nouveau', es: 'Nuevo', ru: 'Новый', ar: 'جديد' },
+  "leads.status.working": { he: 'בטיפול', en: 'Working', fr: 'En cours', es: 'En curso', ru: 'В работе', ar: 'قيد المعالجة' },
+  "leads.status.qualified": { he: 'מוכשר (Qualified)', en: 'Qualified', fr: 'Qualifié', es: 'Calificado', ru: 'Квалифицирован', ar: 'مؤهل' },
+  "leads.status.unqualified": { he: 'לא רלוונטי', en: 'Unqualified', fr: 'Non qualifié', es: 'No calificado', ru: 'Не квалифицирован', ar: 'غير مؤهل' },
+  "leads.status.noResponse": { he: 'ללא מענה', en: 'No response', fr: 'Sans réponse', es: 'Sin respuesta', ru: 'Без ответа', ar: 'بدون رد' },
+  "leads.status.converted": { he: 'הומר ללקוח', en: 'Converted', fr: 'Converti', es: 'Convertido', ru: 'Конвертирован', ar: 'تم التحويل' },
+  "leads.col.lead": { he: 'ליד', en: 'Lead', fr: 'Lead', es: 'Lead', ru: 'Лид', ar: 'العميل المحتمل' },
+  "leads.col.family": { he: 'משפחת מוצר', en: 'Product family', fr: 'Famille de produits', es: 'Familia de producto', ru: 'Семейство продуктов', ar: 'عائلة المنتج' },
+  "leads.col.source": { he: 'מקור', en: 'Source', fr: 'Source', es: 'Fuente', ru: 'Источник', ar: 'المصدر' },
+  "leads.col.score": { he: 'ניקוד AI', en: 'AI score', fr: 'Score IA', es: 'Puntuación IA', ru: 'AI-скоринг', ar: 'تقييم AI' },
+  "leads.col.status": { he: 'סטטוס', en: 'Status', fr: 'Statut', es: 'Estado', ru: 'Статус', ar: 'الحالة' },
+  "leads.col.assignee": { he: 'מטפל', en: 'Assignee', fr: 'Responsable', es: 'Asignado', ru: 'Ответственный', ar: 'المسؤول' },
+  "leads.col.age": { he: 'גיל', en: 'Age', fr: 'Âge', es: 'Antigüedad', ru: 'Возраст', ar: 'العمر' },
+  "leads.col.actions": { he: 'פעולות', en: 'Actions', fr: 'Actions', es: 'Acciones', ru: 'Действия', ar: 'إجراءات' },
+  "leads.action.touch": { he: 'בוצע קשר', en: 'Mark contacted', fr: 'Contact effectué', es: 'Contactado', ru: 'Контакт выполнен', ar: 'تم التواصل' },
+  "leads.action.qualify": { he: 'הכשר והמר', en: 'Qualify & convert', fr: 'Qualifier et convertir', es: 'Calificar y convertir', ru: 'Квалифицировать и конвертировать', ar: 'تأهيل وتحويل' },
+  "leads.action.disqualify": { he: 'סמן לא רלוונטי', en: 'Disqualify', fr: 'Disqualifier', es: 'Descalificar', ru: 'Дисквалифицировать', ar: 'استبعاد' },
+  "leads.action.reEngage": { he: 'שלח תזכורת (A4)', en: 'Re-engage (A4)', fr: 'Relancer (A4)', es: 'Reactivar (A4)', ru: 'Повторный контакт (A4)', ar: 'إعادة تواصل (A4)' },
+  "leads.action.details": { he: 'פרטים', en: 'Details', fr: 'Détails', es: 'Detalles', ru: 'Детали', ar: 'تفاصيل' },
+  "leads.action.close": { he: 'סגור', en: 'Close', fr: 'Fermer', es: 'Cerrar', ru: 'Закрыть', ar: 'إغلاق' },
+  "leads.sla.ok": { he: 'בתקן', en: 'On time', fr: 'Dans les délais', es: 'A tiempo', ru: 'В норме', ar: 'ضمن الوقت' },
+  "leads.sla.breach": { he: 'חריגת SLA', en: 'SLA breach', fr: 'Dépassement SLA', es: 'Incumplimiento SLA', ru: 'Нарушение SLA', ar: 'تجاوز SLA' },
+  "leads.slaNote": { he: 'יעד מענה ראשון: עד 2 שעות · ליד ללא מגע מעל 2 ימים = חריגה (אפיון 14.5, 17.3)', en: 'First-response target: 2h · untouched > 2 days = breach (spec 14.5, 17.3)', fr: 'Objectif de première réponse : 2 h · sans contact > 2 jours = dépassement', es: 'Objetivo de primera respuesta: 2 h · sin contacto > 2 días = incumplimiento', ru: 'Цель первого ответа: 2 ч · без контакта > 2 дней = нарушение', ar: 'هدف الرد الأول: ساعتان · بدون تواصل > يومين = تجاوز' },
+  "leads.score.breakdown": { he: 'פירוק הניקוד (A3)', en: 'Score breakdown (A3)', fr: 'Détail du score (A3)', es: 'Desglose de puntuación (A3)', ru: 'Разбор балла (A3)', ar: 'تفصيل التقييم (A3)' },
+  "leads.score.serviceType": { he: 'סוג שירות', en: 'Service type', fr: 'Type de service', es: 'Tipo de servicio', ru: 'Тип услуги', ar: 'نوع الخدمة' },
+  "leads.score.scope": { he: 'היקף', en: 'Scope', fr: 'Portée', es: 'Alcance', ru: 'Объём', ar: 'النطاق' },
+  "leads.score.sourceFactor": { he: 'מקור', en: 'Source', fr: 'Source', es: 'Fuente', ru: 'Источник', ar: 'المصدر' },
+  "leads.converted.to": { he: 'הומר ל:', en: 'Converted to:', fr: 'Converti en :', es: 'Convertido a:', ru: 'Конвертирован в:', ar: 'تم التحويل إلى:' },
+  "leads.timeline": { he: 'ציר פעילות', en: 'Activity timeline', fr: 'Chronologie', es: 'Cronología', ru: 'Хронология', ar: 'الخط الزمني' },
+  "leads.estValue": { he: 'היקף משוער', en: 'Estimated value', fr: 'Valeur estimée', es: 'Valor estimado', ru: 'Оценочная сумма', ar: 'القيمة التقديرية' },
+  "leads.campaignLabel": { he: 'קמפיין', en: 'Campaign', fr: 'Campagne', es: 'Campaña', ru: 'Кампания', ar: 'حملة' },
+  "leads.automations.title": { he: 'אוטומציות ליד פעילות (8.1)', en: 'Active lead automations (8.1)', fr: 'Automatisations actives (8.1)', es: 'Automatizaciones activas (8.1)', ru: 'Активные автоматизации (8.1)', ar: 'أتمتة نشطة (8.1)' },
+  "leads.automations.sub": { he: 'A1-A5 מתוך האפיון — מופעלות אוטומטית על כל ליד', en: 'A1-A5 from the spec — applied automatically to every lead', fr: 'A1-A5 de la spécification — appliquées automatiquement', es: 'A1-A5 de la especificación — aplicadas automáticamente', ru: 'A1-A5 из спецификации — применяются автоматически', ar: 'A1-A5 من المواصفة — تُطبق تلقائيًا' },
+  "leads.automations.active": { he: 'פעיל', en: 'Active', fr: 'Actif', es: 'Activo', ru: 'Активно', ar: 'نشط' },
+  "leads.intake.title": { he: 'עיבוד מייל נכנס (RPA + AI)', en: 'Incoming email processing (RPA + AI)', fr: 'Traitement des e-mails entrants (RPA + IA)', es: 'Procesamiento de correo entrante (RPA + IA)', ru: 'Обработка входящей почты (RPA + AI)', ar: 'معالجة البريد الوارد (RPA + AI)' },
+  "leads.intake.sub": { he: 'הדביקו מייל מלקוח — המערכת תסווג, תחלץ פרטים ותיצור ליד אוטומטית (אפיון 15.6-R3)', en: 'Paste a customer email — the system classifies, extracts details and creates a lead (spec 15.6-R3)', fr: 'Collez un e-mail client — classification, extraction et création de lead automatiques', es: 'Pegue un correo del cliente — clasificación, extracción y creación automática de lead', ru: 'Вставьте письмо клиента — система классифицирует, извлечёт данные и создаст лид', ar: 'الصق بريد العميل — يصنف النظام ويستخرج التفاصيل وينشئ عميلًا محتملًا' },
+  "leads.intake.placeholder": { he: 'הדביקו כאן את תוכן המייל הנכנס...', en: 'Paste the incoming email content here...', fr: 'Collez ici le contenu de l\'e-mail...', es: 'Pegue aquí el contenido del correo...', ru: 'Вставьте сюда текст письма...', ar: 'الصق محتوى البريد هنا...' },
+  "leads.intake.analyze": { he: 'עבד עם AI', en: 'Process with AI', fr: 'Traiter avec l\'IA', es: 'Procesar con IA', ru: 'Обработать с AI', ar: 'معالجة بالذكاء الاصطناعي' },
+  "leads.intake.analyzing": { he: 'מנתח את המייל...', en: 'Analyzing email...', fr: 'Analyse en cours...', es: 'Analizando...', ru: 'Анализ письма...', ar: 'جارٍ التحليل...' },
+  "leads.intake.resultTitle": { he: 'תוצאת הניתוח', en: 'Analysis result', fr: 'Résultat de l\'analyse', es: 'Resultado del análisis', ru: 'Результат анализа', ar: 'نتيجة التحليل' },
+  "leads.intake.confidence": { he: 'ביטחון סיווג', en: 'Classification confidence', fr: 'Confiance de classification', es: 'Confianza de clasificación', ru: 'Уверенность классификации', ar: 'ثقة التصنيف' },
+  "leads.intake.keywords": { he: 'מילות מפתח שזוהו', en: 'Detected keywords', fr: 'Mots-clés détectés', es: 'Palabras clave detectadas', ru: 'Найденные ключевые слова', ar: 'كلمات مفتاحية' },
+  "leads.intake.createLead": { he: 'צור ליד מהמייל', en: 'Create lead from email', fr: 'Créer un lead', es: 'Crear lead', ru: 'Создать лид', ar: 'إنشاء عميل محتمل' },
+  "leads.intake.created": { he: 'ליד נוצר בהצלחה ונותב לתור המתאים ✓', en: 'Lead created and routed to the right queue ✓', fr: 'Lead créé et routé ✓', es: 'Lead creado y enrutado ✓', ru: 'Лид создан и направлен ✓', ar: 'تم إنشاء العميل وتوجيهه ✓' },
+  "leads.intake.missingMin": { he: 'חסרים פרטי מינימום (שם פרטי + משפחה + טלפון/מייל) — לפי האפיון לא נוצר ליד', en: 'Below creation minimum (first + last name + phone/email) — per spec no lead is created', fr: 'Informations minimales manquantes — aucun lead créé', es: 'Faltan datos mínimos — no se crea lead', ru: 'Не хватает минимальных данных — лид не создаётся', ar: 'بيانات ناقصة — لن يُنشأ عميل محتمل' },
+  "leads.intake.supportIntent": { he: 'זוהתה כוונת תמיכה — מומלץ לפתוח Case במקום ליד', en: 'Support intent detected — consider opening a Case instead', fr: 'Intention de support détectée — ouvrir un Case', es: 'Intención de soporte detectada — abrir un Case', ru: 'Определён запрос поддержки — лучше открыть Case', ar: 'تم رصد نية دعم — يُفضل فتح Case' },
+  "leads.intake.example": { he: 'טען דוגמה', en: 'Load example', fr: 'Charger un exemple', es: 'Cargar ejemplo', ru: 'Загрузить пример', ar: 'تحميل مثال' },
+  "leads.filter.all": { he: 'הכל', en: 'All', fr: 'Tous', es: 'Todos', ru: 'Все', ar: 'الكل' },
+  "leads.reset": { he: 'אפס לנתוני דמו', en: 'Reset to demo data', fr: 'Réinitialiser', es: 'Restablecer', ru: 'Сбросить к демо', ar: 'إعادة تعيين' },
+  "leads.empty": { he: 'אין לידים בסינון הנוכחי', en: 'No leads match the current filter', fr: 'Aucun lead', es: 'Sin leads', ru: 'Нет лидов', ar: 'لا يوجد عملاء' },
+  "leads.admin.kpiLabel": { he: 'לידים פעילים', en: 'Active leads', fr: 'Leads actifs', es: 'Leads activos', ru: 'Активные лиды', ar: 'عملاء نشطون' },
+  "leads.admin.quickSub": { he: 'ניקוד AI · ניתוב · SLA · המרה', en: 'AI scoring · routing · SLA · conversion', fr: 'Scoring IA · routage · SLA · conversion', es: 'Puntuación IA · enrutamiento · SLA · conversión', ru: 'AI-скоринг · маршрутизация · SLA · конверсия', ar: 'تقييم AI · توجيه · SLA · تحويل' },
+  "ai.lead.cta": { he: '📞 השאירו פרטים ונחזור אליכם', en: '📞 Leave your details — we\'ll call back', fr: '📞 Laissez vos coordonnées', es: '📞 Deje sus datos', ru: '📞 Оставьте контакты', ar: '📞 اترك بياناتك وسنعاود الاتصال' },
+  "ai.lead.title": { he: 'נציג מכירות יחזור אליכם בהקדם', en: 'A sales rep will get back to you shortly', fr: 'Un commercial vous recontactera', es: 'Un representante le contactará', ru: 'Менеджер свяжется с вами', ar: 'سيتواصل معك مندوب المبيعات' },
+  "ai.lead.first": { he: 'שם פרטי', en: 'First name', fr: 'Prénom', es: 'Nombre', ru: 'Имя', ar: 'الاسم الأول' },
+  "ai.lead.last": { he: 'שם משפחה', en: 'Last name', fr: 'Nom', es: 'Apellido', ru: 'Фамилия', ar: 'اسم العائلة' },
+  "ai.lead.contact": { he: 'טלפון או מייל', en: 'Phone or email', fr: 'Téléphone ou e-mail', es: 'Teléfono o correo', ru: 'Телефон или email', ar: 'هاتف أو بريد' },
+  "ai.lead.submit": { he: 'שלחו ונחזור אליכם', en: 'Send — we\'ll call back', fr: 'Envoyer', es: 'Enviar', ru: 'Отправить', ar: 'إرسال' },
+  "ai.lead.done": { he: 'תודה! הפנייה נקלטה ונותבה לנציג. מספר ליד: ', en: 'Thanks! Your request was captured and routed. Lead ID: ', fr: 'Merci ! Votre demande a été enregistrée. ID : ', es: '¡Gracias! Su solicitud fue registrada. ID: ', ru: 'Спасибо! Заявка принята. Номер: ', ar: 'شكرًا! تم استلام طلبك. المعرف: ' },
+  "ai.lead.invalid": { he: 'נא למלא שם מלא + טלפון או מייל', en: 'Please fill full name + phone or email', fr: 'Veuillez remplir nom complet + téléphone ou e-mail', es: 'Complete nombre + teléfono o correo', ru: 'Заполните имя + телефон или email', ar: 'يرجى ملء الاسم + الهاتف أو البريد' }
 };
 
 export type TKey = keyof typeof dict;

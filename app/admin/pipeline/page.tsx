@@ -3,8 +3,8 @@
 import { useLanguage } from "@/lib/LanguageContext";
 import {
   PIPELINE_STAGES, ROUTE_TYPES, mockPipelineEntries,
-  QUOTE_APPROVAL_THRESHOLDS, DISCOUNT_LEVELS, PRICE_BOOKS,
-  PRICE_INDEXATION, RENEWAL_TIMELINE
+  QUOTE_APPROVAL_POLICY, DETERMINISTIC_DISCOUNTS, PRICE_BOOK_POLICY,
+  SLA_BY_ROUTE, RENEWAL_TIMELINE
 } from "@/lib/pipeline";
 import type { TKey } from "@/lib/i18n";
 
@@ -154,100 +154,78 @@ export default function PipelinePage() {
         </div>
       </section>
 
-      {/* Quote approval thresholds (v7 4.7) */}
-      <section className="bg-white rounded-2xl border border-outline-variant/50 overflow-hidden">
-        <header className="px-5 py-3 border-b border-outline-variant/50 flex items-center gap-2">
-          <span className="material-symbols-outlined text-secondary text-[20px]">approval</span>
-          <h2 className="text-base font-extrabold text-primary">{t("pipe.approvalThresholds")}</h2>
-        </header>
-        <div className="overflow-x-auto">
-          <table className="w-full text-xs">
-            <thead className="bg-surface-container/50 text-on-surface-variant uppercase tracking-wider">
-              <tr>
-                <th className="py-2.5 px-3">{t("pipe.col.tier")}</th>
-                <th className="py-2.5 px-3">{t("pipe.col.range")}</th>
-                <th className="py-2.5 px-3 text-right">{t("pipe.col.approver")}</th>
-                <th className="py-2.5 px-3">{t("pipe.col.slaApproval")}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {QUOTE_APPROVAL_THRESHOLDS.map((th) => (
-                <tr key={th.tier} className="border-b border-outline-variant/30">
-                  <td className="py-2.5 px-3 text-center">
-                    <span className="inline-block w-6 h-6 rounded-full bg-primary text-white text-[11px] font-bold leading-6">{th.tier}</span>
-                  </td>
-                  <td className="py-2.5 px-3 text-center font-mono font-bold text-primary whitespace-nowrap">{th.range}</td>
-                  <td className="py-2.5 px-3 text-right">{th.approver}</td>
-                  <td className="py-2.5 px-3 text-center text-secondary font-bold whitespace-nowrap">{th.slaHours}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-        <p className="px-5 py-2.5 text-[11px] text-alert-yellow bg-alert-yellow/5 border-t border-alert-yellow/20">
-          ⚠ הצעת מחיר ללקוח אסטרטגי תמיד תדרוש אישור Account Manager, גם אם הסכום נמוך.
-        </p>
-      </section>
-
-      {/* Discount levels + Price books (v7 4.7) */}
+      {/* V8: pricing & approval policy (4.6) — the V7 ladders were removed */}
       <div className="grid lg:grid-cols-2 gap-6">
+        <section className="bg-white rounded-2xl border border-outline-variant/50 p-5">
+          <header className="flex items-center gap-2 mb-3">
+            <span className="material-symbols-outlined text-secondary text-[20px]">approval</span>
+            <h2 className="text-base font-extrabold text-primary">{t("pipe.approvalThresholds")}</h2>
+          </header>
+          <p className="text-sm text-primary bg-positive-green/5 border border-positive-green/20 rounded-xl px-4 py-3 leading-relaxed">
+            ✓ {QUOTE_APPROVAL_POLICY} <span className="text-[11px] text-on-surface-variant">(אפיון V8, סעיף 4.6.4)</span>
+          </p>
+          <header className="flex items-center gap-2 mt-5 mb-3">
+            <span className="material-symbols-outlined text-secondary text-[20px]">menu_book</span>
+            <h2 className="text-base font-extrabold text-primary">{t("pipe.priceBooks")}</h2>
+          </header>
+          <p className="text-[13px] text-on-surface-variant bg-surface-container/40 border border-outline-variant/40 rounded-xl px-4 py-3 leading-relaxed">
+            {PRICE_BOOK_POLICY} <span className="text-[11px]">(סעיף 4.6.1 — מחליף את 7 המחירונים וההצמדה למדד מגרסה 7)</span>
+          </p>
+        </section>
+
         <section className="bg-white rounded-2xl border border-outline-variant/50 overflow-hidden">
           <header className="px-5 py-3 border-b border-outline-variant/50 flex items-center gap-2">
             <span className="material-symbols-outlined text-secondary text-[20px]">percent</span>
             <h2 className="text-base font-extrabold text-primary">{t("pipe.discountLevels")}</h2>
           </header>
+          <p className="px-5 py-2.5 text-[11px] text-on-surface-variant bg-surface-container/30 border-b border-outline-variant/30">
+            "לא יוגדרו כלל הנחות ידניות בתהליך. ההנחות בתהליך יוגדרו בתנאים דטרמיניסטיים" (סעיף 4.6.3)
+          </p>
           <div className="overflow-x-auto">
             <table className="w-full text-xs">
               <thead className="bg-surface-container/50 text-on-surface-variant uppercase tracking-wider">
                 <tr>
+                  <th className="py-2.5 px-3 text-right">{t("pipe.col.discount")}</th>
                   <th className="py-2.5 px-3 text-right">{t("pipe.col.range")}</th>
-                  <th className="py-2.5 px-3">{t("pipe.col.approver")}</th>
                   <th className="py-2.5 px-3 text-right">{t("pipe.col.docs")}</th>
                 </tr>
               </thead>
               <tbody>
-                {DISCOUNT_LEVELS.map((d, i) => (
+                {DETERMINISTIC_DISCOUNTS.map((d, i) => (
                   <tr key={i} className="border-b border-outline-variant/30">
-                    <td className="py-2.5 px-3 font-medium text-primary">{d.range}</td>
-                    <td className="py-2.5 px-3 text-center text-on-surface-variant whitespace-nowrap">{d.approver}</td>
-                    <td className="py-2.5 px-3 text-right text-[11px] text-on-surface-variant">{d.documentation}</td>
+                    <td className="py-2.5 px-3 font-bold text-primary whitespace-nowrap">{d.name}</td>
+                    <td className="py-2.5 px-3 text-on-surface-variant">{d.rule}</td>
+                    <td className="py-2.5 px-3 text-[11px] text-on-surface-variant">{d.management}</td>
                   </tr>
                 ))}
               </tbody>
             </table>
           </div>
-        </section>
-
-        <section className="bg-white rounded-2xl border border-outline-variant/50 overflow-hidden">
-          <header className="px-5 py-3 border-b border-outline-variant/50 flex items-center gap-2">
-            <span className="material-symbols-outlined text-secondary text-[20px]">menu_book</span>
-            <h2 className="text-base font-extrabold text-primary">{t("pipe.priceBooks")}</h2>
-          </header>
-          <div className="overflow-x-auto">
-            <table className="w-full text-xs">
-              <thead className="bg-surface-container/50 text-on-surface-variant uppercase tracking-wider">
-                <tr>
-                  <th className="py-2.5 px-3 text-right">{t("pipe.col.priceBook")}</th>
-                  <th className="py-2.5 px-3">{t("pipe.col.discount")}</th>
-                  <th className="py-2.5 px-3 text-right">{t("pipe.col.custType")}</th>
-                </tr>
-              </thead>
-              <tbody>
-                {PRICE_BOOKS.map((pb, i) => (
-                  <tr key={i} className="border-b border-outline-variant/30">
-                    <td className="py-2.5 px-3 font-medium text-primary">{pb.name}</td>
-                    <td className="py-2.5 px-3 text-center font-bold text-secondary whitespace-nowrap">{pb.discount}</td>
-                    <td className="py-2.5 px-3 text-right text-[11px] text-on-surface-variant">{pb.customerType}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-          <p className="px-5 py-2.5 text-[11px] text-on-surface-variant bg-surface-container/30 border-t border-outline-variant/30">
-            📈 {t("pipe.indexation")}: {PRICE_INDEXATION}
-          </p>
         </section>
       </div>
+
+      {/* V8: SLA per route in business days (4.3.4) */}
+      <section className="bg-white rounded-2xl border border-outline-variant/50 overflow-hidden">
+        <header className="px-5 py-3 border-b border-outline-variant/50 flex items-center gap-2">
+          <span className="material-symbols-outlined text-secondary text-[20px]">timer</span>
+          <h2 className="text-base font-extrabold text-primary">SLA לפי מסלול מכירה (ימי עסקים) — אפיון V8 סעיף 4.3.4</h2>
+        </header>
+        <div className="overflow-x-auto">
+          <table className="w-full text-xs">
+            <tbody>
+              {SLA_BY_ROUTE.map((r, i) => (
+                <tr key={i} className="border-b border-outline-variant/30">
+                  <td className="py-2.5 px-3 font-bold text-primary whitespace-nowrap w-56">{r.route}</td>
+                  <td className="py-2.5 px-3 text-on-surface-variant">{r.sla}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        <p className="px-5 py-2.5 text-[11px] text-on-surface-variant bg-surface-container/30 border-t border-outline-variant/30">
+          תהליך אסקלציה רץ ברקע על כל חריגה · מסלולי שירות עצמי (סוג A) מדלגים משלב 1 ישירות לשלב 6
+        </p>
+      </section>
 
       {/* Renewal timeline (v7 4.9) */}
       <section className="bg-white rounded-2xl border border-outline-variant/50 p-5">

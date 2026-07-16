@@ -1,9 +1,9 @@
-// Sales Pipeline per Spec V7 Chapter 4 (תפיסת ניהול המכירות, ההכנסות והלקוחות)
-// 4.1 — 11 unified pipeline stages with probability, owner, transition condition
-// 4.2 — SLA per stage transition + escalation actions
-// 4.3 — Route types A/B/C/D with the v7 route assignments
-// 4.7 — Price books, discount levels, quote approval thresholds
-// 4.9 — Renewal timeline (T-90/60/30/7/0)
+// Sales Pipeline per אפיון HLD V8 Chapter 4 (תפיסת ניהול המכירות)
+// 4.1  — 11 unified pipeline stages (type-A routes jump stage 1 → 6)
+// 4.3  — Route types A/B/C/D (D = Strategic Account) + per-route SLA in business days
+// 4.6  — Single standard price book (no CPI), deterministic discounts only,
+//        no special quote-approval processes
+// 4.7  — Renewal timeline (T-90/60/30/7/0) — services only; CORS usage-triggered
 
 import type { TKey } from "./i18n";
 
@@ -39,20 +39,23 @@ export const ROUTE_TYPES: RouteTypeDef[] = [
   {
     id: "C",
     labelKey: "route.type.C",
-    approvalRequired: true,
+    approvalRequired: false,
     description: "מחיר משתנה לפי הבקשה — איש מכירות מפיק הצעת מחיר ידנית; אישור לקוח לפני תשלום",
-    routes: "מסלול 4 (מפה מותאמת), 5 (אורתופוטו), 6 (GIS), 7 (תצ\"א), 10 (קדסטר ירושלים), 12 (WS), חלק מ-13 (גזטיר בתשלום)",
+    routes: "מסלול 4 (מפה מותאמת), 5 (אורתופוטו), 6 (GIS), 7 (תצ\"א), 10 (קדסטר ירושלים), 12 (WS), חלק מ-13 (גזטיר בתשלום), מסלול 15 (גבולות בינלאומיים — חדש ב-V8)",
     color: "text-alert-yellow"
   },
   {
     id: "D",
     labelKey: "route.type.D",
-    approvalRequired: true,
-    description: "לקוח אסטרטגי — חוזה רב-שנתי, Account Manager ייעודי, Cross-sell ו-Upsell",
-    routes: "הסכמי שו\"פ (מסלול 14), לקוחות גדולים עם Bundle של שירותים מרובים",
+    approvalRequired: false,
+    description: "שירות אסטרטגי (Strategic Account) — ניהול שוטף של לקוחות שו\"פ וחבילות שירותים",
+    routes: "הסכמי שו\"פ, לקוחות אסטרטגיים עם Bundle של שירותים מרובים",
     color: "text-tertiary"
   }
 ];
+
+/** [HLD V8] 15 sales routes (מסלול 15 גבולות בינלאומיים נוסף באיחוד V8) */
+export const ROUTES_COUNT = 15;
 
 // ---------------------------------------------------------------------------
 // 4.1 — Eleven unified pipeline stages
@@ -144,67 +147,69 @@ export const PIPELINE_STAGES: PipelineStage[] = [
 ];
 
 // ---------------------------------------------------------------------------
-// 4.7 — Quote approval thresholds (5 tiers by amount)
-// "נקבע לפי 3 פרמטרים: סוג מוצר, סכום הצעה וסוג לקוח"
-// חריג: הצעת מחיר ללקוח אסטרטגי תמיד תדרוש אישור Account Manager.
+// 4.6 [HLD V8] — Pricing & discounts: the V7 approval/discount ladders were
+// REMOVED in the merged spec. Verbatim policy lines:
 // ---------------------------------------------------------------------------
 
-export interface ApprovalThreshold {
-  tier: number;
-  range: string;
-  minAmount: number;
-  maxAmount: number | null;
-  approver: string;
-  slaHours: string;
-}
+/** [HLD 4.6.4 verbatim] */
+export const QUOTE_APPROVAL_POLICY =
+  "הוגדר כי לא נדרש תהליכי אישור מיוחדים בתהליכי המכירה";
 
-export const QUOTE_APPROVAL_THRESHOLDS: ApprovalThreshold[] = [
-  { tier: 1, range: "עד 10,000 ₪", minAmount: 0, maxAmount: 10000, approver: "אישור אוטומטי — ללא אישור נוסף", slaHours: "—" },
-  { tier: 2, range: "10,000 - 50,000 ₪", minAmount: 10000, maxAmount: 50000, approver: "מרכז בכיר מכירות", slaHours: "24 שעות" },
-  { tier: 3, range: "50,000 - 200,000 ₪", minAmount: 50000, maxAmount: 200000, approver: "אישור כפול: מרכז בכיר + מנהל אגף", slaHours: "48 שעות" },
-  { tier: 4, range: "200,000 - 500,000 ₪", minAmount: 200000, maxAmount: 500000, approver: "מנהל אגף + סמנכ\"ל לקוחות", slaHours: "72 שעות" },
-  { tier: 5, range: "מעל 500,000 ₪", minAmount: 500000, maxAmount: null, approver: "ועדת חריגים: סמנכ\"ל + מנכ\"ל + ראש חטיבה מקצועית", slaHours: "7 ימים" }
-];
+/** [HLD 4.6.1 verbatim] single standard price book, no CPI indexation */
+export const PRICE_BOOK_POLICY =
+  "המערכת תנהל מחירון סטנדרטי שאינו תלוי במדד, ולכן לא יתבצעו עדכוני מחירים אוטומטיים במערכת. " +
+  "שינויים עתידיים במחירונים יתבצעו באופן ידני. הרשאות לניהול המחירונים יינתנו למנהל המכירות ולמנהל המערכת (Admin) בלבד.";
 
-// 4.7 — Discount authority levels
-export interface DiscountLevel {
-  range: string;
-  approver: string;
-  documentation: string;
-}
-
-export const DISCOUNT_LEVELS: DiscountLevel[] = [
-  { range: "הנחת מחירון אוטומטית (0-50% לפי Price Book)", approver: "מערכת — אוטומטי", documentation: "מסומן ב-Quote כ-Standard Discount" },
-  { range: "עד 5%", approver: "איש מכירות", documentation: "תיעוד בשדה Discount_Reason__c" },
-  { range: "5% - 10%", approver: "מרכז בכיר מכירות", documentation: "Approval Process" },
-  { range: "10% - 20%", approver: "מנהל אגף מכירות", documentation: "Approval Process + תיעוד החלטה" },
-  { range: "מעל 20%", approver: "סמנכ\"ל לקוחות", documentation: "Approval Process + פרוטוקול ועדה" }
-];
-
-// 4.7 — Price books
-export interface PriceBookDef {
+/** [HLD 4.6.3] "לא יוגדרו כלל הנחות ידניות בתהליך" — deterministic discounts only */
+export interface DeterministicDiscount {
   name: string;
-  discount: string;
-  customerType: string;
-  source: string;
+  rule: string;
+  management: string;
 }
 
-export const PRICE_BOOKS: PriceBookDef[] = [
-  { name: "מחירון סטנדרטי (Standard)", discount: "—", customerType: "כל לקוח שאינו זכאי להנחה", source: "פרסום שנתי של מפ\"י" },
-  { name: "מחירון משרדי ממשלה", discount: "10-20%", customerType: "משרדי ממשלה", source: "החלטת הנהלה" },
-  { name: "מחירון רשויות מקומיות", discount: "15-25%", customerType: "רשויות עם הסכם שו\"פ", source: "הסכמי שו\"פ" },
-  { name: "מחירון אקדמי", discount: "50%", customerType: "אוניברסיטאות, מכוני מחקר", source: "החלטת הנהלה" },
-  { name: "מחירון מודדים", discount: "מחיר מיוחד", customerType: "מודדים מוסמכים (CORS ועוד)", source: "פקודת המדידות" },
-  { name: "מחירון Bundle", discount: "חבילות בהנחה", customerType: "מזמיני כמות מעל 50K ₪", source: "מדיניות מכירה" },
-  { name: "מחירון ועדות תכנון", discount: "תעריף מיוחד", customerType: "ועדות תכנון מחוזיות ומקומיות", source: "הסכם משרד הפנים" }
+export const DETERMINISTIC_DISCOUNTS: DeterministicDiscount[] = [
+  {
+    name: "הנחת מפיץ",
+    rule: "ברירת מחדל 20% — דינמית, ללא תחולה רטרואקטיבית",
+    management: "מנוהלת על ידי מנהל המכירות ומנהל המערכת"
+  },
+  {
+    name: "רישיון אקדמי",
+    rule: "50% הנחה עד תקרת 5,000 ₪ הראשונים (דוגמה: עסקה של 10,000 ₪ → תשלום 7,500 ₪)",
+    management: "מוחלת אוטומטית לפי סוג רישיון בתהליך אורתופוטו"
+  },
+  {
+    name: "מדרגות מפיצים CORS",
+    rule: "תעריף RTK לפי מספר מנויים: 300 / 260 / 220 / 180 ₪ לחודש; מעל 100 — טיפול ידני",
+    management: "מחושבת אוטומטית לפי כמות מנויים פעילים"
+  }
 ];
 
-// Pricing indexation rule (4.7)
-export const PRICE_INDEXATION =
-  "הצמדה למדד המחירים לצרכן (CPI) — עדכון אוטומטי שנתי בינואר; Flow מעדכן את כל ה-Pricebook Entries";
+// ---------------------------------------------------------------------------
+// 4.3.4 [HLD V8] — SLA per sales route, in business days (replaces the V7
+// per-stage SLA table). Escalation runs as a background process.
+// ---------------------------------------------------------------------------
+
+export interface RouteSla {
+  route: string;
+  sla: string;
+}
+
+export const SLA_BY_ROUTE: RouteSla[] = [
+  { route: "אורתופוטו ומודלי גבהים", sla: "4 ימי עסקים (טופס → הצעת מחיר) + 4 ימי עסקים (תשלום → אספקה)" },
+  { route: "CORS — RTK", sla: "7 ימי עסקים (טופס → הודעת שליחת SIM)" },
+  { route: "CORS — VRS", sla: "4 ימי עסקים (טופס → אישור תשלום)" },
+  { route: "מפות מודרניות", sla: "3 + 3 ימי עסקים" },
+  { route: "מפות היסטוריות", sla: "סרוק: 3 + 3 · מודפס: 3 + 3 + 3 ימי עסקים" },
+  { route: "גבולות בינלאומיים (מסלול 15)", sla: "4 + 4 ימי עסקים" },
+  { route: "מודד מבקר", sla: "לא קיים SLA (לפי האפיון)" },
+  { route: "יתר המסלולים", sla: "יוגדר באפיון המפורט (טרם נקבע במסמך)" }
+];
 
 // ---------------------------------------------------------------------------
-// 4.9 — Renewal timeline
+// 4.7 — Renewal timeline
+// [HLD V8] "ניהול החידושים יתבצע רק על מוצרים אשר נמכרים כשירותים";
+// CORS: חידוש מבוסס-שימוש — VRS בחציית 93% ניצול, RTK ביתרה של ≤2 חודשים.
 // ---------------------------------------------------------------------------
 
 export interface RenewalMilestone {
