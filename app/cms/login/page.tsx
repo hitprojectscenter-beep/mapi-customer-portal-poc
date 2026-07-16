@@ -1,9 +1,25 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
+import Script from "next/script";
 import { cmsLogin } from "@/lib/cms";
+
+const GOOGLE_CLIENT_ID = (process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID || "").trim();
+
+declare global {
+  interface Window {
+    google?: {
+      accounts?: {
+        id?: {
+          initialize: (config: { client_id: string; callback: (r: { credential: string }) => void }) => void;
+          renderButton: (el: HTMLElement, options: Record<string, unknown>) => void;
+        };
+      };
+    };
+  }
+}
 
 export default function CmsLoginPage() {
   const router = useRouter();
@@ -11,6 +27,46 @@ export default function CmsLoginPage() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
+  const [gisReady, setGisReady] = useState(false);
+  const googleBtnRef = useRef<HTMLDivElement>(null);
+
+  // "Sign in with Google Workspace" — rendered only when a client id is set.
+  // The ID token is verified server-side (/api/cms/google) against an
+  // email allowlist before the httpOnly session cookie is issued.
+  useEffect(() => {
+    if (!GOOGLE_CLIENT_ID || !gisReady) return;
+    const gis = window.google?.accounts?.id;
+    const host = googleBtnRef.current;
+    if (!gis || !host) return;
+    gis.initialize({
+      client_id: GOOGLE_CLIENT_ID,
+      callback: async ({ credential }) => {
+        setBusy(true);
+        setError(null);
+        try {
+          const res = await fetch("/api/cms/google", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ credential })
+          });
+          const data = await res.json();
+          if (res.ok && data?.ok) {
+            try { sessionStorage.setItem("mapi_cms_session_v1", JSON.stringify({ ...data.session, loginAt: Date.now() })); } catch { /* ignore */ }
+            router.push("/cms");
+            return;
+          }
+          setError(res.status === 403
+            ? "חשבון Google זה אינו מורשה לניהול התוכן."
+            : "פרטי ההתחברות שגויים. נסה שוב.");
+        } catch {
+          setError("שגיאת רשת. נסה שוב.");
+        } finally {
+          setBusy(false);
+        }
+      }
+    });
+    gis.renderButton(host, { theme: "outline", size: "large", width: 320, text: "signin_with", locale: "he" });
+  }, [gisReady, router]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -87,6 +143,25 @@ export default function CmsLoginPage() {
             <span>{busy ? "מתחבר..." : "כניסה"}</span>
           </button>
         </form>
+
+        {GOOGLE_CLIENT_ID && (
+          <>
+            <Script
+              src="https://accounts.google.com/gsi/client"
+              strategy="afterInteractive"
+              onLoad={() => setGisReady(true)}
+            />
+            <div className="flex items-center gap-3 my-5" aria-hidden="true">
+              <span className="flex-1 h-px bg-outline-variant" />
+              <span className="text-[11px] text-on-surface-variant">או</span>
+              <span className="flex-1 h-px bg-outline-variant" />
+            </div>
+            <div className="flex justify-center" ref={googleBtnRef} />
+            <p className="text-[10px] text-on-surface-variant text-center mt-2 font-light">
+              כניסה עם חשבון Google Workspace מורשה
+            </p>
+          </>
+        )}
 
         <p className="text-[11px] text-on-surface-variant text-center mt-6 font-light">
           🔒 גישה מבוקרת. כל פעולה נרשמת ביומן השינויים.

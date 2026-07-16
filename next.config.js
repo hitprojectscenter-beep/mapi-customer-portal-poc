@@ -11,13 +11,14 @@ const isDev = process.env.NODE_ENV === "development";
 
 const csp = [
   "default-src 'self'",
-  // 'unsafe-eval' is needed only by the dev-mode HMR runtime
-  `script-src 'self' 'unsafe-inline'${isDev ? " 'unsafe-eval'" : ""} https://www.googletagmanager.com`,
-  "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+  // 'unsafe-eval' is needed only by the dev-mode HMR runtime;
+  // accounts.google.com = Google Identity Services (CMS Workspace sign-in)
+  `script-src 'self' 'unsafe-inline'${isDev ? " 'unsafe-eval'" : ""} https://www.googletagmanager.com https://accounts.google.com`,
+  "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://accounts.google.com",
   "font-src 'self' https://fonts.gstatic.com data:",
   "img-src 'self' data: blob: https:",
-  "connect-src 'self' https://www.google-analytics.com https://*.google-analytics.com https://www.googletagmanager.com",
-  "frame-src https://www.govmap.gov.il https://govmap.gov.il",
+  "connect-src 'self' https://www.google-analytics.com https://*.google-analytics.com https://www.googletagmanager.com https://accounts.google.com",
+  "frame-src https://www.govmap.gov.il https://govmap.gov.il https://accounts.google.com",
   "frame-ancestors 'none'",
   "base-uri 'self'",
   "form-action 'self'",
@@ -38,6 +39,9 @@ const securityHeaders = [
 const nextConfig = {
   reactStrictMode: true,
   poweredByHeader: false,
+  // E2E isolation: another session may run `next dev` in this folder and
+  // clobber .next while tests serve it. CI/E2E builds set NEXT_DIST_DIR.
+  distDir: process.env.NEXT_DIST_DIR || ".next",
   images: {
     remotePatterns: [
       { protocol: "https", hostname: "lh3.googleusercontent.com" },

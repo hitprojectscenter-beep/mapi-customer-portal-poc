@@ -26,7 +26,9 @@ export default defineConfig({
   webServer: {
     command: "npx next start --port 3100",
     url: "http://localhost:3100",
-    reuseExistingServer: !process.env.CI,
+    // Never reuse: an orphaned/stale server on 3100 (or another session's
+    // dev server clobbering .next) must not silently serve the tests
+    reuseExistingServer: false,
     timeout: 120_000
   }
 });

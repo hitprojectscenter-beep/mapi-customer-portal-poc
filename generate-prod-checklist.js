@@ -172,7 +172,11 @@ const children = [
     ["חיבור מחדש של webhook בין GitHub ל-Vercel (כיום הפריסה ידנית דרך CLI)", "מפ\"י / פיתוח", "תפעול"],
     ["עדכון שם וטלפון של רכז הנגישות האמיתי בעמוד /accessibility", "משאבי אנוש", "חובה חוקית"],
     ["מיפוי דומיין ממשלתי portal.mapi.gov.il + אישור ממשל זמין + HSTS preload", "תקשוב מפ\"י", "אפיון 13.2"],
-    ["החלטה על שדרוג Next.js 16 (סוגר 3 ממצאי audit שיוריים; שינוי שובר — פרויקט נפרד)", "פיתוח", "PRODUCTION.md"]
+    ["החלטה על שדרוג Next.js 16 (סוגר 3 ממצאי audit שיוריים; שינוי שובר — פרויקט נפרד)", "פיתוח", "PRODUCTION.md"],
+    ["Google Workspace — בסיס נתונים ללידים: יצירת Service Account + הפעלת Sheets API + שיתוף גיליון ייעודי והזנת 3 משתני סביבה", "אגף מכירות + IT", "PRODUCTION.md"],
+    ["Google Workspace — התראות: יצירת Webhook במרחב Google Chat של צוות המכירות והזנתו ל-env", "אגף מכירות", "PRODUCTION.md"],
+    ["Google Workspace — כניסת מנהל תוכן: יצירת OAuth Client ID והגדרת רשימת חשבונות מורשים", "IT", "PRODUCTION.md"],
+    ["אוטומציית מייל על ליד חדש: הדבקת סקריפט Apps Script המצורף ב-PRODUCTION.md בגיליון והגדרת טריגר", "אגף מכירות", "PRODUCTION.md"]
   ]),
   spacer(),
 

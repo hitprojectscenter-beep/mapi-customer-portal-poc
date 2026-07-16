@@ -316,6 +316,37 @@ export function meetsLeadMinimum(i: { firstName?: string; lastName?: string; ema
 
 const OPEN_STATUSES: LeadStatus[] = ["new", "working", "qualified", "noResponse"];
 
+// Google Workspace handoff: every captured lead is POSTed to /api/leads which
+// appends it to the org's Google Sheet + notifies the Google Chat space
+// (env-gated server-side; a no-op in pure demo mode). Fire-and-forget so the
+// visitor's flow never waits on it.
+function syncLeadToWorkspace(lead: Lead): void {
+  try {
+    void fetch("/api/leads", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      keepalive: true, // survives page close right after a form abandon
+      body: JSON.stringify({
+        id: lead.id,
+        firstName: lead.firstName,
+        lastName: lead.lastName,
+        email: lead.email,
+        phone: lead.phone,
+        organization: lead.organization,
+        familyLabel: familyDef(lead.family).he,
+        interest: lead.interest,
+        sourceLabel: SOURCE_LABELS[lead.source],
+        score: lead.score,
+        band: lead.band,
+        assignee: lead.assignee,
+        queue: lead.queue,
+        estimatedValue: lead.estimatedValue,
+        campaign: lead.campaign
+      })
+    }).catch(() => { /* offline/demo — local store already has the lead */ });
+  } catch { /* ignore */ }
+}
+
 export function captureLead(input: CaptureInput): { lead: Lead; isNew: boolean } | null {
   if (!meetsLeadMinimum(input)) return null; // [HLD] below minimum — no lead
   const leads = loadLeads();
@@ -342,6 +373,7 @@ export function captureLead(input: CaptureInput): { lead: Lead; isNew: boolean }
   const lead = buildLead(input);
   leads.unshift(lead);
   saveLeads(leads);
+  syncLeadToWorkspace(lead);
   return { lead, isNew: true };
 }
 

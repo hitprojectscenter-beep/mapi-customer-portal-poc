@@ -48,6 +48,7 @@ node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
 | פער | מצב היום | פתרון פרודקשן | בעלים |
 |---|---|---|---|
 | נתוני תוכן (חדשות/קמפיינים/משתמשים) | localStorage בדפדפן של המנהל | Salesforce CMS / DB מנוהל (Postgres) + API | פיתוח + אגף שיווק |
+| **לידים** | localStorage + **Google Sheets** (כשמוגדר — ראו "אינטגרציית Google Workspace") | Salesforce Lead object (אפיון 4.2) | אגף מכירות |
 | סל קניות והזמנות | localStorage, ללא שרת | Salesforce Commerce / OMS | פיתוח |
 | תשלום אמיתי | דמו בלבד, אין חיוב | שרת התשלומים הממשלתי (שירות התשלומים, האוצר) | גזברות + יה"ב |
 | הזדהות לקוחות | טופס דמו | הזדהות לאומית (SAML/OIDC מול מערך ההזדהות הממשלתי) | יה"ב / רשות התקשוב |
@@ -74,6 +75,46 @@ node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
 8. [ ] בדיקת חדירות + תיקון ממצאים
 9. [ ] מיפוי דומיין ממשלתי + HSTS preload
 10. [ ] גיבוי/DR: החלטה על מקור אמת לנתונים (סעיף 2 שורה 1)
+
+### אינטגרציית Google Workspace (בסיס נתונים חי ללידים)
+
+הפורטל יודע לעבוד מתוך סביבת Google Workspace של הארגון — שלושה רכיבים, כולם
+מותנים במשתני סביבה (בלעדיהם: מצב דמו, localStorage בלבד):
+
+| רכיב | מה הוא נותן | משתני סביבה |
+|---|---|---|
+| **Google Sheets = בסיס הנתונים** | כל ליד שנלכד בפורטל (טופס, נטישה, צ'אטבוט, מייל) נכתב כשורה בגיליון `Leads` — כולל ניקוד AI, ניתוב והיקף. צוות המכירות עובד על הגיליון: סינון, צביעה, AppSheet, אוטומציות | `GOOGLE_SERVICE_ACCOUNT_EMAIL`, `GOOGLE_SERVICE_ACCOUNT_KEY`, `GOOGLE_SHEETS_ID` |
+| **Google Chat = התראות** | הודעה מיידית במרחב הצוות על כל ליד חדש (שם, משפחת מוצר, ניקוד, מטפל, קישור לגיליון) | `GOOGLE_CHAT_WEBHOOK_URL` |
+| **Google Sign-In = כניסת CMS** | כפתור "כניסה עם Google" ב-`/cms/login`, מוגבל לרשימת חשבונות מורשים; מנפיק את אותה עוגיית session חתומה | `NEXT_PUBLIC_GOOGLE_CLIENT_ID`, `CMS_ALLOWED_GOOGLE_EMAILS` |
+
+**צעדי הקמה (חד-פעמי, ~15 דקות):**
+
+1. **Sheets**: ב-Google Cloud Console → IAM → Service Accounts → צרו חשבון שירות,
+   הפעילו את Google Sheets API, צרו מפתח JSON. פתחו גיליון חדש ב-Drive הארגוני
+   ו**שתפו אותו** (Editor) עם כתובת חשבון השירות. את ה-`client_email` וה-`private_key`
+   מה-JSON הזינו ל-env (המפתח — כמו שהוא או ב-base64). לשונית `Leads` עם כותרות
+   נוצרת אוטומטית בכתיבה הראשונה.
+2. **Chat**: במרחב הצוות ב-Google Chat → ⚙ → Apps & integrations → Webhooks →
+   Add webhook. העתיקו את ה-URL ל-`GOOGLE_CHAT_WEBHOOK_URL`.
+3. **Sign-In**: Cloud Console → Credentials → OAuth client ID (Web application),
+   Authorized JavaScript origins = כתובת הפורטל. את ה-Client ID הזינו ל-env.
+4. הזינו הכל ב-Vercel (זכרו: דרך Git Bash `printf`, לא PowerShell pipe) ופרסו.
+
+**שדרוג אימייל אוטומטי (ללא קוד):** בגיליון: Extensions → Apps Script → הדביקו
+טריגר `onChange` ששולח Gmail לראש האגף על כל שורה חדשה — זה רץ בתוך Workspace,
+בלי שום סוד נוסף בפורטל:
+
+```javascript
+function onNewLead(e) {
+  const sh = e.source.getSheetByName("Leads");
+  const row = sh.getRange(sh.getLastRow(), 1, 1, 16).getValues()[0];
+  GmailApp.sendEmail("MapiComPortal@gmail.com",
+    `ליד חדש: ${row[2]} ${row[3]} (${row[7]})`,
+    `מקור: ${row[9]} | ניקוד: ${row[10]} | מטפל: ${row[12]}\n` +
+    SpreadsheetApp.getActiveSpreadsheet().getUrl());
+}
+// Triggers → Add Trigger → onNewLead → From spreadsheet → On change
+```
 
 ### ממצאי audit שיוריים (מוערכים — לא חוסמים)
 

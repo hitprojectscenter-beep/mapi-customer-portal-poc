@@ -27,6 +27,28 @@ test.describe("MAPI Leads — AI lead management", () => {
     await expect(page.getByText("דניאל אביטל").first()).toBeAttached();
   });
 
+  test("lead intake API enforces the spec minimum and reports Workspace status", async ({ request }) => {
+    // Below spec minimum (no last name) → rejected per HLD 4.2
+    const bad = await request.post("/api/leads", { data: { firstName: "רק", lastName: "", email: "x@y.com" } });
+    expect(bad.status()).toBe(422);
+
+    // Valid payload → accepted (demo mode: stored="none" when no env is set)
+    const good = await request.post("/api/leads", {
+      data: {
+        firstName: "בדיקה", lastName: "API", email: "api-e2e@example.com",
+        familyLabel: "מפות", sourceLabel: "טופס באתר", score: 50
+      }
+    });
+    expect(good.ok()).toBeTruthy();
+    expect((await good.json()).ok).toBe(true);
+
+    // Status endpoint for the admin chip
+    const status = await request.get("/api/leads");
+    const s = await status.json();
+    expect(s.ok).toBe(true);
+    expect(typeof s.sheets).toBe("boolean");
+  });
+
   test("chatbot mini-form captures a lead that reaches the admin inbox", async ({ page }) => {
     await page.goto("/");
     await page.getByRole("button", { name: "מסייע AI חכם" }).click();

@@ -51,6 +51,8 @@ export default function LeadsAdminPage() {
   const [loaded, setLoaded] = useState(false);
   const [statusFilter, setStatusFilter] = useState<LeadStatus | "all">("all");
   const [expanded, setExpanded] = useState<string | null>(null);
+  // Google Workspace backend status (Sheets DB + Chat notifications)
+  const [workspace, setWorkspace] = useState<{ sheets: boolean; chat: boolean; sheetUrl: string | null } | null>(null);
   // Email-intake demo state
   const [emailText, setEmailText] = useState("");
   const [analyzing, setAnalyzing] = useState(false);
@@ -60,6 +62,10 @@ export default function LeadsAdminPage() {
   useEffect(() => {
     setLeads(loadLeads());
     setLoaded(true);
+    fetch("/api/leads")
+      .then(r => r.json())
+      .then(d => setWorkspace({ sheets: !!d.sheets, chat: !!d.chat, sheetUrl: d.sheetUrl || null }))
+      .catch(() => setWorkspace(null));
   }, []);
 
   const stats = useMemo(() => leadStats(leads), [leads]);
@@ -124,6 +130,33 @@ export default function LeadsAdminPage() {
         </h1>
         <p className="text-on-surface-variant text-sm">{t("leads.subtitle")}</p>
         <p className="text-xs text-on-surface-variant/70 mt-1 font-light">{t("leads.specRef")}</p>
+        {workspace && (
+          <div className="flex items-center gap-2 mt-2 flex-wrap">
+            {workspace.sheets ? (
+              <a
+                href={workspace.sheetUrl || "#"}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="shine inline-flex items-center gap-1.5 text-[11px] font-bold bg-positive-green/10 text-positive-green rounded-full px-3 py-1 hover:bg-positive-green/20 transition-colors"
+              >
+                <span className="material-symbols-outlined text-[14px]">table_chart</span>
+                <span>מחובר ל-Google Sheets — כל ליד חדש נכתב לגיליון</span>
+                <span className="material-symbols-outlined text-[12px]">open_in_new</span>
+              </a>
+            ) : (
+              <span className="inline-flex items-center gap-1.5 text-[11px] font-bold bg-outline-variant/20 text-on-surface-variant rounded-full px-3 py-1">
+                <span className="material-symbols-outlined text-[14px]">cloud_off</span>
+                <span>מצב דמו — לידים נשמרים בדפדפן בלבד (חיבור Google Sheets: ראו PRODUCTION.md)</span>
+              </span>
+            )}
+            {workspace.chat && (
+              <span className="inline-flex items-center gap-1.5 text-[11px] font-bold bg-secondary/10 text-secondary rounded-full px-3 py-1">
+                <span className="material-symbols-outlined text-[14px]">forum</span>
+                <span>התראות Google Chat פעילות</span>
+              </span>
+            )}
+          </div>
+        )}
       </header>
 
       {/* KPI row (14.5) */}
