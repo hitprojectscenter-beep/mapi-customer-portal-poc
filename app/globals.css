@@ -600,6 +600,50 @@
   }
 
   /* ========================================
+     FIXED TOP STACK — ticker → utility (sm+) → header, no gaps
+     mobile:  ticker 56px + header 80px            = 136px
+     sm+:     ticker 64px + utility 32px + header  = 176px
+     ======================================== */
+  .utility-fixed {
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: calc(64px + var(--safe-top));
+    z-index: 105;
+  }
+  .header-fixed {
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: calc(56px + var(--safe-top));
+    z-index: 100;
+  }
+  @media (min-width: 640px) {
+    .header-fixed {
+      top: calc(96px + var(--safe-top));
+    }
+  }
+  .main-offset {
+    padding-top: calc(136px + var(--safe-top));
+  }
+  @media (min-width: 640px) {
+    .main-offset {
+      padding-top: calc(176px + var(--safe-top));
+    }
+  }
+  /* Hero pulls itself under the fixed stack, then restores the space */
+  .hero-pull {
+    margin-top: calc(-136px - var(--safe-top));
+    padding-top: calc(136px + var(--safe-top));
+  }
+  @media (min-width: 640px) {
+    .hero-pull {
+      margin-top: calc(-176px - var(--safe-top));
+      padding-top: calc(176px + var(--safe-top));
+    }
+  }
+
+  /* ========================================
      TOOLTIP SYSTEM
      ======================================== */
   [data-tooltip] {
@@ -622,7 +666,10 @@
     font-weight: 400;
     letter-spacing: 0.01em;
     line-height: 1.5;
-    white-space: nowrap;
+    /* Detailed captions wrap gracefully instead of running off-screen */
+    white-space: normal;
+    width: max-content;
+    max-width: min(280px, calc(100vw - 24px));
     z-index: 9999;
     pointer-events: none;
     opacity: 0;
@@ -632,7 +679,6 @@
       0 12px 28px -8px rgba(27, 43, 69, 0.22),
       0 2px 8px rgba(70, 63, 122, 0.10);
     font-family: "Heebo", "Assistant", "Inter", sans-serif;
-    max-width: 300px;
     text-align: center;
   }
 
@@ -657,10 +703,44 @@
     transform: translateX(-50%) translateY(0);
   }
 
-  /* Wrap text variant */
+  /* Wrap text variant (legacy — wrapping is now the default) */
   [data-tooltip-wrap="true"]::after {
     white-space: normal;
     width: 240px;
+  }
+
+  /* Edge-anchored variants: controls hugging a screen edge keep their
+     caption fully inside the viewport */
+  [data-tooltip-edge="left"]::after {
+    left: 0;
+    transform: translateX(0) translateY(4px);
+  }
+  [data-tooltip-edge="left"]:hover::after,
+  [data-tooltip-edge="left"]:focus-visible::after {
+    transform: translateX(0) translateY(0);
+  }
+  [data-tooltip-edge="left"][data-tooltip-position="bottom"]::after {
+    transform: translateX(0) translateY(-4px);
+  }
+  [data-tooltip-edge="left"][data-tooltip-position="bottom"]:hover::after,
+  [data-tooltip-edge="left"][data-tooltip-position="bottom"]:focus-visible::after {
+    transform: translateX(0) translateY(0);
+  }
+  [data-tooltip-edge="right"]::after {
+    left: auto;
+    right: 0;
+    transform: translateX(0) translateY(4px);
+  }
+  [data-tooltip-edge="right"]:hover::after,
+  [data-tooltip-edge="right"]:focus-visible::after {
+    transform: translateX(0) translateY(0);
+  }
+  [data-tooltip-edge="right"][data-tooltip-position="bottom"]::after {
+    transform: translateX(0) translateY(-4px);
+  }
+  [data-tooltip-edge="right"][data-tooltip-position="bottom"]:hover::after,
+  [data-tooltip-edge="right"][data-tooltip-position="bottom"]:focus-visible::after {
+    transform: translateX(0) translateY(0);
   }
 
   /* Hide tooltip on touch devices to prevent stuck states */

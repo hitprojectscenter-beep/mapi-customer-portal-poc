@@ -39,7 +39,7 @@ export default function Header() {
 
   return (
     <>
-      <header className="fixed top-[88px] sm:top-[96px] left-0 right-0 z-[100] glass-header border-b border-outline-variant/30">
+      <header className="header-fixed glass-header border-b border-outline-variant/30">
         <a href="#main-content" className="skip-link shine" data-tooltip={t("nav.skipToContent")}>
           {t("nav.skipToContent")}
         </a>
@@ -157,6 +157,7 @@ export default function Header() {
               aria-label={`${t("header.cart")} (${cart.itemCount} ${t("header.cartCount")})`}
               data-tooltip={t("header.cart")}
               data-tooltip-position="bottom"
+              data-tooltip-edge="left"
             >
               <span className="material-symbols-outlined text-primary text-[22px]">shopping_bag</span>
               {cart.itemCount > 0 && (
@@ -175,6 +176,7 @@ export default function Header() {
               aria-expanded={open}
               data-tooltip={open ? t("header.closeMenu") : t("header.openMenu")}
               data-tooltip-position="bottom"
+              data-tooltip-edge="left"
             >
               <span className="material-symbols-outlined text-primary">{open ? "close" : "menu"}</span>
             </button>

@@ -3,12 +3,13 @@
 import Link from "next/link";
 import { useLanguage } from "@/lib/LanguageContext";
 
-// Luxury utility strip: ivory, hairline gold bottom border, navy text —
-// replaces the previous solid dark band.
+// Luxury utility strip: ivory, hairline gold bottom border, navy text.
+// Fixed between the news ticker and the header (visible from sm up —
+// on phones the header follows the ticker directly).
 export default function UtilityBar() {
   const { t } = useLanguage();
   return (
-    <div className="bg-ivory text-primary text-xs border-b border-gold/25">
+    <div className="hidden sm:block utility-fixed bg-ivory text-primary text-xs border-b border-gold/25">
       <div className="max-w-container-max-width mx-auto px-3 sm:px-4 md:px-margin-desktop h-8 flex items-center justify-between gap-2">
         <div className="flex items-center gap-4">
           <span className="hidden sm:inline-flex items-center gap-1.5 text-on-surface-variant">

@@ -82,11 +82,7 @@ export default function RootLayout({
               <NewsTicker />
               <UtilityBar />
               <Header />
-              <main
-                id="main-content"
-                className="min-h-screen"
-                style={{ paddingTop: "calc(168px + var(--safe-top))" }}
-              >
+              <main id="main-content" className="min-h-screen main-offset">
                 {children}
               </main>
               <Footer />

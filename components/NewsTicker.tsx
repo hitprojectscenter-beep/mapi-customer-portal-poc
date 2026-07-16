@@ -138,7 +138,9 @@ export default function NewsTicker() {
 
   const getTitle = (key: string) => NEWS_TITLES[key]?.[lang] || NEWS_TITLES[key]?.he || key;
 
-  // CMS items override the built-in translated defaults
+  // CMS items override the built-in translated defaults.
+  // When the manager deactivated/deleted ALL items, fall back to the
+  // built-ins — the ticker must never silently vanish from the portal.
   const displayItems: DisplayNewsItem[] =
     cmsItems && cmsItems.length > 0
       ? cmsItems.map(n => ({
@@ -177,7 +179,7 @@ export default function NewsTicker() {
   return (
     <div
       style={{ paddingTop: "var(--safe-top)" }}
-      className="fixed top-0 left-0 right-0 z-[110] bg-white border-b border-outline-variant shadow-sm"
+      className="fixed top-0 left-0 right-0 z-[110] bg-white border-b-2 border-gold/50 shadow-[0_8px_24px_-16px_rgba(143,116,57,0.5)]"
       role="region"
       aria-label={t("news.label")}
       onMouseEnter={() => setPaused(true)}
@@ -186,12 +188,12 @@ export default function NewsTicker() {
       <div className="max-w-container-max-width mx-auto">
         <div className="flex items-stretch h-14 sm:h-16">
           {/* Right side: news label (RTL: appears on the right) */}
-          <div className="hidden md:flex items-center px-3 lg:px-4 border-l border-outline-variant flex-shrink-0">
+          <div className="hidden md:flex items-center px-3 lg:px-4 border-l border-outline-variant flex-shrink-0 bg-gold-tint/60">
             <span className="inline-flex items-center gap-1.5">
-              <span className="material-symbols-outlined text-secondary text-[18px] animate-pulse">
+              <span className="material-symbols-outlined text-gold-dark text-[18px] animate-pulse" aria-hidden="true">
                 campaign
               </span>
-              <span className="text-[10px] font-extrabold uppercase tracking-widest text-primary">
+              <span className="text-[10px] font-extrabold uppercase tracking-widest text-gold-dark">
                 {t("news.label")}
               </span>
             </span>
@@ -322,8 +324,9 @@ export default function NewsTicker() {
               aria-label={t("news.hide")}
               data-tooltip={t("news.hide")}
               data-tooltip-position="bottom"
+              data-tooltip-edge="left"
             >
-              <span className="material-symbols-outlined text-[16px]">close</span>
+              <span className="material-symbols-outlined text-[16px]" aria-hidden="true">close</span>
             </button>
           </div>
         </div>

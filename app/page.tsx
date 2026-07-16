@@ -18,7 +18,7 @@ export default function HomePage() {
     <>
       {/* Cinematic Hero Section with WOW effects */}
       <section
-        className="relative min-h-[85vh] sm:min-h-[90vh] flex items-center justify-center overflow-hidden wow-mesh wow-particles -mt-[136px] sm:-mt-[144px] pt-[136px] sm:pt-[144px]"
+        className="relative min-h-[85vh] sm:min-h-[90vh] flex items-center justify-center overflow-hidden wow-mesh wow-particles hero-pull"
         aria-label="באנר ראשי"
       >
         {/* Aurora glow blobs — pastel whispers of blue / purple / champagne */}
