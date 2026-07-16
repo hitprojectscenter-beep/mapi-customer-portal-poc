@@ -21,58 +21,58 @@ export default function HomePage() {
         className="relative min-h-[85vh] sm:min-h-[90vh] flex items-center justify-center overflow-hidden wow-mesh wow-particles -mt-[136px] sm:-mt-[144px] pt-[136px] sm:pt-[144px]"
         aria-label="באנר ראשי"
       >
-        {/* Aurora glow blobs */}
+        {/* Aurora glow blobs — pastel whispers of blue / purple / champagne */}
         <div
           className="wow-aurora bg-secondary"
-          style={{ width: 500, height: 500, top: "10%", right: "-100px", animationDelay: "0s" }}
+          style={{ width: 500, height: 500, top: "10%", right: "-100px", animationDelay: "0s", opacity: 0.14 }}
           aria-hidden="true"
         />
         <div
-          className="wow-aurora bg-secondary-container"
-          style={{ width: 400, height: 400, bottom: "10%", left: "-100px", animationDelay: "4s", opacity: 0.35 }}
+          className="wow-aurora bg-tertiary"
+          style={{ width: 400, height: 400, bottom: "10%", left: "-100px", animationDelay: "4s", opacity: 0.12 }}
           aria-hidden="true"
         />
         <div
-          className="wow-aurora bg-primary-container"
-          style={{ width: 300, height: 300, top: "40%", left: "30%", animationDelay: "8s", opacity: 0.3 }}
+          className="wow-aurora bg-gold-light"
+          style={{ width: 300, height: 300, top: "40%", left: "30%", animationDelay: "8s", opacity: 0.22 }}
           aria-hidden="true"
         />
 
         {/* Background Layer */}
         <div className="absolute inset-0 z-0">
           <div
-            className="absolute inset-0 bg-cover bg-center opacity-20 mix-blend-overlay"
+            className="absolute inset-0 bg-cover bg-center opacity-[0.06]"
             style={{
               backgroundImage:
                 'url("https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?auto=format&fit=crop&w=1920&q=80")'
             }}
             aria-hidden="true"
           />
-          <div className="absolute inset-0 topo-pattern opacity-25" aria-hidden="true" />
+          <div className="absolute inset-0 topo-pattern opacity-10" aria-hidden="true" />
         </div>
 
         {/* Data Vis Decorations */}
-        <div className="absolute inset-0 pointer-events-none opacity-20 hidden sm:block" aria-hidden="true">
-          <div className="absolute top-1/4 left-1/4 w-px h-32 bg-white/40" />
-          <div className="absolute top-1/4 left-1/4 w-32 h-px bg-white/40" />
-          <div className="absolute bottom-1/3 right-1/4 border border-white/20 rounded-full w-64 h-64" />
-          <span className="absolute top-24 right-6 md:right-20 text-[10px] text-white/40 font-mono tracking-widest">
+        <div className="absolute inset-0 pointer-events-none opacity-30 hidden sm:block" aria-hidden="true">
+          <div className="absolute top-1/4 left-1/4 w-px h-32 bg-primary/20" />
+          <div className="absolute top-1/4 left-1/4 w-32 h-px bg-primary/20" />
+          <div className="absolute bottom-1/3 right-1/4 border border-gold/30 rounded-full w-64 h-64" />
+          <span className="absolute top-24 right-6 md:right-20 text-[10px] text-gold-dark/70 font-mono tracking-widest">
             COORD: 31.7683° N, 35.2137° E
           </span>
         </div>
 
         <div className="relative z-10 max-w-container-max-width mx-auto px-4 md:px-margin-desktop text-center py-16 md:py-20">
-          <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-md px-3 sm:px-4 py-1.5 rounded-full mb-6 sm:mb-8 text-white/90 border border-white/10">
-            <span className="material-symbols-outlined text-[16px] sm:text-[18px]">verified_user</span>
+          <div className="inline-flex items-center gap-2 bg-white/80 backdrop-blur-md px-3 sm:px-4 py-1.5 rounded-full mb-6 sm:mb-8 text-primary border border-gold/40 shadow-sm">
+            <span className="material-symbols-outlined text-[16px] sm:text-[18px] text-gold-dark">verified_user</span>
             <span className="text-[10px] sm:text-xs font-bold tracking-wide">
               {t("hero.badge")}
             </span>
           </div>
 
-          <h1 className="text-white font-extrabold text-3xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-[88px] leading-[1.1] mb-8 sm:mb-10 max-w-5xl mx-auto">
+          <h1 className="text-primary font-extrabold text-3xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-[88px] leading-[1.1] mb-8 sm:mb-10 max-w-5xl mx-auto">
             {t("hero.titleLine1")}
             <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-l from-secondary-container to-white">
+            <span className="text-transparent bg-clip-text bg-gradient-to-l from-secondary via-tertiary to-gold-dark">
               {t("hero.titleLine2")}
             </span>
           </h1>
@@ -84,23 +84,23 @@ export default function HomePage() {
             method="get"
             className="max-w-3xl mx-auto mb-8 sm:mb-12"
           >
-            <div className="glass-effect p-1.5 sm:p-2 rounded-2xl flex flex-row-reverse items-center shadow-2xl">
+            <div className="bg-white/90 backdrop-blur-md border border-gold/35 p-1.5 sm:p-2 rounded-2xl flex flex-row-reverse items-center shadow-[0_18px_50px_-20px_rgba(27,43,69,0.25)]">
               <label htmlFor="hero-search" className="sr-only">{t("hero.searchBtn")}</label>
               <input
                 id="hero-search"
                 name="q"
                 type="search"
                 placeholder={t("hero.searchPlaceholder")}
-                className="bg-transparent border-none focus:ring-0 focus:outline-none text-white placeholder:text-white/50 text-center flex-grow px-3 sm:px-6 py-3 sm:py-4 text-sm sm:text-base md:text-lg w-full min-h-[44px]"
+                className="bg-transparent border-none focus:ring-0 focus:outline-none text-primary placeholder:text-primary/40 text-center flex-grow px-3 sm:px-6 py-3 sm:py-4 text-sm sm:text-base md:text-lg w-full min-h-[44px]"
               />
               <button
                 type="submit"
-                className="shine bg-white text-primary px-4 sm:px-8 py-3 sm:py-4 rounded-xl font-bold flex items-center gap-2 hover:bg-secondary-container transition-all whitespace-nowrap min-h-[44px]"
-                data-tooltip={t("hero.searchBtn")}
+                className="shine btn-lux-primary px-4 sm:px-8 py-3 sm:py-4 rounded-xl flex items-center gap-2 transition-all whitespace-nowrap min-h-[44px]"
+                data-tooltip={`${t("hero.searchBtn")} — ${t("hero.searchPlaceholder")}`}
                 data-tooltip-position="bottom"
               >
                 <span className="hidden sm:inline">{t("hero.searchBtn")}</span>
-                <span className="material-symbols-outlined">search</span>
+                <span className="material-symbols-outlined" aria-hidden="true">search</span>
               </button>
             </div>
           </form>
@@ -108,12 +108,13 @@ export default function HomePage() {
           <div className="flex flex-col sm:flex-row-reverse items-center justify-center gap-3 sm:gap-6">
             <Link
               href="/catalog"
-              className="shine shine-glow group bg-secondary text-white px-6 sm:px-10 py-3.5 sm:py-5 rounded-full font-bold flex items-center gap-3 hover:bg-secondary/90 transition-all shadow-xl shadow-secondary/20 w-full sm:w-auto justify-center min-h-[48px]"
-              data-tooltip={t("hero.startOrder")}
+              className="shine shine-glow group btn-lux-primary px-6 sm:px-10 py-3.5 sm:py-5 rounded-full flex items-center gap-3 transition-all w-full sm:w-auto justify-center min-h-[48px]"
+              data-tooltip={`${t("hero.startOrder")} — ${t("nav.catalog")}`}
               data-tooltip-position="bottom"
             >
+              <span className="material-symbols-outlined text-gold-light" aria-hidden="true">storefront</span>
               {t("hero.startOrder")}
-              <span className="material-symbols-outlined transition-transform group-hover:-translate-x-1">
+              <span className="material-symbols-outlined transition-transform group-hover:-translate-x-1" aria-hidden="true">
                 arrow_back
               </span>
             </Link>
@@ -121,19 +122,20 @@ export default function HomePage() {
               href="https://www.govmap.gov.il/"
               target="_blank"
               rel="noopener noreferrer"
-              className="shine text-white/80 hover:text-white font-bold flex items-center gap-2 transition-all px-3 py-2 rounded-lg min-h-[44px]"
-              data-tooltip={t("hero.freeMap")}
+              className="shine btn-lux-ghost flex items-center gap-2 transition-all px-5 py-3 rounded-full min-h-[44px]"
+              data-tooltip={`${t("hero.freeMap")} — GovMap`}
               data-tooltip-position="bottom"
             >
+              <span className="material-symbols-outlined text-gold-dark text-[20px]" aria-hidden="true">map</span>
               <span>{t("hero.freeMap")}</span>
-              <span className="material-symbols-outlined">open_in_new</span>
+              <span className="material-symbols-outlined text-[18px]" aria-hidden="true">open_in_new</span>
             </a>
           </div>
         </div>
 
         {/* Scroll Indicator */}
-        <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 opacity-50 hidden sm:flex" aria-hidden="true">
-          <div className="w-px h-12 bg-gradient-to-b from-white to-transparent" />
+        <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 opacity-60 hidden sm:flex" aria-hidden="true">
+          <div className="w-px h-12 bg-gradient-to-b from-gold to-transparent" />
         </div>
       </section>
 
@@ -229,8 +231,8 @@ export default function HomePage() {
                   <button
                     type="button"
                     onClick={() => setQuoteFor(featuredServices[0])}
-                    className="shine shine-glow flex-1 bg-primary text-white px-5 py-3 sm:py-3.5 rounded-full font-bold flex items-center justify-center gap-2 hover:bg-secondary transition-colors min-h-[48px]"
-                    data-tooltip="קבלת הצעת מחיר מותאמת אישית למוצר זה"
+                    className="shine shine-glow flex-1 btn-lux-primary px-5 py-3 sm:py-3.5 rounded-full flex items-center justify-center gap-2 transition-colors min-h-[48px]"
+                    data-tooltip="קבלת הצעת מחיר מותאמת אישית למוצר זה — נציג יחזור אליכם עם תמחור מדויק"
                     data-tooltip-position="bottom"
                   >
                     <span className="material-symbols-outlined text-[20px]">request_quote</span>
@@ -250,15 +252,15 @@ export default function HomePage() {
               <div className="absolute -left-20 -bottom-20 w-80 h-80 border-[40px] border-secondary/5 rounded-full opacity-0 group-hover:opacity-100 transition-opacity hidden md:block" aria-hidden="true" />
             </div>
 
-            {/* Vertical dark card - no price */}
-            <div className="md:col-span-5 group premium-card wow-tilt bg-primary rounded-3xl p-6 sm:p-8 md:p-10 text-white relative overflow-hidden hover:shadow-2xl transition-all duration-500 shine shine-gold">
+            {/* Vertical accent card — deep navy→royal purple, gold trims */}
+            <div className="md:col-span-5 group premium-card wow-tilt bg-gradient-to-br from-primary via-[#2c2a5e] to-tertiary rounded-3xl p-6 sm:p-8 md:p-10 text-white relative overflow-hidden hover:shadow-2xl transition-all duration-500 shine shine-gold border border-gold/25">
               <div className="relative z-10 flex flex-col h-full text-center items-center">
-                <div className="card-icon w-14 h-14 sm:w-16 sm:h-16 bg-white/10 rounded-2xl flex items-center justify-center text-white mb-6 sm:mb-8 md:mb-10 transition-all">
+                <div className="card-icon w-14 h-14 sm:w-16 sm:h-16 bg-white/10 border border-gold/30 rounded-2xl flex items-center justify-center text-gold-light mb-6 sm:mb-8 md:mb-10 transition-all">
                   <span className="material-symbols-outlined text-[32px] sm:text-[40px]">
                     {featuredServices[1]?.icon}
                   </span>
                 </div>
-                <span className="bg-secondary px-3 py-1 rounded text-xs uppercase font-bold tracking-widest mb-3">
+                <span className="border border-gold/50 text-gold-light px-3 py-1 rounded text-xs uppercase font-bold tracking-widest mb-3">
                   {t("services.recommended")}
                 </span>
                 <h3 className="text-xl sm:text-2xl md:text-3xl font-extrabold mb-3 sm:mb-4">
@@ -271,8 +273,8 @@ export default function HomePage() {
                   <button
                     type="button"
                     onClick={() => setQuoteFor(featuredServices[1])}
-                    className="shine w-full py-3 sm:py-4 rounded-xl bg-white text-primary font-bold hover:bg-secondary-container transition-all flex items-center justify-center gap-2 min-h-[48px]"
-                    data-tooltip="קבלת הצעת מחיר מותאמת לפי משתמשים וצרכים"
+                    className="shine w-full py-3 sm:py-4 rounded-xl bg-white text-primary font-bold hover:bg-gold-tint border border-gold/30 transition-all flex items-center justify-center gap-2 min-h-[48px]"
+                    data-tooltip="קבלת הצעת מחיר מותאמת לפי משתמשים וצרכים — ללא התחייבות"
                     data-tooltip-position="bottom"
                   >
                     <span className="material-symbols-outlined text-[20px]">request_quote</span>
@@ -319,7 +321,7 @@ export default function HomePage() {
                           <button
                             type="button"
                             onClick={() => setQuoteFor(service)}
-                            className="shine shine-glow w-full bg-primary text-white py-2.5 rounded-full font-bold text-sm hover:bg-secondary transition-colors flex items-center justify-center gap-2 min-h-[44px]"
+                            className="shine shine-glow w-full btn-lux-primary py-2.5 rounded-full text-sm transition-colors flex items-center justify-center gap-2 min-h-[44px]"
                             data-tooltip={t("services.sendQuote")}
                             data-tooltip-position="bottom"
                           >
@@ -362,16 +364,16 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Prestige Stats Section */}
-      <section className="py-16 sm:py-20 md:py-32 bg-primary text-white overflow-hidden relative">
-        <div className="absolute inset-0 dot-pattern opacity-10" aria-hidden="true" />
+      {/* Prestige Stats Section — light, framed by champagne hairlines */}
+      <section className="py-16 sm:py-20 md:py-32 bg-ivory text-primary overflow-hidden relative lux-hairline-t lux-hairline-b">
+        <div className="absolute inset-0 dot-pattern opacity-5" aria-hidden="true" />
         <div className="max-w-container-max-width mx-auto px-4 md:px-margin-desktop relative z-10">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
             <div className="text-center">
-              <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold mb-6 sm:mb-8 leading-tight">
+              <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold mb-6 sm:mb-8 leading-tight text-primary">
                 {t("stats.title")}
               </h2>
-              <p className="text-white/70 text-sm sm:text-base md:text-lg mb-8 sm:mb-12 max-w-xl">
+              <p className="text-on-surface-variant text-sm sm:text-base md:text-lg mb-8 sm:mb-12 max-w-xl font-light">
                 {t("stats.subtitle")}
               </p>
               <div className="grid grid-cols-2 gap-6 sm:gap-8 md:gap-10">
@@ -379,7 +381,7 @@ export default function HomePage() {
                   <p className="text-3xl sm:text-4xl md:text-5xl font-black wow-counter mb-1 sm:mb-2">
                     <WowCounter value={2400000} format="compact" />
                   </p>
-                  <p className="text-[10px] sm:text-xs md:text-sm uppercase tracking-widest font-bold text-white/50">
+                  <p className="text-[10px] sm:text-xs md:text-sm uppercase tracking-widest font-bold text-gold-dark">
                     {t("stats.queries")}
                   </p>
                 </div>
@@ -387,7 +389,7 @@ export default function HomePage() {
                   <p className="text-3xl sm:text-4xl md:text-5xl font-black wow-counter mb-1 sm:mb-2">
                     <WowCounter value={15000} format="compact" />
                   </p>
-                  <p className="text-[10px] sm:text-xs md:text-sm uppercase tracking-widest font-bold text-white/50">
+                  <p className="text-[10px] sm:text-xs md:text-sm uppercase tracking-widest font-bold text-gold-dark">
                     {t("stats.professionals")}
                   </p>
                 </div>
@@ -395,15 +397,15 @@ export default function HomePage() {
                   <p className="text-3xl sm:text-4xl md:text-5xl font-black wow-counter mb-1 sm:mb-2">
                     <WowCounter value={97} suffix="%" format="number" />
                   </p>
-                  <p className="text-[10px] sm:text-xs md:text-sm uppercase tracking-widest font-bold text-white/50">
+                  <p className="text-[10px] sm:text-xs md:text-sm uppercase tracking-widest font-bold text-gold-dark">
                     {t("stats.satisfaction")}
                   </p>
                 </div>
                 <div>
-                  <p className="text-3xl sm:text-4xl md:text-5xl font-black text-secondary-container mb-1 sm:mb-2">
+                  <p className="text-3xl sm:text-4xl md:text-5xl font-black wow-counter mb-1 sm:mb-2">
                     24/7
                   </p>
-                  <p className="text-[10px] sm:text-xs md:text-sm uppercase tracking-widest font-bold text-white/50">
+                  <p className="text-[10px] sm:text-xs md:text-sm uppercase tracking-widest font-bold text-gold-dark">
                     {t("stats.uptime")}
                   </p>
                 </div>
@@ -411,10 +413,10 @@ export default function HomePage() {
             </div>
 
             <div className="relative hidden lg:block">
-              <div className="aspect-square bg-gradient-to-br from-secondary/20 to-transparent rounded-full flex items-center justify-center p-12 border border-white/5 animate-float">
-                <div className="w-full h-full glass-effect rounded-3xl overflow-hidden shadow-2xl relative">
+              <div className="aspect-square bg-gradient-to-br from-tertiary/10 via-transparent to-gold/10 rounded-full flex items-center justify-center p-12 border border-gold/25 animate-float">
+                <div className="w-full h-full bg-white rounded-3xl overflow-hidden shadow-[0_24px_60px_-24px_rgba(27,43,69,0.25)] border border-outline-variant/40 relative">
                   <div
-                    className="w-full h-full bg-cover bg-center grayscale opacity-60 mix-blend-screen"
+                    className="w-full h-full bg-cover bg-center opacity-70"
                     style={{
                       backgroundImage:
                         'url("https://images.unsplash.com/photo-1569336415962-a4bd9f69cd83?auto=format&fit=crop&w=900&q=80")'
@@ -422,13 +424,13 @@ export default function HomePage() {
                     aria-hidden="true"
                   />
                   <div className="absolute inset-0 flex items-center justify-center">
-                    <span className="material-symbols-outlined text-[100px] text-white/20">
+                    <span className="material-symbols-outlined text-[100px] text-white/60">
                       explore
                     </span>
                   </div>
                 </div>
               </div>
-              <div className="absolute -top-4 -right-4 bg-secondary text-white px-6 py-4 rounded-2xl shadow-xl">
+              <div className="absolute -top-4 -right-4 bg-white border border-gold/40 text-primary px-6 py-4 rounded-2xl shadow-xl">
                 <p className="text-xs font-mono">LAT: 32.0621</p>
                 <p className="text-xs font-mono">LON: 34.7748</p>
               </div>
@@ -512,7 +514,7 @@ export default function HomePage() {
             <h2 id="categories-heading" className="text-2xl sm:text-3xl md:text-4xl font-black text-primary mb-4">
               {t("categories.title")}
             </h2>
-            <div className="w-16 h-1 bg-secondary mx-auto rounded-full" aria-hidden="true" />
+            <div className="w-16 h-px bg-gradient-to-l from-transparent via-gold to-transparent mx-auto" aria-hidden="true" />
           </div>
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4 md:gap-6">
             {categories.map((cat) => {
@@ -521,14 +523,14 @@ export default function HomePage() {
                 <Link
                   key={cat.id}
                   href={`/catalog?category=${cat.id}`}
-                  className="shine group flex flex-col items-center p-5 sm:p-6 md:p-10 bg-surface rounded-2xl sm:rounded-3xl hover:bg-primary transition-all duration-300 min-h-[120px] justify-center"
-                  data-tooltip={localizedLabel}
+                  className="shine group flex flex-col items-center p-5 sm:p-6 md:p-10 bg-white border border-outline-variant/40 rounded-2xl sm:rounded-3xl hover:border-gold/60 hover:shadow-[0_18px_40px_-20px_rgba(143,116,57,0.35)] transition-all duration-300 min-h-[120px] justify-center"
+                  data-tooltip={`עיון בקטלוג ${localizedLabel} — מוצרים, מחירים והזמנה מקוונת`}
                   data-tooltip-position="bottom"
                 >
-                  <span className="material-symbols-outlined text-[28px] sm:text-[32px] md:text-[40px] text-secondary mb-3 sm:mb-4 md:mb-6 group-hover:text-white transition-colors">
+                  <span className="material-symbols-outlined text-[28px] sm:text-[32px] md:text-[40px] text-secondary mb-3 sm:mb-4 md:mb-6 group-hover:text-gold-dark transition-colors" aria-hidden="true">
                     {cat.icon}
                   </span>
-                  <span className="font-bold text-primary group-hover:text-white transition-colors text-xs sm:text-sm md:text-base text-center leading-tight">
+                  <span className="font-bold text-primary text-xs sm:text-sm md:text-base text-center leading-tight">
                     {localizedLabel}
                   </span>
                 </Link>
@@ -550,12 +552,12 @@ export default function HomePage() {
           <div className="flex flex-col sm:flex-row-reverse items-center justify-center gap-3 sm:gap-4">
             <Link
               href="/login"
-              className="shine shine-glow w-full sm:w-auto bg-primary text-white px-6 sm:px-8 py-3.5 sm:py-4 rounded-full font-bold flex items-center justify-center gap-2 hover:bg-secondary transition-colors shadow-xl min-h-[48px]"
-              data-tooltip={t("cta.loginNational")}
+              className="shine shine-glow w-full sm:w-auto btn-lux-primary px-6 sm:px-8 py-3.5 sm:py-4 rounded-full flex items-center justify-center gap-2 transition-colors min-h-[48px]"
+              data-tooltip={`${t("cta.loginNational")} — גישה מאובטחת לאזור האישי ולהזמנות`}
               data-tooltip-position="bottom"
             >
               <span>{t("cta.loginNational")}</span>
-              <span className="material-symbols-outlined">login</span>
+              <span className="material-symbols-outlined" aria-hidden="true">login</span>
             </Link>
             <Link
               href="/catalog"

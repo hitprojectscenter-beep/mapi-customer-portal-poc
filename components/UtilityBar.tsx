@@ -3,32 +3,49 @@
 import Link from "next/link";
 import { useLanguage } from "@/lib/LanguageContext";
 
+// Luxury utility strip: ivory, hairline gold bottom border, navy text —
+// replaces the previous solid dark band.
 export default function UtilityBar() {
   const { t } = useLanguage();
   return (
-    <div className="bg-primary text-white text-xs border-b border-white/10">
+    <div className="bg-ivory text-primary text-xs border-b border-gold/25">
       <div className="max-w-container-max-width mx-auto px-3 sm:px-4 md:px-margin-desktop h-8 flex items-center justify-between gap-2">
         <div className="flex items-center gap-4">
-          <span className="hidden sm:inline-flex items-center gap-1.5 text-white/80">
-            <span className="material-symbols-outlined text-[14px]">verified</span>
+          <span className="hidden sm:inline-flex items-center gap-1.5 text-on-surface-variant">
+            <span className="material-symbols-outlined text-[14px] text-gold-dark" aria-hidden="true">verified</span>
             <span>{t("trust.national")}</span>
           </span>
-          <span className="hidden md:inline-flex items-center gap-1.5 text-white/80">
-            <span className="material-symbols-outlined text-[14px]">shield</span>
+          <span className="hidden md:inline-flex items-center gap-1.5 text-on-surface-variant">
+            <span className="material-symbols-outlined text-[14px] text-gold-dark" aria-hidden="true">shield</span>
             <span>{t("trust.security")}</span>
           </span>
         </div>
         <div className="flex items-center gap-4">
-          <Link href="/orders" className="hover:text-secondary-container transition-colors flex items-center gap-1">
-            <span className="material-symbols-outlined text-[14px]">local_shipping</span>
+          <Link
+            href="/orders"
+            className="hover:text-gold-dark transition-colors flex items-center gap-1"
+            data-tooltip={`${t("utility.trackOrder")} — מעקב סטטוס, משלוחים והיסטוריה`}
+            data-tooltip-position="bottom"
+          >
+            <span className="material-symbols-outlined text-[14px]" aria-hidden="true">local_shipping</span>
             <span className="hidden sm:inline">{t("utility.trackOrder")}</span>
           </Link>
-          <Link href="/help" className="hover:text-secondary-container transition-colors flex items-center gap-1">
-            <span className="material-symbols-outlined text-[14px]">help</span>
+          <Link
+            href="/help"
+            className="hover:text-gold-dark transition-colors flex items-center gap-1"
+            data-tooltip={`${t("utility.help")} — שאלות נפוצות, מדריכים ופתיחת פנייה`}
+            data-tooltip-position="bottom"
+          >
+            <span className="material-symbols-outlined text-[14px]" aria-hidden="true">help</span>
             <span className="hidden sm:inline">{t("utility.help")}</span>
           </Link>
-          <a href="tel:*6274" className="hover:text-secondary-container transition-colors flex items-center gap-1">
-            <span className="material-symbols-outlined text-[14px]">phone</span>
+          <a
+            href="tel:*6274"
+            className="hover:text-gold-dark transition-colors flex items-center gap-1"
+            data-tooltip="חיוג למוקד השירות *6274 — ימים א'-ה' 8:00-16:00"
+            data-tooltip-position="bottom"
+          >
+            <span className="material-symbols-outlined text-[14px]" aria-hidden="true">phone</span>
             <span className="hidden sm:inline">*6274</span>
           </a>
         </div>

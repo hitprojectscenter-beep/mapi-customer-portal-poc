@@ -45,24 +45,25 @@ export default function CmsLayout({ children }: { children: React.ReactNode }) {
 
   return (
     <div className="bg-surface min-h-screen">
-      {/* CMS header strip */}
-      <div className="bg-gradient-to-l from-primary to-tertiary text-white">
+      {/* CMS header strip — light, champagne hairline (no filled band) */}
+      <div className="bg-white border-b border-gold/30">
         <div className="max-w-container-max-width mx-auto px-4 md:px-margin-desktop py-5 flex items-center justify-between flex-wrap gap-3">
           <div>
-            <h1 className="text-lg md:text-xl font-bold flex items-center gap-2">
-              <span className="material-symbols-outlined text-[24px]">edit_note</span>
+            <h1 className="text-lg md:text-xl font-bold flex items-center gap-2 text-primary">
+              <span className="material-symbols-outlined text-[24px] text-gold-dark" aria-hidden="true">edit_note</span>
               <span>ניהול תוכן הפורטל</span>
             </h1>
-            <p className="text-white/70 text-xs font-light mt-0.5">
+            <p className="text-on-surface-variant text-xs font-light mt-0.5">
               {session.name} · {session.role}
             </p>
           </div>
           <button
             type="button"
             onClick={handleLogout}
-            className="shine bg-white/10 hover:bg-white/20 border border-white/20 text-white px-4 py-2 rounded-full text-xs font-semibold flex items-center gap-1.5"
+            className="shine btn-lux-ghost px-4 py-2 rounded-full text-xs flex items-center gap-1.5"
+            data-tooltip="יציאה מאובטחת מממשק הניהול — ה-session נמחק"
           >
-            <span className="material-symbols-outlined text-[16px]">logout</span>
+            <span className="material-symbols-outlined text-[16px]" aria-hidden="true">logout</span>
             <span>התנתקות</span>
           </button>
         </div>

@@ -159,11 +159,11 @@ export default function ServiceCard({ service, variant = "default" }: Props) {
             <button
               type="button"
               onClick={handleAddToCart}
-              className="shine shine-glow block w-full bg-primary hover:bg-secondary text-white text-center py-2.5 rounded-full text-sm font-semibold transition-colors flex items-center justify-center gap-2"
-              data-tooltip={t("svc.addToCart")}
+              className="shine shine-glow block w-full btn-lux-primary text-center py-2.5 rounded-full text-sm transition-colors flex items-center justify-center gap-2"
+              data-tooltip={`${t("svc.addToCart")} — התשלום מאובטח דרך שרת התשלומים הממשלתי`}
               data-tooltip-position="bottom"
             >
-              <span className="material-symbols-outlined text-[18px]">add_shopping_cart</span>
+              <span className="material-symbols-outlined text-[18px]" aria-hidden="true">add_shopping_cart</span>
               <span>{t("svc.addToCart")}</span>
             </button>
           )}

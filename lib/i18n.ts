@@ -450,7 +450,10 @@ type TranslationKeys =
   | "leads.admin.kpiLabel" | "leads.admin.quickSub"
   // Chatbot lead capture
   | "ai.lead.cta" | "ai.lead.title" | "ai.lead.first" | "ai.lead.last"
-  | "ai.lead.contact" | "ai.lead.submit" | "ai.lead.done" | "ai.lead.invalid";
+  | "ai.lead.contact" | "ai.lead.submit" | "ai.lead.done" | "ai.lead.invalid"
+  // Detailed nav tooltips (luxury design)
+  | "nav.tip.home" | "nav.tip.catalog" | "nav.tip.bundles" | "nav.tip.plans"
+  | "nav.tip.apiHub" | "nav.tip.dashboard" | "nav.tip.help";
 
 const dict: Record<TranslationKeys, Record<Lang, string>> = {
   // Navigation
@@ -1925,7 +1928,16 @@ const dict: Record<TranslationKeys, Record<Lang, string>> = {
   "ai.lead.contact": { he: 'טלפון או מייל', en: 'Phone or email', fr: 'Téléphone ou e-mail', es: 'Teléfono o correo', ru: 'Телефон или email', ar: 'هاتف أو بريد' },
   "ai.lead.submit": { he: 'שלחו ונחזור אליכם', en: 'Send — we\'ll call back', fr: 'Envoyer', es: 'Enviar', ru: 'Отправить', ar: 'إرسال' },
   "ai.lead.done": { he: 'תודה! הפנייה נקלטה ונותבה לנציג. מספר ליד: ', en: 'Thanks! Your request was captured and routed. Lead ID: ', fr: 'Merci ! Votre demande a été enregistrée. ID : ', es: '¡Gracias! Su solicitud fue registrada. ID: ', ru: 'Спасибо! Заявка принята. Номер: ', ar: 'شكرًا! تم استلام طلبك. المعرف: ' },
-  "ai.lead.invalid": { he: 'נא למלא שם מלא + טלפון או מייל', en: 'Please fill full name + phone or email', fr: 'Veuillez remplir nom complet + téléphone ou e-mail', es: 'Complete nombre + teléfono o correo', ru: 'Заполните имя + телефон или email', ar: 'يرجى ملء الاسم + الهاتف أو البريد' }
+  "ai.lead.invalid": { he: 'נא למלא שם מלא + טלפון או מייל', en: 'Please fill full name + phone or email', fr: 'Veuillez remplir nom complet + téléphone ou e-mail', es: 'Complete nombre + teléfono o correo', ru: 'Заполните имя + телефон или email', ar: 'يرجى ملء الاسم + الهاتف أو البريد' },
+
+  // --- Detailed nav tooltips ---
+  "nav.tip.home": { he: 'עמוד הבית — מוצרים מומלצים, קטגוריות ומפה אינטראקטיבית', en: 'Home — featured products, categories and interactive map', fr: 'Accueil — produits phares, catégories et carte interactive', es: 'Inicio — productos destacados, categorías y mapa interactivo', ru: 'Главная — рекомендуемые продукты, категории и интерактивная карта', ar: 'الرئيسية — منتجات مميزة وفئات وخريطة تفاعلية' },
+  "nav.tip.catalog": { he: 'קטלוג השירותים המלא — מפות, קדסטר, גיאודזיה ותצלומי אוויר עם הזמנה מקוונת', en: 'Full service catalog — maps, cadastre, geodesy and aerial photos with online ordering', fr: 'Catalogue complet — cartes, cadastre, géodésie et photos aériennes', es: 'Catálogo completo — mapas, catastro, geodesia y fotos aéreas', ru: 'Полный каталог — карты, кадастр, геодезия и аэрофотоснимки', ar: 'الكتالوج الكامل — خرائط ومساحة وجيوديسيا وصور جوية' },
+  "nav.tip.bundles": { he: 'חבילות אזוריות משולבות בהנחה של עד 32% — אורתופוטו, GIS וגבהים יחד', en: 'Regional bundles at up to 32% off — orthophoto, GIS and elevation together', fr: 'Packs régionaux jusqu\'à -32% — orthophoto, SIG et altimétrie', es: 'Paquetes regionales con hasta 32% de descuento', ru: 'Региональные пакеты со скидкой до 32%', ar: 'حزم إقليمية بخصم يصل إلى 32%' },
+  "nav.tip.plans": { he: 'מסלולי מנוי — חינמי, פרימיום ומגזר ציבורי, כולל השוואת יכולות מלאה', en: 'Subscription plans — free, premium and public sector with full comparison', fr: 'Formules d\'abonnement — gratuit, premium et secteur public', es: 'Planes de suscripción — gratuito, premium y sector público', ru: 'Тарифы — бесплатный, премиум и госсектор', ar: 'خطط الاشتراك — مجاني ومتميز وقطاع عام' },
+  "nav.tip.apiHub": { he: 'מרכז המפתחים — מפתחות API, ניטור שימוש, תיעוד ודוגמאות קוד', en: 'Developer hub — API keys, usage monitoring, docs and code samples', fr: 'Espace développeurs — clés API, suivi, documentation', es: 'Centro de desarrolladores — claves API, monitoreo y documentación', ru: 'Центр разработчиков — API-ключи, мониторинг и документация', ar: 'مركز المطورين — مفاتيح API ومراقبة وتوثيق' },
+  "nav.tip.dashboard": { he: 'האזור האישי — הזמנות, מנויים, הצעות מחיר והורדות', en: 'Personal area — orders, subscriptions, quotes and downloads', fr: 'Espace personnel — commandes, abonnements, devis', es: 'Área personal — pedidos, suscripciones y presupuestos', ru: 'Личный кабинет — заказы, подписки и счета', ar: 'المنطقة الشخصية — طلبات واشتراكات وعروض أسعار' },
+  "nav.tip.help": { he: 'מרכז העזרה — שאלות נפוצות, מדריכים, צ\'אט ופתיחת פנייה', en: 'Help center — FAQ, guides, chat and support tickets', fr: 'Centre d\'aide — FAQ, guides, chat et assistance', es: 'Centro de ayuda — preguntas frecuentes, guías y soporte', ru: 'Центр помощи — FAQ, руководства и поддержка', ar: 'مركز المساعدة — أسئلة شائعة وأدلة ودعم' }
 };
 
 export type TKey = keyof typeof dict;

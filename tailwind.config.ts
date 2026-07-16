@@ -28,14 +28,22 @@ const config: Config = {
         "on-secondary-fixed": "#001d36",
         "on-secondary-fixed-variant": "#00497c",
 
-        tertiary: "#2a3640",
-        "tertiary-container": "#414d57",
-        "tertiary-fixed": "#d7e4f0",
-        "tertiary-fixed-dim": "#bbc8d4",
+        /* Luxury palette: tertiary = muted royal purple (was slate) */
+        tertiary: "#463f7a",
+        "tertiary-container": "#5a5296",
+        "tertiary-fixed": "#e7e3f6",
+        "tertiary-fixed-dim": "#cbc4ea",
         "on-tertiary": "#ffffff",
-        "on-tertiary-container": "#b1bec9",
-        "on-tertiary-fixed": "#111d25",
-        "on-tertiary-fixed-variant": "#3c4852",
+        "on-tertiary-container": "#d6d0f0",
+        "on-tertiary-fixed": "#141034",
+        "on-tertiary-fixed-variant": "#3e3768",
+
+        /* Champagne gold accents — hairlines, labels, hover states */
+        gold: "#b4924e",
+        "gold-dark": "#8f7439",
+        "gold-light": "#d9c79c",
+        "gold-tint": "#faf6ec",
+        ivory: "#faf8f4",
 
         surface: "#f8f9fb",
         "surface-bright": "#f8f9fb",

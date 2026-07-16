@@ -18,14 +18,15 @@ export default function Header() {
   const [supportOpen, setSupportOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
 
+  // Every nav control carries a representative icon + a detailed tooltip
   const navItems = [
-    { label: t("nav.home"), href: "/" },
-    { label: t("nav.catalog"), href: "/catalog" },
-    { label: t("nav.bundles"), href: "/bundles" },
-    { label: t("nav.plans"), href: "/plans" },
-    { label: t("nav.apiHub"), href: "/api-hub" },
-    { label: t("nav.dashboard"), href: "/dashboard" },
-    { label: t("nav.help"), href: "/help" }
+    { label: t("nav.home"), href: "/", icon: "home", tip: t("nav.tip.home") },
+    { label: t("nav.catalog"), href: "/catalog", icon: "storefront", tip: t("nav.tip.catalog") },
+    { label: t("nav.bundles"), href: "/bundles", icon: "package_2", tip: t("nav.tip.bundles") },
+    { label: t("nav.plans"), href: "/plans", icon: "workspace_premium", tip: t("nav.tip.plans") },
+    { label: t("nav.apiHub"), href: "/api-hub", icon: "api", tip: t("nav.tip.apiHub") },
+    { label: t("nav.dashboard"), href: "/dashboard", icon: "person", tip: t("nav.tip.dashboard") },
+    { label: t("nav.help"), href: "/help", icon: "help", tip: t("nav.tip.help") }
   ];
   const adminQuickLinks = [
     { label: t("nav.pipeline"), href: "/admin/pipeline", icon: "filter_alt" },
@@ -74,17 +75,21 @@ export default function Header() {
           </div>
 
           {/* Desktop Navigation */}
-          <nav className="hidden lg:flex items-center gap-8 xl:gap-10" aria-label="Main">
+          <nav className="hidden lg:flex items-center gap-6 xl:gap-8" aria-label="Main">
             {navItems.map((item) => (
               <Link
                 key={item.href}
                 href={item.href}
-                className="text-sm font-medium text-primary hover:text-secondary transition-colors relative group shine px-2 py-1 rounded-lg"
-                data-tooltip={item.label}
+                className="text-sm font-medium text-primary hover:text-gold-dark transition-colors relative group shine px-2 py-1 rounded-lg flex items-center gap-1.5"
+                data-tooltip={item.tip}
                 data-tooltip-position="bottom"
+                data-tooltip-wrap="true"
               >
+                <span className="material-symbols-outlined text-[18px] text-gold-dark/60 group-hover:text-gold-dark transition-colors" aria-hidden="true">
+                  {item.icon}
+                </span>
                 {item.label}
-                <span className="absolute -bottom-1 right-0 w-0 h-0.5 bg-secondary group-hover:w-full transition-all duration-300" />
+                <span className="absolute -bottom-1 right-0 w-0 h-px bg-gradient-to-l from-gold to-gold-light group-hover:w-full transition-all duration-300" />
               </Link>
             ))}
           </nav>
@@ -189,8 +194,9 @@ export default function Header() {
                   <Link
                     href={item.href}
                     onClick={() => setOpen(false)}
-                    className="shine block px-6 py-4 text-center font-medium text-primary hover:bg-surface-container border-b border-outline-variant/30 min-h-[48px] flex items-center justify-center"
+                    className="shine block px-6 py-4 text-center font-medium text-primary hover:bg-gold-tint border-b border-outline-variant/30 min-h-[48px] flex items-center justify-center gap-2"
                   >
+                    <span className="material-symbols-outlined text-[20px] text-gold-dark/70" aria-hidden="true">{item.icon}</span>
                     {item.label}
                   </Link>
                 </li>
