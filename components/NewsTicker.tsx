@@ -274,23 +274,23 @@ export default function NewsTicker() {
           </div>
 
           {/* Left side: navigation arrows (RTL: appear on the left) + close */}
-          <div className="flex items-center px-2 gap-1 border-r border-outline-variant flex-shrink-0">
-            {/* Mobile-only navigation (prev/next) — 40px min for touch */}
+          <div className="flex items-center px-1.5 gap-0.5 border-r border-outline-variant flex-shrink-0">
+            {/* Mobile-only navigation (prev/next) — slim gold-trimmed touch targets */}
             <button
               type="button"
               onClick={prevItem}
-              className="shine md:hidden w-10 h-10 rounded-full border border-outline-variant text-on-surface-variant hover:text-primary hover:border-primary hover:bg-surface-container flex items-center justify-center transition-colors"
+              className="shine md:hidden w-9 h-9 rounded-full border border-gold/35 text-gold-dark hover:text-primary hover:border-gold hover:bg-gold-tint flex items-center justify-center transition-colors"
               aria-label="הקודם"
             >
-              <span className="material-symbols-outlined text-[18px]">chevron_right</span>
+              <span className="material-symbols-outlined text-[16px]" aria-hidden="true">chevron_right</span>
             </button>
             <button
               type="button"
               onClick={nextItem}
-              className="shine md:hidden w-10 h-10 rounded-full border border-outline-variant text-on-surface-variant hover:text-primary hover:border-primary hover:bg-surface-container flex items-center justify-center transition-colors"
+              className="shine md:hidden w-9 h-9 rounded-full border border-gold/35 text-gold-dark hover:text-primary hover:border-gold hover:bg-gold-tint flex items-center justify-center transition-colors"
               aria-label="הבא"
             >
-              <span className="material-symbols-outlined text-[18px]">chevron_left</span>
+              <span className="material-symbols-outlined text-[16px]" aria-hidden="true">chevron_left</span>
             </button>
 
             {/* Mobile dot indicators — 24px touch target with 6px visible dot inside */}

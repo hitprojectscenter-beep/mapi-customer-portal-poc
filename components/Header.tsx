@@ -54,10 +54,10 @@ export default function Header() {
               data-tooltip-position="bottom"
             >
               <div className="flex flex-col items-center leading-tight">
-                <span className="font-extrabold text-lg sm:text-xl tracking-tight text-primary group-hover:text-secondary transition-colors" dir="rtl">
+                <span className="font-extrabold text-lg sm:text-xl tracking-tight text-primary group-hover:text-gold-dark transition-colors" dir="rtl">
                   מפ&quot;י
                 </span>
-                <span className="text-[9px] sm:text-[10px] font-semibold text-secondary">
+                <span className="text-[8px] sm:text-[10px] font-semibold text-gold-dark whitespace-nowrap tracking-wide">
                   {t("header.brandSub")}
                 </span>
               </div>

@@ -27,11 +27,11 @@ export default function ScrollHintBubble() {
       onClick={handleClick}
       style={{ bottom: "calc(1.5rem + var(--safe-bottom))" }}
       aria-label={t("scrollHint.aria")}
-      className={`fixed left-1/2 -translate-x-1/2 z-30 flex items-center gap-2 bg-white border border-outline-variant/60 text-primary px-4 py-2.5 rounded-full shadow-lg hover:shadow-xl hover:bg-primary hover:text-white transition-all duration-300 shine group ${
+      className={`fixed left-[calc(50%+2.25rem)] sm:left-1/2 -translate-x-1/2 z-30 flex items-center gap-2 bg-white border border-gold/40 text-primary px-4 py-2.5 rounded-full shadow-lg hover:shadow-xl hover:bg-gold-tint transition-all duration-300 shine group ${
         scrolled ? "opacity-70 hover:opacity-100" : "opacity-100"
       }`}
     >
-      <span className="material-symbols-outlined text-secondary group-hover:text-white text-[20px] animate-bounce">
+      <span className="material-symbols-outlined text-gold-dark text-[20px] animate-bounce" aria-hidden="true">
         keyboard_arrow_down
       </span>
       <span className="text-xs sm:text-sm font-semibold whitespace-nowrap">

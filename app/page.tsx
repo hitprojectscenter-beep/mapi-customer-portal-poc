@@ -24,24 +24,24 @@ export default function HomePage() {
         {/* Aurora glow blobs — pastel whispers of blue / purple / champagne */}
         <div
           className="wow-aurora bg-secondary"
-          style={{ width: 500, height: 500, top: "10%", right: "-100px", animationDelay: "0s", opacity: 0.14 }}
+          style={{ width: 500, height: 500, top: "10%", right: "-100px", animationDelay: "0s", opacity: 0.18 }}
           aria-hidden="true"
         />
         <div
           className="wow-aurora bg-tertiary"
-          style={{ width: 400, height: 400, bottom: "10%", left: "-100px", animationDelay: "4s", opacity: 0.12 }}
+          style={{ width: 400, height: 400, bottom: "10%", left: "-100px", animationDelay: "4s", opacity: 0.16 }}
           aria-hidden="true"
         />
         <div
           className="wow-aurora bg-gold-light"
-          style={{ width: 300, height: 300, top: "40%", left: "30%", animationDelay: "8s", opacity: 0.22 }}
+          style={{ width: 320, height: 320, top: "35%", left: "28%", animationDelay: "8s", opacity: 0.3 }}
           aria-hidden="true"
         />
 
         {/* Background Layer */}
         <div className="absolute inset-0 z-0">
           <div
-            className="absolute inset-0 bg-cover bg-center opacity-[0.06]"
+            className="absolute inset-0 bg-cover bg-center opacity-[0.09]"
             style={{
               backgroundImage:
                 'url("https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?auto=format&fit=crop&w=1920&q=80")'
@@ -62,17 +62,24 @@ export default function HomePage() {
         </div>
 
         <div className="relative z-10 max-w-container-max-width mx-auto px-4 md:px-margin-desktop text-center py-16 md:py-20">
-          <div className="inline-flex items-center gap-2 bg-white/80 backdrop-blur-md px-3 sm:px-4 py-1.5 rounded-full mb-6 sm:mb-8 text-primary border border-gold/40 shadow-sm">
-            <span className="material-symbols-outlined text-[16px] sm:text-[18px] text-gold-dark">verified_user</span>
+          {/* Champagne ornament line */}
+          <div className="lux-enter flex items-center justify-center gap-3 mb-5" aria-hidden="true" style={{ animationDelay: "0.05s" }}>
+            <span className="h-px w-12 sm:w-20 bg-gradient-to-l from-gold/60 to-transparent" />
+            <span className="text-gold text-sm sm:text-base leading-none">✦</span>
+            <span className="h-px w-12 sm:w-20 bg-gradient-to-r from-gold/60 to-transparent" />
+          </div>
+
+          <div className="lux-enter inline-flex items-center gap-2 bg-white/80 backdrop-blur-md px-3 sm:px-4 py-1.5 rounded-full mb-6 sm:mb-8 text-primary border border-gold/40 shadow-sm" style={{ animationDelay: "0.12s" }}>
+            <span className="material-symbols-outlined text-[16px] sm:text-[18px] text-gold-dark" aria-hidden="true">verified_user</span>
             <span className="text-[10px] sm:text-xs font-bold tracking-wide">
               {t("hero.badge")}
             </span>
           </div>
 
-          <h1 className="text-primary font-extrabold text-3xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-[88px] leading-[1.1] mb-8 sm:mb-10 max-w-5xl mx-auto">
+          <h1 className="lux-enter text-primary font-extrabold text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-[88px] leading-[1.12] mb-8 sm:mb-10 max-w-5xl mx-auto" style={{ animationDelay: "0.2s" }}>
             {t("hero.titleLine1")}
             <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-l from-secondary via-tertiary to-gold-dark">
+            <span className="text-shimmer text-transparent bg-clip-text bg-gradient-to-l from-secondary via-tertiary to-gold-dark">
               {t("hero.titleLine2")}
             </span>
           </h1>
@@ -82,9 +89,10 @@ export default function HomePage() {
             role="search"
             action="/catalog"
             method="get"
-            className="max-w-3xl mx-auto mb-8 sm:mb-12"
+            className="lux-enter max-w-3xl mx-auto mb-8 sm:mb-12"
+            style={{ animationDelay: "0.32s" }}
           >
-            <div className="bg-white/90 backdrop-blur-md border border-gold/35 p-1.5 sm:p-2 rounded-2xl flex flex-row-reverse items-center shadow-[0_18px_50px_-20px_rgba(27,43,69,0.25)]">
+            <div className="bg-white/90 backdrop-blur-md border border-gold/35 ring-1 ring-gold/15 focus-within:ring-gold/50 focus-within:shadow-[0_22px_60px_-18px_rgba(143,116,57,0.4)] p-1.5 sm:p-2 rounded-2xl flex flex-row-reverse items-center shadow-[0_18px_50px_-20px_rgba(27,43,69,0.25)] transition-all duration-300">
               <label htmlFor="hero-search" className="sr-only">{t("hero.searchBtn")}</label>
               <input
                 id="hero-search"
@@ -105,7 +113,7 @@ export default function HomePage() {
             </div>
           </form>
 
-          <div className="flex flex-col sm:flex-row-reverse items-center justify-center gap-3 sm:gap-6">
+          <div className="lux-enter flex flex-col sm:flex-row-reverse items-center justify-center gap-3 sm:gap-6" style={{ animationDelay: "0.45s" }}>
             <Link
               href="/catalog"
               className="shine shine-glow group btn-lux-primary px-6 sm:px-10 py-3.5 sm:py-5 rounded-full flex items-center gap-3 transition-all w-full sm:w-auto justify-center min-h-[48px]"

@@ -218,7 +218,26 @@ export default function GovMapEmbed({
               {/* Control panel dropdown — anchored to physical right so it grows
                   leftward INTO the map (the container is overflow-hidden) */}
               {panelOpen && (
-                <div className="absolute top-11 right-0 left-auto w-64 bg-white rounded-2xl shadow-2xl border border-outline-variant/50 p-4 animate-scale-in max-h-72 overflow-y-auto">
+                <div className="absolute top-11 right-0 left-auto w-64 bg-white rounded-2xl shadow-2xl border border-gold/30 p-4 animate-scale-in max-h-[min(18rem,55vh)] overflow-y-auto overscroll-contain">
+                  {/* Panel header: title + explicit close (mobile users have no Esc) */}
+                  <div className="flex items-center justify-between mb-3 pb-2 border-b border-gold/20 sticky -top-4 -mx-4 px-4 pt-0 bg-white z-10">
+                    <p className="text-[11px] uppercase tracking-widest font-bold text-gold-dark flex items-center gap-1.5">
+                      <span className="material-symbols-outlined text-[16px]" aria-hidden="true">tune</span>
+                      <span>{t("govmap.mapSettings")}</span>
+                    </p>
+                    <button
+                      type="button"
+                      onClick={() => setPanelOpen(false)}
+                      className="shine w-8 h-8 rounded-full hover:bg-error-red/10 hover:text-error-red text-on-surface-variant flex items-center justify-center transition-colors"
+                      aria-label="סגור את חלונית השכבות"
+                      data-tooltip="סגירת חלונית מפת הרקע והשכבות"
+                      data-tooltip-position="bottom"
+                      data-tooltip-edge="right"
+                    >
+                      <span className="material-symbols-outlined text-[18px]" aria-hidden="true">close</span>
+                    </button>
+                  </div>
+
                   {/* Basemap section */}
                   <p className="text-[10px] uppercase tracking-widest font-bold text-on-surface-variant mb-2">
                     {t("govmap.basemap")}
@@ -290,6 +309,15 @@ export default function GovMapEmbed({
             )}
           </div>
         </div>
+      )}
+
+      {/* Tap anywhere on the map closes the settings panel */}
+      {panelOpen && (
+        <div
+          className="absolute inset-0 z-10"
+          onClick={() => setPanelOpen(false)}
+          aria-hidden="true"
+        />
       )}
 
       {!loaded && !error && (

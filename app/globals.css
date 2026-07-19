@@ -599,6 +599,28 @@
     text-transform: uppercase;
   }
 
+  /* Slow living shimmer over gradient-clipped text (hero headline) */
+  .text-shimmer {
+    background-size: 220% 220%;
+    animation: lux-shimmer 7s ease-in-out infinite;
+  }
+  @keyframes lux-shimmer {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+  }
+
+  /* Staggered luxury entrance (backwards fill = hidden until its turn) */
+  .lux-enter {
+    animation: fade-in 0.7s cubic-bezier(0.22, 1, 0.36, 1) backwards;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .text-shimmer,
+    .lux-enter {
+      animation: none !important;
+    }
+  }
+
   /* ========================================
      FIXED TOP STACK — ticker → utility (sm+) → header, no gaps
      mobile:  ticker 56px + header 80px            = 136px

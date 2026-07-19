@@ -268,7 +268,7 @@ export default function AIAssistant() {
         type="button"
         onClick={() => setOpen(true)}
         style={{ bottom: "calc(1.5rem + var(--safe-bottom))" }}
-        className={`fixed left-4 sm:left-8 w-14 h-14 sm:w-16 sm:h-16 bg-gradient-to-br from-secondary to-primary text-white rounded-full flex items-center justify-center shadow-2xl hover:scale-110 active:scale-95 transition-all z-40 group shine shine-glow ${
+        className={`fixed left-4 sm:left-8 w-14 h-14 sm:w-16 sm:h-16 bg-gradient-to-br from-primary via-[#2c2a5e] to-tertiary border border-gold/40 text-white rounded-full flex items-center justify-center shadow-2xl hover:scale-110 active:scale-95 transition-all z-40 group shine shine-glow ${
           open ? "scale-0 opacity-0 pointer-events-none" : ""
         }`}
         aria-label={t("ai.title")}
