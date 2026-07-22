@@ -294,7 +294,7 @@ export default function NewsTicker() {
             </button>
 
             {/* Mobile dot indicators — 24px touch target with 6px visible dot inside */}
-            <div className="md:hidden flex items-center px-1" role="tablist" aria-label="חדשות">
+            <div className="hidden min-[430px]:flex md:hidden items-center px-1" role="tablist" aria-label="חדשות">
               {displayItems.map((item, idx) => (
                 <button
                   key={item.id}

@@ -647,6 +647,12 @@ ${Array.from({ length: 11 }, (_, i) => `<line x1="0" y1="${i * 60}" x2="800" y2=
                 service.category === "orthophoto" ? "ortho" :
                 service.category === "geodesy" ? "cors" : "default"
               }
+              center={
+                service.category === "cadastre" ? [35.2137, 31.7683] : // ירושלים — רזולוציית גושים/חלקות
+                service.category === "orthophoto" ? [34.7818, 32.0853] : // תל אביב
+                undefined
+              }
+              zoom={service.category === "cadastre" ? 12 : service.category === "orthophoto" ? 11 : 8}
               height="420px"
               title={localName}
               allowDraw={false}
