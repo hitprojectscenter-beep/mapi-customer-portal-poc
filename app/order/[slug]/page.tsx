@@ -48,6 +48,44 @@ export default function OrderPage() {
   const shippingCost = delivery === "physical" || delivery === "both" ? 39 : 0;
   const totalPrice = Math.max(0, price + shippingCost + routeFlow.priceDelta);
 
+  // Spec 10.1 flow: persist the order → create a payment transaction →
+  // redirect to the (sandbox) government payment page. The webhook callback
+  // marks the order "שולמה". Falls back to the local confirmation step if
+  // the payment API is unavailable.
+  const [payBusy, setPayBusy] = useState(false);
+  const handleGovPayment = async () => {
+    if (!service) return;
+    setPayBusy(true);
+    const orderId = `ord-${Date.now().toString(36)}`;
+    try {
+      orderPosted.current = true;
+      await fetch("/api/orders", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          orderId,
+          serviceName: localName,
+          slug: service.slug,
+          total: totalPrice,
+          routeDetails: routeFlow.summaryLines.join(" | "),
+          delivery
+        })
+      }).catch(() => { /* order persistence is best-effort */ });
+      const res = await fetch("/api/payments", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ action: "create", orderId, serviceName: localName, slug: service.slug, amount: totalPrice })
+      });
+      const data = await res.json();
+      if (data?.ok && data.paymentUrl) {
+        router.push(data.paymentUrl);
+        return;
+      }
+    } catch { /* fall through to local confirmation */ }
+    setPayBusy(false);
+    setStep(4);
+  };
+
   // Persist the completed order to the portal database (Sheets "Orders" tab
   // + Chat alert when configured; demo mode is a no-op). Fires once on
   // reaching the confirmation step — never blocks the customer.
@@ -579,17 +617,17 @@ export default function OrderPage() {
                 </button>
                 <button
                   type="button"
-                  onClick={() => setStep(4)}
-                  disabled={!acceptTerms || !acceptQuote}
+                  onClick={handleGovPayment}
+                  disabled={!acceptTerms || !acceptQuote || payBusy}
                   className="shine flex-1 bg-secondary hover:bg-secondary/90 text-white px-4 py-3 rounded-xl font-bold disabled:bg-white/20 disabled:cursor-not-allowed transition-colors"
                   data-tooltip={
                     !acceptTerms || !acceptQuote
                       ? t("of.acceptPayTip")
-                      : t("of.gotoGovPay")
+                      : "ההזמנה נשמרת במסד ואתם מועברים לשרת התשלומים הממשלתי (סימולציה)"
                   }
                   data-tooltip-position="bottom"
                 >
-                  {t("of.acceptPaymentBtn")}
+                  {payBusy ? "מעביר לשרת התשלומים..." : t("of.acceptPaymentBtn")}
                 </button>
               </div>
             </aside>

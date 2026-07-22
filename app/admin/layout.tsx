@@ -22,6 +22,7 @@ const MODULES: Array<{
   { href: "/admin/subscriptions", icon: "subscriptions", labelKey: "admin.module.subscriptions", subKey: "admin.module.subscriptionsSub", group: "sales" },
   { href: "/admin/pricing", icon: "price_check", labelKey: "admin.module.pricing", subKey: "admin.module.pricingSub", group: "ops" },
   { href: "/admin/monitoring", icon: "monitor_heart", labelKey: "monitor.title", subKey: "monitor.subtitle", group: "ops" },
+  { href: "/admin/goplus", icon: "satellite_alt", labelKey: "goplus.title", subKey: "goplus.subtitle", group: "ops" },
   { href: "/admin/use-cases", icon: "menu_book", labelKey: "nav.useCases", subKey: "uc.subtitle", group: "ops" },
   { href: "/admin/content", icon: "edit_note", labelKey: "admin.module.content", subKey: "admin.module.contentSub", group: "content" }
 ];

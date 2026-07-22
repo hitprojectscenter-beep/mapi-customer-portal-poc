@@ -455,7 +455,9 @@ type TranslationKeys =
   | "nav.tip.home" | "nav.tip.catalog" | "nav.tip.bundles" | "nav.tip.plans"
   | "nav.tip.apiHub" | "nav.tip.dashboard" | "nav.tip.help"
   // Appendix-1 links + sample/trial feedback
-  | "svc.oldForm" | "svc.infoPage" | "svc.sample.done" | "svc.trial.sent";
+  | "svc.oldForm" | "svc.infoPage" | "svc.sample.done" | "svc.trial.sent"
+  // GO++ admin console
+  | "goplus.title" | "goplus.subtitle";
 
 const dict: Record<TranslationKeys, Record<Lang, string>> = {
   // Navigation
@@ -1945,7 +1947,9 @@ const dict: Record<TranslationKeys, Record<Lang, string>> = {
   "svc.oldForm": { he: 'הטופס הממשלתי (הערוץ הישן)', en: 'Legacy government form', fr: 'Formulaire gouvernemental (ancien)', es: 'Formulario gubernamental (antiguo)', ru: 'Старая государственная форма', ar: 'النموذج الحكومي (القديم)' },
   "svc.infoPage": { he: 'דף ההסבר ב-gov.il', en: 'Service page on gov.il', fr: 'Page du service sur gov.il', es: 'Página del servicio en gov.il', ru: 'Страница услуги на gov.il', ar: 'صفحة الخدمة على gov.il' },
   "svc.sample.done": { he: 'הדגימה ירדה ✓', en: 'Sample downloaded ✓', fr: 'Échantillon téléchargé ✓', es: 'Muestra descargada ✓', ru: 'Образец скачан ✓', ar: 'تم تنزيل العينة ✓' },
-  "svc.trial.sent": { he: 'ההתנסות הופעלה ✓', en: 'Trial activated ✓', fr: 'Essai activé ✓', es: 'Prueba activada ✓', ru: 'Пробный период активирован ✓', ar: 'تم تفعيل التجربة ✓' }
+  "svc.trial.sent": { he: 'ההתנסות הופעלה ✓', en: 'Trial activated ✓', fr: 'Essai activé ✓', es: 'Prueba activada ✓', ru: 'Пробный период активирован ✓', ar: 'تم تفعيل التجربة ✓' },
+  "goplus.title": { he: 'סנכרון GO++', en: 'GO++ Sync', fr: 'Synchro GO++', es: 'Sincronización GO++', ru: 'Синхронизация GO++', ar: 'مزامنة GO++' },
+  "goplus.subtitle": { he: 'GNSMART — שימוש חודשי ומשתמשים', en: 'GNSMART — monthly usage & users', fr: 'GNSMART — usage mensuel', es: 'GNSMART — uso mensual', ru: 'GNSMART — месячное использование', ar: 'GNSMART — الاستخدام الشهري' }
 };
 
 export type TKey = keyof typeof dict;

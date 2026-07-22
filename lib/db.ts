@@ -72,8 +72,21 @@ async function ensureSchema(): Promise<void> {
           status        TEXT NOT NULL DEFAULT 'התקבלה',
           created_at    TIMESTAMPTZ NOT NULL DEFAULT now()
         );
+        CREATE TABLE IF NOT EXISTS payments (
+          id            BIGSERIAL PRIMARY KEY,
+          tx_id         TEXT UNIQUE NOT NULL,
+          reference_id  TEXT NOT NULL,
+          order_id      TEXT,
+          service_name  TEXT NOT NULL,
+          slug          TEXT,
+          amount        NUMERIC NOT NULL DEFAULT 0,
+          status        TEXT NOT NULL DEFAULT 'pending',
+          created_at    TIMESTAMPTZ NOT NULL DEFAULT now(),
+          paid_at       TIMESTAMPTZ
+        );
         CREATE INDEX IF NOT EXISTS idx_leads_created ON leads (created_at DESC);
         CREATE INDEX IF NOT EXISTS idx_orders_created ON orders (created_at DESC);
+        CREATE INDEX IF NOT EXISTS idx_payments_tx ON payments (tx_id);
       `);
     })().catch(err => {
       schemaReady = null; // allow retry on next call
@@ -116,6 +129,41 @@ export async function insertOrder(o: DbOrder): Promise<void> {
     [o.orderId, o.serviceName, o.slug, o.total, o.routeDetails, o.delivery,
      o.customerName, o.email, o.phone]
   );
+}
+
+export interface DbPayment {
+  txId: string; referenceId: string; orderId: string;
+  serviceName: string; slug: string; amount: number;
+}
+
+export async function createPayment(p: DbPayment): Promise<void> {
+  await ensureSchema();
+  await getPool().query(
+    `INSERT INTO payments (tx_id, reference_id, order_id, service_name, slug, amount)
+     VALUES ($1,$2,$3,$4,$5,$6)`,
+    [p.txId, p.referenceId, p.orderId, p.serviceName, p.slug, p.amount]
+  );
+}
+
+export async function getPayment(txId: string): Promise<Record<string, unknown> | null> {
+  await ensureSchema();
+  const { rows } = await getPool().query(`SELECT * FROM payments WHERE tx_id = $1`, [txId]);
+  return rows[0] || null;
+}
+
+/** Webhook handler core: settle the payment + mark the order paid */
+export async function settlePayment(txId: string, status: "success" | "failed" | "cancelled"): Promise<Record<string, unknown> | null> {
+  await ensureSchema();
+  const { rows } = await getPool().query(
+    `UPDATE payments SET status = $2, paid_at = CASE WHEN $2 = 'success' THEN now() ELSE paid_at END
+     WHERE tx_id = $1 RETURNING *`,
+    [txId, status]
+  );
+  const payment = rows[0] || null;
+  if (payment && status === "success" && payment.order_id) {
+    await getPool().query(`UPDATE orders SET status = 'שולמה' WHERE order_id = $1`, [payment.order_id]);
+  }
+  return payment;
 }
 
 /** Recent rows for admin surfaces (newest first) */
