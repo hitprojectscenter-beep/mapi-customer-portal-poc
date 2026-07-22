@@ -90,7 +90,9 @@ const config: Config = {
         full: "9999px"
       },
       spacing: {
-        "container-max-width": "1440px",
+        // Wide-screen friendly: content breathes to 1760px before capping
+        // (was 1440 — users on 1080p/1440p saw large dead side margins)
+        "container-max-width": "1760px",
         "margin-desktop": "48px",
         "margin-mobile": "16px",
         "gutter-desktop": "24px",
@@ -98,7 +100,7 @@ const config: Config = {
         unit: "4px"
       },
       maxWidth: {
-        "container-max-width": "1440px"
+        "container-max-width": "1760px"
       },
       fontFamily: {
         body: ["Public Sans", "Heebo", "Assistant", "Arial", "sans-serif"]

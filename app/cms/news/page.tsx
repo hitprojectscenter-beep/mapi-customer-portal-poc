@@ -93,6 +93,8 @@ export default function CmsNewsPage() {
               value={form.type}
               onChange={(e) => setForm({ ...form, type: e.target.value as CmsNewsType })}
               className="w-full bg-surface-container border border-outline-variant rounded-xl px-3 py-2.5 text-sm focus:ring-2 focus:ring-secondary focus:outline-none"
+              data-tooltip="סוג ההודעה קובע את צבע הנקודה והאייקון בסרגל החדשות הציבורי"
+              data-tooltip-position="bottom"
             >
               {Object.entries(TYPE_META).map(([id, m]) => (
                 <option key={id} value={id}>{m.label}</option>
@@ -114,6 +116,8 @@ export default function CmsNewsPage() {
               onChange={(e) => setForm({ ...form, title: e.target.value })}
               placeholder="לדוגמה: אורתופוטו חדש זמין באזור המרכז"
               className="w-full bg-surface-container border border-outline-variant rounded-xl px-4 py-2.5 text-sm focus:ring-2 focus:ring-secondary focus:outline-none"
+              data-tooltip="הכותרת שתוצג בסרגל החדשות — עד 7 מילים לפי כללי הבית (המונה מימין מתעדכן חי)"
+              data-tooltip-position="bottom"
             />
           </div>
           <div className="sm:col-span-2">
@@ -126,6 +130,8 @@ export default function CmsNewsPage() {
               placeholder="/catalog/aerial-photos"
               className="w-full bg-surface-container border border-outline-variant rounded-xl px-4 py-2.5 text-sm focus:ring-2 focus:ring-secondary focus:outline-none"
               dir="ltr"
+              data-tooltip="לאן תוביל לחיצה על החדשה — נתיב פנימי (למשל ‎/catalog) או כתובת מלאה"
+              data-tooltip-position="bottom"
             />
           </div>
           <div className="sm:col-span-2 flex items-center gap-2 flex-wrap">

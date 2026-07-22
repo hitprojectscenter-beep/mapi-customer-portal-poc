@@ -185,7 +185,9 @@ export default function NewsTicker() {
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
     >
-      <div className="max-w-container-max-width mx-auto">
+      {/* Full-bleed strip: the news cards stretch across the entire screen
+          width — no dead side areas on wide monitors */}
+      <div className="w-full">
         <div className="flex items-stretch h-14 sm:h-16">
           {/* Right side: news label (RTL: appears on the right) */}
           <div className="hidden md:flex items-center px-3 lg:px-4 border-l border-outline-variant flex-shrink-0 bg-gold-tint/60">

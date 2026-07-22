@@ -100,6 +100,8 @@ export default function HomePage() {
                 type="search"
                 placeholder={t("hero.searchPlaceholder")}
                 className="bg-transparent border-none focus:ring-0 focus:outline-none text-primary placeholder:text-primary/40 text-center flex-grow px-3 sm:px-6 py-3 sm:py-4 text-sm sm:text-base md:text-lg w-full min-h-[44px]"
+                data-tooltip="חיפוש חכם עם התאמה חלקית וסבילות לשגיאות הקלדה — גם 'תצלומ' או 'אוביר' ימצאו"
+                data-tooltip-position="bottom"
               />
               <button
                 type="submit"

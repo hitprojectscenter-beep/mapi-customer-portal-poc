@@ -66,6 +66,7 @@ export default function Footer() {
                 placeholder={t("newsletter.placeholder")}
                 className="flex-1 bg-white border border-gold/30 rounded-full px-5 py-3 text-primary placeholder:text-primary/40 focus:ring-2 focus:ring-gold/50 focus:outline-none min-h-[48px]"
                 dir="ltr"
+                data-tooltip="כתובת המייל לקבלת עדכוני מוצרים ומבצעים — ללא דואר זבל, הסרה בקליק"
               />
               <button
                 type="submit"

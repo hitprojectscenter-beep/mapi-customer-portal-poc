@@ -27,6 +27,7 @@ export default function CmsLoginPage() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const [gisReady, setGisReady] = useState(false);
   const googleBtnRef = useRef<HTMLDivElement>(null);
 
@@ -72,13 +73,19 @@ export default function CmsLoginPage() {
     e.preventDefault();
     setBusy(true);
     setError(null);
-    const session = await cmsLogin(email, password);
+    const result = await cmsLogin(email, password);
     setBusy(false);
-    if (session) {
+    if (result.ok) {
       router.push("/cms");
-    } else {
-      setError("פרטי ההתחברות שגויים. נסה שוב.");
+      return;
     }
+    setError(
+      result.reason === "rate_limited"
+        ? "בוצעו יותר מדי ניסיונות התחברות. מטעמי אבטחה יש להמתין כ-15 דקות ולנסות שוב."
+        : result.reason === "network"
+        ? "שגיאת רשת — בדקו את החיבור ונסו שוב."
+        : "פרטי ההתחברות שגויים. נסה שוב."
+    );
   };
 
   return (
@@ -110,22 +117,42 @@ export default function CmsLoginPage() {
               placeholder="name@example.com"
               className="w-full bg-surface-container border border-outline-variant rounded-xl px-4 py-3 focus:ring-2 focus:ring-secondary focus:outline-none min-h-[48px]"
               dir="ltr"
+              data-tooltip="כתובת המייל של חשבון מנהל התוכן המורשה (אותיות גדולות/קטנות לא משנות)"
+              data-tooltip-position="bottom"
             />
           </div>
           <div>
             <label htmlFor="cms-password" className="block text-xs font-semibold text-primary mb-1.5">
               סיסמה
             </label>
-            <input
-              id="cms-password"
-              type="password"
-              required
-              autoComplete="current-password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="w-full bg-surface-container border border-outline-variant rounded-xl px-4 py-3 focus:ring-2 focus:ring-secondary focus:outline-none min-h-[48px]"
-              dir="ltr"
-            />
+            <div className="relative">
+              <input
+                id="cms-password"
+                type={showPassword ? "text" : "password"}
+                required
+                autoComplete="current-password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="w-full bg-surface-container border border-outline-variant rounded-xl ps-4 pe-12 py-3 focus:ring-2 focus:ring-secondary focus:outline-none min-h-[48px]"
+                dir="ltr"
+                data-tooltip="הסיסמה רגישה לאותיות גדולות/קטנות — היעזרו בעינית כדי לוודא את ההקלדה"
+                data-tooltip-position="bottom"
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(v => !v)}
+                className="absolute end-2 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full hover:bg-gold-tint text-on-surface-variant hover:text-gold-dark flex items-center justify-center transition-colors"
+                aria-label={showPassword ? "הסתר סיסמה" : "הצג סיסמה"}
+                aria-pressed={showPassword}
+                data-tooltip={showPassword ? "הסתרת הסיסמה" : "הצגת הסיסמה במלואה לבדיקת ההקלדה"}
+                data-tooltip-position="bottom"
+                data-tooltip-edge="right"
+              >
+                <span className="material-symbols-outlined text-[20px]" aria-hidden="true">
+                  {showPassword ? "visibility_off" : "visibility"}
+                </span>
+              </button>
+            </div>
           </div>
 
           {error && (

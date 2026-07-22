@@ -265,6 +265,8 @@ export default function OrderPage() {
                     value={size}
                     onChange={(e) => setSize(e.target.value)}
                     className="w-full bg-surface-container border border-outline-variant rounded-xl px-4 py-3 text-center focus:ring-2 focus:ring-secondary focus:outline-none"
+                    data-tooltip="גודל הגיליון קובע את המחיר — כל אפשרות מציגה מחיר עם/בלי אורתופוטו"
+                    data-tooltip-position="bottom"
                   >
                     {service.priceTable?.map((row) => {
                       const sizeKey = row.label.split(" ")[0];
@@ -349,6 +351,8 @@ export default function OrderPage() {
                     rows={3}
                     placeholder={t("order.purposePlaceholder")}
                     className="w-full bg-surface-container border border-outline-variant rounded-xl px-4 py-3 text-center focus:ring-2 focus:ring-secondary focus:outline-none resize-none"
+                    data-tooltip="תיאור מטרת השימוש עוזר לצוות המקצועי להתאים את המוצר ולזרז את הטיפול"
+                    data-tooltip-position="bottom"
                   />
                 </div>
 

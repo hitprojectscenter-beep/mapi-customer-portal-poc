@@ -29,21 +29,26 @@ function cacheSession(session: CmsSession | null): void {
   } catch { /* ignore */ }
 }
 
-export async function cmsLogin(email: string, password: string): Promise<CmsSession | null> {
+export type CmsLoginResult =
+  | { ok: true; session: CmsSession }
+  | { ok: false; reason: "invalid" | "rate_limited" | "network" };
+
+export async function cmsLogin(email: string, password: string): Promise<CmsLoginResult> {
   try {
     const res = await fetch("/api/cms/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email, password })
     });
-    if (!res.ok) return null;
+    if (res.status === 429) return { ok: false, reason: "rate_limited" };
+    if (!res.ok) return { ok: false, reason: "invalid" };
     const data = await res.json();
-    if (!data?.ok || !data.session) return null;
+    if (!data?.ok || !data.session) return { ok: false, reason: "invalid" };
     const session: CmsSession = { ...data.session, loginAt: Date.now() };
     cacheSession(session);
-    return session;
+    return { ok: true, session };
   } catch {
-    return null;
+    return { ok: false, reason: "network" };
   }
 }
 
