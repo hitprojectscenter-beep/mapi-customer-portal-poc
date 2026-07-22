@@ -225,6 +225,16 @@ export default function Header() {
                   {t("nav.login")}
                 </Link>
               </li>
+              <li>
+                <Link
+                  href="/cms/login"
+                  onClick={() => setOpen(false)}
+                  className="shine block px-6 py-4 text-center font-medium text-gold-dark hover:bg-gold-tint min-h-[48px] flex items-center justify-center gap-2"
+                >
+                  <span className="material-symbols-outlined text-[20px]" aria-hidden="true">edit_note</span>
+                  <span>ניהול תוכן</span>
+                </Link>
+              </li>
             </ul>
           </nav>
         )}

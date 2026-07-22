@@ -40,6 +40,15 @@ export default function UtilityBar() {
             <span className="material-symbols-outlined text-[14px]" aria-hidden="true">help</span>
             <span className="hidden sm:inline">{t("utility.help")}</span>
           </Link>
+          <Link
+            href="/cms/login"
+            className="hover:text-gold-dark transition-colors flex items-center gap-1"
+            data-tooltip="כניסת מנהלי תוכן מורשים — ניהול חדשות, קמפיינים ומשתמשים"
+            data-tooltip-position="bottom"
+          >
+            <span className="material-symbols-outlined text-[14px]" aria-hidden="true">edit_note</span>
+            <span className="hidden sm:inline">ניהול תוכן</span>
+          </Link>
           <a
             href="tel:*6274"
             className="hover:text-gold-dark transition-colors flex items-center gap-1"

@@ -51,7 +51,7 @@ export default function CmsLoginPage() {
           });
           const data = await res.json();
           if (res.ok && data?.ok) {
-            try { sessionStorage.setItem("mapi_cms_session_v1", JSON.stringify({ ...data.session, loginAt: Date.now() })); } catch { /* ignore */ }
+            try { sessionStorage.setItem("mapi_cms_session_v2", JSON.stringify({ ...data.session, loginAt: Date.now() })); } catch { /* ignore */ }
             router.push("/cms");
             return;
           }

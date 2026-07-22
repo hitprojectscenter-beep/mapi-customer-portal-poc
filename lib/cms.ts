@@ -13,7 +13,7 @@
 // Auth (client side of /api/cms/*)
 // ---------------------------------------------------------------------------
 
-const SESSION_KEY = "mapi_cms_session_v1";
+const SESSION_KEY = "mapi_cms_session_v2";
 
 export interface CmsSession {
   email: string;
@@ -123,14 +123,11 @@ export interface CmsNewsItem {
   active: boolean;
 }
 
-const NEWS_KEY = "mapi_cms_news_v1";
+const NEWS_KEY = "mapi_cms_news_v2";
 
-export const DEFAULT_CMS_NEWS: CmsNewsItem[] = [
-  { id: "n-ortho", type: "new", title: "אורתופוטו חדש זמין באזור המרכז", href: "/catalog/aerial-photos", publishedAt: "2026-07-01", active: true },
-  { id: "n-dem", type: "update", title: "מודלי הגובה DSM ו-DTM שודרגו לאחרונה", href: "/catalog/elevation-data", publishedAt: "2026-07-02", active: true },
-  { id: "n-cors", type: "promo", title: "מנוי CORS שנתי במחיר מבצע מיוחד", href: "/catalog/cors-subscription", publishedAt: "2026-07-03", active: true },
-  { id: "n-hours", type: "alert", title: "מוקד השירות פתוח בחגים ובחופשות", href: "/help", publishedAt: "2026-07-04", active: true }
-];
+// No demo content: the manager starts clean. Until the first item is
+// published, the public ticker shows the portal's built-in headlines.
+export const DEFAULT_CMS_NEWS: CmsNewsItem[] = [];
 
 export function loadCmsNews(): CmsNewsItem[] {
   return load(NEWS_KEY, DEFAULT_CMS_NEWS);
@@ -169,32 +166,10 @@ export interface CmsCampaign {
   createdAt: string; // ISO
 }
 
-const CAMPAIGNS_KEY = "mapi_cms_campaigns_v1";
+const CAMPAIGNS_KEY = "mapi_cms_campaigns_v2";
 
-export const DEFAULT_CMS_CAMPAIGNS: CmsCampaign[] = [
-  {
-    id: "c-summer",
-    name: "מבצע קיץ למודדים",
-    audience: "surveyor",
-    discountPct: 10,
-    bannerText: "10% הנחה על מנוי CORS שנתי — עד סוף אוגוסט",
-    startDate: "2026-07-01",
-    endDate: "2026-08-31",
-    status: "active",
-    createdAt: "2026-06-25"
-  },
-  {
-    id: "c-academic",
-    name: "שנת לימודים — מחיר אקדמי",
-    audience: "researcher",
-    discountPct: 50,
-    bannerText: "50% הנחה לחוקרים וסטודנטים על כל המאגרים",
-    startDate: "2026-09-01",
-    endDate: "2026-10-31",
-    status: "draft",
-    createdAt: "2026-07-01"
-  }
-];
+// No demo campaigns — the manager creates real ones.
+export const DEFAULT_CMS_CAMPAIGNS: CmsCampaign[] = [];
 
 export function loadCmsCampaigns(): CmsCampaign[] {
   return load(CAMPAIGNS_KEY, DEFAULT_CMS_CAMPAIGNS);
@@ -221,13 +196,12 @@ export interface CmsUser {
   lastLogin: string | null; // ISO
 }
 
-const USERS_KEY = "mapi_cms_users_v1";
+const USERS_KEY = "mapi_cms_users_v2";
 
+// Real back-office accounts only (no demo users)
 export const DEFAULT_CMS_USERS: CmsUser[] = [
-  { id: "u-elad", name: "אלעד אסרף", email: "mapicomportal@gmail.com", role: "admin", active: true, primary: true, lastLogin: "2026-07-05" },
-  { id: "u-dana", name: "דנה מזרחי", email: "dana@mapi.gov.il", role: "editor", active: true, lastLogin: "2026-07-03" },
-  { id: "u-yair", name: "יאיר אברמוב", email: "yair@mapi.gov.il", role: "editor", active: true, lastLogin: "2026-06-28" },
-  { id: "u-noa", name: "נעה ברק", email: "noa@mapi.gov.il", role: "viewer", active: false, lastLogin: null }
+  { id: "u-elad", name: "אלעד אסרף", email: "mapicomportal@gmail.com", role: "admin", active: true, primary: true, lastLogin: null },
+  { id: "u-mark", name: "מארק ישראל", email: "imark@mapi.gov.il", role: "admin", active: true, lastLogin: null }
 ];
 
 export function loadCmsUsers(): CmsUser[] {
@@ -249,7 +223,7 @@ export interface CmsAuditEntry {
   action: string;
 }
 
-const AUDIT_KEY = "mapi_cms_audit_v1";
+const AUDIT_KEY = "mapi_cms_audit_v2";
 
 export function loadCmsAudit(): CmsAuditEntry[] {
   return load(AUDIT_KEY, [] as CmsAuditEntry[]);
