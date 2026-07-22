@@ -14,6 +14,16 @@ test.describe("MAPI Portal — smoke", () => {
     await expect(page.getByText("העתיד של המידע")).toBeVisible();
   });
 
+  test("mouse wheel scrolls the page", async ({ page }) => {
+    // Regression guard: overflow-x/overscroll-behavior on <body> once turned
+    // it into a chained scroll container that swallowed wheel events —
+    // the page ignored the mouse wheel entirely on desktop.
+    await page.goto("/");
+    await page.mouse.move(400, 400);
+    await page.mouse.wheel(0, 800);
+    await page.waitForFunction(() => window.scrollY > 100, undefined, { timeout: 5000 });
+  });
+
   test("catalog lists services with sort control", async ({ page }) => {
     await page.goto("/catalog");
     // 14 services render as cards

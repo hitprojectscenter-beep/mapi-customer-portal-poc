@@ -44,16 +44,19 @@
     min-height: 100dvh;
     color-scheme: light only;
     forced-color-adjust: none;
-    /* Prevent horizontal overflow that breaks mobile */
-    overflow-x: hidden;
-    /* iOS bounce/rubber-band control */
-    -webkit-overflow-scrolling: touch;
-    overscroll-behavior-y: contain;
+    /* ⚠️ Do NOT set overflow-x or overscroll-behavior on body:
+       overflow-x:hidden turns body into its own scroll container
+       (overflow-y computes to auto) with nothing to scroll, and
+       overscroll-behavior-y:contain on it then swallows wheel-event
+       chaining to the real <html> scroller — mouse wheel goes dead.
+       Horizontal clipping + bounce control live on <html> below. */
   }
 
-  /* Prevent horizontal scrollbar/scroll from any child */
+  /* The real viewport scroller: clip horizontal overflow and control
+     iOS rubber-band / pull-to-refresh here */
   html {
     overflow-x: hidden;
+    overscroll-behavior-y: contain;
   }
 
   /* iOS: prevent input auto-zoom by ensuring min font-size 16px on focus */

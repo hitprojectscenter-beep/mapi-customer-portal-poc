@@ -15,6 +15,11 @@ export default defineConfig({
     // and the smoke assertions target the default Hebrew UI
     locale: "he-IL",
     timezoneId: "Asia/Jerusalem",
+    // Instant scrolling + no entrance animations during tests: html is the
+    // sole scroller with scroll-behavior:smooth, and animated auto-scroll
+    // makes click hit-tests race the animation (globals.css already maps
+    // prefers-reduced-motion to scroll-behavior:auto + animation:none)
+    contextOptions: { reducedMotion: "reduce" },
     trace: "on-first-retry",
     screenshot: "only-on-failure"
   },

@@ -69,10 +69,13 @@ export default function CmsLayout({ children }: { children: React.ReactNode }) {
         </div>
       </div>
 
-      <div className="max-w-container-max-width mx-auto px-4 md:px-margin-desktop py-6 grid lg:grid-cols-[220px_1fr] gap-6">
+      {/* minmax(0,…) + min-w-0: the horizontally-scrollable nav must never
+          impose its content width on the grid column (pushes the forms
+          off-screen on phones) */}
+      <div className="max-w-container-max-width mx-auto px-4 md:px-margin-desktop py-6 grid grid-cols-[minmax(0,1fr)] lg:grid-cols-[220px_minmax(0,1fr)] gap-6">
         {/* Sidebar */}
-        <aside className="lg:sticky lg:top-48 h-fit">
-          <nav className="bg-white rounded-2xl border border-outline-variant/50 p-2 flex lg:flex-col gap-1 overflow-x-auto" aria-label="CMS">
+        <aside className="lg:sticky lg:top-48 h-fit min-w-0 max-w-full">
+          <nav className="bg-white rounded-2xl border border-outline-variant/50 p-2 flex lg:flex-col gap-1 overflow-x-auto max-w-full" aria-label="CMS">
             {NAV.map(item => {
               const active = pathname === item.href;
               return (
@@ -93,7 +96,7 @@ export default function CmsLayout({ children }: { children: React.ReactNode }) {
         </aside>
 
         {/* Content */}
-        <main>{children}</main>
+        <main className="min-w-0">{children}</main>
       </div>
     </div>
   );

@@ -1,0 +1,56 @@
+[WebServer] (node:22860) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:22832) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 36 tests using 2 workers
+
+(node:22820) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:22668) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer]  ⚠ For production Image Optimization with Next.js, the optional 'sharp' package is strongly recommended. Run 'npm i sharp', and Next.js will use it automatically for Image Optimization.
+[WebServer] Read more: https://nextjs.org/docs/messages/sharp-missing-in-production
+[WebServer] [CMS] CMS_SESSION_SECRET is not set — using the dev fallback. Set it in Vercel env.
+  ok  1 [desktop] › e2e\cms.spec.ts:11:7 › MAPI CMS — content manager › unauthenticated /cms redirects to login (3.5s)
+  ok  2 [desktop] › e2e\cms.spec.ts:19:7 › MAPI CMS — content manager › wrong credentials show an error (3.7s)
+  ok  3 [desktop] › e2e\cms.spec.ts:28:7 › MAPI CMS — content manager › footer exposes a discreet CMS link (2.7s)
+  ok  4 [desktop] › e2e\cms.spec.ts:34:7 › MAPI CMS — content manager › manager can log in, publish news, see it on the ticker (3.1s)
+  ok  5 [desktop] › e2e\leads.spec.ts:6:7 › MAPI Leads — AI lead management › admin console renders KPIs, scoring distribution and automations (885ms)
+  ok  7 [desktop] › e2e\leads.spec.ts:30:7 › MAPI Leads — AI lead management › lead intake API enforces the spec minimum and reports Workspace status (43ms)
+  ok  6 [desktop] › e2e\leads.spec.ts:17:7 › MAPI Leads — AI lead management › R3 email intake: AI parse creates a routed lead (2.2s)
+  ok  8 [desktop] › e2e\leads.spec.ts:52:7 › MAPI Leads — AI lead management › chatbot mini-form captures a lead that reaches the admin inbox (2.3s)
+  ok  9 [desktop] › e2e\smoke.spec.ts:7:7 › MAPI Portal — smoke › homepage loads with brand and hero (2.4s)
+  ok 10 [desktop] › e2e\smoke.spec.ts:17:7 › MAPI Portal — smoke › mouse wheel scrolls the page (2.2s)
+  ok 11 [desktop] › e2e\smoke.spec.ts:27:7 › MAPI Portal — smoke › catalog lists services with sort control (769ms)
+  ok 12 [desktop] › e2e\smoke.spec.ts:37:7 › MAPI Portal — smoke › PDP shows price, quantity and add-to-cart (2.1s)
+  ok 13 [desktop] › e2e\smoke.spec.ts:44:7 › MAPI Portal — smoke › add to cart updates cart badge and mini-cart (2.2s)
+  ok 14 [desktop] › e2e\smoke.spec.ts:52:7 › MAPI Portal — smoke › plans page shows 3 tiers and comparison table (825ms)
+  ok 15 [desktop] › e2e\smoke.spec.ts:60:7 › MAPI Portal — smoke › bundles page shows regional bundles with savings (825ms)
+  ok 16 [desktop] › e2e\smoke.spec.ts:66:7 › MAPI Portal — smoke › api-hub dashboard renders KPIs and tabs (736ms)
+  ok 17 [desktop] › e2e\smoke.spec.ts:75:7 › MAPI Portal — smoke › unknown URL shows branded 404 (819ms)
+(node:22380) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 18 [desktop] › e2e\smoke.spec.ts:81:7 › MAPI Portal — smoke › language switch to English translates nav (2.5s)
+  ok 19 [mobile] › e2e\cms.spec.ts:11:7 › MAPI CMS — content manager › unauthenticated /cms redirects to login (989ms)
+(node:19968) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 21 [mobile] › e2e\cms.spec.ts:19:7 › MAPI CMS — content manager › wrong credentials show an error (1.1s)
+  ok 20 [mobile] › e2e\cms.spec.ts:28:7 › MAPI CMS — content manager › footer exposes a discreet CMS link (2.7s)
+  ok 23 [mobile] › e2e\leads.spec.ts:6:7 › MAPI Leads — AI lead management › admin console renders KPIs, scoring distribution and automations (887ms)
+  ok 22 [mobile] › e2e\cms.spec.ts:34:7 › MAPI CMS — content manager › manager can log in, publish news, see it on the ticker (2.7s)
+  ok 25 [mobile] › e2e\leads.spec.ts:30:7 › MAPI Leads — AI lead management › lead intake API enforces the spec minimum and reports Workspace status (44ms)
+  ok 24 [mobile] › e2e\leads.spec.ts:17:7 › MAPI Leads — AI lead management › R3 email intake: AI parse creates a routed lead (2.0s)
+  ok 26 [mobile] › e2e\leads.spec.ts:52:7 › MAPI Leads — AI lead management › chatbot mini-form captures a lead that reaches the admin inbox (2.2s)
+  ok 27 [mobile] › e2e\smoke.spec.ts:7:7 › MAPI Portal — smoke › homepage loads with brand and hero (3.0s)
+  ok 28 [mobile] › e2e\smoke.spec.ts:17:7 › MAPI Portal — smoke › mouse wheel scrolls the page (2.0s)
+  ok 29 [mobile] › e2e\smoke.spec.ts:27:7 › MAPI Portal — smoke › catalog lists services with sort control (929ms)
+  ok 30 [mobile] › e2e\smoke.spec.ts:37:7 › MAPI Portal — smoke › PDP shows price, quantity and add-to-cart (2.0s)
+  ok 32 [mobile] › e2e\smoke.spec.ts:52:7 › MAPI Portal — smoke › plans page shows 3 tiers and comparison table (1.0s)
+  ok 31 [mobile] › e2e\smoke.spec.ts:44:7 › MAPI Portal — smoke › add to cart updates cart badge and mini-cart (2.1s)
+  ok 34 [mobile] › e2e\smoke.spec.ts:66:7 › MAPI Portal — smoke › api-hub dashboard renders KPIs and tabs (960ms)
+  ok 33 [mobile] › e2e\smoke.spec.ts:60:7 › MAPI Portal — smoke › bundles page shows regional bundles with savings (984ms)
+  ok 35 [mobile] › e2e\smoke.spec.ts:75:7 › MAPI Portal — smoke › unknown URL shows branded 404 (1.1s)
+  ok 36 [mobile] › e2e\smoke.spec.ts:81:7 › MAPI Portal — smoke › language switch to English translates nav (2.6s)
+
+  36 passed (37.8s)

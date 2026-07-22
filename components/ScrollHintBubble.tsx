@@ -1,10 +1,12 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
 import { useLanguage } from "@/lib/LanguageContext";
 
 export default function ScrollHintBubble() {
   const { t } = useLanguage();
+  const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
   const [dismissed, setDismissed] = useState(false);
 
@@ -15,6 +17,9 @@ export default function ScrollHintBubble() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  // Storefront affordance only — keep back-office screens clean (and their
+  // bottom action buttons clickable on small viewports)
+  if (pathname.startsWith("/cms") || pathname.startsWith("/admin")) return null;
   if (dismissed) return null;
 
   const handleClick = () => {
