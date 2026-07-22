@@ -12,6 +12,7 @@ import {
 } from "@/lib/data";
 import { getRatingSummary } from "@/lib/reviews";
 import { useLanguage } from "@/lib/LanguageContext";
+import { buildDocs, searchServices } from "@/lib/search";
 
 type SortKey = "relevance" | "priceAsc" | "priceDesc" | "newest" | "rating";
 type ViewMode = "grid" | "list";
@@ -67,16 +68,22 @@ function CatalogContent() {
       if (s.priceFrom > maxPrice) return false;
       if (minRating > 0 && s.rating.average < minRating) return false;
       if (showInScopeOnly && !s.inScope) return false;
-      if (query.trim()) {
-        const q = query.trim().toLowerCase();
-        const localName = getServiceName(s.slug, s.name, lang).toLowerCase();
-        const localShort = getServiceShortDescription(s.slug, s.shortDescription, lang).toLowerCase();
-        const localCat = getServiceCategoryLabel(s.slug, s.categoryLabel, lang).toLowerCase();
-        if (![s.name, s.shortDescription, s.categoryLabel, localName, localShort, localCat]
-            .some(t => t.toLowerCase().includes(q))) return false;
-      }
       return true;
     });
+
+    // Fuzzy free-text filter — same partial-match engine as the header search
+    // (substring, token coverage with Hebrew prefixes, typo tolerance)
+    if (query.trim()) {
+      const docs = buildDocs(
+        list,
+        s => getServiceName(s.slug, s.name, lang),
+        s => getServiceShortDescription(s.slug, s.shortDescription, lang),
+        s => getServiceCategoryLabel(s.slug, s.categoryLabel, lang)
+      );
+      const ranked = searchServices(docs, query, list.length);
+      const bySlug = new Map(list.map(s => [s.slug, s]));
+      list = ranked.map(h => bySlug.get(h.service.slug)!).filter(Boolean);
+    }
 
     // Sort
     switch (sortBy) {
