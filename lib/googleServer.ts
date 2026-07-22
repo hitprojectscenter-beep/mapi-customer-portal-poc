@@ -94,6 +94,12 @@ export const LEADS_HEADER = [
   "ארגון", "משפחת מוצר", "עניין", "מקור", "ניקוד AI", "רמה", "מטפל", "תור", "היקף משוער ₪", "קמפיין"
 ];
 
+const ORDERS_TAB = "Orders";
+export const ORDERS_HEADER = [
+  "נקלט בתאריך", "מזהה הזמנה", "שירות", "מסלול", 'סה"כ ₪',
+  "פרטי מסלול", "אספקה", "שם הלקוח", "מייל", "טלפון", "סטטוס"
+];
+
 async function sheetsFetch(path: string, init: RequestInit): Promise<Response> {
   const token = await accessToken();
   return fetch(`https://sheets.googleapis.com/v4/spreadsheets/${env("GOOGLE_SHEETS_ID")}${path}`, {
@@ -102,35 +108,44 @@ async function sheetsFetch(path: string, init: RequestInit): Promise<Response> {
   });
 }
 
-async function ensureLeadsTab(): Promise<void> {
+async function ensureTab(tab: string, header: string[]): Promise<void> {
   // Create the tab + header row; ignore "already exists" errors
   const add = await sheetsFetch(":batchUpdate", {
     method: "POST",
-    body: JSON.stringify({ requests: [{ addSheet: { properties: { title: LEADS_TAB } } }] })
+    body: JSON.stringify({ requests: [{ addSheet: { properties: { title: tab } } }] })
   });
   if (add.ok) {
-    await sheetsFetch(`/values/${LEADS_TAB}!A1:append?valueInputOption=USER_ENTERED`, {
+    await sheetsFetch(`/values/${tab}!A1:append?valueInputOption=USER_ENTERED`, {
       method: "POST",
-      body: JSON.stringify({ values: [LEADS_HEADER] })
+      body: JSON.stringify({ values: [header] })
     });
   }
 }
 
-/** Append one lead row to the Leads tab. Throws on hard failure. */
-export async function appendLeadRow(row: (string | number)[]): Promise<void> {
+async function appendRow(tab: string, header: string[], row: (string | number)[]): Promise<void> {
   const attempt = () =>
-    sheetsFetch(`/values/${LEADS_TAB}!A1:append?valueInputOption=USER_ENTERED&insertDataOption=INSERT_ROWS`, {
+    sheetsFetch(`/values/${tab}!A1:append?valueInputOption=USER_ENTERED&insertDataOption=INSERT_ROWS`, {
       method: "POST",
       body: JSON.stringify({ values: [row] })
     });
 
   let res = await attempt();
   if (res.status === 400) {
-    // Most likely: the Leads tab doesn't exist yet — create it and retry once
-    await ensureLeadsTab();
+    // Most likely: the tab doesn't exist yet — create it and retry once
+    await ensureTab(tab, header);
     res = await attempt();
   }
   if (!res.ok) throw new Error(`sheets append failed: ${res.status} ${await res.text()}`);
+}
+
+/** Append one lead row to the Leads tab. Throws on hard failure. */
+export async function appendLeadRow(row: (string | number)[]): Promise<void> {
+  return appendRow(LEADS_TAB, LEADS_HEADER, row);
+}
+
+/** Append one completed order to the Orders tab (the portal database). */
+export async function appendOrderRow(row: (string | number)[]): Promise<void> {
+  return appendRow(ORDERS_TAB, ORDERS_HEADER, row);
 }
 
 // -- Google Chat -------------------------------------------------------------

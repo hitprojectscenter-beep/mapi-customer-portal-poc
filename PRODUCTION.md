@@ -83,7 +83,7 @@ node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
 
 | רכיב | מה הוא נותן | משתני סביבה |
 |---|---|---|
-| **Google Sheets = בסיס הנתונים** | כל ליד שנלכד בפורטל (טופס, נטישה, צ'אטבוט, מייל) נכתב כשורה בגיליון `Leads` — כולל ניקוד AI, ניתוב והיקף. צוות המכירות עובד על הגיליון: סינון, צביעה, AppSheet, אוטומציות | `GOOGLE_SERVICE_ACCOUNT_EMAIL`, `GOOGLE_SERVICE_ACCOUNT_KEY`, `GOOGLE_SHEETS_ID` |
+| **Google Sheets = בסיס הנתונים** | כל ליד שנלכד בפורטל נכתב לגיליון `Leads` (כולל ניקוד AI וניתוב), וכל **הזמנה שהושלמה** נכתבת לגיליון `Orders` (שירות, מסלול, סה"כ, פרטי מסלול פרק-5, אספקה) — הפורטל מחליף את הפניות ה-govforms והנתונים נשמרים אצלנו | `GOOGLE_SERVICE_ACCOUNT_EMAIL`, `GOOGLE_SERVICE_ACCOUNT_KEY`, `GOOGLE_SHEETS_ID` |
 | **Google Chat = התראות** | הודעה מיידית במרחב הצוות על כל ליד חדש (שם, משפחת מוצר, ניקוד, מטפל, קישור לגיליון) | `GOOGLE_CHAT_WEBHOOK_URL` |
 | **Google Sign-In = כניסת CMS** | כפתור "כניסה עם Google" ב-`/cms/login`, מוגבל לרשימת חשבונות מורשים; מנפיק את אותה עוגיית session חתומה | `NEXT_PUBLIC_GOOGLE_CLIENT_ID`, `CMS_ALLOWED_GOOGLE_EMAILS` |
 

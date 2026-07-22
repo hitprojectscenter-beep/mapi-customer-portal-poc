@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { services, getServiceName } from "@/lib/data";
 import GovMapEmbed from "@/components/GovMapEmbed";
@@ -47,6 +47,31 @@ export default function OrderPage() {
 
   const shippingCost = delivery === "physical" || delivery === "both" ? 39 : 0;
   const totalPrice = Math.max(0, price + shippingCost + routeFlow.priceDelta);
+
+  // Persist the completed order to the portal database (Sheets "Orders" tab
+  // + Chat alert when configured; demo mode is a no-op). Fires once on
+  // reaching the confirmation step — never blocks the customer.
+  const orderPosted = useRef(false);
+  useEffect(() => {
+    if (step !== 4 || orderPosted.current || !service) return;
+    orderPosted.current = true;
+    try {
+      void fetch("/api/orders", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        keepalive: true,
+        body: JSON.stringify({
+          orderId: `ord-${Date.now().toString(36)}`,
+          serviceName: localName,
+          slug: service.slug,
+          total: totalPrice,
+          routeDetails: routeFlow.summaryLines.join(" | "),
+          delivery
+        })
+      }).catch(() => { /* demo/offline */ });
+    } catch { /* ignore */ }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [step]);
 
   if (!service) {
     return (

@@ -408,18 +408,17 @@ const APPENDIX_LINKS: Record<string, { form: string; info: string }> = {
   "boundary-certificate": { form: "https://govforms.gov.il/mw/forms/tasa@mapi.gov.il", info: "https://www.gov.il/he/service/electricity-connection-old-buildings" }
 };
 
-// Chapter-5 routes with a full in-portal flow (HLD V8 go-live phases א-ב):
-// paper maps (5.2), historic maps (5.3), orthophoto/elevation (5.5) run the
-// modern order wizard here; the legacy govforms stay as a side channel.
-const CH5_IN_PORTAL = new Set(["elevation-data", "historic-maps", "city-map", "marine-maps"]);
-
+// Every chapter-5 route now runs the FULL in-portal order flow — the portal
+// replaces the govforms referrals (user decision, 2026-07-22). The legacy
+// form + gov.il page remain as discreet side links on the PDP only, and
+// completed orders persist to the portal database (/api/orders → Sheets).
 for (const s of services) {
   const links = APPENDIX_LINKS[s.slug];
   if (links) {
     s.govFormUrl = links.form;
     s.externalUrl = links.info;
   }
-  if (CH5_IN_PORTAL.has(s.slug)) s.inScope = true;
+  s.inScope = true;
 }
 
 export const categories: { id: Category; label: string; icon: string }[] = [

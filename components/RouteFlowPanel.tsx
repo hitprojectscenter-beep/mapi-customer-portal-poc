@@ -57,13 +57,22 @@ export default function RouteFlowPanel({ service, onChange }: Props) {
   // 5.8 surveyor
   const [parcels, setParcels] = useState(1);
   const [ellipses, setEllipses] = useState(1);
+  // 5.12 WS background services
+  const [wsTier, setWsTier] = useState<"public" | "business">("public");
+  const [wsOrgId, setWsOrgId] = useState("");
+  // 5.11 public-servant certificate (תע"צ)
+  const [certBlock, setCertBlock] = useState("");
+  const [certParcel, setCertParcel] = useState("");
+  const [certAddress, setCertAddress] = useState("");
 
-  const family: "ortho" | "paper" | "historic" | "cors" | "surveyor" | "generic" =
+  const family: "ortho" | "paper" | "historic" | "cors" | "surveyor" | "ws" | "certificate" | "generic" =
     service.slug === "elevation-data" || service.slug === "aerial-photos" ? "ortho" :
     service.slug === "city-map" || service.slug === "marine-maps" ? "paper" :
     service.slug === "historic-maps" ? "historic" :
     service.slug === "cors-subscription" ? "cors" :
-    service.slug === "surveyor-inspector" ? "surveyor" : "generic";
+    service.slug === "surveyor-inspector" ? "surveyor" :
+    service.slug === "wms-subscription" ? "ws" :
+    service.slug === "boundary-certificate" ? "certificate" : "generic";
 
   // VRS must not use credit card (spec 5.1 payment matrix)
   useEffect(() => {
@@ -140,9 +149,27 @@ export default function RouteFlowPanel({ service, onChange }: Props) {
       summaryLines.push("ההזמנה נקלטת במערכת רק לאחר אישור התשלום (טופוקד)");
     }
 
+    if (family === "ws") {
+      if (wsTier === "public") {
+        priceDelta = -service.priceFrom; // free public tier
+        summaryLines.push("מסלול ציבורי — ללא עלות (שירותי רקע XYZ)");
+      } else {
+        summaryLines.push("מסלול עסקי — מחירי השקה לתקופה מוגבלת; הצעת מחיר תישלח");
+        if (!wsOrgId.trim()) valid = false;
+        else summaryLines.push(`ח"פ/מזהה ארגון: ${wsOrgId}`);
+      }
+      summaryLines.push("השירות ייפתח תחילה בסביבת TEST לבדיקות הלקוח, ולאחר אישור — ב-PROD");
+    }
+
+    if (family === "certificate") {
+      if (!certBlock.trim() || !certParcel.trim()) valid = false;
+      else summaryLines.push(`מבנה: גוש ${certBlock}, חלקה ${certParcel}${certAddress ? ` · ${certAddress}` : ""}`);
+      summaryLines.push("תעודת עובד ציבור חתומה דיגיטלית תונפק לאחר הבדיקה והתשלום");
+    }
+
     onChange({ priceDelta, summaryLines, valid });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [family, areaMethod, fileName, censorState, censorConsent, license, commercialPurpose, delivery, pickupPoint, availState, corsProduct, payMethod, bankAmount, parcels, ellipses]);
+  }, [family, areaMethod, fileName, censorState, censorConsent, license, commercialPurpose, delivery, pickupPoint, availState, corsProduct, payMethod, bankAmount, parcels, ellipses, wsTier, wsOrgId, certBlock, certParcel, certAddress]);
 
   const handleFile = (f: File | null) => {
     if (!f) return;
@@ -324,6 +351,52 @@ export default function RouteFlowPanel({ service, onChange }: Props) {
               <button type="button" className={chip(payMethod === "commitment")} onClick={() => setPayMethod("commitment")}
                 data-tooltip="התחייבות כספית דרך מרכבה — ללקוחות ממשלתיים ומוסדיים">התחייבות כספית</button>
             </div>
+          </div>
+        </>
+      )}
+
+      {family === "ws" && (
+        <>
+          <div>
+            <span className={label}>מסלול שירותי הרקע (WS)</span>
+            <div className="flex gap-2 flex-wrap">
+              <button type="button" className={chip(wsTier === "public")} onClick={() => setWsTier("public")}
+                data-tooltip="גישה ציבורית חופשית לאריחי הרקע (XYZ Tiles) — ללא עלות">ציבורי — חינם</button>
+              <button type="button" className={chip(wsTier === "business")} onClick={() => setWsTier("business")}
+                data-tooltip="שימוש עסקי/מסחרי בשירותי הרקע — מחירי השקה לתקופה מוגבלת">עסקי — בתשלום</button>
+            </div>
+            {wsTier === "business" && (
+              <input value={wsOrgId} onChange={e => setWsOrgId(e.target.value)} placeholder='ח"פ / מזהה ארגון *'
+                className="mt-2 w-full bg-surface-container border border-outline-variant rounded-xl px-3 py-2.5 text-sm" aria-label="מזהה ארגון" />
+            )}
+          </div>
+          <div className="bg-secondary/5 border border-secondary/20 rounded-xl p-3 text-xs text-on-surface-variant">
+            לפי האפיון: לאחר אישור הבקשה השירות נפתח תחילה לבדיקות בצד הלקוח בסביבת <b>TEST</b>, ורק לאחר אישורכם — בסביבת <b>PROD</b>.
+          </div>
+        </>
+      )}
+
+      {family === "certificate" && (
+        <>
+          <div className="grid grid-cols-2 gap-3">
+            <div>
+              <span className={label}>גוש *</span>
+              <input value={certBlock} onChange={e => setCertBlock(e.target.value)} inputMode="numeric"
+                className="w-full bg-surface-container border border-outline-variant rounded-xl px-3 py-2.5 text-sm" aria-label="מספר גוש" />
+            </div>
+            <div>
+              <span className={label}>חלקה *</span>
+              <input value={certParcel} onChange={e => setCertParcel(e.target.value)} inputMode="numeric"
+                className="w-full bg-surface-container border border-outline-variant rounded-xl px-3 py-2.5 text-sm" aria-label="מספר חלקה" />
+            </div>
+          </div>
+          <div>
+            <span className={label}>כתובת המבנה (רשות)</span>
+            <input value={certAddress} onChange={e => setCertAddress(e.target.value)}
+              className="w-full bg-surface-container border border-outline-variant rounded-xl px-3 py-2.5 text-sm" aria-label="כתובת המבנה" />
+          </div>
+          <div className="bg-gold-tint/60 border border-gold/25 rounded-xl p-3 text-xs text-on-surface-variant">
+            תעודת עובד ציבור לחיבור מבנה ישן לרשת החשמל — התעודה החתומה דיגיטלית תישלח למייל לאחר בדיקת הזכאות והתשלום.
           </div>
         </>
       )}
