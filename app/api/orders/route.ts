@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import {
   sheetsConfigured, chatConfigured, sheetUrl, appendOrderRow, chatNotify
 } from "@/lib/googleServer";
+import { dbConfigured, insertOrder } from "@/lib/db";
 
 export const runtime = "nodejs";
 
@@ -27,6 +28,7 @@ const s = (v: unknown, max = 200): string => (typeof v === "string" ? v.slice(0,
 export async function GET() {
   return NextResponse.json({
     ok: true,
+    postgres: dbConfigured(),
     sheets: sheetsConfigured(),
     chat: chatConfigured(),
     sheetUrl: sheetsConfigured() ? sheetUrl() : null
@@ -57,13 +59,31 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ ok: false, error: "missing_service" }, { status: 422 });
   }
 
-  if (!sheetsConfigured() && !chatConfigured()) {
+  if (!dbConfigured() && !sheetsConfigured() && !chatConfigured()) {
     return NextResponse.json({ ok: true, stored: "none" });
   }
 
   const total = Number(body.total) || 0;
   const stored: string[] = [];
   const errors: string[] = [];
+
+  // Primary store: PostgreSQL
+  if (dbConfigured()) {
+    try {
+      await insertOrder({
+        orderId: s(body.orderId, 40),
+        serviceName, slug, total,
+        routeDetails: s(body.routeDetails, 500),
+        delivery: s(body.delivery, 60),
+        customerName: s(body.customerName, 120),
+        email: s(body.email, 120),
+        phone: s(body.phone, 30)
+      });
+      stored.push("postgres");
+    } catch (e) {
+      errors.push(`postgres: ${(e as Error).message}`);
+    }
+  }
 
   if (sheetsConfigured()) {
     try {

@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import {
   sheetsConfigured, chatConfigured, sheetUrl, appendLeadRow, chatNotify
 } from "@/lib/googleServer";
+import { dbConfigured, insertLead } from "@/lib/db";
 
 export const runtime = "nodejs";
 
@@ -46,6 +47,7 @@ const s = (v: unknown, max = 200): string =>
 export async function GET() {
   return NextResponse.json({
     ok: true,
+    postgres: dbConfigured(),
     sheets: sheetsConfigured(),
     chat: chatConfigured(),
     sheetUrl: sheetsConfigured() ? sheetUrl() : null
@@ -79,12 +81,35 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ ok: false, error: "below_minimum" }, { status: 422 });
   }
 
-  if (!sheetsConfigured() && !chatConfigured()) {
+  if (!dbConfigured() && !sheetsConfigured() && !chatConfigured()) {
     return NextResponse.json({ ok: true, stored: "none" });
   }
 
   const stored: string[] = [];
   const errors: string[] = [];
+
+  // Primary store: PostgreSQL
+  if (dbConfigured()) {
+    try {
+      await insertLead({
+        leadId: s(body.id, 40),
+        firstName, lastName, email, phone,
+        organization: s(body.organization, 120),
+        familyLabel: s(body.familyLabel, 60),
+        interest: s(body.interest, 160),
+        sourceLabel: s(body.sourceLabel, 40),
+        score: Number(body.score) || 0,
+        band: s(body.band, 10),
+        assignee: s(body.assignee, 60),
+        queue: s(body.queue, 60),
+        estimatedValue: Number(body.estimatedValue) || 0,
+        campaign: s(body.campaign, 80)
+      });
+      stored.push("postgres");
+    } catch (e) {
+      errors.push(`postgres: ${(e as Error).message}`);
+    }
+  }
 
   if (sheetsConfigured()) {
     try {

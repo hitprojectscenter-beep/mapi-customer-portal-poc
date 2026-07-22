@@ -48,7 +48,7 @@ node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
 | פער | מצב היום | פתרון פרודקשן | בעלים |
 |---|---|---|---|
 | נתוני תוכן (חדשות/קמפיינים/משתמשים) | localStorage בדפדפן של המנהל | Salesforce CMS / DB מנוהל (Postgres) + API | פיתוח + אגף שיווק |
-| **לידים** | localStorage + **Google Sheets** (כשמוגדר — ראו "אינטגרציית Google Workspace") | Salesforce Lead object (אפיון 4.2) | אגף מכירות |
+| **לידים והזמנות** | **PostgreSQL** (כשמוגדר `DATABASE_URL` — מקור אמת ראשי) + מראה ל-Google Sheets + localStorage לדמו | Salesforce Lead/Order objects (אפיון 4.2, 6.7) | אגף מכירות |
 | סל קניות והזמנות | localStorage, ללא שרת | Salesforce Commerce / OMS | פיתוח |
 | תשלום אמיתי | דמו בלבד, אין חיוב | שרת התשלומים הממשלתי (שירות התשלומים, האוצר) | גזברות + יה"ב |
 | הזדהות לקוחות | טופס דמו | הזדהות לאומית (SAML/OIDC מול מערך ההזדהות הממשלתי) | יה"ב / רשות התקשוב |
