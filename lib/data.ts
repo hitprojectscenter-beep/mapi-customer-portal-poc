@@ -38,7 +38,10 @@ export interface Service {
   customerTypes: ("private" | "business" | "government" | "surveyor")[];
   highlight?: boolean;
   inScope: boolean;
+  /** דף ההסבר הרשמי של השירות ב-gov.il (נספח 1 לבריף) */
   externalUrl?: string;
+  /** הטופס הממשלתי הקיים (govforms) — הערוץ הישן שהפורטל מחדש */
+  govFormUrl?: string;
   features: string[];
   priceTable?: { label: string; without: number; with?: number }[];
   faq: { q: string; a: string }[];
@@ -384,6 +387,34 @@ export const services: Service[] = [
     faq: []
   }
 ];
+
+// ---------------------------------------------------------------------------
+// יישור לנספח 1 של הבריף: לכל שירות — הטופס הממשלתי הקיים (govforms, הערוץ
+// הישן) ודף ההסבר הרשמי ב-gov.il. הפורטל מחדש את הטפסים בתהליך מקוון פנימי;
+// הקישורים הישנים נשמרים כערוץ נלווה ולצורך השוואה.
+// ---------------------------------------------------------------------------
+const APPENDIX_LINKS: Record<string, { form: string; info: string }> = {
+  "aerial-photos": { form: "https://govforms.gov.il/mw/forms/tasa@mapi.gov.il", info: "https://www.gov.il/he/service/ordering-aerial-photography-products-national-archives" },
+  "gis-layers": { form: "https://govforms.gov.il/mw/forms/GeographicInformation@mapi.gov.il", info: "https://www.gov.il/he/service/request-bid" },
+  "custom-map": { form: "https://govforms.gov.il/mw/forms/PersonalMapSoI@mapi.gov.il", info: "https://www.gov.il/he/service/appliying-for-customised-map-soi" },
+  "cors-subscription": { form: "https://govforms.gov.il/mw/forms/CorsSignUpWithPayment@mapi.gov.il", info: "https://www.gov.il/he/service/rinex-store-sign-up" },
+  "cadastral-info": { form: "https://govforms.gov.il/mw/forms/CadasterJerusalem@mapi.gov.il", info: "https://www.gov.il/he/service/information-cadastre-unregulated-area-jerusalem" },
+  "surveyor-inspector": { form: "https://govforms.gov.il/mw/forms/modedmevaker@mapi.gov.il", info: "https://www.gov.il/he/service/bid-audit-fee" },
+  "historic-maps": { form: "https://govforms.gov.il/mw/forms/HistoricalMaps@mapi.gov.il", info: "https://www.gov.il/he/service/purchasing-maps-mapping-center-of-israel" },
+  "wms-subscription": { form: "https://govforms.gov.il/mw/forms/MapiWS@mapi.gov.il", info: "https://www.gov.il/he/pages/xyz-tiles" },
+  "elevation-data": { form: "https://govforms.gov.il/mw/forms/OrthophotoElevationModels@mapi.gov.il", info: "https://www.gov.il/he/service/request-bid" },
+  "city-map": { form: "https://govforms.gov.il/mw/forms/Maps@mapi.gov.il", info: "https://www.gov.il/he/service/purchasing-maps-mapping-center-of-israel" },
+  "marine-maps": { form: "https://govforms.gov.il/mw/forms/Maps@mapi.gov.il", info: "https://www.gov.il/he/service/purchasing-maps-mapping-center-of-israel" },
+  "boundary-certificate": { form: "https://govforms.gov.il/mw/forms/tasa@mapi.gov.il", info: "https://www.gov.il/he/service/electricity-connection-old-buildings" }
+};
+
+for (const s of services) {
+  const links = APPENDIX_LINKS[s.slug];
+  if (links) {
+    s.govFormUrl = links.form;
+    s.externalUrl = links.info;
+  }
+}
 
 export const categories: { id: Category; label: string; icon: string }[] = [
   { id: "maps", label: "מפות נייר", icon: "description" },

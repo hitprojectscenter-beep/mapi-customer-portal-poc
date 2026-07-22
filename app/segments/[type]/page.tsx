@@ -134,7 +134,7 @@ export default function SegmentDetailPage() {
             const localName = getServiceName(s.slug, s.name, lang);
             const localShort = getServiceShortDescription(s.slug, s.shortDescription, lang);
             const localCat = getServiceCategoryLabel(s.slug, s.categoryLabel, lang);
-            const isExternal = !s.inScope && !!s.externalUrl;
+            const isExternal = !s.inScope && !!(s.govFormUrl || s.externalUrl);
             const className = "shine bg-white rounded-2xl p-6 border border-outline-variant/50 hover:border-secondary/30 hover:shadow-xl transition-all text-center group cursor-pointer block";
             const inner = (
               <>
@@ -155,7 +155,7 @@ export default function SegmentDetailPage() {
             return isExternal ? (
               <a
                 key={s.slug}
-                href={s.externalUrl}
+                href={s.govFormUrl || s.externalUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 className={className}

@@ -35,6 +35,9 @@ export default function ServiceDetailPage() {
   const [qty, setQty] = useState(1);
   const [tab, setTab] = useState<TabKey>("desc");
   const [showAdded, setShowAdded] = useState(false);
+  const [galleryView, setGalleryView] = useState(0);
+  const [sampleDone, setSampleDone] = useState(false);
+  const [trialSent, setTrialSent] = useState(false);
 
   useEffect(() => {
     if (service) {
@@ -58,6 +61,35 @@ export default function ServiceDetailPage() {
     cart.add(service, { quantity: qty });
     setShowAdded(true);
     setTimeout(() => setShowAdded(false), 2500);
+  };
+
+  // Real sample download: a branded MAPI preview generated client-side
+  // (production swaps this for a genuine product sample from the archive)
+  const handleDownloadSample = () => {
+    const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="800" height="600" viewBox="0 0 800 600">
+<rect width="800" height="600" fill="#fbfaf7"/>
+${Array.from({ length: 15 }, (_, i) => `<line x1="${i * 57}" y1="0" x2="${i * 57}" y2="600" stroke="#0b61a1" stroke-opacity="0.12" stroke-width="1"/>`).join("")}
+${Array.from({ length: 11 }, (_, i) => `<line x1="0" y1="${i * 60}" x2="800" y2="${i * 60}" stroke="#0b61a1" stroke-opacity="0.12" stroke-width="1"/>`).join("")}
+<path d="M 80 420 Q 220 300 360 360 T 640 280" fill="none" stroke="#463f7a" stroke-width="2" stroke-opacity="0.5"/>
+<path d="M 60 480 Q 240 380 420 430 T 740 350" fill="none" stroke="#b4924e" stroke-width="2" stroke-opacity="0.6"/>
+<circle cx="400" cy="300" r="130" fill="none" stroke="#b4924e" stroke-opacity="0.5" stroke-width="1.5" stroke-dasharray="6 5"/>
+<rect x="40" y="40" width="720" height="520" fill="none" stroke="#b4924e" stroke-width="2" stroke-opacity="0.7"/>
+<text x="400" y="120" text-anchor="middle" font-family="Arial" font-size="34" fill="#001d35" font-weight="500">${localName}</text>
+<text x="400" y="160" text-anchor="middle" font-family="Arial" font-size="17" fill="#8f7439">דגימה חינם · המרכז למיפוי ישראל</text>
+<text x="400" y="520" text-anchor="middle" font-family="Arial" font-size="13" fill="#42474f">POC — בפרודקשן יסופק קובץ דגימה אמיתי מהארכיון · ITM / WGS84</text>
+<text x="700" y="575" text-anchor="end" font-family="monospace" font-size="11" fill="#8f7439">31.7683N 35.2137E</text>
+</svg>`;
+    const blob = new Blob([svg], { type: "image/svg+xml;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `mapi-sample-${service.slug}.svg`;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 4000);
+    setSampleDone(true);
+    setTimeout(() => setSampleDone(false), 3500);
   };
 
   return (
@@ -120,21 +152,79 @@ export default function ServiceDetailPage() {
                 </span>
               </button>
 
-              <div className="w-40 h-40 lg:w-56 lg:h-56 bg-white shadow-2xl rounded-3xl flex items-center justify-center text-secondary">
-                <span className="material-symbols-outlined" style={{ fontSize: "min(120px, 30vw)" }}>{service.icon}</span>
-              </div>
+              {/* Main view — switched by the thumbnails below */}
+              {galleryView === 0 && (
+                <div className="w-40 h-40 lg:w-56 lg:h-56 bg-white shadow-2xl rounded-3xl flex items-center justify-center text-secondary">
+                  <span className="material-symbols-outlined" style={{ fontSize: "min(120px, 30vw)" }}>{service.icon}</span>
+                </div>
+              )}
+              {galleryView === 1 && (
+                <svg viewBox="0 0 400 400" className="w-full h-full" aria-label={localName} role="img">
+                  <rect width="400" height="400" fill="#fbfaf7" />
+                  {Array.from({ length: 9 }, (_, i) => (
+                    <line key={`v${i}`} x1={i * 50} y1="0" x2={i * 50} y2="400" stroke="#0b61a1" strokeOpacity="0.14" />
+                  ))}
+                  {Array.from({ length: 9 }, (_, i) => (
+                    <line key={`h${i}`} x1="0" y1={i * 50} x2="400" y2={i * 50} stroke="#0b61a1" strokeOpacity="0.14" />
+                  ))}
+                  <path d="M 30 300 Q 120 200 210 250 T 380 180" fill="none" stroke="#463f7a" strokeWidth="2.5" strokeOpacity="0.55" />
+                  <path d="M 20 340 Q 140 260 260 300 T 390 240" fill="none" stroke="#b4924e" strokeWidth="2.5" strokeOpacity="0.65" />
+                  <path d="M 50 250 Q 160 150 280 200 T 390 130" fill="none" stroke="#0b61a1" strokeWidth="2" strokeOpacity="0.4" />
+                  <circle cx="200" cy="200" r="90" fill="none" stroke="#b4924e" strokeWidth="1.5" strokeDasharray="5 4" strokeOpacity="0.6" />
+                  <text x="200" y="365" textAnchor="middle" fontSize="13" fill="#8f7439">קווי גובה · רשת ITM</text>
+                </svg>
+              )}
+              {galleryView === 2 && (
+                <svg viewBox="0 0 400 400" className="w-full h-full" aria-label="אורתופוטו" role="img">
+                  <defs>
+                    <linearGradient id="aer1" x1="0" y1="0" x2="1" y2="1">
+                      <stop offset="0" stopColor="#2c4a2e" /><stop offset="1" stopColor="#5a7247" />
+                    </linearGradient>
+                    <linearGradient id="aer2" x1="0" y1="0" x2="1" y2="0">
+                      <stop offset="0" stopColor="#8a793f" /><stop offset="1" stopColor="#b49a5a" />
+                    </linearGradient>
+                  </defs>
+                  <rect width="400" height="400" fill="#3d5a3f" />
+                  <rect x="0" y="0" width="180" height="220" fill="url(#aer1)" />
+                  <rect x="185" y="0" width="215" height="140" fill="url(#aer2)" opacity="0.85" />
+                  <rect x="185" y="145" width="120" height="255" fill="#43603f" />
+                  <rect x="310" y="145" width="90" height="255" fill="#6b7a4e" />
+                  <path d="M 0 230 L 180 225 L 180 400 L 0 400 Z" fill="#57724a" />
+                  <line x1="0" y1="228" x2="400" y2="215" stroke="#d9c79c" strokeWidth="5" strokeOpacity="0.9" />
+                  <line x1="183" y1="0" x2="183" y2="400" stroke="#d9c79c" strokeWidth="4" strokeOpacity="0.8" />
+                  <rect x="12" y="348" width="150" height="40" rx="8" fill="#001d35" opacity="0.82" />
+                  <text x="87" y="373" textAnchor="middle" fontSize="14" fill="#d9c79c">אורתופוטו 20 ס"מ</text>
+                </svg>
+              )}
+              {galleryView === 3 && (
+                <div className="flex flex-col items-center justify-center gap-4 p-8 text-center">
+                  <div className="w-32 h-32 rounded-full border-2 border-gold/60 flex items-center justify-center bg-white shadow-xl">
+                    <span className="material-symbols-outlined text-gold-dark" style={{ fontSize: "64px" }}>verified</span>
+                  </div>
+                  <p className="text-primary font-bold text-lg leading-tight">{localName}</p>
+                  <p className="text-gold-dark text-xs tracking-widest uppercase">שירות ממשלתי רשמי · המרכז למיפוי ישראל</p>
+                  <p className="text-on-surface-variant text-xs font-light max-w-xs">{t("trust.national")} · {t("trust.security")}</p>
+                </div>
+              )}
             </div>
 
-            {/* Thumbnails row (feature icons as thumbnails) */}
+            {/* Thumbnails row — switches the main view */}
             <div className="mt-3 flex gap-2 overflow-x-auto">
-              {["photo_camera", "map", "layers", "verified"].map((icon, i) => (
+              {[service.icon, "terrain", "satellite_alt", "verified"].map((icon, i) => (
                 <button
                   key={i}
                   type="button"
-                  className="shine flex-shrink-0 w-20 h-20 bg-white border border-outline-variant hover:border-secondary rounded-xl flex items-center justify-center text-secondary transition-colors"
+                  onClick={() => setGalleryView(i)}
+                  className={`shine flex-shrink-0 w-20 h-20 bg-white border rounded-xl flex items-center justify-center transition-all ${
+                    galleryView === i
+                      ? "border-gold text-gold-dark ring-2 ring-gold/30 shadow-md"
+                      : "border-outline-variant text-secondary hover:border-gold/60"
+                  }`}
                   aria-label={`${t("svc.gallery.thumbnail")} ${i + 1}`}
+                  aria-pressed={galleryView === i}
+                  data-tooltip={["סמל השירות", "תצוגת מפה טופוגרפית", "תצוגת אורתופוטו", "אישור שירות רשמי"][i]}
                 >
-                  <span className="material-symbols-outlined text-[28px]">{i === 0 ? service.icon : icon}</span>
+                  <span className="material-symbols-outlined text-[28px]" aria-hidden="true">{icon}</span>
                 </button>
               ))}
             </div>
@@ -296,7 +386,7 @@ export default function ServiceDetailPage() {
               </div>
             ) : (
               <a
-                href={service.externalUrl}
+                href={service.govFormUrl || service.externalUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="shine block w-full bg-alert-yellow text-white text-center py-4 rounded-full font-semibold hover:bg-alert-yellow/90 transition-colors flex items-center justify-center gap-2 mb-6"
@@ -314,20 +404,32 @@ export default function ServiceDetailPage() {
                 {service.slug === "cors-subscription" && (
                   <button
                     type="button"
-                    className="shine flex items-center justify-center gap-1.5 bg-alert-yellow/10 hover:bg-alert-yellow hover:text-white text-alert-yellow py-2.5 rounded-full text-xs font-semibold transition-colors border border-alert-yellow/30"
-                    data-tooltip={t("svc.trial.terms")}
+                    onClick={() => setTrialSent(true)}
+                    className={`shine flex items-center justify-center gap-1.5 py-2.5 rounded-full text-xs font-semibold transition-colors border ${
+                      trialSent
+                        ? "bg-positive-green text-white border-positive-green"
+                        : "bg-gold-tint hover:bg-gold hover:text-white text-gold-dark border-gold/40"
+                    }`}
+                    data-tooltip={trialSent ? "פרטי ההתנסות יישלחו למייל שתזין בהזמנה" : t("svc.trial.terms")}
                     data-tooltip-position="bottom"
                   >
-                    <span className="material-symbols-outlined text-[16px]">gift</span>
-                    <span>{t("svc.trial.title")}</span>
+                    <span className="material-symbols-outlined text-[16px]" aria-hidden="true">{trialSent ? "check_circle" : "redeem"}</span>
+                    <span>{trialSent ? t("svc.trial.sent") : t("svc.trial.title")}</span>
                   </button>
                 )}
                 <button
                   type="button"
-                  className="shine flex items-center justify-center gap-1.5 bg-secondary/10 hover:bg-secondary hover:text-white text-secondary py-2.5 rounded-full text-xs font-semibold transition-colors border border-secondary/30"
+                  onClick={handleDownloadSample}
+                  className={`shine flex items-center justify-center gap-1.5 py-2.5 rounded-full text-xs font-semibold transition-colors border ${
+                    sampleDone
+                      ? "bg-positive-green text-white border-positive-green"
+                      : "bg-secondary/10 hover:bg-secondary hover:text-white text-secondary border-secondary/30"
+                  }`}
+                  data-tooltip="הורדת קובץ דגימה חינם להתרשמות מאיכות המוצר — ללא רישום"
+                  data-tooltip-position="bottom"
                 >
-                  <span className="material-symbols-outlined text-[16px]">download</span>
-                  <span>{t("svc.sample.download")}</span>
+                  <span className="material-symbols-outlined text-[16px]" aria-hidden="true">{sampleDone ? "check_circle" : "download"}</span>
+                  <span>{sampleDone ? t("svc.sample.done") : t("svc.sample.download")}</span>
                 </button>
                 <Link
                   href={`/cases/new?type=data-error&sku=${service.slug}`}
@@ -336,6 +438,40 @@ export default function ServiceDetailPage() {
                   <span className="material-symbols-outlined text-[16px]">flag</span>
                   <span>{t("svc.error.report")}</span>
                 </Link>
+              </div>
+            )}
+
+            {/* Appendix-1 alignment: the legacy government form + service page */}
+            {(service.govFormUrl || service.externalUrl) && (
+              <div className="flex items-center justify-center gap-4 flex-wrap mb-6 text-xs">
+                {service.govFormUrl && (
+                  <a
+                    href={service.govFormUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="shine flex items-center gap-1.5 text-on-surface-variant hover:text-gold-dark transition-colors px-2 py-1 rounded"
+                    data-tooltip="הטופס הממשלתי הקיים (govforms) — הערוץ הישן של שירות זה; הפורטל מחליף אותו בתהליך מקוון מלא"
+                    data-tooltip-position="bottom"
+                  >
+                    <span className="material-symbols-outlined text-[15px] text-gold-dark/70" aria-hidden="true">description</span>
+                    <span>{t("svc.oldForm")}</span>
+                    <span className="material-symbols-outlined text-[13px]" aria-hidden="true">open_in_new</span>
+                  </a>
+                )}
+                {service.externalUrl && (
+                  <a
+                    href={service.externalUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="shine flex items-center gap-1.5 text-on-surface-variant hover:text-gold-dark transition-colors px-2 py-1 rounded"
+                    data-tooltip="דף ההסבר הרשמי של השירות באתר gov.il — תנאים, מסמכים נדרשים ותעריפים"
+                    data-tooltip-position="bottom"
+                  >
+                    <span className="material-symbols-outlined text-[15px] text-gold-dark/70" aria-hidden="true">info</span>
+                    <span>{t("svc.infoPage")}</span>
+                    <span className="material-symbols-outlined text-[13px]" aria-hidden="true">open_in_new</span>
+                  </a>
+                )}
               </div>
             )}
 

@@ -453,7 +453,9 @@ type TranslationKeys =
   | "ai.lead.contact" | "ai.lead.submit" | "ai.lead.done" | "ai.lead.invalid"
   // Detailed nav tooltips (luxury design)
   | "nav.tip.home" | "nav.tip.catalog" | "nav.tip.bundles" | "nav.tip.plans"
-  | "nav.tip.apiHub" | "nav.tip.dashboard" | "nav.tip.help";
+  | "nav.tip.apiHub" | "nav.tip.dashboard" | "nav.tip.help"
+  // Appendix-1 links + sample/trial feedback
+  | "svc.oldForm" | "svc.infoPage" | "svc.sample.done" | "svc.trial.sent";
 
 const dict: Record<TranslationKeys, Record<Lang, string>> = {
   // Navigation
@@ -1937,7 +1939,13 @@ const dict: Record<TranslationKeys, Record<Lang, string>> = {
   "nav.tip.plans": { he: 'מסלולי מנוי — חינמי, פרימיום ומגזר ציבורי, כולל השוואת יכולות מלאה', en: 'Subscription plans — free, premium and public sector with full comparison', fr: 'Formules d\'abonnement — gratuit, premium et secteur public', es: 'Planes de suscripción — gratuito, premium y sector público', ru: 'Тарифы — бесплатный, премиум и госсектор', ar: 'خطط الاشتراك — مجاني ومتميز وقطاع عام' },
   "nav.tip.apiHub": { he: 'מרכז המפתחים — מפתחות API, ניטור שימוש, תיעוד ודוגמאות קוד', en: 'Developer hub — API keys, usage monitoring, docs and code samples', fr: 'Espace développeurs — clés API, suivi, documentation', es: 'Centro de desarrolladores — claves API, monitoreo y documentación', ru: 'Центр разработчиков — API-ключи, мониторинг и документация', ar: 'مركز المطورين — مفاتيح API ومراقبة وتوثيق' },
   "nav.tip.dashboard": { he: 'האזור האישי — הזמנות, מנויים, הצעות מחיר והורדות', en: 'Personal area — orders, subscriptions, quotes and downloads', fr: 'Espace personnel — commandes, abonnements, devis', es: 'Área personal — pedidos, suscripciones y presupuestos', ru: 'Личный кабинет — заказы, подписки и счета', ar: 'المنطقة الشخصية — طلبات واشتراكات وعروض أسعار' },
-  "nav.tip.help": { he: 'מרכז העזרה — שאלות נפוצות, מדריכים, צ\'אט ופתיחת פנייה', en: 'Help center — FAQ, guides, chat and support tickets', fr: 'Centre d\'aide — FAQ, guides, chat et assistance', es: 'Centro de ayuda — preguntas frecuentes, guías y soporte', ru: 'Центр помощи — FAQ, руководства и поддержка', ar: 'مركز المساعدة — أسئلة شائعة وأدلة ودعم' }
+  "nav.tip.help": { he: 'מרכז העזרה — שאלות נפוצות, מדריכים, צ\'אט ופתיחת פנייה', en: 'Help center — FAQ, guides, chat and support tickets', fr: 'Centre d\'aide — FAQ, guides, chat et assistance', es: 'Centro de ayuda — preguntas frecuentes, guías y soporte', ru: 'Центр помощи — FAQ, руководства и поддержка', ar: 'مركز المساعدة — أسئلة شائعة وأدلة ودعم' },
+
+  // --- Appendix-1 links + sample/trial feedback ---
+  "svc.oldForm": { he: 'הטופס הממשלתי (הערוץ הישן)', en: 'Legacy government form', fr: 'Formulaire gouvernemental (ancien)', es: 'Formulario gubernamental (antiguo)', ru: 'Старая государственная форма', ar: 'النموذج الحكومي (القديم)' },
+  "svc.infoPage": { he: 'דף ההסבר ב-gov.il', en: 'Service page on gov.il', fr: 'Page du service sur gov.il', es: 'Página del servicio en gov.il', ru: 'Страница услуги на gov.il', ar: 'صفحة الخدمة على gov.il' },
+  "svc.sample.done": { he: 'הדגימה ירדה ✓', en: 'Sample downloaded ✓', fr: 'Échantillon téléchargé ✓', es: 'Muestra descargada ✓', ru: 'Образец скачан ✓', ar: 'تم تنزيل العينة ✓' },
+  "svc.trial.sent": { he: 'ההתנסות הופעלה ✓', en: 'Trial activated ✓', fr: 'Essai activé ✓', es: 'Prueba activada ✓', ru: 'Пробный период активирован ✓', ar: 'تم تفعيل التجربة ✓' }
 };
 
 export type TKey = keyof typeof dict;

@@ -18,8 +18,8 @@ export default function ServiceCard({ service, variant = "default" }: Props) {
   const { t, lang } = useLanguage();
   const cart = useCart();
   const wish = useWishlist();
-  const isExternal = !service.inScope && !!service.externalUrl;
-  const href = isExternal ? service.externalUrl! : `/catalog/${service.slug}`;
+  const isExternal = !service.inScope && !!(service.govFormUrl || service.externalUrl);
+  const href = isExternal ? (service.govFormUrl || service.externalUrl)! : `/catalog/${service.slug}`;
 
   const localName = getServiceName(service.slug, service.name, lang);
   const localShort = getServiceShortDescription(service.slug, service.shortDescription, lang);
