@@ -408,12 +408,18 @@ const APPENDIX_LINKS: Record<string, { form: string; info: string }> = {
   "boundary-certificate": { form: "https://govforms.gov.il/mw/forms/tasa@mapi.gov.il", info: "https://www.gov.il/he/service/electricity-connection-old-buildings" }
 };
 
+// Chapter-5 routes with a full in-portal flow (HLD V8 go-live phases א-ב):
+// paper maps (5.2), historic maps (5.3), orthophoto/elevation (5.5) run the
+// modern order wizard here; the legacy govforms stay as a side channel.
+const CH5_IN_PORTAL = new Set(["elevation-data", "historic-maps", "city-map", "marine-maps"]);
+
 for (const s of services) {
   const links = APPENDIX_LINKS[s.slug];
   if (links) {
     s.govFormUrl = links.form;
     s.externalUrl = links.info;
   }
+  if (CH5_IN_PORTAL.has(s.slug)) s.inScope = true;
 }
 
 export const categories: { id: Category; label: string; icon: string }[] = [

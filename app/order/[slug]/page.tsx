@@ -5,6 +5,7 @@ import { useMemo, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { services, getServiceName } from "@/lib/data";
 import GovMapEmbed from "@/components/GovMapEmbed";
+import RouteFlowPanel, { type RouteFlowResult } from "@/components/RouteFlowPanel";
 import { useLanguage } from "@/lib/LanguageContext";
 import type { TKey } from "@/lib/i18n";
 
@@ -32,6 +33,8 @@ export default function OrderPage() {
   const [areaMarked, setAreaMarked] = useState(false);
   const [acceptTerms, setAcceptTerms] = useState(false);
   const [acceptQuote, setAcceptQuote] = useState(false);
+  // Chapter-5 route-specific flow state (license/delivery/availability/bank/fees)
+  const [routeFlow, setRouteFlow] = useState<RouteFlowResult>({ priceDelta: 0, summaryLines: [], valid: true });
 
   const price = useMemo(() => {
     if (!service) return 0;
@@ -43,7 +46,7 @@ export default function OrderPage() {
   }, [service, size, includeOrthophoto]);
 
   const shippingCost = delivery === "physical" || delivery === "both" ? 39 : 0;
-  const totalPrice = price + shippingCost;
+  const totalPrice = Math.max(0, price + shippingCost + routeFlow.priceDelta);
 
   if (!service) {
     return (
@@ -285,6 +288,15 @@ export default function OrderPage() {
                     className="w-full bg-surface-container border border-outline-variant rounded-xl px-4 py-3 text-center focus:ring-2 focus:ring-secondary focus:outline-none resize-none"
                   />
                 </div>
+
+                {/* Route-specific steps per the detailed spec (chapter 5) */}
+                <RouteFlowPanel service={service} onChange={setRouteFlow} />
+                {routeFlow.summaryLines.length > 0 && (
+                  <div className="bg-surface-container/60 rounded-xl p-3 text-xs text-on-surface-variant space-y-1">
+                    {routeFlow.summaryLines.map((l, i) => <p key={i}>• {l}</p>)}
+                    <p className="font-bold text-primary pt-1">סה"כ מעודכן: ₪{totalPrice.toLocaleString()}</p>
+                  </div>
+                )}
               </div>
               <div className="flex flex-row-reverse items-center justify-between mt-8 pt-6 border-t border-outline-variant">
                 <button
@@ -300,8 +312,9 @@ export default function OrderPage() {
                 <button
                   type="button"
                   onClick={() => setStep(2)}
-                  className="shine shine-glow bg-primary text-white px-8 py-3 rounded-full font-bold hover:bg-secondary transition-colors flex items-center gap-2"
-                  data-tooltip={t("order.step2")}
+                  disabled={!routeFlow.valid}
+                  className="shine shine-glow btn-lux-primary px-8 py-3 rounded-full transition-colors flex items-center gap-2 disabled:opacity-40 disabled:cursor-not-allowed"
+                  data-tooltip={routeFlow.valid ? t("order.step2") : "יש להשלים את שלבי המסלול (סימון/קובץ, אישורים ובחירות חובה) לפני המשך"}
                   data-tooltip-position="bottom"
                 >
                   {t("order.continue")}
