@@ -21,8 +21,8 @@ interface Props {
   compact?: boolean;
   /** Optional title above the map */
   title?: string;
-  /** Callback when area is "selected" (POC: manual button press) */
-  onAreaSelected?: (area: { sqkm: number; lat: number; lng: number }) => void;
+  /** Callback with the drawn area: approx. km² + polygon centroid in ITM */
+  onAreaSelected?: (area: { sqkm: number; itmX: number; itmY: number; vertices: number }) => void;
 }
 
 type BasemapId = "standard" | "ortho";
@@ -82,6 +82,10 @@ export default function GovMapEmbed({
   const [error, setError] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [areaMarked, setAreaMarked] = useState(false);
+  // Polygon drawing overlay (POC: freezes the map view while marking;
+  // exact in-map drawing arrives with the official GovMap SDK)
+  const [drawing, setDrawing] = useState(false);
+  const [points, setPoints] = useState<Array<{ x: number; y: number }>>([]);
 
   // Map controls state (initialized from mode preset)
   const preset = MODE_PRESETS[mode] || MODE_PRESETS.default;
@@ -149,15 +153,52 @@ export default function GovMapEmbed({
     }
   };
 
-  // Simulate area selection (POC; production reads polygon from GovMap SDK)
-  const handleConfirmArea = () => {
-    const mockArea = {
-      sqkm: parseFloat((Math.random() * 2 + 0.5).toFixed(2)),
-      lat: 32.0853,
-      lng: 34.7818
+  // Approximate ITM meters-per-pixel by the preset zoom (POC scale table;
+  // the SDK provides exact georeferencing in production)
+  const metersPerPixel = (() => {
+    const z = preset.z ?? 7;
+    if (z >= 10) return 2.5;
+    if (z >= 9) return 5;
+    if (z >= 8) return 10;
+    if (z >= 7) return 20;
+    if (z >= 6) return 40;
+    return 80;
+  })();
+
+  const overlayPoint = (e: React.MouseEvent<HTMLDivElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    setPoints(prev => [...prev, { x: e.clientX - rect.left, y: e.clientY - rect.top }]);
+  };
+
+  /** px → approximate ITM using the preset center + zoom scale */
+  const toItm = (px: { x: number; y: number }, rect: { width: number; height: number }) => {
+    const [cx, cy] = preset.itm ?? [200000, 620000];
+    return {
+      x: Math.round(cx + (px.x - rect.width / 2) * metersPerPixel),
+      y: Math.round(cy - (px.y - rect.height / 2) * metersPerPixel) // screen y is inverted vs. ITM north
     };
+  };
+
+  // Confirm the drawn polygon: shoelace area (px²→km²) + centroid in ITM
+  const handleConfirmArea = () => {
+    const el = containerRef.current;
+    if (!el || points.length < 3) return;
+    const rect = { width: el.clientWidth, height: el.clientHeight };
+    let sum = 0;
+    for (let i = 0; i < points.length; i++) {
+      const a = points[i], b = points[(i + 1) % points.length];
+      sum += a.x * b.y - b.x * a.y;
+    }
+    const areaPx = Math.abs(sum) / 2;
+    const sqkm = parseFloat(((areaPx * metersPerPixel * metersPerPixel) / 1_000_000).toFixed(2));
+    const centroidPx = {
+      x: points.reduce((s, p) => s + p.x, 0) / points.length,
+      y: points.reduce((s, p) => s + p.y, 0) / points.length
+    };
+    const itm = toItm(centroidPx, rect);
+    setDrawing(false);
     setAreaMarked(true);
-    onAreaSelected?.(mockArea);
+    onAreaSelected?.({ sqkm, itmX: itm.x, itmY: itm.y, vertices: points.length });
   };
 
   return (
@@ -370,6 +411,53 @@ export default function GovMapEmbed({
         />
       )}
 
+      {/* Drawing overlay: freezes the map view and captures polygon clicks */}
+      {drawing && (
+        <div
+          className="absolute inset-0 z-[25] cursor-crosshair"
+          onClick={overlayPoint}
+          role="application"
+          aria-label="סימון פוליגון על המפה — כל לחיצה מוסיפה קודקוד"
+        >
+          <svg className="w-full h-full pointer-events-none" aria-hidden="true">
+            {points.length > 1 && (
+              <polyline
+                points={points.map(p => `${p.x},${p.y}`).join(" ")}
+                fill="rgba(180,146,78,0.15)"
+                stroke="#8f7439"
+                strokeWidth="2.5"
+                strokeDasharray="6 4"
+              />
+            )}
+            {points.length > 2 && (
+              <line
+                x1={points[points.length - 1].x} y1={points[points.length - 1].y}
+                x2={points[0].x} y2={points[0].y}
+                stroke="#8f7439" strokeWidth="1.5" strokeDasharray="3 5" opacity="0.6"
+              />
+            )}
+            {points.map((p, i) => (
+              <circle key={i} cx={p.x} cy={p.y} r="6" fill="#fff" stroke="#8f7439" strokeWidth="2.5" />
+            ))}
+          </svg>
+          <div className="absolute top-3 left-1/2 -translate-x-1/2 bg-primary/90 text-white text-xs font-semibold px-4 py-1.5 rounded-full pointer-events-none">
+            {points.length === 0 ? "לחצו על המפה להוספת קודקודים" : `${points.length} קודקודים — נדרשים לפחות 3`}
+          </div>
+        </div>
+      )}
+
+      {/* Confirmed polygon stays visible after drawing ends */}
+      {!drawing && points.length > 2 && areaMarked && (
+        <svg className="absolute inset-0 z-[15] w-full h-full pointer-events-none" aria-hidden="true">
+          <polygon
+            points={points.map(p => `${p.x},${p.y}`).join(" ")}
+            fill="rgba(180,146,78,0.18)"
+            stroke="#8f7439"
+            strokeWidth="2.5"
+          />
+        </svg>
+      )}
+
       {/* Polygon drawing helper (POC simulation) */}
       {allowDraw && loaded && !error && (
         <div className="absolute bottom-4 left-4 right-4 z-20 flex flex-col sm:flex-row gap-2 sm:items-center sm:justify-between pointer-events-none">
@@ -396,29 +484,56 @@ export default function GovMapEmbed({
               )}
             </p>
           </div>
-          <button
-            type="button"
-            onClick={handleConfirmArea}
-            className={`shine pointer-events-auto px-5 py-3 rounded-full font-bold text-sm transition-colors flex items-center justify-center gap-2 min-h-[44px] shadow-lg ${
-              areaMarked
-                ? "bg-positive-green text-white"
-                : "bg-secondary text-white hover:bg-primary"
-            }`}
-            data-tooltip="אשר את האזור שסומן ב-GovMap"
-            data-tooltip-position="bottom"
-          >
-            {areaMarked ? (
+          <div className="flex gap-2 pointer-events-auto flex-wrap justify-end">
+            {!drawing && !areaMarked && (
+              <button
+                type="button"
+                onClick={() => { setPoints([]); setDrawing(true); }}
+                className="shine btn-lux-primary px-5 py-3 rounded-full text-sm flex items-center justify-center gap-2 min-h-[44px] shadow-lg"
+                data-tooltip="מקבע את התצוגה הנוכחית ומאפשר סימון קודקודי פוליגון בלחיצות עכבר (נווטו קודם לאזור הרצוי)"
+                data-tooltip-position="bottom"
+              >
+                <span className="material-symbols-outlined text-[20px]" aria-hidden="true">polyline</span>
+                <span>התחל סימון פוליגון</span>
+              </button>
+            )}
+            {drawing && (
               <>
-                <span className="material-symbols-outlined text-[20px]">check_circle</span>
-                <span>האזור נשמר</span>
-              </>
-            ) : (
-              <>
-                <span className="material-symbols-outlined text-[20px]">touch_app</span>
-                <span>אשר אזור מסומן</span>
+                <button
+                  type="button"
+                  onClick={() => { setDrawing(false); setPoints([]); }}
+                  className="shine bg-white text-on-surface-variant border border-outline-variant px-4 py-3 rounded-full text-sm min-h-[44px]"
+                  data-tooltip="ביטול הסימון וחזרה לניווט חופשי במפה"
+                  data-tooltip-position="bottom"
+                >
+                  ביטול
+                </button>
+                <button
+                  type="button"
+                  onClick={handleConfirmArea}
+                  disabled={points.length < 3}
+                  className="shine bg-positive-green text-white px-5 py-3 rounded-full font-bold text-sm flex items-center justify-center gap-2 min-h-[44px] shadow-lg disabled:opacity-40"
+                  data-tooltip="סוגר את הפוליגון, מחשב שטח משוער ומרכז ב-ITM ושומר את האזור להזמנה"
+                  data-tooltip-position="bottom"
+                >
+                  <span className="material-symbols-outlined text-[20px]" aria-hidden="true">check_circle</span>
+                  <span>סיים ואשר אזור</span>
+                </button>
               </>
             )}
-          </button>
+            {!drawing && areaMarked && (
+              <button
+                type="button"
+                onClick={() => { setAreaMarked(false); setPoints([]); setDrawing(true); }}
+                className="shine bg-positive-green text-white px-5 py-3 rounded-full font-bold text-sm flex items-center justify-center gap-2 min-h-[44px] shadow-lg"
+                data-tooltip="האזור נשמר — לחיצה מתחילה סימון חדש במקומו"
+                data-tooltip-position="bottom"
+              >
+                <span className="material-symbols-outlined text-[20px]" aria-hidden="true">check_circle</span>
+                <span>האזור נשמר — סמן מחדש</span>
+              </button>
+            )}
+          </div>
         </div>
       )}
 

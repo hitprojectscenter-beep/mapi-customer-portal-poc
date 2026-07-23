@@ -252,6 +252,11 @@ export const services: Service[] = [
     inScope: false,
     externalUrl: "https://www.gov.il/he/service/marine_maps",
     features: ["מפות רשמיות לניווט ימי", "סימוני בטיחות", 'הוצאה עדכנית של חיל הים'],
+    priceTable: [
+      { label: 'סטנדרטי (גיליון בודד)', without: 130 },
+      { label: 'מורחב (גיליון כפול)', without: 195 },
+      { label: 'סט (3 גיליונות אזור)', without: 340 }
+    ],
     faq: []
   },
   {
@@ -346,6 +351,12 @@ export const services: Service[] = [
     inScope: false,
     externalUrl: "https://www.gov.il/he/service/city_maps",
     features: ['מפה מעודכנת', 'שמות רחובות', 'מבנים ציבוריים'],
+    priceTable: [
+      { label: 'A2 (42x59 ס"מ)', without: 250 },
+      { label: 'A1 (59x84 ס"מ)', without: 340 },
+      { label: 'A0 (84x119 ס"מ)', without: 450 },
+      { label: 'סט (3 גיליונות עירוניים)', without: 650 }
+    ],
     faq: []
   },
   {
@@ -365,6 +376,12 @@ export const services: Service[] = [
     inScope: false,
     externalUrl: "https://www.gov.il/he/service/historic_maps",
     features: ["ארכיון נרחב", "סריקה דיגיטלית", "מפות מקוריות"],
+    priceTable: [
+      { label: 'סרוק (עותק דיגיטלי)', without: 120 },
+      { label: 'A3 (הדפסת איכות)', without: 160 },
+      { label: 'A2 (הדפסת איכות)', without: 210 },
+      { label: 'A1 (הדפסת איכות)', without: 280 }
+    ],
     faq: []
   },
   {

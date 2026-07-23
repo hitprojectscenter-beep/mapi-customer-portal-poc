@@ -31,6 +31,7 @@ export default function OrderPage() {
   const [delivery, setDelivery] = useState("digital");
   const [purpose, setPurpose] = useState("");
   const [areaMarked, setAreaMarked] = useState(false);
+  const [areaInfo, setAreaInfo] = useState<{ sqkm: number; itmX: number; itmY: number; vertices: number } | null>(null);
   const [acceptTerms, setAcceptTerms] = useState(false);
   const [acceptQuote, setAcceptQuote] = useState(false);
   // Chapter-5 route-specific flow state (license/delivery/availability/bank/fees)
@@ -47,6 +48,14 @@ export default function OrderPage() {
 
   const shippingCost = delivery === "physical" || delivery === "both" ? 39 : 0;
   const totalPrice = Math.max(0, price + shippingCost + routeFlow.priceDelta);
+
+  // Size keys differ per service (A4 / סטנדרטי / סרוק...) — default to the
+  // first option of THIS service so the picker always shows a valid value
+  useEffect(() => {
+    const first = service?.priceTable?.[0]?.label.split(" ")[0];
+    if (first) setSize(first);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [service?.slug]);
 
   // Spec 10.1 flow: persist the order → create a payment transaction →
   // redirect to the (sandbox) government payment page. The webhook callback
@@ -417,11 +426,19 @@ export default function OrderPage() {
                 {areaMarked ? (
                   <>
                     <p className="text-sm font-bold text-positive-green text-center">{t("of.areaOk")}</p>
-                    <p className="text-xs text-on-surface-variant text-center mt-2">
-                      {t("of.areaArea")}
-                      <br />
-                      {t("of.areaCenter")}
-                    </p>
+                    {areaInfo ? (
+                      <p className="text-xs text-on-surface-variant text-center mt-2" dir="rtl">
+                        שטח משוער: {areaInfo.sqkm.toLocaleString()} קמ"ר · {areaInfo.vertices} קודקודים
+                        <br />
+                        מרכז (רשת ישראל ITM): <span dir="ltr">{areaInfo.itmX.toLocaleString()}, {areaInfo.itmY.toLocaleString()}</span>
+                      </p>
+                    ) : (
+                      <p className="text-xs text-on-surface-variant text-center mt-2">
+                        {t("of.areaArea")}
+                        <br />
+                        {t("of.areaCenter")}
+                      </p>
+                    )}
                   </>
                 ) : (
                   <p className="text-sm text-on-surface-variant text-center">
@@ -441,7 +458,7 @@ export default function OrderPage() {
                 height="500px"
                 allowDraw={true}
                 title={`${t("of.govmapTitle")} ${localName}`}
-                onAreaSelected={() => setAreaMarked(true)}
+                onAreaSelected={(a) => { setAreaMarked(true); setAreaInfo(a); }}
               />
 
               <div className="mt-6 bg-secondary/5 rounded-2xl p-4 border border-secondary/20">
