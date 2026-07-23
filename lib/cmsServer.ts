@@ -41,6 +41,13 @@ const CMS_USERS: CmsUserCred[] = [
     passwordHash: "19946d416125c9963c2e71da49fa5eb89b7f240de11f27698b19273be4b5dfa6",
     name: "מארק ישראל",
     role: "מנהל מערכת"
+  },
+  {
+    // מנהל מערכת — חשבון Gmail אישי (אותה סיסמה כמו חשבון ה-PMO)
+    emailHash: "c599f20617d3cacc353c57ec680094e02381db7c2b953c3621eff8cf8c6f6a99",
+    passwordHash: "19946d416125c9963c2e71da49fa5eb89b7f240de11f27698b19273be4b5dfa6",
+    name: "מארק ישראל",
+    role: "מנהל מערכת"
   }
 ];
 

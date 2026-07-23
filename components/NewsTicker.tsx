@@ -213,20 +213,21 @@ export default function NewsTicker() {
                   data-tooltip={t("news.cta")}
                   data-tooltip-position="bottom"
                 >
-                  <div className="flex items-start gap-2 flex-1">
+                  <div className="flex items-center gap-2.5 flex-1 justify-center">
                     <span
-                      className={`w-2 h-2 rounded-full ${colors.dot} flex-shrink-0 mt-1.5 ring-2 ${colors.ring}`}
+                      className={`w-2 h-2 rounded-full ${colors.dot} flex-shrink-0 ring-2 ${colors.ring}`}
                       aria-hidden="true"
                     />
-                    <p className="text-[12px] lg:text-[13px] text-primary leading-snug line-clamp-2 text-right flex-1 group-hover:text-secondary transition-colors font-medium">
+                    {/* Text scales with the wide-screen strip — no tiny type in huge cards */}
+                    <p className="text-[13px] lg:text-[15px] xl:text-base text-primary leading-snug line-clamp-2 text-right group-hover:text-secondary transition-colors font-medium">
                       {item.title}
                     </p>
                   </div>
-                  <div className="flex items-center justify-center gap-1 mt-1">
-                    <span className="text-[10px] text-on-surface-variant font-mono tabular-nums">
+                  <div className="flex items-center justify-center gap-1 mt-0.5">
+                    <span className="text-[10px] lg:text-[11px] text-on-surface-variant font-mono tabular-nums">
                       {item.time}
                     </span>
-                    <span className="material-symbols-outlined text-on-surface-variant text-[14px] group-hover:text-secondary transition-colors">
+                    <span className="material-symbols-outlined text-on-surface-variant text-[14px] group-hover:text-secondary transition-colors" aria-hidden="true">
                       expand_more
                     </span>
                   </div>

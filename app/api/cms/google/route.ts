@@ -11,7 +11,7 @@ export const runtime = "nodejs";
 const CLIENT_ID = (process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID || "").trim();
 
 function allowedEmails(): string[] {
-  const raw = (process.env.CMS_ALLOWED_GOOGLE_EMAILS || "mapicomportal@gmail.com").trim();
+  const raw = (process.env.CMS_ALLOWED_GOOGLE_EMAILS || "mapicomportal@gmail.com,hitprojectscenter@gmail.com").trim();
   return raw.split(",").map(e => e.trim().toLowerCase()).filter(Boolean);
 }
 

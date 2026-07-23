@@ -206,7 +206,8 @@ const USERS_KEY = "mapi_cms_users_v2";
 // Real back-office accounts only (no demo users)
 export const DEFAULT_CMS_USERS: CmsUser[] = [
   { id: "u-elad", name: "אלעד אסרף", email: "mapicomportal@gmail.com", role: "admin", active: true, primary: true, lastLogin: null },
-  { id: "u-mark", name: "מארק ישראל", email: "imark@mapi.gov.il", role: "admin", active: true, lastLogin: null }
+  { id: "u-mark", name: "מארק ישראל", email: "imark@mapi.gov.il", role: "admin", active: true, lastLogin: null },
+  { id: "u-mark-gmail", name: "מארק ישראל (Gmail)", email: "hitprojectscenter@gmail.com", role: "admin", active: true, lastLogin: null }
 ];
 
 export function loadCmsUsers(): CmsUser[] {
