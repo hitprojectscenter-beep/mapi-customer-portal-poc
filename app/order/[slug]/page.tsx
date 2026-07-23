@@ -283,10 +283,9 @@ export default function OrderPage() {
                   </div>
                 ) : (
                   <div className="bg-gold-tint/50 border border-gold/25 rounded-xl px-4 py-3 text-center text-sm text-on-surface-variant"
-                    data-tooltip="לשירות זה אין בחירת גודל — התמחור לפי מאפייני המסלול והבחירות מטה"
+                    data-tooltip="לשירות זה אין בחירת גודל — התמחור לפי מאפייני המוצר והבחירות מטה"
                     data-tooltip-position="bottom">
-                    התמחור לשירות זה נקבע לפי מאפייני המסלול (ללא בחירת גודל) —
-                    מחיר החל מ-₪{service.priceFrom.toLocaleString()}
+                    התמחור לפי מאפייני המוצר — מחיר החל מ-₪{service.priceFrom.toLocaleString()}
                   </div>
                 )}
 
