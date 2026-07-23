@@ -256,28 +256,39 @@ export default function OrderPage() {
                 {t("order.step1Title")}
               </h3>
               <div className="space-y-6">
-                <div>
-                  <label htmlFor="size" className="block text-sm font-bold text-primary mb-2 text-center">
-                    {t("order.size")} <span className="text-error-red">*</span>
-                  </label>
-                  <select
-                    id="size"
-                    value={size}
-                    onChange={(e) => setSize(e.target.value)}
-                    className="w-full bg-surface-container border border-outline-variant rounded-xl px-4 py-3 text-center focus:ring-2 focus:ring-secondary focus:outline-none"
-                    data-tooltip="גודל הגיליון קובע את המחיר — כל אפשרות מציגה מחיר עם/בלי אורתופוטו"
-                    data-tooltip-position="bottom"
-                  >
-                    {service.priceTable?.map((row) => {
-                      const sizeKey = row.label.split(" ")[0];
-                      return (
-                        <option key={sizeKey} value={sizeKey}>
-                          {row.label} - ₪{row.without} {row.with ? `/ ${t("svc.with")} ₪${row.with}` : ""}
-                        </option>
-                      );
-                    })}
-                  </select>
-                </div>
+                {/* Size picker renders only when the service actually has a
+                    size-based price table — never an empty dropdown */}
+                {service.priceTable && service.priceTable.length > 0 ? (
+                  <div>
+                    <label htmlFor="size" className="block text-sm font-bold text-primary mb-2 text-center">
+                      {t("order.size")} <span className="text-error-red">*</span>
+                    </label>
+                    <select
+                      id="size"
+                      value={size}
+                      onChange={(e) => setSize(e.target.value)}
+                      className="w-full bg-surface-container border border-outline-variant rounded-xl px-4 py-3 text-center focus:ring-2 focus:ring-secondary focus:outline-none"
+                      data-tooltip="גודל הגיליון קובע את המחיר — כל אפשרות מציגה מחיר עם/בלי אורתופוטו"
+                      data-tooltip-position="bottom"
+                    >
+                      {service.priceTable.map((row) => {
+                        const sizeKey = row.label.split(" ")[0];
+                        return (
+                          <option key={sizeKey} value={sizeKey}>
+                            {row.label} - ₪{row.without} {row.with ? `/ ${t("svc.with")} ₪${row.with}` : ""}
+                          </option>
+                        );
+                      })}
+                    </select>
+                  </div>
+                ) : (
+                  <div className="bg-gold-tint/50 border border-gold/25 rounded-xl px-4 py-3 text-center text-sm text-on-surface-variant"
+                    data-tooltip="לשירות זה אין בחירת גודל — התמחור לפי מאפייני המסלול והבחירות מטה"
+                    data-tooltip-position="bottom">
+                    התמחור לשירות זה נקבע לפי מאפייני המסלול (ללא בחירת גודל) —
+                    מחיר החל מ-₪{service.priceFrom.toLocaleString()}
+                  </div>
+                )}
 
                 <fieldset>
                   <legend className="block text-sm font-bold text-primary mb-2 text-center">
@@ -559,7 +570,7 @@ export default function OrderPage() {
                 <div className="flex flex-row-reverse justify-between items-baseline">
                   <span className="text-sm font-bold">{t("order.quote.total")}</span>
                   <span className="text-3xl font-black text-secondary-container">
-                    ₪{totalPrice}
+                    <span className="text-sm font-normal text-white/70 me-1">החל מ-</span>₪{totalPrice}
                   </span>
                 </div>
                 <p className="text-xs text-white/50 mt-1">{t("of.includesVat")}</p>
