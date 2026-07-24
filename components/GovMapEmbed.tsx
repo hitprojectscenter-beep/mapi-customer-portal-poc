@@ -170,6 +170,22 @@ export default function GovMapEmbed({
     setPoints(prev => [...prev, { x: e.clientX - rect.left, y: e.clientY - rect.top }]);
   };
 
+  // Keyboard while drawing: Backspace removes the last vertex, Esc cancels
+  useEffect(() => {
+    if (!drawing) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Backspace" || e.key === "Delete") {
+        e.preventDefault();
+        setPoints(prev => prev.slice(0, -1));
+      } else if (e.key === "Escape") {
+        setDrawing(false);
+        setPoints([]);
+      }
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [drawing]);
+
   /** px → approximate ITM using the preset center + zoom scale */
   const toItm = (px: { x: number; y: number }, rect: { width: number; height: number }) => {
     const [cx, cy] = preset.itm ?? [200000, 620000];
@@ -458,10 +474,11 @@ export default function GovMapEmbed({
         </svg>
       )}
 
-      {/* Polygon drawing helper (POC simulation) */}
+      {/* Polygon drawing helper (POC simulation) — z-30: the action buttons
+          must sit ABOVE the click-capture overlay (z-25), else they go dead */}
       {allowDraw && loaded && !error && (
-        <div className="absolute bottom-4 left-4 right-4 z-20 flex flex-col sm:flex-row gap-2 sm:items-center sm:justify-between pointer-events-none">
-          <div className="bg-white/95 backdrop-blur-sm rounded-2xl shadow-lg p-3 max-w-sm pointer-events-auto">
+        <div className="absolute bottom-4 left-4 right-4 z-[30] flex flex-col sm:flex-row gap-2 sm:items-center sm:justify-between pointer-events-none">
+          <div className={`bg-white/95 backdrop-blur-sm rounded-2xl shadow-lg p-3 max-w-sm pointer-events-auto ${drawing ? "hidden" : ""}`}>
             <p className="text-[11px] font-bold text-secondary uppercase tracking-widest mb-1">
               📍 הגדרת אזור
             </p>
@@ -503,10 +520,21 @@ export default function GovMapEmbed({
                   type="button"
                   onClick={() => { setDrawing(false); setPoints([]); }}
                   className="shine bg-white text-on-surface-variant border border-outline-variant px-4 py-3 rounded-full text-sm min-h-[44px]"
-                  data-tooltip="ביטול הסימון וחזרה לניווט חופשי במפה"
+                  data-tooltip="ביטול הסימון וחזרה לניווט חופשי במפה (Esc)"
                   data-tooltip-position="bottom"
                 >
                   ביטול
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setPoints(prev => prev.slice(0, -1))}
+                  disabled={points.length === 0}
+                  className="shine bg-white text-gold-dark border border-gold/50 w-11 h-11 rounded-full text-xl font-bold flex items-center justify-center min-h-[44px] disabled:opacity-40 leading-none"
+                  aria-label="מחק את הקודקוד האחרון"
+                  data-tooltip="מחיקת הקודקוד האחרון שסומן (Backspace)"
+                  data-tooltip-position="bottom"
+                >
+                  −
                 </button>
                 <button
                   type="button"
