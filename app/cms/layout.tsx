@@ -9,7 +9,9 @@ const NAV = [
   { href: "/cms", icon: "dashboard", label: "לוח בקרה" },
   { href: "/cms/news", icon: "newspaper", label: "ניהול חדשות" },
   { href: "/cms/campaigns", icon: "campaign", label: "קמפיינים" },
-  { href: "/cms/users", icon: "group", label: "ניהול משתמשים" }
+  { href: "/cms/users", icon: "group", label: "ניהול משתמשים" },
+  // Cross-link: the AI lead console lives in the sales admin center
+  { href: "/admin/leads", icon: "psychology", label: "ניהול לידים (AI)" }
 ];
 
 export default function CmsLayout({ children }: { children: React.ReactNode }) {

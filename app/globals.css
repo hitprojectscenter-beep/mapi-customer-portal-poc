@@ -768,10 +768,17 @@
     transform: translateX(0) translateY(0);
   }
 
-  /* Hide tooltip on touch devices to prevent stuck states */
+  /* Touch devices: no hover — show the caption on tap/focus instead of
+     hiding it entirely (users asked "where are the tooltips?") */
   @media (hover: none) {
-    [data-tooltip]::after {
-      display: none;
+    [data-tooltip]:hover::after {
+      opacity: 0;
+    }
+    [data-tooltip]:focus::after,
+    [data-tooltip]:focus-visible::after,
+    [data-tooltip]:active::after {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
     }
   }
 }

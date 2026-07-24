@@ -100,12 +100,21 @@ export default function SegmentDetailPage() {
               <p className="text-xs text-on-surface-variant mt-1">{t("seg.discount")}</p>
             </div>
           )}
-          <div className="bg-white rounded-2xl p-6 border border-outline-variant/50 text-center hover:shadow-xl transition-shadow">
-            <div className="w-12 h-12 bg-secondary/10 text-secondary rounded-xl flex items-center justify-center mx-auto mb-3">
-              <span className="material-symbols-outlined">support_agent</span>
+          <Link
+            href={`/cases/new?priority=high&segment=${params.type}`}
+            className="shine bg-white rounded-2xl p-6 border border-outline-variant/50 text-center hover:shadow-xl hover:border-gold/60 transition-all group block"
+            data-tooltip="פתיחת פנייה בערוץ העדיפות של הסגמנט — יעד מענה מקוצר וניתוב ישיר לצוות הייעודי"
+            data-tooltip-position="bottom"
+          >
+            <div className="w-12 h-12 bg-secondary/10 text-secondary rounded-xl flex items-center justify-center mx-auto mb-3 group-hover:scale-110 transition-transform">
+              <span className="material-symbols-outlined" aria-hidden="true">support_agent</span>
             </div>
             <p className="text-sm font-bold text-primary">{t("seg.priorityChannel")}</p>
-          </div>
+            <p className="text-[11px] text-gold-dark font-semibold mt-2 inline-flex items-center gap-1">
+              <span>פתח פנייה בעדיפות</span>
+              <span className="material-symbols-outlined text-[14px]" aria-hidden="true">arrow_back</span>
+            </p>
+          </Link>
           {seg.multiYearContracts && (
             <div className="bg-white rounded-2xl p-6 border border-outline-variant/50 text-center hover:shadow-xl transition-shadow">
               <div className="w-12 h-12 bg-alert-yellow/10 text-alert-yellow rounded-xl flex items-center justify-center mx-auto mb-3">
@@ -115,12 +124,21 @@ export default function SegmentDetailPage() {
               <p className="text-xs text-on-surface-variant mt-1">{t("seg.contractsMultiSub")}</p>
             </div>
           )}
-          <div className="bg-white rounded-2xl p-6 border border-outline-variant/50 text-center hover:shadow-xl transition-shadow">
-            <div className="w-12 h-12 bg-tertiary/10 text-tertiary rounded-xl flex items-center justify-center mx-auto mb-3">
-              <span className="material-symbols-outlined">badge</span>
+          <Link
+            href={`/cases/new?type=account-manager&segment=${params.type}`}
+            className="shine bg-white rounded-2xl p-6 border border-outline-variant/50 text-center hover:shadow-xl hover:border-gold/60 transition-all group block"
+            data-tooltip="תיאום שיחה עם מנהל הלקוח האישי של הסגמנט — ליווי בהזמנות, מנויים והצעות מחיר"
+            data-tooltip-position="bottom"
+          >
+            <div className="w-12 h-12 bg-tertiary/10 text-tertiary rounded-xl flex items-center justify-center mx-auto mb-3 group-hover:scale-110 transition-transform">
+              <span className="material-symbols-outlined" aria-hidden="true">badge</span>
             </div>
             <p className="text-sm font-bold text-primary">{t("seg.dedicatedAccountMgr")}</p>
-          </div>
+            <p className="text-[11px] text-gold-dark font-semibold mt-2 inline-flex items-center gap-1">
+              <span>תאם שיחה עם המנהל</span>
+              <span className="material-symbols-outlined text-[14px]" aria-hidden="true">arrow_back</span>
+            </p>
+          </Link>
         </div>
       </section>
 
