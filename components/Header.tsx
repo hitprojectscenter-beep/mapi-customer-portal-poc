@@ -232,7 +232,7 @@ export default function Header() {
                   className="shine block px-6 py-4 text-center font-medium text-gold-dark hover:bg-gold-tint min-h-[48px] flex items-center justify-center gap-2"
                 >
                   <span className="material-symbols-outlined text-[20px]" aria-hidden="true">edit_note</span>
-                  <span>ניהול תוכן</span>
+                  <span>ממשק ניהול</span>
                 </Link>
               </li>
             </ul>

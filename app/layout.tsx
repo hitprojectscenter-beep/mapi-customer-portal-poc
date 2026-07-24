@@ -9,6 +9,7 @@ import MiniCartDrawer from "@/components/MiniCartDrawer";
 import ScrollHintBubble from "@/components/ScrollHintBubble";
 import MonitoringInit from "@/components/MonitoringInit";
 import Analytics from "@/components/Analytics";
+import TooltipEnhancer from "@/components/TooltipEnhancer";
 import { LanguageProvider } from "@/lib/LanguageContext";
 import { CartProvider } from "@/lib/CartContext";
 import { WishlistProvider } from "@/lib/WishlistContext";
@@ -75,6 +76,7 @@ export default function RootLayout({
       </head>
       <body className="bg-surface text-on-surface font-body selection:bg-secondary/30 antialiased">
         <Analytics />
+        <TooltipEnhancer />
         <LanguageProvider>
           <MonitoringInit />
           <WishlistProvider>

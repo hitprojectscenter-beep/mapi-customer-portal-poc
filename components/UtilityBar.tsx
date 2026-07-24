@@ -43,11 +43,11 @@ export default function UtilityBar() {
           <Link
             href="/cms/login"
             className="hover:text-gold-dark transition-colors flex items-center gap-1"
-            data-tooltip="כניסת מנהלי תוכן מורשים — ניהול חדשות, קמפיינים ומשתמשים"
+            data-tooltip="כניסה לממשק הניהול — חדשות, קמפיינים, משתמשים ולידים (מורשים בלבד)"
             data-tooltip-position="bottom"
           >
             <span className="material-symbols-outlined text-[14px]" aria-hidden="true">edit_note</span>
-            <span className="hidden sm:inline">ניהול תוכן</span>
+            <span className="hidden sm:inline">ממשק ניהול</span>
           </Link>
           <a
             href="tel:*6274"

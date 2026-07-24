@@ -226,9 +226,9 @@ export default function Footer() {
             <Link
               href="/cms/login"
               className="hover:text-gold-dark underline decoration-gold/40"
-              data-tooltip="כניסת מנהלי תוכן מורשים — חדשות, קמפיינים ומשתמשים"
+              data-tooltip="כניסה לממשק הניהול — חדשות, קמפיינים, משתמשים ולידים (מורשים בלבד)"
             >
-              ניהול תוכן
+              ממשק ניהול
             </Link>
           </p>
           <div className="flex gap-4">

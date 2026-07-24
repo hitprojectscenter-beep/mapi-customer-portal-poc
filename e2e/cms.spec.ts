@@ -11,7 +11,7 @@ test.describe("MAPI CMS — content manager", () => {
   test("unauthenticated /cms redirects to login", async ({ page }) => {
     await page.goto("/cms");
     await page.waitForURL(/\/cms\/login/);
-    await expect(page.getByText("ניהול תוכן הפורטל")).toBeVisible();
+    await expect(page.getByText("ממשק ניהול הפורטל")).toBeVisible();
     await expect(page.locator("#cms-email")).toBeVisible();
     await expect(page.locator("#cms-password")).toBeVisible();
   });
@@ -28,7 +28,7 @@ test.describe("MAPI CMS — content manager", () => {
   test("footer exposes a discreet CMS link", async ({ page }) => {
     await page.goto("/");
     const link = page.locator('footer a[href="/cms/login"]');
-    await expect(link).toHaveText("ניהול תוכן");
+    await expect(link).toHaveText("ממשק ניהול");
   });
 
   test(hasCreds ? "manager can log in, publish news, see it on the ticker" : "login flow (skipped — no creds in env)", async ({ page }) => {

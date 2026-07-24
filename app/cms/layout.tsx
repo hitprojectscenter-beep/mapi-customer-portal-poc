@@ -53,7 +53,7 @@ export default function CmsLayout({ children }: { children: React.ReactNode }) {
           <div>
             <h1 className="text-lg md:text-xl font-bold flex items-center gap-2 text-primary">
               <span className="material-symbols-outlined text-[24px] text-gold-dark" aria-hidden="true">edit_note</span>
-              <span>ניהול תוכן הפורטל</span>
+              <span>ממשק ניהול הפורטל</span>
             </h1>
             <p className="text-on-surface-variant text-xs font-light mt-0.5">
               {session.name} · {session.role}

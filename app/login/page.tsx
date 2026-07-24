@@ -133,13 +133,13 @@ export default function LoginPage() {
             </p>
             <p className="text-xs text-on-surface-variant mt-3 bg-gold-tint/60 border border-gold/25 rounded-xl px-3 py-2 inline-flex items-center gap-1.5">
               <span className="material-symbols-outlined text-[16px] text-gold-dark" aria-hidden="true">edit_note</span>
-              <span>מנהל תוכן (שם משתמש + סיסמה)?</span>
+              <span>מנהל מערכת (שם משתמש + סיסמה)?</span>
               <Link
                 href="/cms/login"
                 className="shine text-gold-dark font-bold hover:underline px-1 rounded"
-                data-tooltip="מסך הכניסה של מנהלי התוכן — שם עובדות הסיסמאות שקיבלת, לא כאן"
+                data-tooltip="מסך הכניסה לממשק הניהול — שם עובדות הסיסמאות שקיבלת, לא כאן"
               >
-                לכניסת ניהול התוכן ←
+                לממשק הניהול ←
               </Link>
             </p>
           </div>

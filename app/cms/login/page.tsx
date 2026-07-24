@@ -96,9 +96,9 @@ export default function CmsLoginPage() {
           <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-white border border-outline-variant/50 shadow-md flex items-center justify-center overflow-hidden p-1">
             <Image src="/mapi-logo.svg" alt="מפ״י" width={64} height={64} className="w-full h-full object-contain" />
           </div>
-          <h1 className="text-xl font-bold text-primary">ניהול תוכן הפורטל</h1>
+          <h1 className="text-xl font-bold text-primary">ממשק ניהול הפורטל</h1>
           <p className="text-xs text-on-surface-variant mt-1 font-light">
-            כניסה למנהלי תוכן מורשים בלבד · אגף שיווק ומכירות
+            כניסה למנהלי מערכת מורשים בלבד · אגף שיווק ומכירות
           </p>
         </div>
 
