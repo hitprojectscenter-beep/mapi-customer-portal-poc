@@ -51,7 +51,7 @@ test.describe("MAPI Leads — AI lead management", () => {
 
   test("chatbot mini-form captures a lead that reaches the admin inbox", async ({ page }) => {
     await page.goto("/");
-    await page.getByRole("button", { name: "מסייע AI חכם" }).click();
+    await page.getByRole("button", { name: /קואורדינטה/ }).first().click();
     await page.getByRole("button", { name: /השאירו פרטים/ }).click();
     await page.locator("#ai-lead-first").fill("בדיקת");
     await page.locator("#ai-lead-last").fill("אוטומטית");

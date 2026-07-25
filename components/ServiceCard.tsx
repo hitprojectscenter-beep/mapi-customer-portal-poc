@@ -4,6 +4,7 @@ import Link from "next/link";
 import type { Service } from "@/lib/data";
 import { getServiceName, getServiceShortDescription, getServiceCategoryLabel } from "@/lib/data";
 import { useLanguage } from "@/lib/LanguageContext";
+import PriceTag from "@/components/PriceTag";
 import { useCart } from "@/lib/CartContext";
 import { useWishlist } from "@/lib/WishlistContext";
 import { getRatingSummary } from "@/lib/reviews";
@@ -126,19 +127,10 @@ export default function ServiceCard({ service, variant = "default" }: Props) {
 
         {/* Price + CTA row */}
         <div className="mt-auto space-y-2">
-          <div className="flex items-baseline justify-between gap-2">
-            <div>
-              <span className="text-[10px] text-on-surface-variant uppercase tracking-wider font-light block">
-                {t("service.fromPrice")}
-              </span>
-              <span className="text-lg font-bold text-primary" dir="ltr">
-                {service.priceUnit === "₪/חודש"
-                  ? `${service.priceFrom.toLocaleString()} ${service.priceUnit}`
-                  : `${service.priceUnit}${service.priceFrom.toLocaleString()}`}
-              </span>
-            </div>
+          <div className="flex items-start justify-between gap-2">
+            <PriceTag amount={service.priceFrom} unit={service.priceUnit} size="sm" />
             {!isExternal && (
-              <span className="text-[10px] text-positive-green font-semibold uppercase tracking-wider">
+              <span className="text-[10px] text-positive-green font-semibold uppercase tracking-wider mt-4 flex-shrink-0">
                 ● {t("svc.inStock")}
               </span>
             )}

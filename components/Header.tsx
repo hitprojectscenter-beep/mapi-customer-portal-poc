@@ -18,13 +18,13 @@ export default function Header() {
   const [supportOpen, setSupportOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
 
-  // Every nav control carries a representative icon + a detailed tooltip
+  // Primary nav — customer-facing only. API Hub is a developer tool and was
+  // moved out of the main nav (reachable from the footer / personal area).
   const navItems = [
     { label: t("nav.home"), href: "/", icon: "home", tip: t("nav.tip.home") },
     { label: t("nav.catalog"), href: "/catalog", icon: "storefront", tip: t("nav.tip.catalog") },
     { label: t("nav.bundles"), href: "/bundles", icon: "package_2", tip: t("nav.tip.bundles") },
     { label: t("nav.plans"), href: "/plans", icon: "workspace_premium", tip: t("nav.tip.plans") },
-    { label: t("nav.apiHub"), href: "/api-hub", icon: "api", tip: t("nav.tip.apiHub") },
     { label: t("nav.dashboard"), href: "/dashboard", icon: "person", tip: t("nav.tip.dashboard") },
     { label: t("nav.help"), href: "/help", icon: "help", tip: t("nav.tip.help") }
   ];
@@ -138,15 +138,25 @@ export default function Header() {
               )}
             </Link>
 
-            {/* Account */}
+            {/* Sign in / register — explicit entry to the personal area */}
             <Link
-              href="/dashboard"
-              className="shine w-10 h-10 rounded-full hover:bg-surface-container flex items-center justify-center transition-colors"
-              aria-label={t("header.account")}
-              data-tooltip={t("header.account")}
+              href="/login"
+              className="shine hidden sm:flex items-center gap-1.5 h-10 px-3.5 rounded-full border border-gold/40 hover:bg-gold-tint text-primary font-semibold text-sm transition-colors"
+              data-tooltip="כניסה או הרשמה לאזור האישי. ההזדהות מתבצעת דרך ההזדהות הלאומית המאובטחת (Login.gov.il). לקוחות חדשים נרשמים באותו מסך."
               data-tooltip-position="bottom"
             >
-              <span className="material-symbols-outlined text-primary text-[22px]">person</span>
+              <span className="material-symbols-outlined text-[20px]" aria-hidden="true">login</span>
+              <span>כניסה / הרשמה</span>
+            </Link>
+            {/* Account icon (compact, mobile) */}
+            <Link
+              href="/login"
+              className="shine sm:hidden w-10 h-10 rounded-full hover:bg-surface-container flex items-center justify-center transition-colors"
+              aria-label="כניסה / הרשמה לאזור האישי"
+              data-tooltip="כניסה או הרשמה לאזור האישי דרך ההזדהות הלאומית"
+              data-tooltip-position="bottom"
+            >
+              <span className="material-symbols-outlined text-primary text-[22px]" aria-hidden="true">person</span>
             </Link>
 
             {/* Cart with count badge */}

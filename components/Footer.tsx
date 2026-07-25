@@ -28,7 +28,8 @@ export default function Footer() {
     { href: "/catalog", label: t("nav.catalog"), icon: "storefront", tip: "כל מוצרי ושירותי מפ\"י — מחירים והזמנה מקוונת" },
     { href: "/dashboard", label: t("nav.dashboard"), icon: "person", tip: "האזור האישי — הזמנות, מנויים והצעות מחיר" },
     { href: "/help", label: t("nav.help"), icon: "help", tip: "מרכז העזרה — שאלות נפוצות ומדריכים" },
-    { href: "/cases/new", label: t("help.openCase"), icon: "support_agent", tip: "פתיחת פנייה לצוות השירות — מענה תוך 2 ימי עסקים" }
+    { href: "/cases/new", label: t("help.openCase"), icon: "support_agent", tip: "פתיחת פנייה לצוות השירות — מענה תוך 2 ימי עסקים" },
+    { href: "/api-hub", label: "API Hub למפתחים", icon: "api", tip: "מרכז המפתחים לשימוש טכני — מפתחות API, ניטור שימוש ותיעוד. מיועד למשתמשים טכניים המחברים מערכות חיצוניות." }
   ];
 
   const legalLinks = [

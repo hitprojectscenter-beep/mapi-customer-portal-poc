@@ -17,6 +17,7 @@ import { useWishlist } from "@/lib/WishlistContext";
 import { useRecentlyViewed } from "@/lib/useRecentlyViewed";
 import { getRatingSummary } from "@/lib/reviews";
 import { getCrossSell } from "@/lib/recommendations";
+import { PRICE_NOTE } from "@/components/PriceTag";
 
 const MAP_RELEVANT = ["maps", "cadastre", "orthophoto", "gis", "geodesy"];
 
@@ -291,7 +292,10 @@ ${Array.from({ length: 11 }, (_, i) => `<line x1="0" y1="${i * 60}" x2="800" y2=
                 )}
               </div>
               <p className="text-[11px] text-on-surface-variant mt-1 font-light">
-                {t("of.includesVat")} · {t("svc.perMonth") === "/month" ? "" : ""}
+                {t("of.includesVat")}
+              </p>
+              <p className="text-xs text-on-surface-variant/90 mt-1.5 font-medium bg-gold-tint/50 border border-gold/20 rounded-lg px-3 py-1.5 inline-block">
+                {PRICE_NOTE}
               </p>
             </div>
 

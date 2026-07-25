@@ -12,12 +12,95 @@ interface ChatMessage {
   text: string;
   timestamp: number;
   link?: { href: string; label: string };
+  guide?: Guide;
 }
 
 interface IntentRule {
   keywords: Record<string, string[]>;
   responseKey: TKey;
   link?: { href: string; labelKey: TKey };
+}
+
+// --- קואורדינטה: guided step-by-step flows -------------------------------
+// Each guide walks the user through a portal task in order, with a link per
+// step so they can act immediately. Matched by keyword or picked from a menu.
+interface Guide {
+  id: string;
+  icon: string;
+  title: string;
+  keywords: string[];
+  steps: { text: string; href?: string; linkLabel?: string }[];
+}
+
+const GUIDES: Guide[] = [
+  {
+    id: "order-map",
+    icon: "map",
+    title: "איך מזמינים מפה?",
+    keywords: ["להזמין", "הזמנה", "מפה", "לקנות", "רכישה", "מודפסת"],
+    steps: [
+      { text: "1. היכנסו לקטלוג השירותים ובחרו את סוג המפה הרצוי (בהתאמה אישית, עירונית, היסטורית ועוד).", href: "/catalog", linkLabel: "לקטלוג השירותים" },
+      { text: "2. בעמוד המוצר לחצו \"התחל הזמנה\" ובחרו גודל ומאפיינים — המחיר מתעדכן בזמן אמת." },
+      { text: "3. בשלב המפה סמנו את טווח הגזרה: לחצו \"התחל סימון פוליגון\", הוסיפו קודקודים ולחצו \"סיים ואשר אזור\"." },
+      { text: "4. אשרו את הצעת המחיר, השלימו את פרטי הזיהוי והתשלום — וההזמנה נשמרת ותישלח לטיפול." }
+    ]
+  },
+  {
+    id: "cors",
+    icon: "satellite_alt",
+    title: "איך נרשמים למנוי CORS?",
+    keywords: ["cors", "מנוי", "תחנה", "rtk", "vrs", "gnss"],
+    steps: [
+      { text: "1. עברו לעמוד מנוי CORS בקטלוג.", href: "/catalog/cors-subscription", linkLabel: "למנוי CORS" },
+      { text: "2. לחצו \"התחל הזמנה\" ובחרו מוצר: RTK (₪300 לחודש) או VRS (₪0.7 לדקה) — מודל תשלום מראש (בנק שימוש)." },
+      { text: "3. הזינו סכום טעינה ובחרו אמצעי תשלום (כרטיס אשראי / הוראת קבע / התחייבות). שימו לב: VRS אינו זמין בכרטיס אשראי." },
+      { text: "4. השלימו את התשלום — פרטי החיבור (שם משתמש, סיסמה, IP) יישלחו למייל." }
+    ]
+  },
+  {
+    id: "personal-area",
+    icon: "person",
+    title: "איך נכנסים / נרשמים לאזור האישי?",
+    keywords: ["הרשמה", "להירשם", "כניסה", "אזור אישי", "sign", "התחבר", "חשבון"],
+    steps: [
+      { text: "1. לחצו על אייקון המשתמש בפינת הכותרת, או על \"כניסה / הרשמה\".", href: "/login", linkLabel: "לכניסה / הרשמה" },
+      { text: "2. בחרו את סוג המשתמש שלכם (אזרח, מודד, רשות, עסק) — הפורטל יתאים את התוכן והמחירים." },
+      { text: "3. התחברו באמצעות ההזדהות הלאומית (Login.gov.il) לגישה מאובטחת; לקוחות חדשים נרשמים באותו מסך." },
+      { text: "4. באזור האישי תמצאו את ההזמנות, המנויים, הצעות המחיר וההורדות שלכם." }
+    ]
+  },
+  {
+    id: "download-pdf",
+    icon: "download",
+    title: "איך מורידים הצעת מחיר / קבלה כ-PDF?",
+    keywords: ["pdf", "להוריד", "הורדה", "קבלה", "הצעת מחיר", "מסמך"],
+    steps: [
+      { text: "1. בסיום אשף ההזמנה, בסיכום הצעת המחיר לחצו \"הורד PDF\"." },
+      { text: "2. לחלופין, באזור האישי לחצו על אייקון ההורדה שליד ההזמנה הרצויה.", href: "/dashboard", linkLabel: "לאזור האישי" },
+      { text: "3. חלון הדפסה ייפתח — בחרו \"שמור כ-PDF\" ביעד ההדפסה, והמסמך יישמר במחשב." }
+    ]
+  },
+  {
+    id: "track",
+    icon: "local_shipping",
+    title: "איך עוקבים אחר הזמנה?",
+    keywords: ["מעקב", "סטטוס", "היכן", "הזמנה שלי", "משלוח"],
+    steps: [
+      { text: "1. היכנסו לעמוד ההזמנות שלכם.", href: "/orders", linkLabel: "להזמנות שלי" },
+      { text: "2. כל הזמנה מציגה סטטוס עדכני (התקבלה / בטיפול / הושלמה) ומספר מעקב אם נשלחה בדואר." },
+      { text: "3. לפרטים נוספים לחצו על אייקון הצפייה, או פנו למוקד השירות *6274." }
+    ]
+  }
+];
+
+function findGuide(text: string): Guide | null {
+  const t = text.toLowerCase();
+  let best: { g: Guide; score: number } | null = null;
+  for (const g of GUIDES) {
+    const score = g.keywords.filter(k => t.includes(k.toLowerCase())).length;
+    if (score > 0 && (!best || score > best.score)) best = { g, score };
+  }
+  return best?.g || null;
 }
 
 // Intent matching rules - keywords per language
@@ -206,6 +289,17 @@ export default function AIAssistant() {
     setTyping(true);
 
     setTimeout(() => {
+      // Guided flows take priority — "how do I..." questions get ordered steps
+      const guide = findGuide(userText);
+      if (guide) {
+        setMessages((prev) => [...prev, {
+          id: `g-${Date.now()}`, role: "bot",
+          text: `בשמחה! הנה השלבים ל${guide.title.replace(/^איך |\?$/g, "")}:`,
+          timestamp: Date.now(), guide
+        }]);
+        setTyping(false);
+        return;
+      }
       const intent = findIntent(userText, lang);
       const responseKey = intent?.responseKey || ("ai.r.fallback" as TKey);
       const botMsg: ChatMessage = {
@@ -219,7 +313,15 @@ export default function AIAssistant() {
       };
       setMessages((prev) => [...prev, botMsg]);
       setTyping(false);
-    }, 800 + Math.random() * 700);
+    }, 700 + Math.random() * 500);
+  };
+
+  const showGuide = (guide: Guide) => {
+    setMessages((prev) => [...prev, {
+      id: `g-${Date.now()}`, role: "bot",
+      text: `הנה השלבים ל${guide.title.replace(/^איך |\?$/g, "")}:`,
+      timestamp: Date.now(), guide
+    }]);
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -275,7 +377,7 @@ export default function AIAssistant() {
         data-tooltip={t("ai.title")}
         data-tooltip-position="bottom"
       >
-        <span className="material-symbols-outlined text-[32px]">smart_toy</span>
+        <span className="material-symbols-outlined text-[30px]" aria-hidden="true">explore</span>
         <span className="absolute -top-1 -right-1 w-5 h-5 bg-positive-green rounded-full border-2 border-white wow-pulse" aria-hidden="true" />
       </button>
 
@@ -317,8 +419,8 @@ export default function AIAssistant() {
                   <span>{t("ai.online")}</span>
                 </p>
               </div>
-              <div className="w-10 h-10 bg-white/15 backdrop-blur-sm rounded-full flex items-center justify-center border border-white/20">
-                <span className="material-symbols-outlined text-white text-[22px]">smart_toy</span>
+              <div className="w-10 h-10 bg-white/15 backdrop-blur-sm rounded-full flex items-center justify-center border border-gold/40">
+                <span className="material-symbols-outlined text-white text-[22px]" aria-hidden="true">explore</span>
               </div>
             </div>
           </div>
@@ -341,6 +443,25 @@ export default function AIAssistant() {
                   }`}
                 >
                   <p className="text-center">{msg.text}</p>
+                  {msg.guide && (
+                    <ol className="mt-3 space-y-2.5 text-start">
+                      {msg.guide.steps.map((s, i) => (
+                        <li key={i} className="text-[13px] leading-relaxed text-on-surface">
+                          <span>{s.text}</span>
+                          {s.href && (
+                            <Link
+                              href={s.href}
+                              onClick={() => setOpen(false)}
+                              className="shine inline-flex items-center gap-1 mt-1 text-xs font-bold text-gold-dark hover:text-primary transition-colors"
+                            >
+                              <span>{s.linkLabel || "מעבר"}</span>
+                              <span className="material-symbols-outlined text-[14px]" aria-hidden="true">arrow_back</span>
+                            </Link>
+                          )}
+                        </li>
+                      ))}
+                    </ol>
+                  )}
                   {msg.link && (
                     <Link
                       href={msg.link.href}
@@ -369,24 +490,28 @@ export default function AIAssistant() {
               </div>
             )}
 
-            {/* Suggested questions - shown after greeting */}
+            {/* Guided flows menu — shown after greeting */}
             {messages.length === 1 && !typing && (
-              <div className="space-y-2 mt-4">
-                <p className="text-[11px] uppercase tracking-widest text-on-surface-variant font-bold text-center">
-                  {t("ai.suggested")}
+              <div className="space-y-3 mt-4">
+                <p className="text-[11px] uppercase tracking-widest text-gold-dark font-bold text-center">
+                  מדריכים מהירים — איך עושים?
                 </p>
-                <div className="flex flex-wrap gap-2 justify-center">
-                  {suggestedKeys.map((k) => (
+                <div className="flex flex-col gap-2">
+                  {GUIDES.map((g) => (
                     <button
-                      key={k}
+                      key={g.id}
                       type="button"
-                      onClick={() => sendMessage(t(k))}
-                      className="shine bg-white border border-outline-variant hover:bg-secondary hover:text-white hover:border-secondary px-3 py-1.5 rounded-full text-xs font-medium transition-colors"
+                      onClick={() => showGuide(g)}
+                      className="shine bg-white border border-gold/30 hover:border-gold hover:bg-gold-tint px-3 py-2.5 rounded-xl text-sm font-medium transition-colors flex items-center gap-2.5 text-start"
+                      data-tooltip={`מדריך שלב-אחר-שלב: ${g.title}`}
                     >
-                      {t(k)}
+                      <span className="material-symbols-outlined text-gold-dark text-[22px] flex-shrink-0" aria-hidden="true">{g.icon}</span>
+                      <span className="flex-1 text-primary">{g.title}</span>
+                      <span className="material-symbols-outlined text-on-surface-variant text-[18px]" aria-hidden="true">arrow_back</span>
                     </button>
                   ))}
                 </div>
+                <p className="text-[11px] text-on-surface-variant text-center font-light">או פשוט כתבו לי שאלה חופשית 👇</p>
               </div>
             )}
           </div>

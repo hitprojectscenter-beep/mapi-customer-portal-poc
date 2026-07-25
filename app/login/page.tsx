@@ -47,11 +47,16 @@ export default function LoginPage() {
         {/* Login Card */}
         <div className="bg-white rounded-3xl p-8 md:p-10 shadow-2xl">
           <h2 className="text-2xl font-extrabold text-primary mb-2 text-center">
-            {t("login.chooseMethod")}
+            כניסה או הרשמה לאזור האישי
           </h2>
-          <p className="text-on-surface-variant text-sm mb-8 text-center">
+          <p className="text-on-surface-variant text-sm mb-3 text-center">
             {t("login.intro")}
           </p>
+          <div className="bg-gold-tint/60 border border-gold/25 rounded-xl px-4 py-2.5 mb-6 text-center">
+            <p className="text-xs text-primary font-medium">
+              לקוח חדש? אין צורך בהרשמה נפרדת — בחרו סוג משתמש והתחברו דרך ההזדהות הלאומית. החשבון נוצר אוטומטית בכניסה הראשונה.
+            </p>
+          </div>
 
           {/* Primary - National Identity */}
           <Link

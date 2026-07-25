@@ -13,6 +13,7 @@ import {
 import { getRatingSummary } from "@/lib/reviews";
 import { useLanguage } from "@/lib/LanguageContext";
 import { buildDocs, searchServices } from "@/lib/search";
+import { PRICE_NOTE } from "@/components/PriceTag";
 
 type SortKey = "relevance" | "priceAsc" | "priceDesc" | "newest" | "rating";
 type ViewMode = "grid" | "list";
@@ -538,11 +539,12 @@ function ListRow({ service }: { service: Service & { rating: ReturnType<typeof g
           <h3 className="font-bold text-primary truncate">{name}</h3>
           <p className="text-xs text-on-surface-variant truncate font-light mt-0.5">{desc}</p>
         </div>
-        <div className="text-end flex-shrink-0">
+        <div className="text-end flex-shrink-0 max-w-[130px]">
           <p className="text-[10px] text-on-surface-variant">{t("service.fromPrice")}</p>
           <p className="text-lg font-bold text-primary" dir="ltr">
             {service.priceUnit}{service.priceFrom.toLocaleString()}
           </p>
+          <p className="text-[9px] text-on-surface-variant/80 font-light leading-tight mt-0.5">{PRICE_NOTE}</p>
         </div>
       </Link>
     </li>

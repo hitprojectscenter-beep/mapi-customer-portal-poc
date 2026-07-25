@@ -46,7 +46,7 @@ export default function TooltipEnhancer() {
       "border:1px solid rgba(180,146,78,0.55)", "border-radius:12px",
       "padding:9px 14px", "font-size:12.5px", "line-height:1.5", "font-weight:400",
       "font-family:'Heebo','Assistant','Inter',sans-serif",
-      "max-width:300px", "text-align:center", "white-space:normal",
+      "max-width:340px", "text-align:center", "white-space:normal",
       "box-shadow:0 12px 28px -8px rgba(27,43,69,0.28),0 2px 8px rgba(70,63,122,0.12)",
       "opacity:0", "transition:opacity .16s ease", "direction:rtl"
     ].join(";");
