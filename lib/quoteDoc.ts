@@ -11,6 +11,8 @@ export interface QuoteDocData {
   lines: string[];        // route/summary lines
   delivery?: string;
   date?: string;          // ISO or display date passed in (no Date.now here)
+  /** Ordered-area polygon, points normalized 0-1 (drawn in an 18×15cm box) */
+  shape?: { x: number; y: number }[];
 }
 
 function esc(s: string): string {
@@ -24,16 +26,44 @@ export function openQuoteDoc(d: QuoteDocData): void {
     return;
   }
   const rows = d.lines.filter(Boolean).map(l => `<tr><td>${esc(l)}</td></tr>`).join("");
+  const origin = window.location.origin;
+
+  // The ordered-area block: an 18cm × 15cm centered frame containing the
+  // customer's marked polygon over a light grid (a simple map-like backdrop).
+  const shape = d.shape && d.shape.length >= 3 ? d.shape : null;
+  const areaBlock = shape ? (() => {
+    const W = 680, H = 566; // 18cm × 15cm at ~96dpi/cm scaled for print
+    const pts = shape.map(p => `${(p.x * W).toFixed(1)},${(p.y * H).toFixed(1)}`).join(" ");
+    const grid = Array.from({ length: 13 }, (_, i) => `<line x1="${i * W / 12}" y1="0" x2="${i * W / 12}" y2="${H}" stroke="#0b61a1" stroke-opacity="0.08"/>`).join("")
+      + Array.from({ length: 11 }, (_, i) => `<line x1="0" y1="${i * H / 10}" x2="${W}" y2="${i * H / 10}" stroke="#0b61a1" stroke-opacity="0.08"/>`).join("");
+    return `<div class="area">
+      <p class="area-ttl">הטווח שהוזמן על ידי הלקוח</p>
+      <svg viewBox="0 0 ${W} ${H}" width="18cm" height="15cm" xmlns="http://www.w3.org/2000/svg">
+        <rect width="${W}" height="${H}" fill="#fbfaf7"/>
+        ${grid}
+        <polygon points="${pts}" fill="rgba(180,146,78,0.18)" stroke="#8f7439" stroke-width="2.5"/>
+        <rect x="1" y="1" width="${W - 2}" height="${H - 2}" fill="none" stroke="#b4924e" stroke-width="2"/>
+      </svg>
+      <p class="area-note">הפוליגון מייצג את האזור שהלקוח סימן במפת GovMap. המידות המדויקות (שטח וקואורדינטות ITM) ייקבעו על ידי מפ"י מהפוליגון המסומן.</p>
+    </div>`;
+  })() : "";
+
   const html = `<!doctype html><html lang="he" dir="rtl"><head><meta charset="utf-8">
 <title>${esc(d.title)} — ${esc(d.serviceName)}</title>
 <style>
   @page { size: A4; margin: 18mm; }
   * { box-sizing: border-box; }
   body { font-family: "Heebo","Assistant",Arial,sans-serif; color: #1b2b45; margin: 0; padding: 28px; }
-  .hd { display:flex; justify-content:space-between; align-items:flex-start; border-bottom: 2px solid #b4924e; padding-bottom: 16px; margin-bottom: 22px; }
-  .brand { font-size: 26px; font-weight: 800; color:#001d35; }
+  .hd { display:flex; justify-content:space-between; align-items:center; border-bottom: 2px solid #b4924e; padding-bottom: 16px; margin-bottom: 22px; }
+  .brandbox { display:flex; align-items:center; gap:14px; }
+  .brandbox img { width:64px; height:64px; object-fit:contain; }
+  .brand { font-size: 24px; font-weight: 800; color:#001d35; }
   .brand small { display:block; font-size: 12px; color:#8f7439; font-weight:600; }
   .meta { text-align:left; font-size: 12px; color:#42474f; }
+  .area { margin-top: 30px; page-break-inside: avoid; text-align:center; }
+  .area-ttl { font-size: 15px; font-weight:700; color:#463f7a; margin-bottom: 10px; }
+  .area svg { border-radius: 8px; box-shadow: 0 4px 14px -6px rgba(27,43,69,0.25); }
+  .area-note { font-size: 11px; color:#6b7280; margin-top: 10px; max-width: 18cm; margin-inline:auto; line-height:1.6; }
   h1 { font-size: 20px; color:#463f7a; margin: 0 0 4px; }
   .svc { font-size: 15px; color:#0b2545; margin-bottom: 18px; }
   table { width:100%; border-collapse: collapse; margin: 8px 0 20px; }
@@ -46,16 +76,20 @@ export function openQuoteDoc(d: QuoteDocData): void {
   .btn { background:#0b2545; color:#fff; border:none; border-radius:999px; padding:12px 26px; font-size:14px; font-weight:700; cursor:pointer; }
 </style></head><body>
   <div class="hd">
-    <div class="brand">מפ&quot;י<small>המרכז למיפוי ישראל</small></div>
+    <div class="brandbox">
+      <img src="${origin}/mapi-logo.png" alt="מפי" onerror="this.style.display='none'"/>
+      <div class="brand">מפ&quot;י<small>המרכז למיפוי ישראל</small></div>
+    </div>
     <div class="meta">${esc(d.title)}${d.orderId ? `<br>מס' סימוכין: ${esc(d.orderId)}` : ""}${d.date ? `<br>תאריך: ${esc(d.date)}` : ""}</div>
   </div>
   <h1>${esc(d.title)}</h1>
   <div class="svc">${esc(d.serviceName)}</div>
   ${rows ? `<table>${rows}</table>` : ""}
   ${d.delivery ? `<div class="svc">אספקה: ${esc(d.delivery)}</div>` : ""}
-  <div class="total"><span>סה&quot;כ (כולל מע&quot;מ) — החל מ־</span><b>₪${Number(d.total).toLocaleString()}</b></div>
+  <div class="total"><span>סכום לתשלום (כולל מע&quot;מ)</span><b>₪${Number(d.total).toLocaleString()}</b></div>
+  ${areaBlock}
   <div class="note">
-    מסמך זה הופק מפורטל הלקוחות של המרכז למיפוי ישראל. המחיר הינו הערכה ראשונית ("החל מ־") וכפוף לאישור סופי של האגף.
+    מסמך זה הופק מפורטל הלקוחות של המרכז למיפוי ישראל והוא מהווה הצעת מחיר.
     התשלום מתבצע דרך שירות התשלומים הממשלתי. לפרטים: *6274 · service@mapi.gov.il
   </div>
   <div class="stamp">מסמך הדגמה (POC) — בפרודקשן יופק כ-PDF חתום דרך Salesforce DocGen</div>

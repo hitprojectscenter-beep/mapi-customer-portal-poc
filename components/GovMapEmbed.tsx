@@ -21,9 +21,10 @@ interface Props {
   compact?: boolean;
   /** Optional title above the map */
   title?: string;
-  /** Callback when a region polygon is confirmed (vertex count only —
-      precise area/coords require the GovMap SDK, resolved in production) */
-  onAreaSelected?: (area: { vertices: number }) => void;
+  /** Callback when a region polygon is confirmed. Includes the polygon
+      SHAPE as points normalized 0-1 to the map rect (so it can be redrawn,
+      e.g. on the quote PDF). Precise area/coords require the GovMap SDK. */
+  onAreaSelected?: (area: { vertices: number; shape: { x: number; y: number }[] }) => void;
 }
 
 type BasemapId = "standard" | "ortho";
@@ -183,9 +184,12 @@ export default function GovMapEmbed({
   // production. We keep the polygon shape and its vertex count.
   const handleConfirmArea = () => {
     if (points.length < 3) return;
+    const el = containerRef.current;
+    const w = el?.clientWidth || 1, h = el?.clientHeight || 1;
+    const shape = points.map(p => ({ x: p.x / w, y: p.y / h })); // normalized 0-1
     setDrawing(false);
     setAreaMarked(true);
-    onAreaSelected?.({ vertices: points.length });
+    onAreaSelected?.({ vertices: points.length, shape });
   };
 
   return (

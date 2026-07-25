@@ -32,7 +32,7 @@ export default function OrderPage() {
   const [delivery, setDelivery] = useState("digital");
   const [purpose, setPurpose] = useState("");
   const [areaMarked, setAreaMarked] = useState(false);
-  const [areaInfo, setAreaInfo] = useState<{ vertices: number } | null>(null);
+  const [areaInfo, setAreaInfo] = useState<{ vertices: number; shape: { x: number; y: number }[] } | null>(null);
   const [quoteEmailed, setQuoteEmailed] = useState(false);
   const [acceptTerms, setAcceptTerms] = useState(false);
   const [acceptQuote, setAcceptQuote] = useState(false);
@@ -601,7 +601,8 @@ export default function OrderPage() {
                       ...routeFlow.summaryLines,
                       areaInfo ? `אזור מסומן על המפה (${areaInfo.vertices} קודקודים) — מידות מדויקות יאושרו על ידי מפ"י` : ""
                     ].filter(Boolean),
-                    delivery: t(`order.delivery.${delivery}` as never)
+                    delivery: t(`order.delivery.${delivery}` as never),
+                    shape: areaInfo?.shape
                   })}
                   className="shine w-full bg-white/10 hover:bg-white/20 text-white px-4 py-2 rounded-xl text-sm font-bold flex items-center justify-center gap-2 transition-colors"
                   data-tooltip="הפקת הצעת המחיר כמסמך להורדה/הדפסה כ-PDF (חלון הדפסה ייפתח)"
