@@ -671,6 +671,50 @@
   }
 
   /* ========================================
+     ACCESSIBILITY TOOLBAR STATES (ת"י 5568 / WCAG 2.1 AA)
+     Toggled by components/AccessibilityWidget on <html>.
+     ======================================== */
+  html.a11y-scale body {
+    font-size: calc(16.5px * var(--a11y-font-scale, 1)) !important;
+  }
+  html.a11y-contrast {
+    filter: contrast(1.35);
+  }
+  html.a11y-contrast body {
+    background: #ffffff !important;
+    color: #000000 !important;
+  }
+  html.a11y-readable body,
+  html.a11y-readable button,
+  html.a11y-readable a,
+  html.a11y-readable p,
+  html.a11y-readable span,
+  html.a11y-readable li {
+    font-family: "Arial", "Assistant", sans-serif !important;
+    font-weight: 500 !important;
+    letter-spacing: 0.02em !important;
+    line-height: 1.9 !important;
+  }
+  html.a11y-links a {
+    text-decoration: underline !important;
+    text-underline-offset: 2px !important;
+    color: #0b2545 !important;
+    background: rgba(180, 146, 78, 0.12) !important;
+    border-radius: 3px;
+  }
+  html.a11y-stopmotion *,
+  html.a11y-stopmotion *::before,
+  html.a11y-stopmotion *::after {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
+  html.a11y-bigcursor,
+  html.a11y-bigcursor * {
+    cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48' viewBox='0 0 48 48'%3E%3Cpath d='M6 4l30 16-14 4-4 14z' fill='white' stroke='black' stroke-width='2.5' stroke-linejoin='round'/%3E%3C/svg%3E") 4 4, auto !important;
+  }
+
+  /* ========================================
      TOOLTIP SYSTEM
      The visible tooltip is now a FLOATING element rendered by
      components/TooltipEnhancer.tsx (position:fixed on <body>), so it is

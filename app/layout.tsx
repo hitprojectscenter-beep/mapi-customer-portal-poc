@@ -8,6 +8,7 @@ import UtilityBar from "@/components/UtilityBar";
 import MiniCartDrawer from "@/components/MiniCartDrawer";
 import ScrollHintBubble from "@/components/ScrollHintBubble";
 import FeedbackWidget from "@/components/FeedbackWidget";
+import AccessibilityWidget from "@/components/AccessibilityWidget";
 import MonitoringInit from "@/components/MonitoringInit";
 import Analytics from "@/components/Analytics";
 import TooltipEnhancer from "@/components/TooltipEnhancer";
@@ -93,6 +94,7 @@ export default function RootLayout({
               <MiniCartDrawer />
               <ScrollHintBubble />
               <FeedbackWidget />
+              <AccessibilityWidget />
             </CartProvider>
           </WishlistProvider>
         </LanguageProvider>

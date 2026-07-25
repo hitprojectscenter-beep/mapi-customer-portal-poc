@@ -32,7 +32,7 @@ export default function OrderPage() {
   const [delivery, setDelivery] = useState("digital");
   const [purpose, setPurpose] = useState("");
   const [areaMarked, setAreaMarked] = useState(false);
-  const [areaInfo, setAreaInfo] = useState<{ sqkm: number; itmX: number; itmY: number; vertices: number } | null>(null);
+  const [areaInfo, setAreaInfo] = useState<{ vertices: number } | null>(null);
   const [quoteEmailed, setQuoteEmailed] = useState(false);
   const [acceptTerms, setAcceptTerms] = useState(false);
   const [acceptQuote, setAcceptQuote] = useState(false);
@@ -428,19 +428,14 @@ export default function OrderPage() {
                 {areaMarked ? (
                   <>
                     <p className="text-sm font-bold text-positive-green text-center">{t("of.areaOk")}</p>
-                    {areaInfo ? (
+                    {areaInfo && (
                       <p className="text-xs text-on-surface-variant text-center mt-2" dir="rtl">
-                        שטח משוער: {areaInfo.sqkm.toLocaleString()} קמ"ר · {areaInfo.vertices} קודקודים
-                        <br />
-                        מרכז (רשת ישראל ITM): <span dir="ltr">{areaInfo.itmX.toLocaleString()}, {areaInfo.itmY.toLocaleString()}</span>
-                      </p>
-                    ) : (
-                      <p className="text-xs text-on-surface-variant text-center mt-2">
-                        {t("of.areaArea")}
-                        <br />
-                        {t("of.areaCenter")}
+                        פוליגון בן {areaInfo.vertices} קודקודים סומן על המפה.
                       </p>
                     )}
+                    <p className="text-[11px] text-on-surface-variant/80 text-center mt-2 leading-snug bg-gold-tint/40 border border-gold/20 rounded-lg px-2 py-1.5">
+                      השטח והקואורדינטות המדויקים (רשת ישראל ITM) יחושבו על ידי מפ"י מהפוליגון המסומן ויאושרו בהצעת המחיר.
+                    </p>
                   </>
                 ) : (
                   <p className="text-sm text-on-surface-variant text-center">
@@ -604,7 +599,7 @@ export default function OrderPage() {
                     lines: [
                       ...(service.priceTable?.length ? [`גודל: ${size}`] : []),
                       ...routeFlow.summaryLines,
-                      areaInfo ? `אזור מסומן: ${areaInfo.sqkm} קמ"ר · מרכז ITM ${areaInfo.itmX},${areaInfo.itmY}` : ""
+                      areaInfo ? `אזור מסומן על המפה (${areaInfo.vertices} קודקודים) — מידות מדויקות יאושרו על ידי מפ"י` : ""
                     ].filter(Boolean),
                     delivery: t(`order.delivery.${delivery}` as never)
                   })}

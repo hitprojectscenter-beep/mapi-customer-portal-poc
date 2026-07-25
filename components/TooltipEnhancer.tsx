@@ -10,6 +10,7 @@
 //     appeared. A fixed-position portal element is immune to clipping.
 
 import { useEffect } from "react";
+import { enrichTooltip } from "@/lib/tooltipDictionary";
 
 const SELECTOR = 'button, a[href], select, [role="button"], [role="tab"], summary, [data-tooltip]';
 
@@ -22,16 +23,33 @@ function deriveTooltip(el: HTMLElement): string | null {
   if (aria && aria !== text) return aria;
   if (title && title !== text) return title;
   if (!text && (aria || title)) return (aria || title)!;
+  // Icon-less control whose only name is its text — enrich from dictionary
+  if (text) return text;
   return null;
 }
 
 function enhance(root: ParentNode) {
   const nodes = root.querySelectorAll<HTMLElement>(SELECTOR);
   nodes.forEach(el => {
-    if (el.hasAttribute("data-tooltip")) return;
     if (el.getAttribute("aria-hidden") === "true") return;
+    const existing = el.getAttribute("data-tooltip");
+    if (existing) {
+      // A control already has a tooltip — enrich it if it's just a bare label
+      if (!el.hasAttribute("data-tooltip-rich")) {
+        const richer = enrichTooltip(existing);
+        if (richer) {
+          el.setAttribute("data-tooltip", richer);
+          el.setAttribute("data-tooltip-rich", "1");
+        }
+      }
+      return;
+    }
     const tip = deriveTooltip(el);
-    if (tip) el.setAttribute("data-tooltip", tip);
+    if (!tip) return;
+    // Prefer a detailed dictionary explanation over the bare label
+    const richer = enrichTooltip(tip);
+    el.setAttribute("data-tooltip", richer || tip);
+    if (richer) el.setAttribute("data-tooltip-rich", "1");
   });
 }
 

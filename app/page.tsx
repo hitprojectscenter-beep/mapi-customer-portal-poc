@@ -133,7 +133,7 @@ export default function HomePage() {
               target="_blank"
               rel="noopener noreferrer"
               className="shine btn-lux-ghost flex items-center gap-2 transition-all px-5 py-3 rounded-full min-h-[44px]"
-              data-tooltip={`${t("hero.freeMap")} — GovMap`}
+              data-tooltip="מעבר למערכת המפות הציבורית GovMap של ממשלת ישראל, ללא עלות וללא הרשמה. ניתן לצפות בגושים וחלקות, לחפש כתובות, ולמדוד שטחים ומרחקים. נפתח בלשונית חדשה."
               data-tooltip-position="bottom"
             >
               <span className="material-symbols-outlined text-gold-dark text-[20px]" aria-hidden="true">map</span>

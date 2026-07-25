@@ -21,8 +21,9 @@ interface Props {
   compact?: boolean;
   /** Optional title above the map */
   title?: string;
-  /** Callback with the drawn area: approx. km² + polygon centroid in ITM */
-  onAreaSelected?: (area: { sqkm: number; itmX: number; itmY: number; vertices: number }) => void;
+  /** Callback when a region polygon is confirmed (vertex count only —
+      precise area/coords require the GovMap SDK, resolved in production) */
+  onAreaSelected?: (area: { vertices: number }) => void;
 }
 
 type BasemapId = "standard" | "ortho";
@@ -153,18 +154,6 @@ export default function GovMapEmbed({
     }
   };
 
-  // Approximate ITM meters-per-pixel by the preset zoom (POC scale table;
-  // the SDK provides exact georeferencing in production)
-  const metersPerPixel = (() => {
-    const z = preset.z ?? 7;
-    if (z >= 10) return 2.5;
-    if (z >= 9) return 5;
-    if (z >= 8) return 10;
-    if (z >= 7) return 20;
-    if (z >= 6) return 40;
-    return 80;
-  })();
-
   const overlayPoint = (e: React.MouseEvent<HTMLDivElement>) => {
     const rect = e.currentTarget.getBoundingClientRect();
     setPoints(prev => [...prev, { x: e.clientX - rect.left, y: e.clientY - rect.top }]);
@@ -186,35 +175,17 @@ export default function GovMapEmbed({
     return () => window.removeEventListener("keydown", onKey);
   }, [drawing]);
 
-  /** px → approximate ITM using the preset center + zoom scale */
-  const toItm = (px: { x: number; y: number }, rect: { width: number; height: number }) => {
-    const [cx, cy] = preset.itm ?? [200000, 620000];
-    return {
-      x: Math.round(cx + (px.x - rect.width / 2) * metersPerPixel),
-      y: Math.round(cy - (px.y - rect.height / 2) * metersPerPixel) // screen y is inverted vs. ITM north
-    };
-  };
-
-  // Confirm the drawn polygon: shoelace area (px²→km²) + centroid in ITM
+  // Confirm the drawn polygon. NOTE: we intentionally do NOT compute a
+  // precise km²/ITM here — a screen-pixel polygon over a cross-origin GovMap
+  // iframe has no reliable real-world scale (the iframe's live zoom is
+  // unreadable), so any number would be fabricated and would not track the
+  // map. Exact georeferencing is done from the polygon by the GovMap SDK in
+  // production. We keep the polygon shape and its vertex count.
   const handleConfirmArea = () => {
-    const el = containerRef.current;
-    if (!el || points.length < 3) return;
-    const rect = { width: el.clientWidth, height: el.clientHeight };
-    let sum = 0;
-    for (let i = 0; i < points.length; i++) {
-      const a = points[i], b = points[(i + 1) % points.length];
-      sum += a.x * b.y - b.x * a.y;
-    }
-    const areaPx = Math.abs(sum) / 2;
-    const sqkm = parseFloat(((areaPx * metersPerPixel * metersPerPixel) / 1_000_000).toFixed(2));
-    const centroidPx = {
-      x: points.reduce((s, p) => s + p.x, 0) / points.length,
-      y: points.reduce((s, p) => s + p.y, 0) / points.length
-    };
-    const itm = toItm(centroidPx, rect);
+    if (points.length < 3) return;
     setDrawing(false);
     setAreaMarked(true);
-    onAreaSelected?.({ sqkm, itmX: itm.x, itmY: itm.y, vertices: points.length });
+    onAreaSelected?.({ vertices: points.length });
   };
 
   return (
