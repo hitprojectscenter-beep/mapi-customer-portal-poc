@@ -7,6 +7,7 @@
 
 import { useEffect, useState } from "react";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
+import { openReceiptDoc } from "@/lib/quoteDoc";
 
 export default function MockPaymentPage() {
   const params = useParams<{ tx: string }>();
@@ -117,7 +118,19 @@ export default function MockPaymentPage() {
                   חזרה לפורטל מפ"י
                 </button>
                 {done.status === "success" && (
-                  <button type="button" onClick={() => window.print()} className="btn-lux-ghost px-6 py-2.5 rounded-full text-sm">
+                  <button
+                    type="button"
+                    onClick={() => openReceiptDoc({
+                      receiptNo: `RCP-${txId.slice(-8).toUpperCase()}`,
+                      referenceId: done.ref,
+                      serviceName: svc || "שירות מפ\"י",
+                      amount: amt,
+                      date: new Intl.DateTimeFormat("he-IL", { dateStyle: "long", timeStyle: "short" }).format(new Date()),
+                      method: "כרטיס אשראי (דמו)"
+                    })}
+                    className="btn-lux-ghost px-6 py-2.5 rounded-full text-sm"
+                    data-tooltip="הפקת קבלה נקייה כ-PDF עם לוגו מפ״י, פרטי העסקה, תאריך ומספר קבלה. חלון הדפסה ייפתח — בחרו 'שמור כ-PDF'."
+                  >
                     הדפסת קבלה
                   </button>
                 )}

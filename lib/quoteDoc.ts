@@ -102,3 +102,85 @@ export function openQuoteDoc(d: QuoteDocData): void {
   w.document.write(html);
   w.document.close();
 }
+
+// ---------------------------------------------------------------------------
+// Clean payment receipt (opened from the payment sandbox). A dedicated
+// document — NOT window.print() of the page — so no UI chrome leaks in.
+// ---------------------------------------------------------------------------
+export interface ReceiptData {
+  receiptNo: string;
+  referenceId: string;
+  serviceName: string;
+  amount: number;
+  date: string;          // display date
+  method?: string;       // e.g. "כרטיס אשראי"
+}
+
+export function openReceiptDoc(d: ReceiptData): void {
+  const w = window.open("", "_blank", "width=760,height=920");
+  if (!w) { alert("הדפדפן חסם את חלון ההדפסה. אנא אפשר חלונות קופצים ונסה שוב."); return; }
+  const origin = window.location.origin;
+  const html = `<!doctype html><html lang="he" dir="rtl"><head><meta charset="utf-8">
+<title>קבלה ${esc(d.receiptNo)} — מפי</title>
+<style>
+  @page { size: A4; margin: 20mm; }
+  * { box-sizing: border-box; }
+  body { font-family:"Heebo","Assistant",Arial,sans-serif; color:#1b2b45; margin:0; padding:32px; }
+  .hd { display:flex; align-items:center; justify-content:space-between; border-bottom:2px solid #b4924e; padding-bottom:18px; margin-bottom:8px; }
+  .brandbox { display:flex; align-items:center; gap:14px; }
+  .brandbox img { width:66px; height:66px; object-fit:contain; }
+  .brand { font-size:24px; font-weight:800; color:#001d35; }
+  .brand small { display:block; font-size:12px; color:#8f7439; font-weight:600; }
+  .rc { text-align:left; font-size:12px; color:#42474f; line-height:1.7; }
+  .rc b { color:#001d35; font-size:14px; }
+  h1 { font-size:22px; color:#463f7a; text-align:center; margin:26px 0 4px; }
+  .sub { text-align:center; color:#6b7280; font-size:12px; margin-bottom:24px; }
+  table { width:100%; border-collapse:collapse; margin:12px 0; }
+  td { padding:12px 14px; border-bottom:1px solid #e7e3f6; font-size:14px; }
+  td.k { color:#6b7280; width:42%; }
+  td.v { font-weight:600; color:#0b2545; }
+  .total { display:flex; justify-content:space-between; align-items:baseline; background:#faf6ec; border:1px solid rgba(180,146,78,0.5); border-radius:12px; padding:16px 20px; margin-top:14px; }
+  .total b { font-size:26px; color:#001d35; }
+  .paid { text-align:center; margin-top:22px; }
+  .paid span { display:inline-block; border:2px solid #548235; color:#548235; font-weight:800; font-size:18px; letter-spacing:2px; padding:8px 26px; border-radius:10px; transform:rotate(-4deg); }
+  .true { text-align:center; margin-top:26px; font-size:13px; color:#8f7439; font-weight:600; }
+  .note { text-align:center; font-size:11px; color:#9aa0a6; margin-top:10px; line-height:1.6; }
+  @media print { .noprint { display:none; } }
+  .btn { background:#0b2545; color:#fff; border:none; border-radius:999px; padding:12px 26px; font-size:14px; font-weight:700; cursor:pointer; }
+</style></head><body>
+  <div class="hd">
+    <div class="brandbox">
+      <img src="${origin}/mapi-logo.png" alt="מפי" onerror="this.style.display='none'"/>
+      <div class="brand">מפ&quot;י<small>המרכז למיפוי ישראל</small></div>
+    </div>
+    <div class="rc">קבלה מס'<br><b>${esc(d.receiptNo)}</b></div>
+  </div>
+
+  <h1>קבלה על תשלום</h1>
+  <p class="sub">שולם באמצעות שירות התשלומים הממשלתי</p>
+
+  <table>
+    <tr><td class="k">תאריך</td><td class="v">${esc(d.date)}</td></tr>
+    <tr><td class="k">עבור שירות</td><td class="v">${esc(d.serviceName)}</td></tr>
+    <tr><td class="k">מספר סימוכין לעסקה</td><td class="v" style="font-family:monospace">${esc(d.referenceId)}</td></tr>
+    ${d.method ? `<tr><td class="k">אמצעי תשלום</td><td class="v">${esc(d.method)}</td></tr>` : ""}
+    <tr><td class="k">סטטוס</td><td class="v" style="color:#548235">שולם ✓</td></tr>
+  </table>
+
+  <div class="total"><span>סכום ששולם (כולל מע&quot;מ)</span><b>₪${Number(d.amount).toLocaleString()}</b></div>
+
+  <div class="paid"><span>שולם / PAID</span></div>
+  <p class="true">מסמך זה נאמן למקור</p>
+  <p class="note">
+    קבלה זו הופקה אוטומטית מפורטל הלקוחות של המרכז למיפוי ישראל. לבירורים: *6274 · service@mapi.gov.il<br>
+    מסמך הדגמה (POC) — בפרודקשן הקבלה מונפקת וחתומה דיגיטלית דרך שירות התשלומים הממשלתי.
+  </p>
+  <div class="noprint" style="margin-top:26px; text-align:center;">
+    <button class="btn" onclick="window.print()">שמור כ-PDF / הדפס</button>
+  </div>
+  <script>window.onload=function(){ setTimeout(function(){ window.print(); }, 400); };</script>
+</body></html>`;
+  w.document.open();
+  w.document.write(html);
+  w.document.close();
+}
