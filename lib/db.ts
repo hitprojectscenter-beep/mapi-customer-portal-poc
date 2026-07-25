@@ -84,9 +84,19 @@ async function ensureSchema(): Promise<void> {
           created_at    TIMESTAMPTZ NOT NULL DEFAULT now(),
           paid_at       TIMESTAMPTZ
         );
+        CREATE TABLE IF NOT EXISTS feedback (
+          id          BIGSERIAL PRIMARY KEY,
+          kind        TEXT NOT NULL DEFAULT 'survey',
+          rating      INTEGER,
+          message     TEXT,
+          page_url    TEXT,
+          email       TEXT,
+          created_at  TIMESTAMPTZ NOT NULL DEFAULT now()
+        );
         CREATE INDEX IF NOT EXISTS idx_leads_created ON leads (created_at DESC);
         CREATE INDEX IF NOT EXISTS idx_orders_created ON orders (created_at DESC);
         CREATE INDEX IF NOT EXISTS idx_payments_tx ON payments (tx_id);
+        CREATE INDEX IF NOT EXISTS idx_feedback_created ON feedback (created_at DESC);
       `);
     })().catch(err => {
       schemaReady = null; // allow retry on next call
@@ -164,6 +174,22 @@ export async function settlePayment(txId: string, status: "success" | "failed" |
     await getPool().query(`UPDATE orders SET status = 'שולמה' WHERE order_id = $1`, [payment.order_id]);
   }
   return payment;
+}
+
+export interface DbFeedback {
+  kind: "survey" | "error";
+  rating: number | null;
+  message: string;
+  pageUrl: string;
+  email: string;
+}
+
+export async function insertFeedback(f: DbFeedback): Promise<void> {
+  await ensureSchema();
+  await getPool().query(
+    `INSERT INTO feedback (kind, rating, message, page_url, email) VALUES ($1,$2,$3,$4,$5)`,
+    [f.kind, f.rating, f.message, f.pageUrl, f.email]
+  );
 }
 
 /** Recent rows for admin surfaces (newest first) */

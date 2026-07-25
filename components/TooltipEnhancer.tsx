@@ -42,7 +42,9 @@ export default function TooltipEnhancer() {
     tip.setAttribute("role", "tooltip");
     tip.style.cssText = [
       "position:fixed", "z-index:2147483000", "pointer-events:none",
-      "background:rgba(255,255,255,0.98)", "color:#1b2b45",
+      // ~20% transparent background with a blur so text stays readable
+      "background:rgba(255,255,255,0.8)", "backdrop-filter:blur(6px)",
+      "-webkit-backdrop-filter:blur(6px)", "color:#1b2b45",
       "border:1px solid rgba(180,146,78,0.55)", "border-radius:12px",
       "padding:9px 14px", "font-size:12.5px", "line-height:1.5", "font-weight:400",
       "font-family:'Heebo','Assistant','Inter',sans-serif",

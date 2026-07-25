@@ -7,6 +7,7 @@ import NewsTicker from "@/components/NewsTicker";
 import UtilityBar from "@/components/UtilityBar";
 import MiniCartDrawer from "@/components/MiniCartDrawer";
 import ScrollHintBubble from "@/components/ScrollHintBubble";
+import FeedbackWidget from "@/components/FeedbackWidget";
 import MonitoringInit from "@/components/MonitoringInit";
 import Analytics from "@/components/Analytics";
 import TooltipEnhancer from "@/components/TooltipEnhancer";
@@ -91,6 +92,7 @@ export default function RootLayout({
               <AIAssistant />
               <MiniCartDrawer />
               <ScrollHintBubble />
+              <FeedbackWidget />
             </CartProvider>
           </WishlistProvider>
         </LanguageProvider>

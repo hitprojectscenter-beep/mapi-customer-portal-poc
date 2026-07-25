@@ -100,6 +100,11 @@ export const ORDERS_HEADER = [
   "פרטי מסלול", "אספקה", "שם הלקוח", "מייל", "טלפון", "סטטוס"
 ];
 
+const FEEDBACK_TAB = "Feedback";
+export const FEEDBACK_HEADER = [
+  "נקלט בתאריך", "סוג", "דירוג", "הודעה", "עמוד", "מייל"
+];
+
 async function sheetsFetch(path: string, init: RequestInit): Promise<Response> {
   const token = await accessToken();
   return fetch(`https://sheets.googleapis.com/v4/spreadsheets/${env("GOOGLE_SHEETS_ID")}${path}`, {
@@ -146,6 +151,11 @@ export async function appendLeadRow(row: (string | number)[]): Promise<void> {
 /** Append one completed order to the Orders tab (the portal database). */
 export async function appendOrderRow(row: (string | number)[]): Promise<void> {
   return appendRow(ORDERS_TAB, ORDERS_HEADER, row);
+}
+
+/** Append one feedback/error-report row to the Feedback tab. */
+export async function appendFeedbackRow(row: (string | number)[]): Promise<void> {
+  return appendRow(FEEDBACK_TAB, FEEDBACK_HEADER, row);
 }
 
 // -- Google Chat -------------------------------------------------------------
