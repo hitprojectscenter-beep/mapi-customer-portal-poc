@@ -104,6 +104,17 @@ export default function OrdersPage() {
             </p>
             <div className="flex gap-2">
               <button
+                type="button"
+                onClick={() => {
+                  const header = "מס' הזמנה,שירות,תאריך,סטטוס,סכום\n";
+                  const rows = mockOrders.map(o => `${o.id},"${o.serviceName}",${o.date},${o.statusLabel},${o.amount}`).join("\n");
+                  const blob = new Blob(["﻿" + header + rows], { type: "text/csv;charset=utf-8" });
+                  const url = URL.createObjectURL(blob);
+                  const a = document.createElement("a");
+                  a.href = url; a.download = "mapi-orders.csv";
+                  document.body.appendChild(a); a.click(); a.remove();
+                  setTimeout(() => URL.revokeObjectURL(url), 4000);
+                }}
                 className="shine text-xs bg-surface-container hover:bg-surface-container-high px-3 py-1.5 rounded-full font-bold flex items-center gap-1"
                 data-tooltip={t("orders.exportTip")}
                 data-tooltip-position="bottom"

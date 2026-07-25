@@ -6,6 +6,7 @@ import { useParams, useRouter } from "next/navigation";
 import { services, getServiceName } from "@/lib/data";
 import GovMapEmbed from "@/components/GovMapEmbed";
 import RouteFlowPanel, { type RouteFlowResult } from "@/components/RouteFlowPanel";
+import { openQuoteDoc } from "@/lib/quoteDoc";
 import { useLanguage } from "@/lib/LanguageContext";
 import type { TKey } from "@/lib/i18n";
 
@@ -32,6 +33,7 @@ export default function OrderPage() {
   const [purpose, setPurpose] = useState("");
   const [areaMarked, setAreaMarked] = useState(false);
   const [areaInfo, setAreaInfo] = useState<{ sqkm: number; itmX: number; itmY: number; vertices: number } | null>(null);
+  const [quoteEmailed, setQuoteEmailed] = useState(false);
   const [acceptTerms, setAcceptTerms] = useState(false);
   const [acceptQuote, setAcceptQuote] = useState(false);
   // Chapter-5 route-specific flow state (license/delivery/availability/bank/fees)
@@ -594,20 +596,36 @@ export default function OrderPage() {
 
               <div className="space-y-2 mb-6">
                 <button
+                  type="button"
+                  onClick={() => openQuoteDoc({
+                    title: "הצעת מחיר",
+                    serviceName: localName,
+                    total: totalPrice,
+                    lines: [
+                      ...(service.priceTable?.length ? [`גודל: ${size}`] : []),
+                      ...routeFlow.summaryLines,
+                      areaInfo ? `אזור מסומן: ${areaInfo.sqkm} קמ"ר · מרכז ITM ${areaInfo.itmX},${areaInfo.itmY}` : ""
+                    ].filter(Boolean),
+                    delivery: t(`order.delivery.${delivery}` as never)
+                  })}
                   className="shine w-full bg-white/10 hover:bg-white/20 text-white px-4 py-2 rounded-xl text-sm font-bold flex items-center justify-center gap-2 transition-colors"
-                  data-tooltip={t("order.quote.downloadPdf")}
+                  data-tooltip="הפקת הצעת המחיר כמסמך להורדה/הדפסה כ-PDF (חלון הדפסה ייפתח)"
                   data-tooltip-position="bottom"
                 >
                   <span className="material-symbols-outlined text-[18px]">download</span>
                   {t("order.quote.downloadPdf")}
                 </button>
                 <button
-                  className="shine w-full bg-white/10 hover:bg-white/20 text-white px-4 py-2 rounded-xl text-sm font-bold flex items-center justify-center gap-2 transition-colors"
-                  data-tooltip={t("order.quote.sendEmail")}
+                  type="button"
+                  onClick={() => setQuoteEmailed(true)}
+                  className={`shine w-full px-4 py-2 rounded-xl text-sm font-bold flex items-center justify-center gap-2 transition-colors ${
+                    quoteEmailed ? "bg-positive-green text-white" : "bg-white/10 hover:bg-white/20 text-white"
+                  }`}
+                  data-tooltip="שליחת הצעת המחיר לכתובת המייל שתזין בשלב פרטי הלקוח"
                   data-tooltip-position="bottom"
                 >
-                  <span className="material-symbols-outlined text-[18px]">mail</span>
-                  {t("order.quote.sendEmail")}
+                  <span className="material-symbols-outlined text-[18px]">{quoteEmailed ? "mark_email_read" : "mail"}</span>
+                  {quoteEmailed ? "ההצעה תישלח למייל ✓" : t("order.quote.sendEmail")}
                 </button>
               </div>
 

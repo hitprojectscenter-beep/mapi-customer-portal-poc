@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { mockOrders, mockNotifications } from "@/lib/data";
 import { useLanguage } from "@/lib/LanguageContext";
+import { openQuoteDoc } from "@/lib/quoteDoc";
 import { TKey } from "@/lib/i18n";
 
 const KPI_DEFS: Array<{ labelKey: TKey; value: number; icon: string; iconBg: string; trend: string }> = [
@@ -132,15 +133,18 @@ export default function DashboardPage() {
                   <tr key={order.id} className="border-b border-outline-variant/40 hover:bg-surface-container/50 transition-colors">
                     <td className="py-4 pr-2">
                       <div className="flex gap-1 justify-center">
-                        <button
+                        <Link
+                          href={`/order/${order.serviceIcon === "map" ? "custom-map" : "aerial-photos"}`}
                           className="shine w-8 h-8 rounded-lg hover:bg-secondary/10 hover:text-secondary text-on-surface-variant flex items-center justify-center"
                           aria-label={`${t("dash.viewOrderAria")} ${order.id}`}
                           data-tooltip={`${t("dash.viewOrder")} ${order.id}`}
                           data-tooltip-position="bottom"
                         >
                           <span className="material-symbols-outlined text-[18px]">visibility</span>
-                        </button>
+                        </Link>
                         <button
+                          type="button"
+                          onClick={() => openQuoteDoc({ title: "אישור הזמנה", serviceName: order.serviceName, orderId: order.id, total: order.amount, lines: [`סטטוס: ${order.statusLabel}`, `תאריך: ${order.date}`, `תוצר: ${order.deliverable}`], date: order.date })}
                           className="shine w-8 h-8 rounded-lg hover:bg-secondary/10 hover:text-secondary text-on-surface-variant flex items-center justify-center"
                           aria-label={`${t("dash.downloadOrderAria")} ${order.id}`}
                           data-tooltip={`${t("dash.downloadOrder")} ${order.id}`}
