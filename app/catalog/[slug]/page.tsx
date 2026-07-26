@@ -335,56 +335,17 @@ ${Array.from({ length: 11 }, (_, i) => `<line x1="0" y1="${i * 60}" x2="800" y2=
             {/* Quantity + Add-to-Cart or Govforms */}
             {service.inScope ? (
               <div className="space-y-3 mb-6">
-                <div className="flex items-center gap-3">
-                  <label htmlFor="qty" className="text-sm font-semibold text-primary">
-                    {t("svc.quantity")}:
-                  </label>
-                  <div className="inline-flex items-center border border-outline-variant rounded-full overflow-hidden">
-                    <button
-                      type="button"
-                      onClick={() => setQty(Math.max(1, qty - 1))}
-                      className="w-10 h-10 hover:bg-surface-container flex items-center justify-center text-primary"
-                      aria-label={t("cart.decrease")}
-                    >−</button>
-                    <input
-                      id="qty"
-                      type="number"
-                      min={1}
-                      max={99}
-                      value={qty}
-                      onChange={(e) => setQty(Math.max(1, Math.min(99, parseInt(e.target.value) || 1)))}
-                      className="w-14 text-center bg-transparent border-0 focus:ring-0 focus:outline-none font-bold text-primary"
-                      dir="ltr"
-                    />
-                    <button
-                      type="button"
-                      onClick={() => setQty(Math.min(99, qty + 1))}
-                      className="w-10 h-10 hover:bg-surface-container flex items-center justify-center text-primary"
-                      aria-label={t("cart.increase")}
-                    >+</button>
-                  </div>
-                </div>
+                {/* "Add to cart" hidden for now (checkout not yet wired).
+                    The order wizard is the working path to purchase. */}
                 <div className="flex gap-2">
-                  <button
-                    type="button"
-                    onClick={handleAdd}
-                    className={`shine shine-glow flex-1 text-white px-6 py-4 rounded-full font-semibold transition-colors flex items-center justify-center gap-2 min-h-[54px] ${
-                      showAdded ? "bg-positive-green" : "bg-primary hover:bg-secondary"
-                    }`}
-                  >
-                    <span className="material-symbols-outlined">
-                      {showAdded ? "check_circle" : "add_shopping_cart"}
-                    </span>
-                    <span>{showAdded ? t("svc.addedToCart") : t("svc.addToCart")}</span>
-                  </button>
                   <Link
                     href={`/order/${service.slug}`}
-                    className="shine bg-white border border-primary text-primary hover:bg-primary hover:text-white px-6 py-4 rounded-full font-semibold transition-colors flex items-center justify-center gap-2 min-h-[54px]"
-                    data-tooltip={t("svc.startOrder")}
+                    className="shine shine-glow flex-1 btn-lux-primary px-6 py-4 rounded-full font-semibold transition-colors flex items-center justify-center gap-2 min-h-[54px]"
+                    data-tooltip="פתיחת אשף ההזמנה: בחירת מאפיינים, סימון אזור על המפה וקבלת הצעת מחיר. אין חיוב בשלב זה."
                     data-tooltip-position="bottom"
                   >
-                    <span className="material-symbols-outlined">bolt</span>
-                    <span className="hidden sm:inline">{t("svc.startOrder")}</span>
+                    <span className="material-symbols-outlined" aria-hidden="true">bolt</span>
+                    <span>{t("svc.startOrder")}</span>
                   </Link>
                 </div>
               </div>

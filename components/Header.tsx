@@ -159,23 +159,8 @@ export default function Header() {
               <span className="material-symbols-outlined text-primary text-[22px]" aria-hidden="true">person</span>
             </Link>
 
-            {/* Cart with count badge */}
-            <button
-              type="button"
-              onClick={cart.open}
-              className="shine w-10 h-10 rounded-full hover:bg-surface-container flex items-center justify-center transition-colors relative"
-              aria-label={`${t("header.cart")} (${cart.itemCount} ${t("header.cartCount")})`}
-              data-tooltip={t("header.cart")}
-              data-tooltip-position="bottom"
-              data-tooltip-edge="left"
-            >
-              <span className="material-symbols-outlined text-primary text-[22px]">shopping_bag</span>
-              {cart.itemCount > 0 && (
-                <span className="absolute -top-0.5 -right-0.5 bg-secondary text-white text-[10px] font-bold rounded-full min-w-[18px] h-[18px] flex items-center justify-center px-1" dir="ltr">
-                  {cart.itemCount}
-                </span>
-              )}
-            </button>
+            {/* Cart icon hidden for now — checkout not yet wired.
+                Ordering is done via the order wizard on each product page. */}
 
             {/* Mobile menu button */}
             <button

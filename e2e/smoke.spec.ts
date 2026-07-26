@@ -34,19 +34,18 @@ test.describe("MAPI Portal — smoke", () => {
     await expect(page.locator("select").first()).toBeVisible();
   });
 
-  test("PDP shows price, quantity and add-to-cart", async ({ page }) => {
+  test("PDP shows price and the order CTA", async ({ page }) => {
     await page.goto("/catalog/custom-map");
     await expect(page.getByRole("heading", { level: 1 })).toContainText("מפה בהתאמה אישית");
-    await expect(page.locator("#qty")).toBeVisible();
-    await expect(page.getByRole("button", { name: /הוסף לעגלה/ }).first()).toBeVisible();
+    // Add-to-cart is hidden for now; the working path is the order wizard
+    await expect(page.getByRole("link", { name: /התחל הזמנה/ }).first()).toBeVisible();
   });
 
-  test("add to cart updates cart badge and mini-cart", async ({ page }) => {
+  test("order wizard opens from the product page", async ({ page }) => {
     await page.goto("/catalog/custom-map");
-    await page.getByRole("button", { name: /הוסף לעגלה/ }).first().click();
-    // Mini-cart drawer opens with the item
-    await expect(page.getByText("עגלת ההזמנות")).toBeVisible();
-    await expect(page.getByText("מפה בהתאמה אישית").first()).toBeVisible();
+    await page.getByRole("link", { name: /התחל הזמנה/ }).first().click();
+    await page.waitForURL(/\/order\/custom-map/);
+    await expect(page.getByText(/פרטי ההזמנה|שלב/).first()).toBeVisible();
   });
 
   test("plans page shows 3 tiers and comparison table", async ({ page }) => {

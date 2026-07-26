@@ -32,7 +32,7 @@ export default function OrderPage() {
   const [delivery, setDelivery] = useState("digital");
   const [purpose, setPurpose] = useState("");
   const [areaMarked, setAreaMarked] = useState(false);
-  const [areaInfo, setAreaInfo] = useState<{ vertices: number; shape: { x: number; y: number }[] } | null>(null);
+  const [areaInfo, setAreaInfo] = useState<{ vertices: number; shape: { x: number; y: number }[]; sqkm: number; itmX: number; itmY: number } | null>(null);
   const [quoteEmailed, setQuoteEmailed] = useState(false);
   const [acceptTerms, setAcceptTerms] = useState(false);
   const [acceptQuote, setAcceptQuote] = useState(false);
@@ -429,12 +429,14 @@ export default function OrderPage() {
                   <>
                     <p className="text-sm font-bold text-positive-green text-center">{t("of.areaOk")}</p>
                     {areaInfo && (
-                      <p className="text-xs text-on-surface-variant text-center mt-2" dir="rtl">
-                        פוליגון בן {areaInfo.vertices} קודקודים סומן על המפה.
+                      <p className="text-xs text-primary text-center mt-2 font-semibold" dir="rtl">
+                        שטח מוערך: {areaInfo.sqkm.toLocaleString()} קמ"ר · {areaInfo.vertices} קודקודים
+                        <br />
+                        מרכז (רשת ישראל ITM): <span dir="ltr" className="font-mono">{areaInfo.itmX.toLocaleString()}, {areaInfo.itmY.toLocaleString()}</span>
                       </p>
                     )}
                     <p className="text-[11px] text-on-surface-variant/80 text-center mt-2 leading-snug bg-gold-tint/40 border border-gold/20 rounded-lg px-2 py-1.5">
-                      השטח והקואורדינטות המדויקים (רשת ישראל ITM) יחושבו על ידי מפ"י מהפוליגון המסומן ויאושרו בהצעת המחיר.
+                      אומדן ראשוני המבוסס על תצוגת המפה. המידות הסופיות המדויקות יאושרו על ידי מפ"י בהצעת המחיר.
                     </p>
                   </>
                 ) : (
@@ -599,7 +601,7 @@ export default function OrderPage() {
                     lines: [
                       ...(service.priceTable?.length ? [`גודל: ${size}`] : []),
                       ...routeFlow.summaryLines,
-                      areaInfo ? `אזור מסומן על המפה (${areaInfo.vertices} קודקודים) — מידות מדויקות יאושרו על ידי מפ"י` : ""
+                      areaInfo ? `אזור מסומן: שטח מוערך ${areaInfo.sqkm} קמ"ר · מרכז ITM ${areaInfo.itmX},${areaInfo.itmY} (${areaInfo.vertices} קודקודים)` : ""
                     ].filter(Boolean),
                     delivery: t(`order.delivery.${delivery}` as never),
                     shape: areaInfo?.shape

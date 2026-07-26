@@ -130,9 +130,15 @@ export interface CmsNewsItem {
 
 const NEWS_KEY = "mapi_cms_news_v2";
 
-// No demo content: the manager starts clean. Until the first item is
-// published, the public ticker shows the portal's built-in headlines.
-export const DEFAULT_CMS_NEWS: CmsNewsItem[] = [];
+// These mirror the headlines that actually run in the public news ticker, so
+// the content manager sees exactly what's live and can edit/delete/disable
+// them. Editing any item switches the ticker to the managed set.
+export const DEFAULT_CMS_NEWS: CmsNewsItem[] = [
+  { id: "n-ortho", type: "new", title: 'השקנו אורתופוטו חדש בדיוק 20 ס"מ', href: "/catalog/aerial-photos", publishedAt: "2026-07-20", active: true },
+  { id: "n-dem", type: "update", title: "מודלי הגובה DSM ו-DTM שודרגו לאחרונה", href: "/catalog/elevation-data", publishedAt: "2026-07-19", active: true },
+  { id: "n-custom", type: "promo", title: "הזמינו מפה אישית A4 רק ב-₪160", href: "/catalog/custom-map", publishedAt: "2026-07-18", active: true },
+  { id: "n-hours", type: "alert", title: "שעות פעילות חדשות במוקד השירות", href: "/help", publishedAt: "2026-07-15", active: true }
+];
 
 export function loadCmsNews(): CmsNewsItem[] {
   return load(NEWS_KEY, DEFAULT_CMS_NEWS);

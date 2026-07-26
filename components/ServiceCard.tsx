@@ -148,16 +148,17 @@ export default function ServiceCard({ service, variant = "default" }: Props) {
               <span>govforms</span>
             </a>
           ) : (
-            <button
-              type="button"
-              onClick={handleAddToCart}
+            // "Add to cart" hidden for now (checkout not yet wired) — the
+            // working path is the order wizard on the product page.
+            <Link
+              href={`/catalog/${service.slug}`}
               className="shine shine-glow block w-full btn-lux-primary text-center py-2.5 rounded-full text-sm transition-colors flex items-center justify-center gap-2"
-              data-tooltip={`${t("svc.addToCart")} — התשלום מאובטח דרך שרת התשלומים הממשלתי`}
+              data-tooltip="מעבר לעמוד המוצר לצפייה בפרטים מלאים ולהתחלת תהליך ההזמנה."
               data-tooltip-position="bottom"
             >
-              <span className="material-symbols-outlined text-[18px]" aria-hidden="true">add_shopping_cart</span>
-              <span>{t("svc.addToCart")}</span>
-            </button>
+              <span className="material-symbols-outlined text-[18px]" aria-hidden="true">shopping_bag</span>
+              <span>לפרטים והזמנה</span>
+            </Link>
           )}
         </div>
       </div>

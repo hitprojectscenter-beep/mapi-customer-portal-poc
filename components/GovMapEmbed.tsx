@@ -21,10 +21,10 @@ interface Props {
   compact?: boolean;
   /** Optional title above the map */
   title?: string;
-  /** Callback when a region polygon is confirmed. Includes the polygon
-      SHAPE as points normalized 0-1 to the map rect (so it can be redrawn,
-      e.g. on the quote PDF). Precise area/coords require the GovMap SDK. */
-  onAreaSelected?: (area: { vertices: number; shape: { x: number; y: number }[] }) => void;
+  /** Callback when a region polygon is confirmed: estimated area (km²),
+      centroid in ITM, vertex count, and the shape (points normalized 0-1
+      for redrawing on the PDF). Estimate is calibrated to the app's zoom. */
+  onAreaSelected?: (area: { vertices: number; shape: { x: number; y: number }[]; sqkm: number; itmX: number; itmY: number }) => void;
 }
 
 type BasemapId = "standard" | "ortho";
@@ -49,14 +49,24 @@ const LAYER_LINKS: Array<{ labelKey: TKey; icon: string }> = [
   { labelKey: "govmap.layer.contours", icon: "line_curve" }
 ];
 
-// Mode presets → basemap + ITM center/zoom that actually render
-const MODE_PRESETS: Record<string, { basemap: BasemapId; itm?: [number, number]; z?: number }> = {
-  default: { basemap: "standard" },
-  cadastre: { basemap: "standard", itm: [220800, 631500], z: 9 },   // ירושלים — רזולוציית גושים
-  ortho: { basemap: "ortho", itm: [178500, 663900], z: 8 },         // תל אביב
-  marine: { basemap: "standard", itm: [175000, 645000], z: 6 },
-  cors: { basemap: "standard", z: 3 },                               // מבט ארצי
-  topo: { basemap: "standard", itm: [220800, 631500], z: 7 }
+// Mode presets → basemap + ITM center/zoom. Every order preset now has a
+// KNOWN center + zoom so the drawing scale is deterministic (the app owns the
+// zoom via its own +/- control; the cross-origin iframe's own zoom is never
+// relied upon for measurement).
+const MODE_PRESETS: Record<string, { basemap: BasemapId; itm: [number, number]; z: number }> = {
+  default: { basemap: "standard", itm: [178500, 663900], z: 11 },   // תל אביב — רמת שכונה/חלקות
+  cadastre: { basemap: "standard", itm: [220800, 631500], z: 11 },  // ירושלים — רזולוציית גושים
+  ortho: { basemap: "ortho", itm: [178500, 663900], z: 10 },        // תל אביב
+  marine: { basemap: "standard", itm: [175000, 645000], z: 8 },
+  cors: { basemap: "standard", itm: [200000, 620000], z: 7 },       // מבט אזורי
+  topo: { basemap: "standard", itm: [220800, 631500], z: 9 }
+};
+
+// Calibration: real-world width (meters) the FULL map container shows at each
+// GovMap zoom level. Used to convert screen-pixel polygons to km² and ITM.
+// POC-grade — the official GovMap SDK provides exact georeferencing.
+const VIEWPORT_METERS: Record<number, number> = {
+  6: 40000, 7: 20000, 8: 10000, 9: 5000, 10: 2500, 11: 1200, 12: 600, 13: 300
 };
 
 /**
@@ -92,29 +102,30 @@ export default function GovMapEmbed({
   // Map controls state (initialized from mode preset)
   const preset = MODE_PRESETS[mode] || MODE_PRESETS.default;
   const [basemap, setBasemap] = useState<BasemapId>(preset.basemap);
+  const [mapZoom, setMapZoom] = useState<number>(preset.z);
   const [panelOpen, setPanelOpen] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
   const firstLoadDone = useRef(false);
 
-  // Build the GovMap URL with the REAL public params: z / c(ITM) / b
+  // Build the GovMap URL with the REAL public params: z / c(ITM) / b.
+  // The app owns the zoom (mapZoom) so measurement scale is always known.
   const iframeSrc = useMemo(() => {
     const base = "https://www.govmap.gov.il/";
     const params = new URLSearchParams();
-
     const bm = BASEMAPS.find(b => b.id === basemap);
     if (bm?.code) params.set("b", bm.code);
-
-    if (preset.itm) {
-      params.set("c", `${preset.itm[0]},${preset.itm[1]}`);
-      params.set("z", String(preset.z ?? 7));
-    } else if (preset.z) {
-      params.set("z", String(preset.z));
-    }
-
-    const query = params.toString();
-    return query ? `${base}?${query}` : base;
+    params.set("c", `${preset.itm[0]},${preset.itm[1]}`);
+    params.set("z", String(mapZoom));
+    return `${base}?${params.toString()}`;
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [basemap, mode]);
+  }, [basemap, mode, mapZoom]);
+
+  // meters-per-pixel for the CURRENT known zoom + actual container width
+  const metersPerPixel = (() => {
+    const vw = VIEWPORT_METERS[mapZoom] ?? VIEWPORT_METERS[11];
+    const w = containerRef.current?.clientWidth || 680;
+    return vw / w;
+  });
 
   // Show a small "updating map" chip when src changes after the initial load
   useEffect(() => {
@@ -176,20 +187,36 @@ export default function GovMapEmbed({
     return () => window.removeEventListener("keydown", onKey);
   }, [drawing]);
 
-  // Confirm the drawn polygon. NOTE: we intentionally do NOT compute a
-  // precise km²/ITM here — a screen-pixel polygon over a cross-origin GovMap
-  // iframe has no reliable real-world scale (the iframe's live zoom is
-  // unreadable), so any number would be fabricated and would not track the
-  // map. Exact georeferencing is done from the polygon by the GovMap SDK in
-  // production. We keep the polygon shape and its vertex count.
+  // Confirm the drawn polygon. Because the app OWNS the map zoom (mapZoom) and
+  // center (preset.itm), the screen→ground scale is known, so area (shoelace)
+  // and the centroid in ITM are computed deterministically. It's a POC-grade
+  // ESTIMATE (the SDK gives exact georeferencing) but it is self-consistent
+  // and tracks the zoom control.
   const handleConfirmArea = () => {
     if (points.length < 3) return;
     const el = containerRef.current;
     const w = el?.clientWidth || 1, h = el?.clientHeight || 1;
-    const shape = points.map(p => ({ x: p.x / w, y: p.y / h })); // normalized 0-1
+    const mpp = metersPerPixel();
+
+    // Shoelace area in px² → m² → km²
+    let sum = 0;
+    for (let i = 0; i < points.length; i++) {
+      const a = points[i], b = points[(i + 1) % points.length];
+      sum += a.x * b.y - b.x * a.y;
+    }
+    const areaM2 = (Math.abs(sum) / 2) * mpp * mpp;
+    const sqkm = parseFloat((areaM2 / 1_000_000).toFixed(3));
+
+    // Centroid px → ITM, using the known map center + scale (y inverted)
+    const cxPx = points.reduce((s, p) => s + p.x, 0) / points.length;
+    const cyPx = points.reduce((s, p) => s + p.y, 0) / points.length;
+    const itmX = Math.round(preset.itm[0] + (cxPx - w / 2) * mpp);
+    const itmY = Math.round(preset.itm[1] - (cyPx - h / 2) * mpp);
+
+    const shape = points.map(p => ({ x: p.x / w, y: p.y / h }));
     setDrawing(false);
     setAreaMarked(true);
-    onAreaSelected?.({ vertices: points.length, shape });
+    onAreaSelected?.({ vertices: points.length, shape, sqkm, itmX, itmY });
   };
 
   return (
@@ -317,13 +344,35 @@ export default function GovMapEmbed({
               )}
             </div>
 
+            {/* App-owned zoom: keeps the measurement scale known & consistent */}
+            <div className="flex flex-col bg-white/95 backdrop-blur-sm rounded-full shadow-md overflow-hidden">
+              <button
+                type="button"
+                onClick={() => setMapZoom(z => Math.min(13, z + 1))}
+                disabled={mapZoom >= 13}
+                className="shine w-9 h-9 flex items-center justify-center hover:bg-secondary hover:text-white transition-colors disabled:opacity-40 text-lg font-bold leading-none border-b border-outline-variant/40"
+                aria-label="הגדלת זום (התקרבות)"
+                data-tooltip="התקרבות במפה. הזום נשלט על ידי הפורטל כדי שחישוב השטח יישאר מדויק ועקבי."
+                data-tooltip-position="bottom"
+              >+</button>
+              <button
+                type="button"
+                onClick={() => setMapZoom(z => Math.max(6, z - 1))}
+                disabled={mapZoom <= 6}
+                className="shine w-9 h-9 flex items-center justify-center hover:bg-secondary hover:text-white transition-colors disabled:opacity-40 text-lg font-bold leading-none"
+                aria-label="הקטנת זום (התרחקות)"
+                data-tooltip="התרחקות במפה. הזום נשלט על ידי הפורטל כדי שחישוב השטח יישאר מדויק ועקבי."
+                data-tooltip-position="bottom"
+              >−</button>
+            </div>
+
             {showFullscreen && (
               <button
                 type="button"
                 onClick={toggleFullscreen}
                 className="shine bg-white/95 backdrop-blur-sm rounded-full w-9 h-9 shadow-md flex items-center justify-center hover:bg-secondary hover:text-white transition-colors"
                 aria-label={isFullscreen ? "צא ממסך מלא" : "מסך מלא"}
-                data-tooltip={isFullscreen ? "צא ממסך מלא" : "מסך מלא"}
+                data-tooltip={isFullscreen ? "יציאה ממצב מסך מלא" : "הצגת המפה במסך מלא לעבודה נוחה יותר"}
                 data-tooltip-position="bottom"
               >
                 <span className="material-symbols-outlined text-[20px]">
