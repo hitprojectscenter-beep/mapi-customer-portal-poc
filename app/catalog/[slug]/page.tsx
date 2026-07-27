@@ -17,6 +17,7 @@ import { useWishlist } from "@/lib/WishlistContext";
 import { useRecentlyViewed } from "@/lib/useRecentlyViewed";
 import { getRatingSummary } from "@/lib/reviews";
 import { getCrossSell } from "@/lib/recommendations";
+import { openSampleMap } from "@/lib/quoteDoc";
 import { PRICE_NOTE } from "@/components/PriceTag";
 
 const MAP_RELEVANT = ["maps", "cadastre", "orthophoto", "gis", "geodesy"];
@@ -64,31 +65,10 @@ export default function ServiceDetailPage() {
     setTimeout(() => setShowAdded(false), 2500);
   };
 
-  // Real sample download: a branded MAPI preview generated client-side
-  // (production swaps this for a genuine product sample from the archive)
+  // Realistic sample: a branded document with a REAL orthophoto + street map
+  // of a sample area, north arrow, scale bar and ITM coordinates.
   const handleDownloadSample = () => {
-    const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="800" height="600" viewBox="0 0 800 600">
-<rect width="800" height="600" fill="#fbfaf7"/>
-${Array.from({ length: 15 }, (_, i) => `<line x1="${i * 57}" y1="0" x2="${i * 57}" y2="600" stroke="#0b61a1" stroke-opacity="0.12" stroke-width="1"/>`).join("")}
-${Array.from({ length: 11 }, (_, i) => `<line x1="0" y1="${i * 60}" x2="800" y2="${i * 60}" stroke="#0b61a1" stroke-opacity="0.12" stroke-width="1"/>`).join("")}
-<path d="M 80 420 Q 220 300 360 360 T 640 280" fill="none" stroke="#463f7a" stroke-width="2" stroke-opacity="0.5"/>
-<path d="M 60 480 Q 240 380 420 430 T 740 350" fill="none" stroke="#b4924e" stroke-width="2" stroke-opacity="0.6"/>
-<circle cx="400" cy="300" r="130" fill="none" stroke="#b4924e" stroke-opacity="0.5" stroke-width="1.5" stroke-dasharray="6 5"/>
-<rect x="40" y="40" width="720" height="520" fill="none" stroke="#b4924e" stroke-width="2" stroke-opacity="0.7"/>
-<text x="400" y="120" text-anchor="middle" font-family="Arial" font-size="34" fill="#001d35" font-weight="500">${localName}</text>
-<text x="400" y="160" text-anchor="middle" font-family="Arial" font-size="17" fill="#8f7439">דגימה חינם · המרכז למיפוי ישראל</text>
-<text x="400" y="520" text-anchor="middle" font-family="Arial" font-size="13" fill="#42474f">POC — בפרודקשן יסופק קובץ דגימה אמיתי מהארכיון · ITM / WGS84</text>
-<text x="700" y="575" text-anchor="end" font-family="monospace" font-size="11" fill="#8f7439">31.7683N 35.2137E</text>
-</svg>`;
-    const blob = new Blob([svg], { type: "image/svg+xml;charset=utf-8" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = `mapi-sample-${service.slug}.svg`;
-    document.body.appendChild(a);
-    a.click();
-    a.remove();
-    setTimeout(() => URL.revokeObjectURL(url), 4000);
+    openSampleMap(localName, service.slug);
     setSampleDone(true);
     setTimeout(() => setSampleDone(false), 3500);
   };

@@ -1,7 +1,14 @@
-// Client-side branded document generator (no dependencies).
-// Opens a print-optimized window the user saves as PDF via the browser's
-// native "Save as PDF" — the standard dependency-free approach. Production
-// swaps this for a server-rendered DocGen/PDF from Salesforce.
+// Client-side branded document generator. Opens a print-optimized window the
+// user saves as PDF via the browser's native "Save as PDF". Real tiled maps
+// (street + orthophoto) with north arrow / scale bar / ITM coordinates.
+// Production swaps this for a server-rendered DocGen/PDF from Salesforce.
+
+import proj4 from "proj4";
+
+proj4.defs(
+  "EPSG:2039",
+  "+proj=tmerc +lat_0=31.7343936111111 +lon_0=35.2045169444444 +k=1.0000067 +x_0=219529.584 +y_0=626907.39 +ellps=GRS80 +towgs84=-24.0024,-17.1032,-17.8444,-0.33077,-1.85269,1.66969,5.4262 +units=m +no_defs"
+);
 
 export interface QuoteDocData {
   title: string;          // e.g. "הצעת מחיר" / "אישור הזמנה"
@@ -173,6 +180,105 @@ export function openQuoteDoc(d: QuoteDocData): void {
   w.document.open();
   w.document.write(html);
   w.document.close();
+}
+
+// ---------------------------------------------------------------------------
+// Realistic product sample — a branded document showing a REAL tiled map of a
+// sample area (street + orthophoto), with title block, north arrow, scale bar,
+// coordinate labels and a legend. Opened from the PDP "download sample" CTA.
+// ---------------------------------------------------------------------------
+
+// Render a real tiled map into a fixed WxH box centered on lat/lng at a zoom,
+// with a polygon (optional), north arrow, scale bar and coordinate ticks.
+function tiledMapBox(opts: {
+  lat: number; lng: number; zoom: number; W: number; H: number;
+  basemap: "street" | "ortho"; poly?: { lat: number; lng: number }[];
+}): string {
+  const { lat, lng, zoom, W, H, basemap, poly } = opts;
+  const c = project(lat, lng, zoom);
+  const originX = c.x - W / 2, originY = c.y - H / 2;
+  const tileUrl = (x: number, y: number) => basemap === "ortho"
+    ? `https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/${zoom}/${y}/${x}`
+    : `https://tile.openstreetmap.org/${zoom}/${x}/${y}.png`;
+  const tx0 = Math.floor(originX / 256), ty0 = Math.floor(originY / 256);
+  const tx1 = Math.floor((originX + W) / 256), ty1 = Math.floor((originY + H) / 256);
+  let tiles = "";
+  for (let tx = tx0; tx <= tx1; tx++) for (let ty = ty0; ty <= ty1; ty++) {
+    tiles += `<img src="${tileUrl(tx, ty)}" style="position:absolute;left:${tx * 256 - originX}px;top:${ty * 256 - originY}px;width:256px;height:256px" onerror="this.style.display='none'"/>`;
+  }
+  const polySvg = poly && poly.length >= 3
+    ? `<polygon points="${poly.map(p => { const q = project(p.lat, p.lng, zoom); return `${(q.x - originX).toFixed(0)},${(q.y - originY).toFixed(0)}`; }).join(" ")}" fill="rgba(180,146,78,0.25)" stroke="#8f5a00" stroke-width="3"/>`
+    : "";
+  const mpp = 156543.03392 * Math.cos(lat * Math.PI / 180) / Math.pow(2, zoom);
+  const roundM = [10,20,50,100,200,500,1000,2000].reduce((a,b)=> Math.abs(b/mpp-120) < Math.abs(a/mpp-120) ? b : a, 100);
+  const barPx = roundM / mpp;
+  const scaleLabel = roundM >= 1000 ? `${roundM/1000} ק"מ` : `${roundM} מ'`;
+  const [itmX, itmY] = (() => { const p = proj4("EPSG:4326", "EPSG:2039", [lng, lat]); return [Math.round(p[0]), Math.round(p[1])]; })();
+  return `<div class="mapbox" style="position:relative;width:${W}px;height:${H}px;overflow:hidden;border:2px solid #b4924e;border-radius:8px;background:#e8ecef">
+    ${tiles}
+    ${polySvg ? `<svg width="${W}" height="${H}" style="position:absolute;inset:0">${polySvg}</svg>` : ""}
+    <svg width="46" height="56" style="position:absolute;top:8px;right:8px" viewBox="0 0 46 56"><rect width="46" height="56" rx="6" fill="rgba(255,255,255,0.9)" stroke="#b4924e"/><polygon points="23,6 30,30 23,24 16,30" fill="#001d35"/><text x="23" y="48" text-anchor="middle" font-size="15" font-weight="bold" fill="#001d35">N</text></svg>
+    <div style="position:absolute;left:10px;bottom:10px;background:rgba(255,255,255,0.9);padding:3px 8px;border-radius:6px;border:1px solid #b4924e;font-size:11px;color:#001d35;font-weight:600"><div style="width:${barPx.toFixed(0)}px;height:6px;border:1.5px solid #001d35;border-top:none;display:inline-block;vertical-align:middle"></div><span style="margin-inline-start:6px">${scaleLabel}</span></div>
+    <div style="position:absolute;right:10px;bottom:10px;background:rgba(255,255,255,0.9);padding:2px 8px;border-radius:6px;font-size:10px;font-family:monospace;color:#42474f">ITM ${itmX.toLocaleString()}, ${itmY.toLocaleString()}</div>
+  </div>`;
+}
+
+export function openSampleMap(serviceName: string, slug: string): void {
+  const w = window.open("", "_blank", "width=900,height=1100");
+  if (!w) { alert("הדפדפן חסם את חלון הדגימה. אנא אפשר חלונות קופצים ונסה שוב."); return; }
+  const origin = window.location.origin;
+  // Sample location: central Tel Aviv (data-rich, recognizable)
+  const lat = 32.0809, lng = 34.7806;
+  const aerialFirst = /aerial|ortho|elevation|photo/.test(slug);
+  const street = tiledMapBox({ lat, lng, zoom: 16, W: 720, H: 300, basemap: "street" });
+  const ortho = tiledMapBox({ lat, lng, zoom: 16, W: 720, H: 300, basemap: "ortho" });
+  const html = `<!doctype html><html lang="he" dir="rtl"><head><meta charset="utf-8">
+<title>דגימה — ${esc(serviceName)} · מפי</title>
+<style>
+  @page { size: A4; margin: 14mm; }
+  * { box-sizing:border-box; }
+  body { font-family:"Heebo","Assistant",Arial,sans-serif; color:#1b2b45; margin:0; padding:26px; }
+  .hd { display:flex; align-items:center; justify-content:space-between; border-bottom:2px solid #b4924e; padding-bottom:14px; margin-bottom:16px; }
+  .brandbox { display:flex; align-items:center; gap:12px; }
+  .brandbox img { width:58px; height:58px; object-fit:contain; }
+  .brand { font-size:22px; font-weight:800; color:#001d35; }
+  .brand small { display:block; font-size:11px; color:#8f7439; font-weight:600; }
+  .tag { border:1px solid #8f7439; color:#8f7439; font-size:12px; font-weight:700; padding:5px 14px; border-radius:999px; }
+  h1 { font-size:20px; color:#463f7a; margin:6px 0 2px; }
+  .sub { color:#6b7280; font-size:12px; margin-bottom:16px; }
+  .cap { font-size:13px; font-weight:700; color:#001d35; margin:14px 0 6px; display:flex; align-items:center; gap:6px; }
+  .legend { display:flex; gap:18px; flex-wrap:wrap; margin-top:14px; font-size:11px; color:#42474f; }
+  .legend span { display:inline-flex; align-items:center; gap:5px; }
+  .sw { width:14px; height:10px; border-radius:2px; display:inline-block; }
+  .note { font-size:11px; color:#9aa0a6; margin-top:16px; line-height:1.6; border-top:1px solid #eee; padding-top:10px; }
+  @media print { .noprint { display:none; } }
+  .btn { background:#0b2545; color:#fff; border:none; border-radius:999px; padding:11px 24px; font-size:14px; font-weight:700; cursor:pointer; }
+</style></head><body>
+  <div class="hd">
+    <div class="brandbox"><img src="${origin}/mapi-logo.png" onerror="this.style.display='none'"/><div class="brand">מפ&quot;י<small>המרכז למיפוי ישראל</small></div></div>
+    <span class="tag">דגימה חינם · ללא עלות</span>
+  </div>
+  <h1>${esc(serviceName)} — דגימת מוצר</h1>
+  <p class="sub">אזור לדוגמה: מרכז תל אביב-יפו · מערכת ייחוס רשת ישראל (ITM / EPSG:2039)</p>
+
+  ${aerialFirst ? `<p class="cap">▸ תצלום אוויר (אורתופוטו)</p>${ortho}<p class="cap">▸ שכבת מפה סטנדרטית</p>${street}`
+                : `<p class="cap">▸ שכבת מפה סטנדרטית</p>${street}<p class="cap">▸ תצלום אוויר (אורתופוטו)</p>${ortho}`}
+
+  <div class="legend">
+    <span><span class="sw" style="background:rgba(180,146,78,0.35);border:1px solid #8f5a00"></span> אזור לדוגמה</span>
+    <span><span class="sw" style="background:#001d35"></span> חץ צפון</span>
+    <span>📏 קנה מידה גרפי</span>
+    <span>🧭 קואורדינטות ITM</span>
+  </div>
+
+  <p class="note">
+    זוהי דגימת התרשמות (POC) הממחישה את שכבות המוצר — תצלום אוויר ומפה — עם חץ צפון, קנה מידה וקואורדינטות ITM.
+    בפרודקשן יסופק קובץ המוצר האמיתי מארכיון מפ&quot;י ברזולוציה ובפורמט המוזמנים (GeoTIFF/PDF/DWG). לפרטים: *6274 · service@mapi.gov.il
+  </p>
+  <div class="noprint" style="margin-top:22px;text-align:center"><button class="btn" onclick="window.print()">שמור כ-PDF / הדפס</button></div>
+  <script>window.onload=function(){ setTimeout(function(){ window.print(); }, 900); };</script>
+</body></html>`;
+  w.document.open(); w.document.write(html); w.document.close();
 }
 
 // ---------------------------------------------------------------------------
