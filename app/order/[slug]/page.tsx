@@ -4,8 +4,14 @@ import Link from "next/link";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { services, getServiceName } from "@/lib/data";
-import GovMapEmbed from "@/components/GovMapEmbed";
+import dynamic from "next/dynamic";
 import RouteFlowPanel, { type RouteFlowResult } from "@/components/RouteFlowPanel";
+
+// Leaflet touches window on import — load the picker client-side only
+const PolygonMapPicker = dynamic(() => import("@/components/PolygonMapPicker"), {
+  ssr: false,
+  loading: () => <div className="h-[500px] rounded-2xl bg-surface-container animate-pulse flex items-center justify-center text-on-surface-variant text-sm">טוען מפה...</div>
+});
 import { openQuoteDoc } from "@/lib/quoteDoc";
 import { useLanguage } from "@/lib/LanguageContext";
 import type { TKey } from "@/lib/i18n";
@@ -32,7 +38,7 @@ export default function OrderPage() {
   const [delivery, setDelivery] = useState("digital");
   const [purpose, setPurpose] = useState("");
   const [areaMarked, setAreaMarked] = useState(false);
-  const [areaInfo, setAreaInfo] = useState<{ vertices: number; shape: { x: number; y: number }[]; sqkm: number; itmX: number; itmY: number } | null>(null);
+  const [areaInfo, setAreaInfo] = useState<{ vertices: number; shape: { x: number; y: number }[]; sqkm: number; itmX: number; itmY: number; latlngs: { lat: number; lng: number }[]; basemap: "street" | "ortho" } | null>(null);
   const [quoteEmailed, setQuoteEmailed] = useState(false);
   const [acceptTerms, setAcceptTerms] = useState(false);
   const [acceptQuote, setAcceptQuote] = useState(false);
@@ -430,13 +436,13 @@ export default function OrderPage() {
                     <p className="text-sm font-bold text-positive-green text-center">{t("of.areaOk")}</p>
                     {areaInfo && (
                       <p className="text-xs text-primary text-center mt-2 font-semibold" dir="rtl">
-                        שטח מוערך: {areaInfo.sqkm.toLocaleString()} קמ"ר · {areaInfo.vertices} קודקודים
+                        שטח: {areaInfo.sqkm.toLocaleString()} קמ"ר · {areaInfo.vertices} קודקודים
                         <br />
                         מרכז (רשת ישראל ITM): <span dir="ltr" className="font-mono">{areaInfo.itmX.toLocaleString()}, {areaInfo.itmY.toLocaleString()}</span>
                       </p>
                     )}
                     <p className="text-[11px] text-on-surface-variant/80 text-center mt-2 leading-snug bg-gold-tint/40 border border-gold/20 rounded-lg px-2 py-1.5">
-                      אומדן ראשוני המבוסס על תצוגת המפה. המידות הסופיות המדויקות יאושרו על ידי מפ"י בהצעת המחיר.
+                      השטח חושב גאוגרפית מהפוליגון שסימנתם. המידות הסופיות יאומתו על ידי מפ"י בהצעת המחיר.
                     </p>
                   </>
                 ) : (
@@ -451,12 +457,12 @@ export default function OrderPage() {
                 {t("of.mapTitle")}
               </h3>
 
-              {/* Real GovMap embed */}
-              <GovMapEmbed
-                mode={service.category === "cadastre" ? "cadastre" : service.category === "orthophoto" ? "ortho" : service.category === "geodesy" ? "cors" : "default"}
+              {/* Real interactive map (Leaflet) — the polygon is geo-locked so
+                  it stays on the same real-world area when zooming/panning, and
+                  the area is a true geodesic measurement (unlike the iframe). */}
+              <PolygonMapPicker
                 height="500px"
-                allowDraw={true}
-                title={`${t("of.govmapTitle")} ${localName}`}
+                ortho={includeOrthophoto}
                 onAreaSelected={(a) => { setAreaMarked(true); setAreaInfo(a); }}
               />
 
@@ -604,7 +610,8 @@ export default function OrderPage() {
                       areaInfo ? `אזור מסומן: שטח מוערך ${areaInfo.sqkm} קמ"ר · מרכז ITM ${areaInfo.itmX},${areaInfo.itmY} (${areaInfo.vertices} קודקודים)` : ""
                     ].filter(Boolean),
                     delivery: t(`order.delivery.${delivery}` as never),
-                    shape: areaInfo?.shape
+                    shape: areaInfo?.shape,
+                    geo: areaInfo ? { latlngs: areaInfo.latlngs, basemap: includeOrthophoto ? "ortho" : areaInfo.basemap } : undefined
                   })}
                   className="shine w-full bg-white/10 hover:bg-white/20 text-white px-4 py-2 rounded-xl text-sm font-bold flex items-center justify-center gap-2 transition-colors"
                   data-tooltip="הפקת הצעת המחיר כמסמך להורדה/הדפסה כ-PDF (חלון הדפסה ייפתח)"

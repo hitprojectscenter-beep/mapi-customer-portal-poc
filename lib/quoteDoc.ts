@@ -11,8 +11,86 @@ export interface QuoteDocData {
   lines: string[];        // route/summary lines
   delivery?: string;
   date?: string;          // ISO or display date passed in (no Date.now here)
-  /** Ordered-area polygon, points normalized 0-1 (drawn in an 18×15cm box) */
+  /** Ordered-area polygon, points normalized 0-1 (fallback drawing) */
   shape?: { x: number; y: number }[];
+  /** Geo data — renders a REAL tiled map (street/ortho) with the polygon,
+      compass and scale bar in the 18×15cm ordered-area block. */
+  geo?: { latlngs: { lat: number; lng: number }[]; basemap: "street" | "ortho" };
+}
+
+// Web Mercator world-pixel coords at a given zoom (256px tiles)
+function project(lat: number, lng: number, z: number) {
+  const s = 256 * Math.pow(2, z);
+  const x = (lng + 180) / 360 * s;
+  const sinL = Math.sin(lat * Math.PI / 180);
+  const y = (0.5 - Math.log((1 + sinL) / (1 - sinL)) / (4 * Math.PI)) * s;
+  return { x, y };
+}
+
+// Build an HTML block with a real tiled map (street or orthophoto) covering the
+// polygon, the polygon overlaid, a north arrow and a scale bar.
+function tiledAreaMap(geo: { latlngs: { lat: number; lng: number }[]; basemap: "street" | "ortho" }): string {
+  const pts = geo.latlngs;
+  if (!pts || pts.length < 3) return "";
+  const W = 660, H = 520; // ~17.5cm × 13.8cm print box
+  const lats = pts.map(p => p.lat), lngs = pts.map(p => p.lng);
+  let minLat = Math.min(...lats), maxLat = Math.max(...lats), minLng = Math.min(...lngs), maxLng = Math.max(...lngs);
+  // pad the bbox by 25%
+  const padLat = (maxLat - minLat) * 0.25 || 0.002, padLng = (maxLng - minLng) * 0.25 || 0.002;
+  minLat -= padLat; maxLat += padLat; minLng -= padLng; maxLng += padLng;
+  const cLat = (minLat + maxLat) / 2, cLng = (minLng + maxLng) / 2;
+
+  // pick the zoom that fits the padded bbox inside W×H
+  let zoom = 18;
+  for (let z = 18; z >= 6; z--) {
+    const a = project(minLat, minLng, z), b = project(maxLat, maxLng, z);
+    if (Math.abs(b.x - a.x) <= W && Math.abs(a.y - b.y) <= H) { zoom = z; break; }
+  }
+  const cPix = project(cLat, cLng, zoom);
+  const originX = cPix.x - W / 2, originY = cPix.y - H / 2; // top-left world-pixel of the box
+
+  // tiles covering the box
+  const tileUrl = (z: number, x: number, y: number) => geo.basemap === "ortho"
+    ? `https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/${z}/${y}/${x}`
+    : `https://tile.openstreetmap.org/${z}/${x}/${y}.png`;
+  const tx0 = Math.floor(originX / 256), ty0 = Math.floor(originY / 256);
+  const tx1 = Math.floor((originX + W) / 256), ty1 = Math.floor((originY + H) / 256);
+  let tiles = "";
+  for (let tx = tx0; tx <= tx1; tx++) for (let ty = ty0; ty <= ty1; ty++) {
+    const left = tx * 256 - originX, top = ty * 256 - originY;
+    tiles += `<img src="${tileUrl(zoom, tx, ty)}" style="position:absolute;left:${left}px;top:${top}px;width:256px;height:256px" onerror="this.style.display='none'"/>`;
+  }
+  // polygon in box-pixel space
+  const poly = pts.map(p => { const q = project(p.lat, p.lng, zoom); return `${(q.x - originX).toFixed(1)},${(q.y - originY).toFixed(1)}`; }).join(" ");
+
+  // scale bar: meters-per-pixel at this zoom & latitude, pick a round distance
+  const mpp = 156543.03392 * Math.cos(cLat * Math.PI / 180) / Math.pow(2, zoom);
+  const targetPx = 120;
+  const roundMeters = [10,20,50,100,200,500,1000,2000,5000].reduce((a,b)=> Math.abs(b/mpp-targetPx) < Math.abs(a/mpp-targetPx) ? b : a, 100);
+  const barPx = roundMeters / mpp;
+  const scaleLabel = roundMeters >= 1000 ? `${roundMeters/1000} ק"מ` : `${roundMeters} מ'`;
+
+  return `<div class="area">
+    <p class="area-ttl">הטווח שהוזמן על ידי הלקוח — ${geo.basemap === "ortho" ? "תצלום אוויר" : "מפת רחובות"}</p>
+    <div class="mapbox" style="position:relative;width:${W}px;height:${H}px;overflow:hidden;border:2px solid #b4924e;border-radius:8px;margin:0 auto;background:#e8ecef">
+      ${tiles}
+      <svg width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" style="position:absolute;inset:0">
+        <polygon points="${poly}" fill="rgba(180,146,78,0.28)" stroke="#8f5a00" stroke-width="3"/>
+      </svg>
+      <!-- North arrow (Web Mercator is north-up) -->
+      <svg width="46" height="56" style="position:absolute;top:8px;right:8px" viewBox="0 0 46 56">
+        <rect x="0" y="0" width="46" height="56" rx="6" fill="rgba(255,255,255,0.88)" stroke="#b4924e"/>
+        <polygon points="23,6 30,30 23,24 16,30" fill="#001d35"/>
+        <text x="23" y="48" text-anchor="middle" font-size="15" font-weight="bold" fill="#001d35">N</text>
+      </svg>
+      <!-- Scale bar -->
+      <div style="position:absolute;left:10px;bottom:10px;background:rgba(255,255,255,0.9);padding:3px 8px;border-radius:6px;border:1px solid #b4924e;font-size:11px;color:#001d35;font-weight:600">
+        <div style="width:${barPx.toFixed(0)}px;height:6px;border:1.5px solid #001d35;border-top:none;display:inline-block;vertical-align:middle"></div>
+        <span style="margin-inline-start:6px">${scaleLabel}</span>
+      </div>
+    </div>
+    <p class="area-note">הפוליגון מייצג את האזור שהלקוח סימן על המפה. המידות המדויקות (שטח וקואורדינטות ITM) יאומתו על ידי מפ"י.</p>
+  </div>`;
 }
 
 function esc(s: string): string {
@@ -28,25 +106,19 @@ export function openQuoteDoc(d: QuoteDocData): void {
   const rows = d.lines.filter(Boolean).map(l => `<tr><td>${esc(l)}</td></tr>`).join("");
   const origin = window.location.origin;
 
-  // The ordered-area block: an 18cm × 15cm centered frame containing the
-  // customer's marked polygon over a light grid (a simple map-like backdrop).
-  const shape = d.shape && d.shape.length >= 3 ? d.shape : null;
-  const areaBlock = shape ? (() => {
-    const W = 680, H = 566; // 18cm × 15cm at ~96dpi/cm scaled for print
-    const pts = shape.map(p => `${(p.x * W).toFixed(1)},${(p.y * H).toFixed(1)}`).join(" ");
-    const grid = Array.from({ length: 13 }, (_, i) => `<line x1="${i * W / 12}" y1="0" x2="${i * W / 12}" y2="${H}" stroke="#0b61a1" stroke-opacity="0.08"/>`).join("")
-      + Array.from({ length: 11 }, (_, i) => `<line x1="0" y1="${i * H / 10}" x2="${W}" y2="${i * H / 10}" stroke="#0b61a1" stroke-opacity="0.08"/>`).join("");
-    return `<div class="area">
-      <p class="area-ttl">הטווח שהוזמן על ידי הלקוח</p>
-      <svg viewBox="0 0 ${W} ${H}" width="18cm" height="15cm" xmlns="http://www.w3.org/2000/svg">
-        <rect width="${W}" height="${H}" fill="#fbfaf7"/>
-        ${grid}
-        <polygon points="${pts}" fill="rgba(180,146,78,0.18)" stroke="#8f7439" stroke-width="2.5"/>
-        <rect x="1" y="1" width="${W - 2}" height="${H - 2}" fill="none" stroke="#b4924e" stroke-width="2"/>
-      </svg>
-      <p class="area-note">הפוליגון מייצג את האזור שהלקוח סימן במפת GovMap. המידות המדויקות (שטח וקואורדינטות ITM) ייקבעו על ידי מפ"י מהפוליגון המסומן.</p>
-    </div>`;
-  })() : "";
+  // The ordered-area block: a REAL tiled map (street or orthophoto) with the
+  // marked polygon, a north arrow and a scale bar. Falls back to a simple
+  // outline if geo data is missing.
+  const areaBlock = d.geo && d.geo.latlngs?.length >= 3
+    ? tiledAreaMap(d.geo)
+    : (d.shape && d.shape.length >= 3 ? (() => {
+        const W = 660, H = 520;
+        const pts = d.shape!.map(p => `${(p.x * W).toFixed(1)},${(p.y * H).toFixed(1)}`).join(" ");
+        return `<div class="area"><p class="area-ttl">הטווח שהוזמן על ידי הלקוח</p>
+          <svg viewBox="0 0 ${W} ${H}" width="17cm" height="13cm"><rect width="${W}" height="${H}" fill="#fbfaf7"/>
+          <polygon points="${pts}" fill="rgba(180,146,78,0.2)" stroke="#8f7439" stroke-width="2.5"/>
+          <rect x="1" y="1" width="${W-2}" height="${H-2}" fill="none" stroke="#b4924e" stroke-width="2"/></svg></div>`;
+      })() : "");
 
   const html = `<!doctype html><html lang="he" dir="rtl"><head><meta charset="utf-8">
 <title>${esc(d.title)} — ${esc(d.serviceName)}</title>
