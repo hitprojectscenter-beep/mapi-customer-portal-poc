@@ -25,9 +25,17 @@ export default function LoginPage() {
     setMode("surveyorProfile");
   };
 
-  // ---- National identity / Org SSO — simulated handoff screens (POC) ----
+  // ---- National identity / Org SSO — REAL handoff to the external IdP ----
+  // National → the actual Israeli national-identity portal (govid.gov.il).
+  // Org SSO  → the real Microsoft Entra ID (Azure AD) sign-in used by most
+  // Israeli government organizations. Per the client's request these buttons
+  // now genuinely leave the app for the identity provider (a browser
+  // sign-in / error page there is the expected, real behavior) — no longer
+  // a simulated jump into the demo dashboard.
   if (mode === "national" || mode === "sso") {
     const isNat = mode === "national";
+    const idpUrl = isNat ? "https://govid.gov.il/" : "https://login.microsoftonline.com/";
+    const goToIdp = () => { window.location.href = idpUrl; };
     return (
       <div className="bg-primary min-h-[calc(100vh-5rem)] flex items-center justify-center px-4 py-12">
         <div className="bg-white rounded-3xl p-8 md:p-10 shadow-2xl max-w-md w-full text-center">
@@ -37,17 +45,19 @@ export default function LoginPage() {
           <h2 className="text-xl font-extrabold text-primary mb-2">{isNat ? "מעבר להזדהות לאומית" : "מעבר ל-SSO ארגוני"}</h2>
           <p className="text-sm text-on-surface-variant mb-1">
             {isNat
-              ? "בפרודקשן מתבצעת הפניה מאובטחת למערכת ההזדהות הלאומית של ממשלת ישראל (SAML/OIDC), ולאחר האימות חוזרים לפורטל."
-              : "בפרודקשן מתבצעת הפניה ל-SSO של הארגון שלכם (SAML), ולאחר האימות חוזרים לפורטל."}
+              ? "כעת תועברו למערכת ההזדהות הלאומית של ממשלת ישראל (govid.gov.il). לאחר האימות תוחזרו לפורטל."
+              : "כעת תועברו לשרת ה-SSO הארגוני (Microsoft Entra ID / Azure AD). לאחר האימות תוחזרו לפורטל."}
           </p>
-          <div className="bg-alert-yellow/10 border border-alert-yellow/40 rounded-xl px-4 py-2.5 my-5 text-xs text-primary">
-            ⚠️ סביבת הדגמה — ההזדהות האמיתית תחובר בפרודקשן (מערך ההזדהות הלאומית / IdP ארגוני).
+          <div className="bg-secondary/10 border border-secondary/30 rounded-xl px-4 py-2.5 my-5 text-xs text-primary text-start" dir="ltr">
+            <span className="font-mono break-all">{idpUrl}</span>
           </div>
           <div className="flex gap-2 justify-center">
-            <button type="button" onClick={() => router.push("/dashboard")}
-              className="shine btn-lux-primary px-6 py-3 rounded-full text-sm"
-              data-tooltip="המשך לאזור האישי (הדמיה של חזרה מוצלחת מההזדהות).">
-              המשך לאזור האישי (הדמיה)
+            <button type="button" onClick={goToIdp}
+              className="shine shine-glow btn-lux-primary px-6 py-3 rounded-full text-sm"
+              data-tooltip={isNat
+                ? "מעבר אמיתי למערכת ההזדהות הלאומית של ממשלת ישראל (govid.gov.il)."
+                : "מעבר אמיתי לשרת ה-SSO הארגוני (Microsoft Entra ID)."}>
+              {isNat ? "המשך להזדהות לאומית ←" : "המשך ל-SSO ארגוני ←"}
             </button>
             <button type="button" onClick={() => setMode("select")}
               className="shine btn-lux-ghost px-5 py-3 rounded-full text-sm" data-tooltip="חזרה למסך בחירת סוג ההתחברות.">חזרה</button>

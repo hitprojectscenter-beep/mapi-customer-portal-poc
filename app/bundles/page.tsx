@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useMemo, useState } from "react";
 import { useLanguage } from "@/lib/LanguageContext";
-import { bundles } from "@/lib/bundles";
+import { bundles, bundleText } from "@/lib/bundles";
 import { services, getServiceName } from "@/lib/data";
 
 export default function BundlesPage() {
@@ -69,6 +69,7 @@ export default function BundlesPage() {
               .map(slug => services.find(s => s.slug === slug))
               .filter(Boolean)
               .slice(0, 4);
+            const bt = bundleText(bundle, lang);
 
             return (
               <article
@@ -89,21 +90,21 @@ export default function BundlesPage() {
                     </span>
                   )}
                   <div className="text-white">
-                    <span className="material-symbols-outlined text-[36px] mb-1 opacity-80">{bundle.regionIcon}</span>
-                    <p className="text-[10px] uppercase tracking-widest font-semibold text-white/80">{bundle.region}</p>
+                    <span className="material-symbols-outlined text-[36px] mb-1 opacity-80" aria-hidden="true">{bundle.icon}</span>
+                    <p className="text-[10px] uppercase tracking-widest font-semibold text-white/80">{bt.audience}</p>
                   </div>
                 </div>
 
                 <div className="p-5 flex flex-col flex-1">
-                  <h3 className="text-lg font-bold text-primary mb-2">{t(bundle.nameKey)}</h3>
+                  <h3 className="text-lg font-bold text-primary mb-2">{bt.name}</h3>
                   <p className="text-xs text-on-surface-variant leading-relaxed mb-4 font-light flex-1">
-                    {t(bundle.descriptionKey)}
+                    {bt.description}
                   </p>
 
                   {/* Included services */}
                   <div className="mb-4">
                     <p className="text-[10px] uppercase tracking-widest font-semibold text-secondary/80 mb-2">
-                      {t("bundles.included")} ({bundle.mapCount})
+                      {t("bundles.included")} ({bundle.services.length})
                     </p>
                     <ul className="space-y-1.5" role="list">
                       {includedServices.map(s => s && (
@@ -128,11 +129,12 @@ export default function BundlesPage() {
                   </div>
 
                   <Link
-                    href={`/order/custom-map?bundle=${bundle.slug}`}
+                    href={`/bundles/${bundle.slug}`}
                     className="shine shine-glow block w-full bg-primary hover:bg-secondary text-white text-center py-3 rounded-full font-semibold transition-colors flex items-center justify-center gap-2"
+                    data-tooltip="מעבר לפרטי החבילה: המוצרים הכלולים, מחיר החבילה ובקשת הצעת מחיר — ללא סימון אזור."
                   >
-                    <span className="material-symbols-outlined text-[18px]">shopping_bag</span>
-                    <span>{t("bundles.buyBundle")}</span>
+                    <span className="material-symbols-outlined text-[18px]" aria-hidden="true">inventory_2</span>
+                    <span>{t("bundles.viewBundle")}</span>
                   </Link>
                 </div>
               </article>

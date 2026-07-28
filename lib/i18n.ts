@@ -350,14 +350,8 @@ type TranslationKeys =
   | "planFaq.q3" | "planFaq.a3" | "planFaq.q4" | "planFaq.a4"
   // Bundles page
   | "bundles.title" | "bundles.subtitle" | "bundles.savings" | "bundles.included"
-  | "bundles.regularPrice" | "bundles.bundlePrice" | "bundles.buyBundle"
+  | "bundles.regularPrice" | "bundles.bundlePrice" | "bundles.buyBundle" | "bundles.viewBundle"
   | "bundles.featured" | "bundles.allBundles" | "bundles.filterBy"
-  | "bundle.galilee.name" | "bundle.galilee.desc"
-  | "bundle.coastal.name" | "bundle.coastal.desc"
-  | "bundle.jerusalem.name" | "bundle.jerusalem.desc"
-  | "bundle.negev.name" | "bundle.negev.desc"
-  | "bundle.surveyor.name" | "bundle.surveyor.desc"
-  | "bundle.developer.name" | "bundle.developer.desc"
   // API Hub
   | "api.hub.title" | "api.hub.subtitle" | "api.hub.newProject"
   | "api.hub.summary" | "api.hub.projects" | "api.hub.usage" | "api.hub.docs"
@@ -1664,7 +1658,7 @@ const dict: Record<TranslationKeys, Record<Lang, string>> = {
 
   // Nav (new pages)
   "nav.plans": { he: 'מסלולים', en: 'Plans', fr: 'Forfaits', es: 'Planes', ru: 'Планы', ar: 'الخطط' },
-  "nav.bundles": { he: 'חבילות אזוריות', en: 'Regional Bundles', fr: 'Packs Régionaux', es: 'Paquetes Regionales', ru: 'Регион. пакеты', ar: 'حزم إقليمية' },
+  "nav.bundles": { he: 'חבילות מוצרים', en: 'Product Packages', fr: 'Packs Produits', es: 'Paquetes de Productos', ru: 'Пакеты продуктов', ar: 'حزم المنتجات' },
   "nav.apiHub": { he: 'API Hub', en: 'API Hub', fr: 'API Hub', es: 'API Hub', ru: 'API-хаб', ar: 'مركز API' },
   "nav.trial": { he: '14 יום ניסיון חינם', en: '14-day Free Trial', fr: 'Essai 14 jours', es: 'Prueba 14 días', ru: '14 дней бесплатно', ar: 'تجربة 14 يوماً' },
   "nav.more": { he: 'עוד', en: 'More', fr: 'Plus', es: 'Más', ru: 'Ещё', ar: 'المزيد' },
@@ -1746,28 +1740,17 @@ const dict: Record<TranslationKeys, Record<Lang, string>> = {
   "planFaq.a4": { he: 'כל המחירים כוללים מע"מ 17%. חשבונית מס נשלחת אוטומטית בכל תשלום.', en: 'All prices include 17% VAT. Tax invoice is auto-generated for every payment.', fr: 'TVA 17% incluse.', es: 'IVA 17% incluido.', ru: 'НДС 17% включён.', ar: 'شامل ضريبة 17%.' },
 
   // Bundles page
-  "bundles.title": { he: 'חבילות אזוריות מיוחדות', en: 'Regional Map Bundles', fr: 'Packs Régionaux', es: 'Paquetes Regionales', ru: 'Регион. пакеты', ar: 'حزم إقليمية' },
-  "bundles.subtitle": { he: 'שילוב של מפות, נתוני GIS ותצלומי אוויר לאזור שלם — במחיר משתלם משמעותית מרכישה נפרדת.', en: 'Curated bundles of maps, GIS data & aerial imagery — significantly cheaper than buying individually.', fr: 'Cartes + GIS + aérien à prix réduit.', es: 'Mapas + GIS + aéreo con descuento.', ru: 'Карты + GIS + аэро со скидкой.', ar: 'خرائط + GIS + جوية بخصم.' },
+  "bundles.title": { he: 'חבילות מוצרים מוגדרות-מראש', en: 'Pre-defined Product Packages', fr: 'Packs Produits Prédéfinis', es: 'Paquetes de Productos Predefinidos', ru: 'Готовые пакеты продуктов', ar: 'حزم منتجات معرّفة مسبقًا' },
+  "bundles.subtitle": { he: 'סטים קבועים של מוצרי קטלוג מפ"י — מפות, נתוני GIS, אורתופוטו ותעודות — במחיר חבילה משתלם. ללא סימון אזור; ההזמנה בהצעת מחיר.', en: 'Fixed sets of מפ"י catalog products — maps, GIS data, orthophoto & certificates — at a package price. No area marking; ordered by quote.', fr: 'Ensembles fixes de produits à prix pack.', es: 'Conjuntos fijos de productos a precio de paquete.', ru: 'Фиксированные наборы продуктов по цене пакета.', ar: 'مجموعات ثابتة من المنتجات بسعر الحزمة.' },
   "bundles.savings": { he: 'חיסכון', en: 'Savings', fr: 'Économie', es: 'Ahorro', ru: 'Экономия', ar: 'التوفير' },
   "bundles.included": { he: 'כלול בחבילה', en: 'Included', fr: 'Inclus', es: 'Incluido', ru: 'Включено', ar: 'مشمول' },
   "bundles.regularPrice": { he: 'מחיר רגיל', en: 'Regular price', fr: 'Prix normal', es: 'Precio normal', ru: 'Обычная цена', ar: 'السعر الاعتيادي' },
   "bundles.bundlePrice": { he: 'מחיר חבילה', en: 'Bundle price', fr: 'Prix pack', es: 'Precio paquete', ru: 'Цена пакета', ar: 'سعر الحزمة' },
   "bundles.buyBundle": { he: 'רכוש חבילה', en: 'Buy bundle', fr: 'Acheter le pack', es: 'Comprar paquete', ru: 'Купить пакет', ar: 'اشترِ الحزمة' },
+  "bundles.viewBundle": { he: 'לפרטי החבילה', en: 'View package', fr: 'Voir le pack', es: 'Ver paquete', ru: 'Открыть пакет', ar: 'تفاصيل الحزمة' },
   "bundles.featured": { he: 'מומלץ', en: 'Featured', fr: 'En vedette', es: 'Destacado', ru: 'Рекомендуем', ar: 'مميز' },
   "bundles.allBundles": { he: 'כל החבילות', en: 'All bundles', fr: 'Tous', es: 'Todos', ru: 'Все', ar: 'الكل' },
-  "bundles.filterBy": { he: 'סנן לפי אזור', en: 'Filter by region', fr: 'Par région', es: 'Por región', ru: 'По региону', ar: 'حسب المنطقة' },
-  "bundle.galilee.name": { he: 'חבילת גליל', en: 'Galilee Bundle', fr: 'Pack Galilée', es: 'Paquete Galilea', ru: 'Пакет Галилея', ar: 'حزمة الجليل' },
-  "bundle.galilee.desc": { he: 'כל הצפון — 4 שירותי מיפוי גיאוגרפיים לכל הגליל, הגולן והכינרת. מפות, אורתופוטו וGIS.', en: 'Complete North — 4 mapping services for Galilee, Golan and Kinneret region.', fr: 'Nord complet.', es: 'Norte completo.', ru: 'Полный север.', ar: 'الشمال كاملاً.' },
-  "bundle.coastal.name": { he: 'מרכז וחוף הים', en: 'Central & Coastal Plain', fr: 'Plaine Côtière', es: 'Llanura Costera', ru: 'Прибрежная равнина', ar: 'السهل الساحلي' },
-  "bundle.coastal.desc": { he: 'תל אביב עד חדרה — 5 מוצרים כולל מפות עירוניות, נתוני חוף ותצלומי אוויר.', en: 'Tel Aviv to Hadera — 5 products incl. urban maps, coastal data & aerial imagery.', fr: 'Tel Aviv à Hadera.', es: 'Tel Aviv a Hadera.', ru: 'Тель-Авив – Хадера.', ar: 'تل أبيب إلى حديرة.' },
-  "bundle.jerusalem.name": { he: 'ירושלים והרים', en: 'Jerusalem & Judean Hills', fr: 'Jérusalem', es: 'Jerusalén', ru: 'Иерусалим и горы', ar: 'القدس والجبال' },
-  "bundle.jerusalem.desc": { he: 'ירושלים, בית שמש והרי יהודה — 6 מוצרים כולל מפות היסטוריות ומודלי גובה.', en: 'Jerusalem, Beit Shemesh & Judean Hills — 6 products incl. historic maps + DEM.', fr: 'Jérusalem & Judée.', es: 'Jerusalén y Judea.', ru: 'Иерусалим и Иудея.', ar: 'القدس ويهودا.' },
-  "bundle.negev.name": { he: 'נגב ודרום', en: 'Negev & Southern Desert', fr: 'Néguev', es: 'Néguev', ru: 'Негев', ar: 'النقب' },
-  "bundle.negev.desc": { he: 'מפות מפורטות של הנגב מבאר שבע עד אילת. אידיאלי לתיירות, חקלאות ובנייה.', en: 'Detailed Negev maps from Beer Sheva to Eilat. Ideal for tourism, agriculture, construction.', fr: 'Néguev complet.', es: 'Néguev completo.', ru: 'Полный Негев.', ar: 'النقب كاملاً.' },
-  "bundle.surveyor.name": { he: 'חבילת מודדים מקצועית', en: 'Professional Surveyor Bundle', fr: 'Pack Géomètre', es: 'Pack Topógrafo', ru: 'Пакет геодезиста', ar: 'حزمة المساح' },
-  "bundle.surveyor.desc": { he: 'CORS + מודד מבקר + נקודות גיאודטיות + תעודות גבולות — כל מה שמודד צריך במקום אחד.', en: 'CORS + surveyor inspector + geodetic points + boundary certs — all surveyor essentials.', fr: 'Essentiels géomètre.', es: 'Esenciales topógrafo.', ru: 'Всё для геодезиста.', ar: 'أساسيات المساح.' },
-  "bundle.developer.name": { he: 'חבילת מפתחי GIS', en: 'GIS Developer Suite', fr: 'Suite Développeur GIS', es: 'Suite Desarrollador GIS', ru: 'Набор GIS-разраб.', ar: 'حزمة مطور GIS' },
-  "bundle.developer.desc": { he: 'שכבות GIS + WMS/WFS + נקודות גיאודטיות — פורמטים סטנדרטיים לאינטגרציה בכל מערכת.', en: 'GIS layers + WMS/WFS + geodetic points — standards-ready for integration.', fr: 'Prêt à intégrer.', es: 'Listo para integrar.', ru: 'Готово к интеграции.', ar: 'جاهز للتكامل.' },
+  "bundles.filterBy": { he: 'סינון', en: 'Filter', fr: 'Filtrer', es: 'Filtrar', ru: 'Фильтр', ar: 'تصفية' },
 
   // API Hub
   "api.hub.title": { he: 'API Hub — מרכז הפיתוח שלך', en: 'API Hub — Your Developer Center', fr: 'API Hub', es: 'API Hub', ru: 'API-хаб', ar: 'مركز API' },

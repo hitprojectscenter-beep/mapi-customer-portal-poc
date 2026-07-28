@@ -461,6 +461,8 @@ export interface Order {
   serviceName: string;
   serviceNameKey: TKey;
   serviceIcon: string;
+  /** Catalog slug this order is for (so "view" opens the right product) */
+  slug: string;
   date: string;
   status: "completed" | "active" | "in-progress" | "cancelled";
   statusLabel: string;
@@ -468,6 +470,9 @@ export interface Order {
   amount: number;
   deliverable: string;
   deliverableKey: TKey;
+  /** Whether a downloadable product deliverable exists (false for
+      subscriptions / fee payments — those get an invoice only) */
+  hasDeliverable: boolean;
 }
 
 export const mockOrders: Order[] = [
@@ -476,65 +481,75 @@ export const mockOrders: Order[] = [
     serviceName: 'מפה בהתאמה אישית A2',
     serviceNameKey: "order.svc.customMapA2",
     serviceIcon: "map",
+    slug: "custom-map",
     date: "15/05/2026",
     status: "completed",
     statusLabel: "הושלמה",
     statusKey: "order.status.completed",
     amount: 284,
     deliverable: "PDF זמין להורדה",
-    deliverableKey: "order.deliverable.pdf"
+    deliverableKey: "order.deliverable.pdf",
+    hasDeliverable: true
   },
   {
     id: "ORD-2026-098",
     serviceName: "תחנות קבע - RTK",
     serviceNameKey: "order.svc.corsRtk",
     serviceIcon: "sensors",
+    slug: "cors-subscription",
     date: "01/05/2026",
     status: "active",
     statusLabel: "פעיל (מנוי)",
     statusKey: "order.status.active",
     amount: 300,
     deliverable: "הוראות חיבור",
-    deliverableKey: "order.deliverable.cors"
+    deliverableKey: "order.deliverable.cors",
+    hasDeliverable: false
   },
   {
     id: "ORD-2026-052",
     serviceName: "תצלום אוויר 1973",
     serviceNameKey: "order.svc.aerial1973",
     serviceIcon: "flight",
+    slug: "aerial-photos",
     date: "22/04/2026",
     status: "in-progress",
     statusLabel: "בטיפול",
     statusKey: "order.status.inProgress",
     amount: 350,
     deliverable: "ממתין",
-    deliverableKey: "order.deliverable.pending"
+    deliverableKey: "order.deliverable.pending",
+    hasDeliverable: true
   },
   {
     id: "ORD-2026-021",
     serviceName: 'מפת ים תיכון',
     serviceNameKey: "order.svc.medMap",
     serviceIcon: "sailing",
+    slug: "marine-maps",
     date: "10/04/2026",
     status: "completed",
     statusLabel: "הושלמה",
     statusKey: "order.status.completed",
     amount: 130,
     deliverable: "קבלת דואר",
-    deliverableKey: "order.deliverable.postal"
+    deliverableKey: "order.deliverable.postal",
+    hasDeliverable: true
   },
   {
     id: "ORD-2025-892",
     serviceName: "שכבת GIS - גושים וחלקות",
     serviceNameKey: "order.svc.gisParcels",
     serviceIcon: "dataset",
+    slug: "gis-layers",
     date: "28/12/2025",
     status: "completed",
     statusLabel: "הושלמה",
     statusKey: "order.status.completed",
     amount: 1450,
     deliverable: "GeoJSON",
-    deliverableKey: "order.deliverable.geojson"
+    deliverableKey: "order.deliverable.geojson",
+    hasDeliverable: true
   }
 ];
 

@@ -133,25 +133,40 @@ export default function DashboardPage() {
                   <tr key={order.id} className="border-b border-outline-variant/40 hover:bg-surface-container/50 transition-colors">
                     <td className="py-4 pr-2">
                       <div className="flex gap-1 justify-center">
+                        {/* View opens THIS specific order by its id */}
                         <Link
-                          href={`/order/${order.serviceIcon === "map" ? "custom-map" : "aerial-photos"}`}
+                          href={`/orders/${order.id}`}
                           className="shine w-8 h-8 rounded-lg hover:bg-secondary/10 hover:text-secondary text-on-surface-variant flex items-center justify-center"
                           aria-label={`${t("dash.viewOrderAria")} ${order.id}`}
-                          data-tooltip={`${t("dash.viewOrder")} ${order.id}`}
+                          data-tooltip={`צפייה בפרטי הזמנה ${order.id} — שירות, סכום, סטטוס והורדת חשבונית/תוצר.`}
                           data-tooltip-position="bottom"
                         >
-                          <span className="material-symbols-outlined text-[18px]">visibility</span>
+                          <span className="material-symbols-outlined text-[18px]" aria-hidden="true">visibility</span>
                         </Link>
+                        {/* Invoice download — always available */}
                         <button
                           type="button"
-                          onClick={() => openQuoteDoc({ title: "אישור הזמנה", serviceName: order.serviceName, orderId: order.id, total: order.amount, lines: [`סטטוס: ${order.statusLabel}`, `תאריך: ${order.date}`, `תוצר: ${order.deliverable}`], date: order.date })}
+                          onClick={() => openQuoteDoc({ title: "חשבונית / קבלה", serviceName: order.serviceName, orderId: order.id, total: order.amount, lines: [`סטטוס: ${order.statusLabel}`, `תאריך: ${order.date}`], date: order.date })}
                           className="shine w-8 h-8 rounded-lg hover:bg-secondary/10 hover:text-secondary text-on-surface-variant flex items-center justify-center"
-                          aria-label={`${t("dash.downloadOrderAria")} ${order.id}`}
-                          data-tooltip={`${t("dash.downloadOrder")} ${order.id}`}
+                          aria-label={`הורדת חשבונית ${order.id}`}
+                          data-tooltip={`הורדת חשבונית/קבלה כ-PDF עבור הזמנה ${order.id}.`}
                           data-tooltip-position="bottom"
                         >
-                          <span className="material-symbols-outlined text-[18px]">download</span>
+                          <span className="material-symbols-outlined text-[18px]" aria-hidden="true">receipt</span>
                         </button>
+                        {/* Deliverable download — only for products that have one, once completed */}
+                        {order.hasDeliverable && order.status === "completed" && (
+                          <button
+                            type="button"
+                            onClick={() => openQuoteDoc({ title: "תוצר ההזמנה", serviceName: order.serviceName, orderId: order.id, total: order.amount, lines: [`תוצר: ${order.deliverable}`], date: order.date })}
+                            className="shine w-8 h-8 rounded-lg hover:bg-secondary/10 hover:text-secondary text-on-surface-variant flex items-center justify-center"
+                            aria-label={`הורדת תוצר ${order.id}`}
+                            data-tooltip={`הורדת קובץ התוצר של הזמנה ${order.id}.`}
+                            data-tooltip-position="bottom"
+                          >
+                            <span className="material-symbols-outlined text-[18px]" aria-hidden="true">download</span>
+                          </button>
+                        )}
                       </div>
                     </td>
                     <td className="py-4 font-bold text-primary">₪{order.amount}</td>
