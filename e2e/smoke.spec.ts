@@ -45,7 +45,8 @@ test.describe("MAPI Portal — smoke", () => {
     await page.goto("/catalog/custom-map");
     await page.getByRole("link", { name: /התחל הזמנה/ }).first().click();
     await page.waitForURL(/\/order\/custom-map/);
-    await expect(page.getByText(/פרטי ההזמנה|שלב/).first()).toBeVisible();
+    // The order page H1 ("הזמנה: ...") is a stable, always-visible anchor
+    await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
   });
 
   test("plans page shows 3 tiers and comparison table", async ({ page }) => {

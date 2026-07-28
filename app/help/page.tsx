@@ -1,7 +1,9 @@
 "use client";
 
 import Link from "next/link";
+import { useState } from "react";
 import { useLanguage } from "@/lib/LanguageContext";
+import RequestFormModal from "@/components/RequestFormModal";
 import type { TKey } from "@/lib/i18n";
 
 interface FaqGroup {
@@ -52,6 +54,7 @@ const faqs: FaqGroup[] = [
 
 export default function HelpPage() {
   const { t } = useLanguage();
+  const [salesOpen, setSalesOpen] = useState(false);
   return (
     <div className="bg-surface min-h-screen">
       {/* Hero */}
@@ -99,16 +102,16 @@ export default function HelpPage() {
         </div>
       </div>
 
-      {/* Quick Contact */}
+      {/* Quick Contact — the call center (service) is distinct from a sales rep */}
       <section className="max-w-container-max-width mx-auto px-4 md:px-margin-desktop py-10">
-        <div className="grid sm:grid-cols-3 gap-4">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {[
             {
-              icon: "phone",
-              title: t("help.callCenter"),
-              desc: t("help.callNumber"),
+              icon: "support_agent",
+              title: "מוקד השירות",
+              desc: "*6274 · תמיכה טכנית ושירות",
               href: "tel:*6274",
-              tip: t("help.callTip")
+              tip: "מוקד השירות של מפי — לתמיכה טכנית, מעקב הזמנות ושאלות שירות כלליות. ימים א'-ה' 8:00-16:00. אינו ערוץ מכירות."
             },
             {
               icon: "mail",
@@ -118,14 +121,21 @@ export default function HelpPage() {
               tip: t("help.emailTip")
             },
             {
-              icon: "support_agent",
+              icon: "confirmation_number",
               title: t("help.openCase"),
               desc: t("help.openCaseSub"),
               href: "/cases/new",
               tip: t("help.caseTip")
+            },
+            {
+              icon: "badge",
+              title: "פנייה לנציג מכירות",
+              desc: "ייעוץ, הצעות מחיר ומסלולים",
+              action: () => setSalesOpen(true),
+              tip: "פנייה ישירה לנציג מכירות של מפי (בשונה ממוקד השירות): ייעוץ על מוצרים ומסלולים, הצעות מחיר והתאמה אישית. הפנייה נשלחת לאגף השיווק והמכירות."
             }
-          ].map((c, i) => {
-            const isExternal = c.href.startsWith("tel:") || c.href.startsWith("mailto:");
+          ].map((c: any, i) => {
+            const isExternal = !!c.href && (c.href.startsWith("tel:") || c.href.startsWith("mailto:"));
             const cls =
               "shine bg-white rounded-3xl p-6 border border-outline-variant/50 hover:shadow-xl transition-all hover:-translate-y-0.5 flex flex-row-reverse items-center gap-4";
             const inner = (
@@ -140,30 +150,29 @@ export default function HelpPage() {
                 <span className="text-sm font-bold text-secondary">←</span>
               </>
             );
+            if (c.action) {
+              return (
+                <button key={i} type="button" onClick={c.action} className={`${cls} text-right`} data-tooltip={c.tip} data-tooltip-position="bottom">
+                  {inner}
+                </button>
+              );
+            }
             return isExternal ? (
-              <a
-                key={i}
-                href={c.href}
-                className={cls}
-                data-tooltip={c.tip}
-                data-tooltip-position="bottom"
-              >
-                {inner}
-              </a>
+              <a key={i} href={c.href} className={cls} data-tooltip={c.tip} data-tooltip-position="bottom">{inner}</a>
             ) : (
-              <Link
-                key={i}
-                href={c.href}
-                className={cls}
-                data-tooltip={c.tip}
-                data-tooltip-position="bottom"
-              >
-                {inner}
-              </Link>
+              <Link key={i} href={c.href} className={cls} data-tooltip={c.tip} data-tooltip-position="bottom">{inner}</Link>
             );
           })}
         </div>
       </section>
+
+      <RequestFormModal
+        open={salesOpen}
+        onClose={() => setSalesOpen(false)}
+        subject="פנייה לנציג מכירות"
+        intro="ייעוץ על מוצרים ומסלולים, הצעות מחיר והתאמה אישית. נציג מאגף השיווק והמכירות יחזור אליכם."
+        familyLabel="פנייה לנציג מכירות"
+      />
 
       {/* FAQ Categories */}
       <section className="max-w-container-max-width mx-auto px-4 md:px-margin-desktop pb-16">

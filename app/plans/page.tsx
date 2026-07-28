@@ -1,8 +1,10 @@
 "use client";
 
 import Link from "next/link";
+import { useState } from "react";
 import { useLanguage } from "@/lib/LanguageContext";
 import { plans, comparisonRows } from "@/lib/plans";
+import RequestFormModal from "@/components/RequestFormModal";
 import type { TKey } from "@/lib/i18n";
 
 const COLOR_BG = {
@@ -32,6 +34,7 @@ const FAQ_KEYS: Array<{ q: TKey; a: TKey }> = [
 
 export default function PlansPage() {
   const { t } = useLanguage();
+  const [requestPlan, setRequestPlan] = useState<string | null>(null);
   return (
     <div className="bg-surface min-h-screen">
       {/* Hero */}
@@ -103,12 +106,14 @@ export default function PlansPage() {
                 ))}
               </ul>
 
-              <Link
-                href={plan.code === "PUBLIC" ? "/cases/new?type=public-sector" : plan.code === "PREMIUM" ? "/dashboard?trial=premium" : "/login?plan=open"}
+              <button
+                type="button"
+                onClick={() => setRequestPlan(t(plan.nameKey))}
                 className={`shine shine-glow block w-full text-center py-3.5 rounded-full font-semibold transition-colors ${COLOR_CTA[plan.color]}`}
+                data-tooltip="פתיחת טופס בקשה למסלול זה. הפרטים יישלחו לאגף השיווק והמכירות של מפ״י ונציג יחזור אליכם."
               >
                 {t(plan.ctaKey)}
-              </Link>
+              </button>
               {plan.code === "PREMIUM" && (
                 <p className="text-[11px] text-white/70 text-center mt-3 font-light">
                   {t("svc.trial.terms")}
@@ -192,15 +197,25 @@ export default function PlansPage() {
           <p className="text-white/80 mb-6 max-w-xl mx-auto font-light">
             {t("plans.subtitle")}
           </p>
-          <Link
-            href="/cases/new"
+          <button
+            type="button"
+            onClick={() => setRequestPlan("פנייה לנציג מכירות — מסלולים")}
             className="shine shine-glow inline-flex items-center gap-2 bg-white text-primary px-8 py-4 rounded-full font-semibold hover:bg-secondary-container transition-colors"
+            data-tooltip="פנייה ישירה לנציג מכירות של מפ״י (בשונה ממוקד השירות). הפנייה נשלחת לאגף השיווק והמכירות."
           >
-            <span className="material-symbols-outlined">support_agent</span>
+            <span className="material-symbols-outlined" aria-hidden="true">badge</span>
             {t("plans.contactSales")}
-          </Link>
+          </button>
         </div>
       </section>
+
+      <RequestFormModal
+        open={requestPlan !== null}
+        onClose={() => setRequestPlan(null)}
+        subject={requestPlan || ""}
+        intro="מלאו את פרטיכם ונציג מאגף השיווק והמכירות יחזור אליכם עם פרטי המסלול והתאמה אישית."
+        familyLabel="בקשת מסלול"
+      />
     </div>
   );
 }
