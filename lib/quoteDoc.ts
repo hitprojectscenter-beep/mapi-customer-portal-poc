@@ -39,7 +39,7 @@ function project(lat: number, lng: number, z: number) {
 function tiledAreaMap(geo: { latlngs: { lat: number; lng: number }[]; basemap: "street" | "ortho" }): string {
   const pts = geo.latlngs;
   if (!pts || pts.length < 3) return "";
-  const W = 660, H = 520; // ~17.5cm × 13.8cm print box
+  const W = 540, H = 300; // compact so the whole quote fits one A4 page
   const lats = pts.map(p => p.lat), lngs = pts.map(p => p.lng);
   let minLat = Math.min(...lats), maxLat = Math.max(...lats), minLng = Math.min(...lngs), maxLng = Math.max(...lngs);
   // pad the bbox by 25%
@@ -130,27 +130,28 @@ export function openQuoteDoc(d: QuoteDocData): void {
   const html = `<!doctype html><html lang="he" dir="rtl"><head><meta charset="utf-8">
 <title>${esc(d.title)} — ${esc(d.serviceName)}</title>
 <style>
-  @page { size: A4; margin: 18mm; }
+  @page { size: A4; margin: 12mm; }
   * { box-sizing: border-box; }
-  body { font-family: "Heebo","Assistant",Arial,sans-serif; color: #1b2b45; margin: 0; padding: 28px; }
-  .hd { display:flex; justify-content:space-between; align-items:center; border-bottom: 2px solid #b4924e; padding-bottom: 16px; margin-bottom: 22px; }
-  .brandbox { display:flex; align-items:center; gap:14px; }
-  .brandbox img { width:64px; height:64px; object-fit:contain; }
-  .brand { font-size: 24px; font-weight: 800; color:#001d35; }
-  .brand small { display:block; font-size: 12px; color:#8f7439; font-weight:600; }
-  .meta { text-align:left; font-size: 12px; color:#42474f; }
-  .area { margin-top: 30px; page-break-inside: avoid; text-align:center; }
-  .area-ttl { font-size: 15px; font-weight:700; color:#463f7a; margin-bottom: 10px; }
-  .area svg { border-radius: 8px; box-shadow: 0 4px 14px -6px rgba(27,43,69,0.25); }
-  .area-note { font-size: 11px; color:#6b7280; margin-top: 10px; max-width: 18cm; margin-inline:auto; line-height:1.6; }
-  h1 { font-size: 20px; color:#463f7a; margin: 0 0 4px; }
-  .svc { font-size: 15px; color:#0b2545; margin-bottom: 18px; }
-  table { width:100%; border-collapse: collapse; margin: 8px 0 20px; }
-  td { padding: 9px 12px; border-bottom: 1px solid #e7e3f6; font-size: 13px; }
-  .total { display:flex; justify-content:space-between; align-items:baseline; background:#faf6ec; border:1px solid rgba(180,146,78,0.5); border-radius: 10px; padding: 14px 18px; margin-top: 8px; }
-  .total b { font-size: 24px; color:#001d35; }
-  .note { font-size: 11px; color:#6b7280; margin-top: 22px; line-height:1.6; }
-  .stamp { margin-top: 28px; border:1px dashed rgba(180,146,78,0.6); border-radius:10px; padding:12px; text-align:center; font-size:12px; color:#8f7439; }
+  html, body { height: auto; }
+  body { font-family: "Heebo","Assistant",Arial,sans-serif; color: #1b2b45; margin: 0; padding: 14px; }
+  .hd { display:flex; justify-content:space-between; align-items:center; border-bottom: 2px solid #b4924e; padding-bottom: 10px; margin-bottom: 12px; }
+  .brandbox { display:flex; align-items:center; gap:12px; }
+  .brandbox img { width:52px; height:52px; object-fit:contain; }
+  .brand { font-size: 21px; font-weight: 800; color:#001d35; }
+  .brand small { display:block; font-size: 11px; color:#8f7439; font-weight:600; }
+  .meta { text-align:left; font-size: 11px; color:#42474f; }
+  .area { margin-top: 14px; page-break-inside: avoid; text-align:center; }
+  .area-ttl { font-size: 13px; font-weight:700; color:#463f7a; margin-bottom: 6px; }
+  .area svg, .area .mapbox { border-radius: 8px; }
+  .area-note { font-size: 10px; color:#6b7280; margin-top: 6px; max-width: 14cm; margin-inline:auto; line-height:1.5; }
+  h1 { font-size: 18px; color:#463f7a; margin: 0 0 2px; }
+  .svc { font-size: 14px; color:#0b2545; margin-bottom: 10px; }
+  table { width:100%; border-collapse: collapse; margin: 6px 0 10px; }
+  td { padding: 6px 12px; border-bottom: 1px solid #e7e3f6; font-size: 12.5px; }
+  .total { display:flex; justify-content:space-between; align-items:baseline; background:#faf6ec; border:1px solid rgba(180,146,78,0.5); border-radius: 10px; padding: 10px 16px; margin-top: 6px; }
+  .total b { font-size: 22px; color:#001d35; }
+  .note { font-size: 10px; color:#6b7280; margin-top: 12px; line-height:1.5; }
+  .stamp { margin-top: 10px; border:1px dashed rgba(180,146,78,0.6); border-radius:10px; padding:8px; text-align:center; font-size:11px; color:#8f7439; }
   @media print { .noprint { display:none; } }
   .btn { background:#0b2545; color:#fff; border:none; border-radius:999px; padding:12px 26px; font-size:14px; font-weight:700; cursor:pointer; }
 </style></head><body>

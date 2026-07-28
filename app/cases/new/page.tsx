@@ -1,8 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useLanguage } from "@/lib/LanguageContext";
+
+const MAX_BYTES = 25 * 1024 * 1024;
 
 export default function NewCasePage() {
   const { t } = useLanguage();
@@ -11,9 +13,49 @@ export default function NewCasePage() {
   const [type, setType] = useState("");
   const [subject, setSubject] = useState("");
   const [description, setDescription] = useState("");
+  // Requester personal details (return address)
+  const [fullName, setFullName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [files, setFiles] = useState<File[]>([]);
+  const [fileErr, setFileErr] = useState("");
+  const [err, setErr] = useState("");
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const onSubmit = (e: React.FormEvent) => {
+  const addFiles = (list: FileList | null) => {
+    if (!list) return;
+    setFileErr("");
+    const incoming = Array.from(list);
+    const combined = [...files, ...incoming];
+    const total = combined.reduce((s, f) => s + f.size, 0);
+    if (total > MAX_BYTES) { setFileErr("סך הקבצים חורג מ-25MB. הסירו קובץ ונסו שוב."); return; }
+    setFiles(combined);
+  };
+  const removeFile = (i: number) => setFiles(files.filter((_, idx) => idx !== i));
+
+  const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!fullName.trim() || (!email.trim() && !phone.trim())) {
+      setErr("יש למלא שם מלא וכתובת מייל או טלפון לחזרה.");
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      return;
+    }
+    setErr("");
+    // Route the inquiry to the leads pipeline with the requester's contact
+    const [firstName, ...rest] = fullName.trim().split(" ");
+    try {
+      await fetch("/api/leads", {
+        method: "POST", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          id: `case-${Date.now().toString(36)}`,
+          firstName, lastName: rest.join(" ") || "-", email: email.trim(), phone: phone.trim(),
+          familyLabel: "פניית שירות", sourceLabel: "טופס פנייה",
+          interest: `[${type || "כללי"}] ${subject} — ${description}${files.length ? ` (${files.length} קבצים מצורפים)` : ""}`,
+          assignee: type === "professional" || type === "order" ? "אגף שיווק ומכירות" : "מוקד השירות",
+          queue: "שירות"
+        })
+      });
+    } catch { /* offline/demo — still confirm to the user */ }
     setSubmitted(true);
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
@@ -131,7 +173,37 @@ export default function NewCasePage() {
           className="lg:col-span-2 bg-white rounded-3xl p-6 md:p-8 border border-outline-variant/50"
         >
           <h2 className="text-xl font-extrabold text-primary mb-6 text-center">{t("case.details")}</h2>
+          {err && (
+            <p className="text-sm text-error-red bg-error-red/5 border border-error-red/20 rounded-xl px-4 py-2.5 mb-4 text-center" role="alert">{err}</p>
+          )}
           <div className="space-y-5">
+            {/* Requester personal details — so we can reply */}
+            <div className="bg-gold-tint/40 border border-gold/25 rounded-2xl p-4">
+              <p className="lux-label text-center mb-3">פרטי הפונה (כתובת לחזרה)</p>
+              <div className="space-y-3">
+                <div>
+                  <label htmlFor="req-name" className="block text-xs font-bold text-primary mb-1.5">שם מלא <span className="text-error-red">*</span></label>
+                  <input id="req-name" type="text" required value={fullName} onChange={e => setFullName(e.target.value)} placeholder="שם פרטי ומשפחה"
+                    className="w-full bg-white border border-outline-variant rounded-xl px-4 py-2.5 focus:ring-2 focus:ring-gold/50 focus:outline-none"
+                    data-tooltip="שמכם המלא, כדי שנוכל לפנות אליכם בשם." />
+                </div>
+                <div className="grid sm:grid-cols-2 gap-3">
+                  <div>
+                    <label htmlFor="req-email" className="block text-xs font-bold text-primary mb-1.5">דוא"ל לחזרה</label>
+                    <input id="req-email" type="email" value={email} onChange={e => setEmail(e.target.value)} dir="ltr" placeholder="name@example.com"
+                      className="w-full bg-white border border-outline-variant rounded-xl px-4 py-2.5 focus:ring-2 focus:ring-gold/50 focus:outline-none"
+                      data-tooltip="כתובת הדואל שאליה נשיב לפנייתכם (דואל או טלפון — לפחות אחד)." />
+                  </div>
+                  <div>
+                    <label htmlFor="req-phone" className="block text-xs font-bold text-primary mb-1.5">טלפון</label>
+                    <input id="req-phone" type="tel" value={phone} onChange={e => setPhone(e.target.value)} dir="ltr" placeholder="050-0000000"
+                      className="w-full bg-white border border-outline-variant rounded-xl px-4 py-2.5 focus:ring-2 focus:ring-gold/50 focus:outline-none"
+                      data-tooltip="מספר טלפון ליצירת קשר (דואל או טלפון — לפחות אחד)." />
+                  </div>
+                </div>
+              </div>
+            </div>
+
             <div>
               <label htmlFor="type" className="block text-sm font-bold text-primary mb-2 text-center">
                 {t("case.type")} <span className="text-error-red">*</span>
@@ -201,18 +273,48 @@ export default function NewCasePage() {
               <label className="block text-sm font-bold text-primary mb-2 text-center">
                 {t("case.attachLabel")}
               </label>
-              <div className="border-2 border-dashed border-outline-variant rounded-xl p-6 text-center hover:border-secondary transition-colors">
-                <span className="material-symbols-outlined text-[40px] text-on-surface-variant mb-2">
-                  upload_file
-                </span>
+              <input
+                ref={fileInputRef}
+                type="file"
+                multiple
+                className="sr-only"
+                onChange={e => { addFiles(e.target.files); e.target.value = ""; }}
+                aria-label={t("case.chooseFiles")}
+              />
+              <div
+                onClick={() => fileInputRef.current?.click()}
+                onDragOver={e => { e.preventDefault(); }}
+                onDrop={e => { e.preventDefault(); addFiles(e.dataTransfer.files); }}
+                className="border-2 border-dashed border-outline-variant rounded-xl p-6 text-center hover:border-gold cursor-pointer transition-colors"
+                role="button"
+                tabIndex={0}
+                onKeyDown={e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); fileInputRef.current?.click(); } }}
+                data-tooltip="גרירת קבצים לכאן או לחיצה לבחירה מהמחשב. ניתן לצרף מספר קבצים (תמונות, PDF, מסמכים) עד 25MB בסך הכל."
+              >
+                <span className="material-symbols-outlined text-[40px] text-gold-dark mb-2" aria-hidden="true">upload_file</span>
                 <p className="text-sm text-on-surface-variant">
                   {t("case.dropFiles")}{" "}
-                  <button type="button" className="text-secondary font-bold underline">
-                    {t("case.chooseFiles")}
-                  </button>
+                  <span className="text-gold-dark font-bold underline">{t("case.chooseFiles")}</span>
                 </p>
                 <p className="text-xs text-on-surface-variant mt-1">{t("case.attachMax")}</p>
               </div>
+              {fileErr && <p className="text-xs text-error-red text-center mt-2">{fileErr}</p>}
+              {files.length > 0 && (
+                <ul className="mt-3 space-y-2" aria-label="קבצים מצורפים">
+                  {files.map((f, i) => (
+                    <li key={i} className="flex items-center justify-between gap-2 bg-surface-container rounded-xl px-3 py-2">
+                      <span className="flex items-center gap-2 min-w-0">
+                        <span className="material-symbols-outlined text-[18px] text-gold-dark flex-shrink-0" aria-hidden="true">description</span>
+                        <span className="text-sm text-primary truncate">{f.name}</span>
+                        <span className="text-[11px] text-on-surface-variant flex-shrink-0">({(f.size / 1024 / 1024).toFixed(2)}MB)</span>
+                      </span>
+                      <button type="button" onClick={() => removeFile(i)} className="shine w-7 h-7 rounded-full hover:bg-error-red/10 hover:text-error-red text-on-surface-variant flex items-center justify-center flex-shrink-0" aria-label={`הסרת ${f.name}`} data-tooltip="הסרת הקובץ מהפנייה">
+                        <span className="material-symbols-outlined text-[16px]" aria-hidden="true">close</span>
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              )}
             </div>
 
             <fieldset>
