@@ -3,6 +3,7 @@ import {
   sheetsConfigured, chatConfigured, sheetUrl, appendOrderRow, chatNotify
 } from "@/lib/googleServer";
 import { dbConfigured, insertOrder } from "@/lib/db";
+import { emailConfigured, sendEmail, salesEmail, brandedEmail, esc } from "@/lib/emailServer";
 
 export const runtime = "nodejs";
 
@@ -31,6 +32,7 @@ export async function GET() {
     postgres: dbConfigured(),
     sheets: sheetsConfigured(),
     chat: chatConfigured(),
+    email: emailConfigured(),
     sheetUrl: sheetsConfigured() ? sheetUrl() : null
   });
 }
@@ -59,7 +61,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ ok: false, error: "missing_service" }, { status: 422 });
   }
 
-  if (!dbConfigured() && !sheetsConfigured() && !chatConfigured()) {
+  if (!dbConfigured() && !sheetsConfigured() && !chatConfigured() && !emailConfigured()) {
     return NextResponse.json({ ok: true, stored: "none" });
   }
 
@@ -120,6 +122,74 @@ export async function POST(req: NextRequest) {
     }
   }
 
+  // Email — order confirmation to the customer + a notification to sales.
+  if (emailConfigured()) {
+    const orderId = s(body.orderId, 40);
+    const customerEmail = s(body.email, 120);
+    const customerName = s(body.customerName, 120);
+    const delivery = s(body.delivery, 60);
+    const routeDetails = s(body.routeDetails, 500);
+
+    const detailRows = ([
+      ["מספר הזמנה", orderId || "—"],
+      ["שירות", serviceName],
+      ['סה"כ לתשלום', `₪${total.toLocaleString()} (כולל מע"מ)`],
+      delivery ? ["אספקה", delivery] : null,
+      routeDetails ? ["פרטים", routeDetails] : null
+    ].filter(Boolean) as [string, string][])
+      .map(([k, v]) => `<tr><td style="padding:6px 0;color:#5b6b7b;width:38%;">${esc(k)}</td><td style="padding:6px 0;font-weight:bold;">${esc(v)}</td></tr>`)
+      .join("");
+
+    if (customerEmail) {
+      try {
+        await sendEmail({
+          to: customerEmail,
+          replyTo: salesEmail(),
+          subject: `אישור הזמנה${orderId ? ` ${orderId}` : ""} — ${serviceName} · מפ"י`,
+          text: `שלום ${customerName || ""}, הזמנתך ל${serviceName} התקבלה. סה"כ ₪${total.toLocaleString()}.`,
+          html: brandedEmail({
+            title: "אישור קבלת הזמנה",
+            preheader: `הזמנתך ל${serviceName} התקבלה`,
+            bodyHtml:
+              `<p>שלום ${esc(customerName || "")},</p>` +
+              `<p>תודה על הזמנתך מהמרכז למיפוי ישראל. ההזמנה התקבלה ונמצאת בטיפול.</p>` +
+              `<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:14px 0;border-top:1px solid #eee;border-bottom:1px solid #eee;">${detailRows}</table>` +
+              `<p>נעדכן אותך עם התקדמות ההפקה והמסירה. ניתן לעקוב גם באזור האישי בפורטל.</p>`
+          })
+        });
+        stored.push("email:customer");
+      } catch (e) {
+        errors.push(`email(customer): ${(e as Error).message}`);
+      }
+    }
+
+    try {
+      await sendEmail({
+        to: salesEmail(),
+        replyTo: customerEmail || undefined,
+        subject: `הזמנה חדשה${orderId ? ` ${orderId}` : ""} — ${serviceName} · ₪${total.toLocaleString()}`,
+        text: `הזמנה חדשה: ${serviceName}, ₪${total.toLocaleString()}, ${customerName} ${customerEmail || ""}.`,
+        html: brandedEmail({
+          title: "הזמנה חדשה התקבלה בפורטל",
+          bodyHtml:
+            `<table role="presentation" width="100%" cellpadding="0" cellspacing="0">${detailRows}` +
+            `<tr><td style="padding:6px 0;color:#5b6b7b;width:38%;">לקוח</td><td style="padding:6px 0;">${esc(customerName || "—")}</td></tr>` +
+            `<tr><td style="padding:6px 0;color:#5b6b7b;">אימייל</td><td style="padding:6px 0;">${esc(customerEmail || "—")}</td></tr>` +
+            `<tr><td style="padding:6px 0;color:#5b6b7b;">טלפון</td><td style="padding:6px 0;">${esc(s(body.phone, 30) || "—")}</td></tr>` +
+            `</table>` +
+            (sheetsConfigured() ? `<p style="margin-top:14px;"><a href="${sheetUrl()}" style="color:#0B61A1;">פתיחת גיליון ההזמנות ←</a></p>` : "")
+        })
+      });
+      stored.push("email:sales");
+    } catch (e) {
+      errors.push(`email(sales): ${(e as Error).message}`);
+    }
+  }
+
   if (errors.length > 0) console.warn("[orders intake]", errors.join(" | "));
-  return NextResponse.json({ ok: errors.length === 0 || stored.length > 0, stored: stored.join("+") || "none" });
+  return NextResponse.json({
+    ok: errors.length === 0 || stored.length > 0,
+    stored: stored.join("+") || "none",
+    emailed: stored.includes("email:customer")
+  });
 }
