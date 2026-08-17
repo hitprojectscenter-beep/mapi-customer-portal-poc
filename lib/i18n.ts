@@ -472,8 +472,8 @@ const dict: Record<TranslationKeys, Record<Lang, string>> = {
 
   // Hero
   "hero.badge": { he: 'הפורטל הלאומי הרשמי למידע גיאוגרפי', en: "Israel's Official Geographic Portal", fr: "Portail Géographique Officiel", es: "Portal Geográfico Oficial", ru: "Официальный геопортал Израиля", ar: "البوابة الجغرافية الرسمية" },
-  "hero.titleLine1": { he: 'העתיד של המידע', en: "The future of geographic", fr: "L'avenir des données", es: "El futuro de la información", ru: "Будущее географических", ar: "مستقبل المعلومات" },
-  "hero.titleLine2": { he: 'הגיאוגרפי בידיים שלך', en: "data in your hands", fr: "géographiques entre vos mains", es: "geográfica en tus manos", ru: "данных в ваших руках", ar: "الجغرافية بين يديك" },
+  "hero.titleLine1": { he: 'פורטל למידע', en: "The National Portal for", fr: "Le portail national des", es: "El portal nacional de", ru: "Национальный портал", ar: "البوابة الوطنية" },
+  "hero.titleLine2": { he: 'הגאוגרפי הלאומי', en: "Geographic Information", fr: "informations géographiques", es: "información geográfica", ru: "географических данных", ar: "للمعلومات الجغرافية" },
   "hero.searchPlaceholder": { he: 'חיפוש מפה, תצלום, קדסטר...', en: "Search maps, photos, cadastre...", fr: "Recherche cartes, photos...", es: "Buscar mapas, fotos...", ru: "Поиск карт, фото...", ar: "ابحث عن خرائط، صور..." },
   "hero.searchBtn": { he: 'חיפוש', en: "Search", fr: "Rechercher", es: "Buscar", ru: "Поиск", ar: "بحث" },
   "hero.startOrder": { he: 'התחל הזמנה', en: "Start Order", fr: "Commander", es: "Empezar", ru: "Заказать", ar: "ابدأ الطلب" },

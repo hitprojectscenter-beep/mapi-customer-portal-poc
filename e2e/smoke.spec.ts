@@ -11,7 +11,7 @@ test.describe("MAPI Portal — smoke", () => {
     const logo = page.locator('header img[src*="mapi-logo"]').first();
     await expect(logo).toBeVisible();
     // Hero headline
-    await expect(page.getByText("העתיד של המידע")).toBeVisible();
+    await expect(page.getByText("פורטל למידע")).toBeVisible();
   });
 
   test("mouse wheel scrolls the page", async ({ page }) => {
