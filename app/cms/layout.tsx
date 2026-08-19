@@ -7,6 +7,7 @@ import { cmsVerifySession, cmsLogout, type CmsSession } from "@/lib/cms";
 
 const NAV = [
   { href: "/cms", icon: "dashboard", label: "לוח בקרה" },
+  { href: "/cms/products", icon: "inventory_2", label: "מוצרים ושירותים" },
   { href: "/cms/news", icon: "newspaper", label: "ניהול חדשות" },
   { href: "/cms/campaigns", icon: "campaign", label: "קמפיינים" },
   { href: "/cms/users", icon: "group", label: "ניהול משתמשים" },

@@ -4,9 +4,10 @@ import Link from "next/link";
 import { notFound, useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import {
-  services, getServiceName, getServiceShortDescription,
+  getServiceName, getServiceShortDescription,
   getServiceCategoryLabel, getServiceDeliveryDays
 } from "@/lib/data";
+import { useProducts } from "@/lib/useProducts";
 import GovMapEmbed from "@/components/GovMapEmbed";
 import ReviewsSection from "@/components/ReviewsSection";
 import RelatedProducts from "@/components/RelatedProducts";
@@ -28,7 +29,9 @@ export default function ServiceDetailPage() {
   const { t, lang } = useLanguage();
   const params = useParams<{ slug: string }>();
   const slug = params?.slug;
-  const service = services.find((s) => s.slug === slug);
+  // Catalog from the DB (via /api/products) with the code list as fallback.
+  const { products, loading } = useProducts();
+  const service = slug ? products.find((s) => s.slug === slug) : undefined;
 
   const cart = useCart();
   const wish = useWishlist();
@@ -55,6 +58,17 @@ export default function ServiceDetailPage() {
   }, [service]);
 
   if (!service) {
+    // Still loading from the DB — don't 404 a product that isn't in the seed yet.
+    if (loading) {
+      return (
+        <div className="bg-surface min-h-[70vh] flex items-center justify-center p-6">
+          <div className="text-center text-on-surface-variant">
+            <span className="material-symbols-outlined text-[40px] animate-spin" aria-hidden="true">progress_activity</span>
+            <p className="mt-2 text-sm">טוען…</p>
+          </div>
+        </div>
+      );
+    }
     notFound();
   }
 

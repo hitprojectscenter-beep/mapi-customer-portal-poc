@@ -4,8 +4,9 @@ import Link from "next/link";
 import { Suspense, useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import ServiceCard from "@/components/ServiceCard";
+import { useProducts } from "@/lib/useProducts";
 import {
-  services, categories, customerTypeLabels,
+  categories, customerTypeLabels,
   getCategoryLabel, getCustomerTypeLabel,
   getServiceName, getServiceShortDescription, getServiceCategoryLabel,
   type Category, type Service
@@ -44,6 +45,10 @@ function CatalogContent() {
   const [sortBy, setSortBy] = useState<SortKey>("relevance");
   const [view, setView] = useState<ViewMode>("grid");
 
+  // Catalog comes from the DB (via /api/products), with the code list as the
+  // instant fallback. Admins managing products see changes here immediately.
+  const { products } = useProducts();
+
   // Set page title
   useEffect(() => {
     document.title = `${t("nav.catalog")} · מפ"י`;
@@ -51,8 +56,8 @@ function CatalogContent() {
 
   // Enrich services with ratings
   const enriched = useMemo(() => {
-    return services.map(s => ({ ...s, rating: getRatingSummary(s.slug) }));
-  }, []);
+    return products.map(s => ({ ...s, rating: getRatingSummary(s.slug) }));
+  }, [products]);
 
   const activeFiltersCount =
     selectedCategories.size +
@@ -156,7 +161,7 @@ function CatalogContent() {
                 {t("catalog.title")}
               </h1>
               <p className="text-sm text-on-surface-variant mt-1 font-light">
-                {t("plp.showing")} <span className="font-semibold text-primary">{filtered.length}</span> {t("plp.of")} {services.length} {t("plp.results")}
+                {t("plp.showing")} <span className="font-semibold text-primary">{filtered.length}</span> {t("plp.of")} {products.length} {t("plp.results")}
               </p>
             </div>
             <div className="flex flex-wrap gap-2">

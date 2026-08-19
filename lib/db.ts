@@ -9,6 +9,7 @@
 // migration; production upgrades to a migration tool (Prisma/Drizzle).
 
 import { Pool } from "pg";
+import type { Service } from "./data";
 
 function connectionString(): string {
   return (process.env.DATABASE_URL || process.env.POSTGRES_URL || "").trim();
@@ -93,10 +94,38 @@ async function ensureSchema(): Promise<void> {
           email       TEXT,
           created_at  TIMESTAMPTZ NOT NULL DEFAULT now()
         );
+        CREATE TABLE IF NOT EXISTS products (
+          id            BIGSERIAL PRIMARY KEY,
+          slug          TEXT UNIQUE NOT NULL,
+          name          TEXT NOT NULL,
+          category      TEXT NOT NULL,
+          category_label TEXT,
+          short_description TEXT,
+          description   TEXT,
+          icon          TEXT DEFAULT 'map',
+          price_from    NUMERIC DEFAULT 0,
+          price_to      NUMERIC,
+          price_unit    TEXT DEFAULT '₪',
+          delivery_days TEXT,
+          customer_types JSONB DEFAULT '[]',
+          highlight     BOOLEAN DEFAULT false,
+          in_scope      BOOLEAN DEFAULT true,
+          external_href TEXT,
+          external_url  TEXT,
+          gov_form_url  TEXT,
+          features      JSONB DEFAULT '[]',
+          price_table   JSONB DEFAULT '[]',
+          faq           JSONB DEFAULT '[]',
+          active        BOOLEAN NOT NULL DEFAULT true,
+          sort_order    INTEGER NOT NULL DEFAULT 0,
+          created_at    TIMESTAMPTZ NOT NULL DEFAULT now(),
+          updated_at    TIMESTAMPTZ NOT NULL DEFAULT now()
+        );
         CREATE INDEX IF NOT EXISTS idx_leads_created ON leads (created_at DESC);
         CREATE INDEX IF NOT EXISTS idx_orders_created ON orders (created_at DESC);
         CREATE INDEX IF NOT EXISTS idx_payments_tx ON payments (tx_id);
         CREATE INDEX IF NOT EXISTS idx_feedback_created ON feedback (created_at DESC);
+        CREATE INDEX IF NOT EXISTS idx_products_sort ON products (active, sort_order, id);
       `);
     })().catch(err => {
       schemaReady = null; // allow retry on next call
@@ -201,3 +230,120 @@ export async function listRecent(table: "leads" | "orders", limit = 50): Promise
   );
   return rows;
 }
+
+// ---------------------------------------------------------------------------
+// Products / services catalog — the admin-managed product database.
+// The DB is the source of truth for the catalog; lib/data.ts `services` is the
+// seed (first-run population) and the client-side offline fallback.
+// ---------------------------------------------------------------------------
+
+/* eslint-disable */
+function rowToProduct(r: any): Service {
+  return {
+    slug: r.slug,
+    name: r.name,
+    category: r.category,
+    categoryLabel: r.category_label || "",
+    shortDescription: r.short_description || "",
+    description: r.description || "",
+    icon: r.icon || "map",
+    priceFrom: Number(r.price_from) || 0,
+    priceTo: r.price_to == null ? undefined : Number(r.price_to),
+    priceUnit: r.price_unit || "₪",
+    deliveryDays: r.delivery_days || "",
+    customerTypes: Array.isArray(r.customer_types) ? r.customer_types : [],
+    highlight: !!r.highlight,
+    inScope: r.in_scope !== false,
+    externalHref: r.external_href || undefined,
+    externalUrl: r.external_url || undefined,
+    govFormUrl: r.gov_form_url || undefined,
+    features: Array.isArray(r.features) ? r.features : [],
+    priceTable: Array.isArray(r.price_table) ? r.price_table : [],
+    faq: Array.isArray(r.faq) ? r.faq : []
+  };
+}
+
+/** Params for INSERT/UPDATE (order matches the SQL below). */
+function productParams(p: Service, sortOrder: number, active = true): any[] {
+  return [
+    p.slug, p.name, p.category, p.categoryLabel ?? "", p.shortDescription ?? "",
+    p.description ?? "", p.icon ?? "map", p.priceFrom ?? 0,
+    p.priceTo ?? null, p.priceUnit ?? "₪", p.deliveryDays ?? "",
+    JSON.stringify(p.customerTypes ?? []), p.highlight ?? false, p.inScope !== false,
+    p.externalHref ?? null, p.externalUrl ?? null, p.govFormUrl ?? null,
+    JSON.stringify(p.features ?? []), JSON.stringify(p.priceTable ?? []),
+    JSON.stringify(p.faq ?? []), active, sortOrder
+  ];
+}
+
+const UPSERT_SQL = `
+  INSERT INTO products (slug, name, category, category_label, short_description, description,
+    icon, price_from, price_to, price_unit, delivery_days, customer_types, highlight, in_scope,
+    external_href, external_url, gov_form_url, features, price_table, faq, active, sort_order, updated_at)
+  VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12::jsonb,$13,$14,$15,$16,$17,$18::jsonb,$19::jsonb,$20::jsonb,$21,$22, now())
+  ON CONFLICT (slug) DO UPDATE SET
+    name=EXCLUDED.name, category=EXCLUDED.category, category_label=EXCLUDED.category_label,
+    short_description=EXCLUDED.short_description, description=EXCLUDED.description, icon=EXCLUDED.icon,
+    price_from=EXCLUDED.price_from, price_to=EXCLUDED.price_to, price_unit=EXCLUDED.price_unit,
+    delivery_days=EXCLUDED.delivery_days, customer_types=EXCLUDED.customer_types,
+    highlight=EXCLUDED.highlight, in_scope=EXCLUDED.in_scope, external_href=EXCLUDED.external_href,
+    external_url=EXCLUDED.external_url, gov_form_url=EXCLUDED.gov_form_url, features=EXCLUDED.features,
+    price_table=EXCLUDED.price_table, faq=EXCLUDED.faq, active=EXCLUDED.active,
+    sort_order=EXCLUDED.sort_order, updated_at=now()`;
+
+/** How many products exist (used to decide whether to seed). */
+export async function countProducts(): Promise<number> {
+  await ensureSchema();
+  const { rows } = await getPool().query(`SELECT COUNT(*)::int AS n FROM products`);
+  return rows[0]?.n ?? 0;
+}
+
+/** Populate the table from the code seed on first run (no-op if already seeded). */
+export async function seedProductsIfEmpty(seed: Service[]): Promise<boolean> {
+  await ensureSchema();
+  if ((await countProducts()) > 0) return false;
+  for (let i = 0; i < seed.length; i++) {
+    await getPool().query(UPSERT_SQL, productParams(seed[i], i));
+  }
+  return true;
+}
+
+/** All active products, in display order. */
+export async function listProducts(): Promise<Service[]> {
+  await ensureSchema();
+  const { rows } = await getPool().query(
+    `SELECT * FROM products WHERE active = true ORDER BY sort_order ASC, id ASC`
+  );
+  return rows.map(rowToProduct);
+}
+
+/** Every product incl. inactive — for the admin management table. */
+export async function listProductsAdmin(): Promise<(Service & { active: boolean; sortOrder: number })[]> {
+  await ensureSchema();
+  const { rows } = await getPool().query(`SELECT * FROM products ORDER BY sort_order ASC, id ASC`);
+  return rows.map(r => ({ ...rowToProduct(r), active: r.active !== false, sortOrder: r.sort_order ?? 0 }));
+}
+
+export async function getProductBySlug(slug: string): Promise<Service | null> {
+  await ensureSchema();
+  const { rows } = await getPool().query(`SELECT * FROM products WHERE slug = $1`, [slug]);
+  return rows[0] ? rowToProduct(rows[0]) : null;
+}
+
+/** Create or update a product (upsert on slug). */
+export async function upsertProduct(p: Service, opts?: { sortOrder?: number; active?: boolean }): Promise<Service> {
+  await ensureSchema();
+  const sort = opts?.sortOrder ?? (await countProducts());
+  const { rows } = await getPool().query(
+    `${UPSERT_SQL} RETURNING *`,
+    productParams(p, sort, opts?.active ?? true)
+  );
+  return rowToProduct(rows[0]);
+}
+
+export async function deleteProduct(slug: string): Promise<boolean> {
+  await ensureSchema();
+  const res = await getPool().query(`DELETE FROM products WHERE slug = $1`, [slug]);
+  return (res.rowCount ?? 0) > 0;
+}
+/* eslint-enable */
