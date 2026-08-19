@@ -48,8 +48,30 @@ export default function ServiceDetailPage() {
     }
   }, [service, lang, track]);
 
+  // External-only services (e.g. נסח טב"ו → nadlan.gov.il) have no internal
+  // order flow — a direct visit / cross-sell link redirects straight out.
+  useEffect(() => {
+    if (service?.externalHref) window.location.replace(service.externalHref);
+  }, [service]);
+
   if (!service) {
     notFound();
+  }
+
+  if (service.externalHref) {
+    return (
+      <div className="bg-surface min-h-[70vh] flex items-center justify-center p-6">
+        <div className="bg-white rounded-3xl border border-outline-variant/50 p-8 text-center max-w-md shadow-sm">
+          <span className="material-symbols-outlined text-[44px] text-secondary" aria-hidden="true">open_in_new</span>
+          <h1 className="text-xl font-bold text-primary mt-3 mb-2">{getServiceName(service.slug, service.name, lang)}</h1>
+          <p className="text-on-surface-variant text-sm mb-5">מעבירים אתכם לאתר החיצוני להשלמת השירות…</p>
+          <a href={service.externalHref} target="_blank" rel="noopener noreferrer" className="shine btn-lux-primary inline-flex items-center gap-2 px-6 py-3 rounded-full text-sm">
+            <span className="material-symbols-outlined text-[18px]" aria-hidden="true">open_in_new</span>
+            מעבר לאתר
+          </a>
+        </div>
+      </div>
+    );
   }
 
   const localName = getServiceName(service.slug, service.name, lang);

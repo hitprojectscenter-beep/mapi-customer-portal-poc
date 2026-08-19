@@ -520,8 +520,8 @@ function ListRow({ service }: { service: Service & { rating: ReturnType<typeof g
   const name = getServiceName(service.slug, service.name, lang);
   const desc = getServiceShortDescription(service.slug, service.shortDescription, lang);
   const cat = getServiceCategoryLabel(service.slug, service.categoryLabel, lang);
-  const isExternal = !service.inScope && !!service.externalUrl;
-  const href = isExternal ? service.externalUrl! : `/catalog/${service.slug}`;
+  const isExternal = !!service.externalHref || (!service.inScope && !!service.externalUrl);
+  const href = service.externalHref ?? (isExternal ? service.externalUrl! : `/catalog/${service.slug}`);
 
   return (
     <li>
@@ -540,11 +540,20 @@ function ListRow({ service }: { service: Service & { rating: ReturnType<typeof g
           <p className="text-xs text-on-surface-variant truncate font-light mt-0.5">{desc}</p>
         </div>
         <div className="text-end flex-shrink-0 max-w-[130px]">
-          <p className="text-[10px] text-on-surface-variant">{t("service.fromPrice")}</p>
-          <p className="text-lg font-bold text-primary" dir="ltr">
-            {service.priceUnit}{service.priceFrom.toLocaleString()}
-          </p>
-          <p className="text-[9px] text-on-surface-variant/80 font-light leading-tight mt-0.5">{PRICE_NOTE}</p>
+          {service.externalHref ? (
+            <span className="text-sm font-semibold text-secondary inline-flex items-center gap-1">
+              <span className="material-symbols-outlined text-[16px]" aria-hidden="true">open_in_new</span>
+              שירות מקוון
+            </span>
+          ) : (
+            <>
+              <p className="text-[10px] text-on-surface-variant">{t("service.fromPrice")}</p>
+              <p className="text-lg font-bold text-primary" dir="ltr">
+                {service.priceUnit}{service.priceFrom.toLocaleString()}
+              </p>
+              <p className="text-[9px] text-on-surface-variant/80 font-light leading-tight mt-0.5">{PRICE_NOTE}</p>
+            </>
+          )}
         </div>
       </Link>
     </li>

@@ -26,7 +26,7 @@ test.describe("MAPI Portal — smoke", () => {
 
   test("catalog lists services with sort control", async ({ page }) => {
     await page.goto("/catalog");
-    // 14 services render as cards
+    // services render as cards
     await expect(page.locator("article").first()).toBeVisible();
     const count = await page.locator("article").count();
     expect(count).toBeGreaterThanOrEqual(10);

@@ -42,6 +42,8 @@ export interface Service {
   externalUrl?: string;
   /** הטופס הממשלתי הקיים (govforms) — הערוץ הישן שהפורטל מחדש */
   govFormUrl?: string;
+  /** קישור חיצוני מלא — בבחירת השירות המשתמש מועבר לאתר חיצוני (במקום מסלול פנימי) */
+  externalHref?: string;
   features: string[];
   priceTable?: { label: string; without: number; with?: number }[];
   faq: { q: string; a: string }[];
@@ -233,6 +235,25 @@ export const services: Service[] = [
       "אספקה דיגיטלית מיידית",
       "ארכיון היסטורי"
     ],
+    faq: []
+  },
+  {
+    slug: "nesach-tabu-click",
+    name: 'נסח טב"ו בקליק',
+    category: "cadastre",
+    categoryLabel: 'קדסטר',
+    shortDescription: "הפקת נסח רישום מקרקעין (טאבו) מיידית — מעבר לאתר הממשלתי הרשמי",
+    description:
+      'שירות מקוון להפקת נסח רישום מקרקעין (נסח טב"ו) ישירות מהאתר הממשלתי הרשמי. בבחירת השירות תועברו לאתר להשלמת ההפקה — ללא מסלול הזמנה פנימי.',
+    icon: "description",
+    priceFrom: 0,
+    priceUnit: "₪",
+    deliveryDays: "מיידי",
+    customerTypes: ["private", "business", "government", "surveyor"],
+    highlight: true,
+    inScope: true,
+    externalHref: "https://www.nadlan.gov.il/",
+    features: ["הפקה מיידית", "אתר ממשלתי רשמי", 'נסח רישום מקרקעין (טב"ו)'],
     faq: []
   },
   {

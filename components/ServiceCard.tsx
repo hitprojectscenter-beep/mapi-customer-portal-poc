@@ -19,8 +19,10 @@ export default function ServiceCard({ service, variant = "default" }: Props) {
   const { t, lang } = useLanguage();
   const cart = useCart();
   const wish = useWishlist();
-  const isExternal = !service.inScope && !!(service.govFormUrl || service.externalUrl);
-  const href = isExternal ? (service.govFormUrl || service.externalUrl)! : `/catalog/${service.slug}`;
+  const isExternal = !!service.externalHref || (!service.inScope && !!(service.govFormUrl || service.externalUrl));
+  const href = service.externalHref ?? (isExternal ? (service.govFormUrl || service.externalUrl)! : `/catalog/${service.slug}`);
+  // A full external site (e.g. נסח טב"ו → nadlan.gov.il) vs. the legacy govforms referral.
+  const extLabel = service.externalHref ? "מעבר לאתר" : "govforms";
 
   const localName = getServiceName(service.slug, service.name, lang);
   const localShort = getServiceShortDescription(service.slug, service.shortDescription, lang);
@@ -54,7 +56,7 @@ export default function ServiceCard({ service, variant = "default" }: Props) {
         {isExternal && (
           <span className="bg-alert-yellow/95 text-white text-[10px] font-bold px-2 py-1 rounded-full uppercase tracking-wider flex items-center gap-1 shadow-md">
             <span className="material-symbols-outlined text-[12px]">open_in_new</span>
-            govforms
+            {extLabel}
           </span>
         )}
         {rating.average >= 4.5 && (
@@ -128,7 +130,14 @@ export default function ServiceCard({ service, variant = "default" }: Props) {
         {/* Price + CTA row */}
         <div className="mt-auto space-y-2">
           <div className="flex items-start justify-between gap-2">
-            <PriceTag amount={service.priceFrom} unit={service.priceUnit} size="sm" />
+            {service.externalHref ? (
+              <span className="text-sm font-semibold text-secondary flex items-center gap-1 mt-1">
+                <span className="material-symbols-outlined text-[16px]" aria-hidden="true">public</span>
+                שירות מקוון
+              </span>
+            ) : (
+              <PriceTag amount={service.priceFrom} unit={service.priceUnit} size="sm" />
+            )}
             {!isExternal && (
               <span className="text-[10px] text-positive-green font-semibold uppercase tracking-wider mt-4 flex-shrink-0">
                 ● {t("svc.inStock")}
@@ -143,9 +152,10 @@ export default function ServiceCard({ service, variant = "default" }: Props) {
               rel="noopener noreferrer"
               onClick={handleExternalClick}
               className="shine block w-full bg-alert-yellow/10 hover:bg-alert-yellow hover:text-white text-alert-yellow text-center py-2.5 rounded-full text-sm font-semibold transition-colors flex items-center justify-center gap-1"
+              data-tooltip={service.externalHref ? "בחירת השירות תעביר אתכם לאתר החיצוני בכרטיסייה חדשה." : undefined}
             >
-              <span className="material-symbols-outlined text-[16px]">open_in_new</span>
-              <span>govforms</span>
+              <span className="material-symbols-outlined text-[16px]" aria-hidden="true">open_in_new</span>
+              <span>{extLabel}</span>
             </a>
           ) : (
             // "Add to cart" hidden for now (checkout not yet wired) — the
