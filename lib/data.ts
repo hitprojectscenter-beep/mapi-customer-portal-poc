@@ -584,6 +584,23 @@ for (const s of services) {
   s.inScope = true;
 }
 
+// The original government order form for a product — the same govforms form
+// reached from the legacy מפ"י site. Priority: externalHref (e.g. נסח → nadlan)
+// → the product's own govFormUrl → a category default. Always opened in a NEW
+// TAB; the in-portal order wizard is currently disabled (in development).
+const FORM_BY_CATEGORY: Record<Category, string> = {
+  maps: "https://govforms.gov.il/mw/forms/Maps@mapi.gov.il",
+  cadastre: "https://govforms.gov.il/mw/forms/CadasterJerusalem@mapi.gov.il",
+  geodesy: "https://govforms.gov.il/mw/forms/CorsSignUpWithPayment@mapi.gov.il",
+  orthophoto: "https://govforms.gov.il/mw/forms/OrthophotoElevationModels@mapi.gov.il",
+  gis: "https://govforms.gov.il/mw/forms/GeographicInformation@mapi.gov.il",
+  certificates: "https://govforms.gov.il/mw/forms/tasa@mapi.gov.il"
+};
+
+export function getOrderFormUrl(s: Pick<Service, "externalHref" | "govFormUrl" | "category">): string {
+  return s.externalHref || s.govFormUrl || FORM_BY_CATEGORY[s.category] || FORM_BY_CATEGORY.maps;
+}
+
 export const categories: { id: Category; label: string; icon: string }[] = [
   { id: "maps", label: "מפות נייר", icon: "description" },
   { id: "cadastre", label: 'קדסטר', icon: "layers" },

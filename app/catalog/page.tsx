@@ -8,13 +8,12 @@ import { useProducts } from "@/lib/useProducts";
 import {
   categories, customerTypeLabels,
   getCategoryLabel, getCustomerTypeLabel,
-  getServiceName, getServiceShortDescription, getServiceCategoryLabel,
+  getServiceName, getServiceShortDescription, getServiceCategoryLabel, getOrderFormUrl,
   type Category, type Service
 } from "@/lib/data";
 import { getRatingSummary } from "@/lib/reviews";
 import { useLanguage } from "@/lib/LanguageContext";
 import { buildDocs, searchServices } from "@/lib/search";
-import { PRICE_NOTE } from "@/components/PriceTag";
 
 type SortKey = "relevance" | "priceAsc" | "priceDesc" | "newest" | "rating";
 type ViewMode = "grid" | "list";
@@ -525,42 +524,44 @@ function ListRow({ service }: { service: Service & { rating: ReturnType<typeof g
   const name = getServiceName(service.slug, service.name, lang);
   const desc = getServiceShortDescription(service.slug, service.shortDescription, lang);
   const cat = getServiceCategoryLabel(service.slug, service.categoryLabel, lang);
-  const isExternal = !!service.externalHref || (!service.inScope && !!service.externalUrl);
-  const href = service.externalHref ?? (isExternal ? service.externalUrl! : `/catalog/${service.slug}`);
+  const pdpHref = `/catalog/${service.slug}`;
+  const orderUrl = getOrderFormUrl(service);
 
+  // Row content links to the internal details page; ordering opens the original
+  // government form in a NEW TAB (separate anchor — never a link-inside-a-link).
   return (
     <li>
-      <Link
-        href={href}
-        target={isExternal ? "_blank" : undefined}
-        rel={isExternal ? "noopener noreferrer" : undefined}
-        className="shine flex items-center gap-4 p-4 bg-white rounded-xl border border-outline-variant/40 hover:border-secondary/50 hover:shadow-md transition-all"
-      >
-        <div className="w-16 h-16 bg-gradient-to-br from-secondary/5 to-primary/5 rounded-xl flex items-center justify-center flex-shrink-0">
+      <div className="flex items-center gap-4 p-4 bg-white rounded-xl border border-outline-variant/40 hover:border-secondary/50 hover:shadow-md transition-all">
+        <Link href={pdpHref} className="shine w-16 h-16 bg-gradient-to-br from-secondary/5 to-primary/5 rounded-xl flex items-center justify-center flex-shrink-0" aria-label={name}>
           <span className="material-symbols-outlined text-secondary text-[28px]">{service.icon}</span>
-        </div>
-        <div className="flex-1 min-w-0">
+        </Link>
+        <Link href={pdpHref} className="shine flex-1 min-w-0 group">
           <p className="text-[10px] uppercase tracking-widest font-semibold text-secondary/80">{cat}</p>
-          <h3 className="font-bold text-primary truncate">{name}</h3>
+          <h3 className="font-bold text-primary truncate group-hover:text-secondary transition-colors">{name}</h3>
           <p className="text-xs text-on-surface-variant truncate font-light mt-0.5">{desc}</p>
-        </div>
-        <div className="text-end flex-shrink-0 max-w-[130px]">
+        </Link>
+        <div className="text-end flex-shrink-0 flex flex-col items-end gap-1.5 max-w-[160px]">
           {service.externalHref ? (
             <span className="text-sm font-semibold text-secondary inline-flex items-center gap-1">
-              <span className="material-symbols-outlined text-[16px]" aria-hidden="true">open_in_new</span>
-              שירות מקוון
+              <span className="material-symbols-outlined text-[16px]" aria-hidden="true">public</span>שירות מקוון
             </span>
           ) : (
-            <>
+            <div>
               <p className="text-[10px] text-on-surface-variant">{t("service.fromPrice")}</p>
-              <p className="text-lg font-bold text-primary" dir="ltr">
-                {service.priceUnit}{service.priceFrom.toLocaleString()}
-              </p>
-              <p className="text-[9px] text-on-surface-variant/80 font-light leading-tight mt-0.5">{PRICE_NOTE}</p>
-            </>
+              <p className="text-lg font-bold text-primary" dir="ltr">{service.priceUnit}{service.priceFrom.toLocaleString()}</p>
+            </div>
           )}
+          <a
+            href={orderUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="shine text-xs font-semibold text-secondary hover:underline inline-flex items-center gap-1"
+            data-tooltip="מעבר לטופס ההזמנה הרשמי בלשונית חדשה; הפורטל נשאר פתוח."
+          >
+            <span className="material-symbols-outlined text-[14px]" aria-hidden="true">open_in_new</span>מעבר להזמנה
+          </a>
         </div>
-      </Link>
+      </div>
     </li>
   );
 }

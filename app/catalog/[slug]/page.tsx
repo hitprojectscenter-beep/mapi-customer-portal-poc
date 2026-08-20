@@ -5,7 +5,7 @@ import { notFound, useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import {
   getServiceName, getServiceShortDescription,
-  getServiceCategoryLabel, getServiceDeliveryDays
+  getServiceCategoryLabel, getServiceDeliveryDays, getOrderFormUrl
 } from "@/lib/data";
 import { useProducts } from "@/lib/useProducts";
 import GovMapEmbed from "@/components/GovMapEmbed";
@@ -51,12 +51,6 @@ export default function ServiceDetailPage() {
     }
   }, [service, lang, track]);
 
-  // External-only services (e.g. נסח טב"ו → nadlan.gov.il) have no internal
-  // order flow — a direct visit / cross-sell link redirects straight out.
-  useEffect(() => {
-    if (service?.externalHref) window.location.replace(service.externalHref);
-  }, [service]);
-
   if (!service) {
     // Still loading from the DB — don't 404 a product that isn't in the seed yet.
     if (loading) {
@@ -70,22 +64,6 @@ export default function ServiceDetailPage() {
       );
     }
     notFound();
-  }
-
-  if (service.externalHref) {
-    return (
-      <div className="bg-surface min-h-[70vh] flex items-center justify-center p-6">
-        <div className="bg-white rounded-3xl border border-outline-variant/50 p-8 text-center max-w-md shadow-sm">
-          <span className="material-symbols-outlined text-[44px] text-secondary" aria-hidden="true">open_in_new</span>
-          <h1 className="text-xl font-bold text-primary mt-3 mb-2">{getServiceName(service.slug, service.name, lang)}</h1>
-          <p className="text-on-surface-variant text-sm mb-5">מעבירים אתכם לאתר החיצוני להשלמת השירות…</p>
-          <a href={service.externalHref} target="_blank" rel="noopener noreferrer" className="shine btn-lux-primary inline-flex items-center gap-2 px-6 py-3 rounded-full text-sm">
-            <span className="material-symbols-outlined text-[18px]" aria-hidden="true">open_in_new</span>
-            מעבר לאתר
-          </a>
-        </div>
-      </div>
-    );
   }
 
   const localName = getServiceName(service.slug, service.name, lang);
@@ -348,36 +326,33 @@ export default function ServiceDetailPage() {
               </div>
             )}
 
-            {/* Quantity + Add-to-Cart or Govforms */}
-            {service.inScope ? (
-              <div className="space-y-3 mb-6">
-                {/* "Add to cart" hidden for now (checkout not yet wired).
-                    The order wizard is the working path to purchase. */}
-                <div className="flex gap-2">
-                  <Link
-                    href={`/order/${service.slug}`}
-                    className="shine shine-glow flex-1 btn-lux-primary px-6 py-4 rounded-full font-semibold transition-colors flex items-center justify-center gap-2 min-h-[54px]"
-                    data-tooltip="פתיחת אשף ההזמנה: בחירת מאפיינים, סימון אזור על המפה וקבלת הצעת מחיר. אין חיוב בשלב זה."
-                    data-tooltip-position="bottom"
-                  >
-                    <span className="material-symbols-outlined" aria-hidden="true">bolt</span>
-                    <span>{t("svc.startOrder")}</span>
-                  </Link>
-                </div>
-              </div>
-            ) : (
-              <a
-                href={service.govFormUrl || service.externalUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="shine block w-full bg-alert-yellow text-white text-center py-4 rounded-full font-semibold hover:bg-alert-yellow/90 transition-colors flex items-center justify-center gap-2 mb-6"
-                data-tooltip={t("svc.openGovformsTip")}
+            {/* Ordering: the in-portal wizard is disabled (in development); the
+                active path is the ORIGINAL government form, opened in a NEW TAB
+                (the same form reached from the legacy site). Portal stays open. */}
+            <div className="space-y-2.5 mb-6">
+              <button
+                type="button"
+                disabled
+                aria-disabled="true"
+                className="w-full bg-surface-container text-on-surface-variant/60 px-6 py-4 rounded-full font-semibold flex items-center justify-center gap-2 min-h-[54px] cursor-not-allowed border border-outline-variant/60"
+                data-tooltip="הזמנה בתוך הפורטל נמצאת בפיתוח וכרגע מושבתת. להזמנה — לחצו 'מעבר להזמנה' לטופס הרשמי."
                 data-tooltip-position="bottom"
               >
-                <span>{t("svc.openGovforms")}</span>
-                <span className="material-symbols-outlined">open_in_new</span>
+                <span className="material-symbols-outlined" aria-hidden="true">lock</span>
+                <span>{t("svc.startOrder")} · בפיתוח</span>
+              </button>
+              <a
+                href={getOrderFormUrl(service)}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="shine shine-glow block w-full btn-lux-primary text-center px-6 py-4 rounded-full font-semibold transition-colors flex items-center justify-center gap-2 min-h-[54px]"
+                data-tooltip="מעבר לטופס ההזמנה הרשמי — נפתח בלשונית חדשה. זהו אותו הטופס שאליו מגיעים מהאתר הקיים; הפורטל נשאר פתוח."
+                data-tooltip-position="bottom"
+              >
+                <span className="material-symbols-outlined" aria-hidden="true">open_in_new</span>
+                <span>מעבר להזמנה</span>
               </a>
-            )}
+            </div>
 
             {/* Secondary CTAs — Trial + Sample + Report Error (inspired by OS Data Hub) */}
             {service.inScope && (
