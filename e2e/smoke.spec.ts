@@ -37,16 +37,17 @@ test.describe("MAPI Portal — smoke", () => {
   test("PDP shows price and the order CTA", async ({ page }) => {
     await page.goto("/catalog/custom-map");
     await expect(page.getByRole("heading", { level: 1 })).toContainText("מפה בהתאמה אישית");
-    // Add-to-cart is hidden for now; the working path is the order wizard
-    await expect(page.getByRole("link", { name: /התחל הזמנה/ }).first()).toBeVisible();
+    // Ordering now opens the original government form in a new tab
+    await expect(page.getByRole("link", { name: /מעבר להזמנה/ }).first()).toBeVisible();
   });
 
-  test("order wizard opens from the product page", async ({ page }) => {
+  test("product order links out to the original government form in a new tab", async ({ page }) => {
     await page.goto("/catalog/custom-map");
-    await page.getByRole("link", { name: /התחל הזמנה/ }).first().click();
-    await page.waitForURL(/\/order\/custom-map/);
-    // The order page H1 ("הזמנה: ...") is a stable, always-visible anchor
-    await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
+    const orderLink = page.getByRole("link", { name: /מעבר להזמנה/ }).first();
+    await expect(orderLink).toHaveAttribute("target", "_blank");
+    await expect(orderLink).toHaveAttribute("href", /govforms\.gov\.il/);
+    // The in-portal wizard is intentionally disabled (in development)
+    await expect(page.getByRole("button", { name: /בפיתוח/ }).first()).toBeDisabled();
   });
 
   test("plans page shows 3 tiers and comparison table", async ({ page }) => {
@@ -57,9 +58,9 @@ test.describe("MAPI Portal — smoke", () => {
     await expect(page.locator("table")).toBeVisible();
   });
 
-  test("bundles page shows regional bundles with savings", async ({ page }) => {
+  test("bundles page shows product packages with savings", async ({ page }) => {
     await page.goto("/bundles");
-    await expect(page.getByText("חבילת גליל").first()).toBeVisible();
+    await expect(page.getByText("חבילת מודד מוסמך").first()).toBeVisible();
     await expect(page.getByText(/-\d+%/).first()).toBeVisible();
   });
 
