@@ -5,6 +5,7 @@ import {
 import { services as seed } from "@/lib/data";
 import { sanitizeProduct } from "@/lib/productSchema";
 import { verifyToken, SESSION_COOKIE } from "@/lib/cmsServer";
+import { appEnvLabel } from "@/lib/appEnv";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -18,17 +19,21 @@ const isAdmin = (req: NextRequest) => !!verifyToken(req.cookies.get(SESSION_COOK
  * The DB is seeded from the code list on first call.
  */
 export async function GET(req: NextRequest) {
+  const admin = isAdmin(req);
+  // Reveal the environment label ONLY to authenticated admins (so the CMS can
+  // warn which env/DB is being edited); never to anonymous callers.
+  const env = admin ? appEnvLabel() : undefined;
   if (!dbConfigured()) {
     // Demo mode (no DB): serve the code seed so the catalog always works.
-    return NextResponse.json({ products: seed, source: "seed" });
+    return NextResponse.json({ products: seed, source: "seed", env });
   }
   try {
     await seedProductsIfEmpty(seed);
-    const products = isAdmin(req) ? await listProductsAdmin() : await listProducts();
-    return NextResponse.json({ products, source: "db" });
+    const products = admin ? await listProductsAdmin() : await listProducts();
+    return NextResponse.json({ products, source: "db", env });
   } catch (e) {
     console.warn("[products GET]", (e as Error).message);
-    return NextResponse.json({ products: seed, source: "seed-fallback" });
+    return NextResponse.json({ products: seed, source: "seed-fallback", env });
   }
 }
 

@@ -25,6 +25,7 @@ export default function CmsProductsPage() {
   const [loading, setLoading] = useState(true);
   const [busy, setBusy] = useState(false);
   const [source, setSource] = useState<string>("");
+  const [env, setEnv] = useState<string>("");
   const [msg, setMsg] = useState<{ kind: "ok" | "err"; text: string } | null>(null);
 
   const readOnly = source === "seed"; // no DB configured (demo mode)
@@ -36,6 +37,7 @@ export default function CmsProductsPage() {
       const d = await r.json();
       setItems(Array.isArray(d?.products) ? d.products : []);
       setSource(d?.source || "");
+      setEnv(d?.env || "");
     } catch { setItems([]); }
     finally { setLoading(false); }
   };
@@ -119,7 +121,17 @@ export default function CmsProductsPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between gap-3 flex-wrap">
         <div>
-          <h2 className="text-lg font-bold text-primary">ניהול מוצרים ושירותים</h2>
+          <div className="flex items-center gap-2 flex-wrap">
+            <h2 className="text-lg font-bold text-primary">ניהול מוצרים ושירותים</h2>
+            {env && (
+              <span
+                className={`text-[11px] font-bold px-2.5 py-1 rounded-full ${/פרודקשן/.test(env) ? "bg-error-red/15 text-error-red" : "bg-secondary/15 text-secondary"}`}
+                data-tooltip="הסביבה (ומסד הנתונים) שעליה אתה פועל כעת. שים לב בעריכת פרודקשן."
+              >
+                סביבה: {env}
+              </span>
+            )}
+          </div>
           <p className="text-xs text-on-surface-variant font-light">הוספה, עריכה ומחיקה — הקטלוג מתעדכן מיד עבור הלקוחות.</p>
         </div>
         {editingSlug && (
