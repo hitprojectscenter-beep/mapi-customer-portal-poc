@@ -1,18 +1,19 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
 import ServiceCard from "@/components/ServiceCard";
-import QuoteRequestModal from "@/components/QuoteRequestModal";
 import WowCounter from "@/components/WowCounter";
 import GovMapEmbed from "@/components/GovMapEmbed";
-import { services, categories, getServiceName, getServiceShortDescription, getServiceCategoryLabel, getCategoryLabel, type Service } from "@/lib/data";
+import { services, categories, getServiceName, getServiceShortDescription, getServiceCategoryLabel, getCategoryLabel, getOrderFormUrl } from "@/lib/data";
 import { useLanguage } from "@/lib/LanguageContext";
 
 export default function HomePage() {
   const { t, lang } = useLanguage();
   const featuredServices = services.filter((s) => s.highlight).slice(0, 4);
-  const [quoteFor, setQuoteFor] = useState<Service | null>(null);
+  // Each featured service links to its ORIGINAL government form (new tab),
+  // consistent with the catalog — no internal quote/order flow on the home.
+  const orderUrl0 = featuredServices[0] ? getOrderFormUrl(featuredServices[0]) : "#";
+  const orderUrl1 = featuredServices[1] ? getOrderFormUrl(featuredServices[1]) : "#";
 
   return (
     <>
@@ -238,16 +239,17 @@ export default function HomePage() {
                   {featuredServices[0] && getServiceShortDescription(featuredServices[0].slug, featuredServices[0].shortDescription, lang)}
                 </p>
                 <div className="mt-auto flex flex-col sm:flex-row-reverse items-stretch sm:items-center gap-2 sm:gap-3 w-full">
-                  <button
-                    type="button"
-                    onClick={() => setQuoteFor(featuredServices[0])}
+                  <a
+                    href={orderUrl0}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="shine shine-glow flex-1 btn-lux-primary px-5 py-3 sm:py-3.5 rounded-full flex items-center justify-center gap-2 transition-colors min-h-[48px]"
-                    data-tooltip="קבלת הצעת מחיר מותאמת אישית למוצר זה — נציג יחזור אליכם עם תמחור מדויק"
+                    data-tooltip="מעבר לטופס ההזמנה הרשמי של השירות — נפתח בלשונית חדשה; הפורטל נשאר פתוח."
                     data-tooltip-position="bottom"
                   >
-                    <span className="material-symbols-outlined text-[20px]">request_quote</span>
-                    {t("services.sendQuote")}
-                  </button>
+                    <span className="material-symbols-outlined text-[20px]" aria-hidden="true">open_in_new</span>
+                    מעבר להזמנה
+                  </a>
                   <Link
                     href={`/catalog/${featuredServices[0]?.slug}`}
                     className="shine flex-1 sm:flex-initial bg-surface-container hover:bg-surface-container-high text-primary px-5 py-3 sm:py-3.5 rounded-full font-bold flex items-center justify-center gap-2 transition-colors min-h-[48px]"
@@ -280,16 +282,17 @@ export default function HomePage() {
                   {featuredServices[1] && getServiceShortDescription(featuredServices[1].slug, featuredServices[1].shortDescription, lang)}
                 </p>
                 <div className="mt-auto w-full flex flex-col gap-2">
-                  <button
-                    type="button"
-                    onClick={() => setQuoteFor(featuredServices[1])}
+                  <a
+                    href={orderUrl1}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="shine w-full py-3 sm:py-4 rounded-xl bg-white text-primary font-bold hover:bg-gold-tint border border-gold/30 transition-all flex items-center justify-center gap-2 min-h-[48px]"
-                    data-tooltip="קבלת הצעת מחיר מותאמת לפי משתמשים וצרכים — ללא התחייבות"
+                    data-tooltip="מעבר לטופס ההזמנה הרשמי של השירות — נפתח בלשונית חדשה."
                     data-tooltip-position="bottom"
                   >
-                    <span className="material-symbols-outlined text-[20px]">request_quote</span>
-                    {t("services.sendQuote")}
-                  </button>
+                    <span className="material-symbols-outlined text-[20px]" aria-hidden="true">open_in_new</span>
+                    מעבר להזמנה
+                  </a>
                   <Link
                     href={`/catalog/${featuredServices[1]?.slug}`}
                     className="shine w-full py-2.5 sm:py-3 rounded-xl border border-white/20 font-bold hover:bg-white/10 transition-all text-center min-h-[44px] flex items-center justify-center gap-2"
@@ -328,18 +331,17 @@ export default function HomePage() {
                           {getServiceShortDescription(service.slug, service.shortDescription, lang)}
                         </p>
                         <div className="w-full flex flex-col gap-2 mt-auto">
-                          <button
-                            type="button"
-                            onClick={() => setQuoteFor(service)}
+                          <a
+                            href={getOrderFormUrl(service)}
+                            target="_blank"
+                            rel="noopener noreferrer"
                             className="shine shine-glow w-full btn-lux-primary py-2.5 rounded-full text-sm transition-colors flex items-center justify-center gap-2 min-h-[44px]"
-                            data-tooltip={t("services.sendQuote")}
+                            data-tooltip="מעבר לטופס ההזמנה הרשמי — נפתח בלשונית חדשה."
                             data-tooltip-position="bottom"
                           >
-                            <span className="material-symbols-outlined text-[18px]">
-                              request_quote
-                            </span>
-                            {t("services.sendQuote")}
-                          </button>
+                            <span className="material-symbols-outlined text-[18px]" aria-hidden="true">open_in_new</span>
+                            מעבר להזמנה
+                          </a>
                           <Link
                             href={`/catalog/${service.slug}`}
                             className="shine w-full bg-transparent text-secondary py-2 rounded-full font-bold text-sm hover:bg-secondary/5 transition-colors flex items-center justify-center gap-1 min-h-[40px]"
@@ -581,13 +583,6 @@ export default function HomePage() {
           </div>
         </div>
       </section>
-
-      {/* Quote Request Modal */}
-      <QuoteRequestModal
-        service={quoteFor}
-        open={!!quoteFor}
-        onClose={() => setQuoteFor(null)}
-      />
     </>
   );
 }

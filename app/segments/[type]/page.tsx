@@ -4,7 +4,8 @@ import Link from "next/link";
 import { notFound, useParams } from "next/navigation";
 import { useLanguage } from "@/lib/LanguageContext";
 import { getSegment } from "@/lib/segments";
-import { services, getServiceName, getServiceShortDescription, getServiceCategoryLabel } from "@/lib/data";
+import { services } from "@/lib/data";
+import ServiceCard from "@/components/ServiceCard";
 
 export default function SegmentDetailPage() {
   const { t, lang } = useLanguage();
@@ -147,53 +148,12 @@ export default function SegmentDetailPage() {
         <h2 className="text-2xl md:text-3xl font-extrabold text-primary text-center mb-8">
           {t("seg.relevantServices")}
         </h2>
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {displayServices.map((s) => {
-            const localName = getServiceName(s.slug, s.name, lang);
-            const localShort = getServiceShortDescription(s.slug, s.shortDescription, lang);
-            const localCat = getServiceCategoryLabel(s.slug, s.categoryLabel, lang);
-            const isExternal = !s.inScope && !!(s.govFormUrl || s.externalUrl);
-            const className = "shine bg-white rounded-2xl p-6 border border-outline-variant/50 hover:border-secondary/30 hover:shadow-xl transition-all text-center group cursor-pointer block";
-            const inner = (
-              <>
-                <div className="w-14 h-14 bg-secondary/5 text-secondary rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
-                  <span className="material-symbols-outlined text-[28px]">{s.icon}</span>
-                </div>
-                <p className="text-[10px] uppercase tracking-widest font-semibold text-secondary/70 mb-1">{localCat}</p>
-                <h3 className="font-bold text-primary mb-2 leading-tight">{localName}</h3>
-                <p className="text-xs text-on-surface-variant leading-relaxed font-light">{localShort}</p>
-                {isExternal && (
-                  <p className="text-[10px] text-alert-yellow mt-2 font-semibold inline-flex items-center gap-1">
-                    <span className="material-symbols-outlined text-[12px]">open_in_new</span>
-                    govforms
-                  </p>
-                )}
-              </>
-            );
-            return isExternal ? (
-              <a
-                key={s.slug}
-                href={s.govFormUrl || s.externalUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={className}
-                data-tooltip={localShort}
-                data-tooltip-position="bottom"
-              >
-                {inner}
-              </a>
-            ) : (
-              <Link
-                key={s.slug}
-                href={`/catalog/${s.slug}`}
-                className={className}
-                data-tooltip={localShort}
-                data-tooltip-position="bottom"
-              >
-                {inner}
-              </Link>
-            );
-          })}
+        {/* Shared ServiceCard → each service exposes "מעבר להזמנה" to its
+            original government form (consistent with the catalog). */}
+        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          {displayServices.map((s) => (
+            <ServiceCard key={s.slug} service={s} />
+          ))}
         </div>
       </section>
 
