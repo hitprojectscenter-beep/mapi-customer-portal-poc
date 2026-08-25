@@ -8,6 +8,7 @@ import {
   getServiceCategoryLabel, getServiceDeliveryDays, getOrderFormUrl
 } from "@/lib/data";
 import { useProducts } from "@/lib/useProducts";
+import { getServiceProcess } from "@/lib/serviceProcess";
 import GovMapEmbed from "@/components/GovMapEmbed";
 import ReviewsSection from "@/components/ReviewsSection";
 import RelatedProducts from "@/components/RelatedProducts";
@@ -86,6 +87,9 @@ export default function ServiceDetailPage() {
     setSampleDone(true);
     setTimeout(() => setSampleDone(false), 3500);
   };
+
+  // Faithful GovForms process reflection for specific services (boundaries / paper maps).
+  const process = getServiceProcess(service.slug);
 
   return (
     <div className="bg-surface min-h-screen">
@@ -353,6 +357,75 @@ export default function ServiceDetailPage() {
                 <span>מעבר להזמנה</span>
               </a>
             </div>
+
+            {/* GovForms process reflection (faithful to the official form spec) */}
+            {process && (
+              <section className="mb-6 bg-white rounded-2xl border border-secondary/25 p-5" aria-label="שלבי התהליך והמידע">
+                <h3 className="text-base font-bold text-primary mb-1 flex items-center gap-2">
+                  <span className="material-symbols-outlined text-secondary" aria-hidden="true">account_tree</span>
+                  שלבי התהליך והמידע
+                </h3>
+                <p className="text-xs text-on-surface-variant mb-1 leading-relaxed">{process.intro}</p>
+                <p className="text-[11px] text-gold-dark mb-4">קהל יעד: {process.audience}</p>
+
+                <ol className="space-y-3 mb-4">
+                  {process.steps.map((s, i) => (
+                    <li key={i} className="flex gap-3">
+                      <span className="flex-shrink-0 w-6 h-6 rounded-full bg-secondary text-white text-xs font-bold flex items-center justify-center tabular-nums">{i + 1}</span>
+                      <div>
+                        <p className="font-semibold text-primary text-sm leading-tight">{s.title}</p>
+                        {s.detail && <p className="text-xs text-on-surface-variant mt-0.5 leading-relaxed">{s.detail}</p>}
+                      </div>
+                    </li>
+                  ))}
+                </ol>
+
+                {process.options?.map((g) => (
+                  <div key={g.label} className="mb-3">
+                    <p className="text-[11px] uppercase tracking-wider font-semibold text-secondary/80 mb-1.5">{g.label}</p>
+                    <ul className="flex flex-wrap gap-1.5">
+                      {g.items.map((it) => <li key={it} className="text-[11px] bg-surface-container rounded-full px-2.5 py-1 text-on-surface">{it}</li>)}
+                    </ul>
+                  </div>
+                ))}
+
+                {process.pricing && (
+                  <div className="mb-3">
+                    <p className="text-[11px] uppercase tracking-wider font-semibold text-secondary/80 mb-1.5">מחירון (אגרות)</p>
+                    <dl className="border-y border-outline-variant/40 divide-y divide-outline-variant/40">
+                      {process.pricing.map((p) => (
+                        <div key={p.label} className="flex justify-between gap-3 py-1.5 text-xs">
+                          <dt className="text-on-surface-variant">{p.label}</dt>
+                          <dd className="font-bold text-primary whitespace-nowrap">{p.amount}</dd>
+                        </div>
+                      ))}
+                    </dl>
+                  </div>
+                )}
+
+                {process.delivery && (
+                  <div className="mb-3">
+                    <p className="text-[11px] uppercase tracking-wider font-semibold text-secondary/80 mb-1.5">אפשרויות אספקה</p>
+                    <ul className="space-y-1">
+                      {process.delivery.map((d) => (
+                        <li key={d} className="text-xs text-on-surface-variant flex gap-1.5">
+                          <span className="material-symbols-outlined text-[14px] text-secondary flex-shrink-0 mt-0.5" aria-hidden="true">local_shipping</span>{d}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+
+                <div className="flex flex-wrap gap-x-5 gap-y-1 text-[11px] text-on-surface-variant border-t border-outline-variant/40 pt-3">
+                  {process.formats && <span>פורמט תוצר: <b className="text-primary">{process.formats}</b></span>}
+                  <span>זמן טיפול: <b className="text-primary">{process.deliveryDays}</b></span>
+                </div>
+
+                <p className="text-[11px] text-on-surface-variant mt-3 bg-secondary/5 rounded-lg px-3 py-2 leading-relaxed">
+                  ההזמנה מתבצעת בטופס הממשלתי הרשמי: <b>{process.formName}</b>. לחצו "מעבר להזמנה" למעלה.
+                </p>
+              </section>
+            )}
 
             {/* Secondary CTAs — Trial + Sample + Report Error (inspired by OS Data Hub) */}
             {service.inScope && (
