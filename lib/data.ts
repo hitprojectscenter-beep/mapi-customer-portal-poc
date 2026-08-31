@@ -599,8 +599,18 @@ const FORM_BY_CATEGORY: Record<Category, string> = {
   certificates: "https://govforms.gov.il/mw/forms/tasa@mapi.gov.il"
 };
 
-export function getOrderFormUrl(s: Pick<Service, "externalHref" | "govFormUrl" | "category">): string {
-  return s.externalHref || s.govFormUrl || FORM_BY_CATEGORY[s.category] || FORM_BY_CATEGORY.maps;
+// Per-slug order-form overrides. Code-driven (not in the DB) so a correction
+// deploys through dev→test→prod by branch, without touching the shared catalog
+// database. Takes priority over the category default — needed where a service's
+// category default points at the wrong form (e.g. international-boundaries is a
+// gis-category service but its official form is Boundaries@mapi.gov.il, not the
+// gis default GeographicInformation@mapi.gov.il).
+const ORDER_FORM_BY_SLUG: Record<string, string> = {
+  "international-boundaries": "https://govforms.gov.il/mw/forms/Boundaries@mapi.gov.il"
+};
+
+export function getOrderFormUrl(s: Pick<Service, "slug" | "externalHref" | "govFormUrl" | "category">): string {
+  return ORDER_FORM_BY_SLUG[s.slug] || s.externalHref || s.govFormUrl || FORM_BY_CATEGORY[s.category] || FORM_BY_CATEGORY.maps;
 }
 
 export const categories: { id: Category; label: string; icon: string }[] = [
