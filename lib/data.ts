@@ -506,13 +506,15 @@ export const services: Service[] = [
     category: "gis",
     categoryLabel: 'נתוני GIS',
     shortDescription: "מידע ושכבות גבולות בינלאומיים רשמיים",
-    description: 'שירות מידע על גבולות בינלאומיים של מדינת ישראל — שכבות ונתונים רשמיים המנוהלים על ידי מפ"י, לגורמים ממשלתיים ומקצועיים.',
+    description: 'שירות מידע מאגף הגבולות הבינלאומיים של מפ"י — בדיקת מיקום נקודה, מבנה, גוש/חלקה או תוצר מדידה ביחס לקו גבול בינלאומי או קו תחום אזור יהודה ושומרון, לגורמים פרטיים, עסקיים וממשלתיים.',
     icon: "public",
-    priceFrom: 800, priceTo: 6000, priceUnit: "₪",
-    deliveryDays: "לפי הצעת מחיר",
-    customerTypes: ["government", "business"],
+    priceFrom: 243, priceTo: 6000, priceUnit: "₪",
+    deliveryDays: "עד 4 ימי עסקים",
+    customerTypes: ["private", "business", "government"],
     inScope: true,
-    features: ["נתונים רשמיים", "לגורמים מוסמכים", "בהצעת מחיר"],
+    // Order handoff must reach the boundaries form (not the gis-category default).
+    govFormUrl: "https://govforms.gov.il/mw/forms/Boundaries@mapi.gov.il",
+    features: ["בדיקה מרחבית / מדידה", "רישיון שימוש + אגרה", "מסירה בקישור מאובטח"],
     faq: []
   },
   {

@@ -416,6 +416,47 @@ export default function ServiceDetailPage() {
                   </div>
                 )}
 
+                {process.links && (
+                  <div className="mb-3">
+                    <p className="text-[11px] uppercase tracking-wider font-semibold text-secondary/80 mb-1.5">קישורים רשמיים</p>
+                    <ul className="space-y-1">
+                      {process.links.map((l) => (
+                        <li key={l.url}>
+                          <a href={l.url} target="_blank" rel="noopener noreferrer" className="text-xs text-secondary hover:text-primary underline inline-flex items-center gap-1">
+                            <span className="material-symbols-outlined text-[14px]" aria-hidden="true">open_in_new</span>{l.label}
+                          </a>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+
+                {process.rules && (
+                  <div className="mb-3">
+                    <p className="text-[11px] uppercase tracking-wider font-semibold text-secondary/80 mb-1.5">כללי חישוב ותקינות</p>
+                    <ul className="space-y-1">
+                      {process.rules.map((r) => (
+                        <li key={r} className="text-xs text-on-surface-variant flex gap-1.5">
+                          <span className="material-symbols-outlined text-[14px] text-secondary flex-shrink-0 mt-0.5" aria-hidden="true">rule</span>{r}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+
+                {process.notifications && (
+                  <div className="mb-3">
+                    <p className="text-[11px] uppercase tracking-wider font-semibold text-secondary/80 mb-1.5">עדכונים והתראות</p>
+                    <ul className="space-y-1">
+                      {process.notifications.map((n) => (
+                        <li key={n} className="text-xs text-on-surface-variant flex gap-1.5">
+                          <span className="material-symbols-outlined text-[14px] text-secondary flex-shrink-0 mt-0.5" aria-hidden="true">mail</span>{n}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+
                 <div className="flex flex-wrap gap-x-5 gap-y-1 text-[11px] text-on-surface-variant border-t border-outline-variant/40 pt-3">
                   {process.formats && <span>פורמט תוצר: <b className="text-primary">{process.formats}</b></span>}
                   <span>זמן טיפול: <b className="text-primary">{process.deliveryDays}</b></span>
