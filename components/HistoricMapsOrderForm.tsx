@@ -11,6 +11,7 @@
 import { useMemo, useState } from "react";
 import Link from "next/link";
 import type { Service } from "@/lib/data";
+import GovMapEmbed from "@/components/GovMapEmbed";
 
 type CustomerType = "1" | "2" | "3"; // private / business / government
 
@@ -41,6 +42,7 @@ export default function HistoricMapsOrderForm({ service }: { service: Service })
 
   const [period, setPeriod] = useState("");
   const [mapDesc, setMapDesc] = useState("");
+  const [area, setArea] = useState<{ itmX: number; itmY: number; vertices: number; sqkm: number } | null>(null);
   const [format, setFormat] = useState("");
   const [quantity, setQuantity] = useState(1);
 
@@ -76,7 +78,7 @@ export default function HistoricMapsOrderForm({ service }: { service: Service })
     if (!phone.trim()) e.phone = "שדה חובה.";
 
     if (!period) e.period = "יש לבחור תקופה.";
-    if (mapDesc.trim().length < 5) e.mapDesc = "יש לתאר את המפה או האזור המבוקש.";
+    if (mapDesc.trim().length < 5 && !area) e.mapDesc = "יש לתאר את המפה, או לסמן את האזור על המפה.";
     if (!format) e.format = "יש לבחור פורמט.";
     if (!quantity || quantity < 1) e.quantity = "כמות חייבת להיות לפחות 1.";
 
@@ -86,7 +88,7 @@ export default function HistoricMapsOrderForm({ service }: { service: Service })
       if (!dHouse.trim()) e.dHouse = "שדה חובה.";
     }
     return e;
-  }, [customerType, firstName, lastName, idNum, company, companyNum, govOffice, email, phone, period, mapDesc, format, quantity, isDigital, shipping, dCity, dStreet, dHouse]);
+  }, [customerType, firstName, lastName, idNum, company, companyNum, govOffice, email, phone, period, mapDesc, area, format, quantity, isDigital, shipping, dCity, dStreet, dHouse]);
 
   const isValid = Object.keys(errors).length === 0;
 
@@ -99,7 +101,7 @@ export default function HistoricMapsOrderForm({ service }: { service: Service })
         method: "POST", headers: { "Content-Type": "application/json" }, keepalive: true,
         body: JSON.stringify({
           orderId: reference, serviceName: "הזמנת מפות היסטוריות", slug: service.slug, total,
-          routeDetails: `${period} · ${fmt?.label} ×${quantity} · ${mapDesc}`,
+          routeDetails: `${period} · ${fmt?.label} ×${quantity} · ${mapDesc}${area ? ` · אזור מסומן ITM ${area.itmX},${area.itmY}` : ""}`,
           delivery: isDigital ? "עותק דיגיטלי" : shipping === "pickup" ? "איסוף עצמי" : shipping === "registered" ? "דואר רשום" : "דואר מהיר"
         })
       }).catch(() => {});
@@ -156,7 +158,23 @@ export default function HistoricMapsOrderForm({ service }: { service: Service })
           <div className="mb-4">
             <label className={labelCls} htmlFor="desc">אזור / תיאור המפה המבוקשת <span className="text-error-red">*</span></label>
             <textarea id="desc" rows={3} value={mapDesc} onChange={(e) => setMapDesc(e.target.value)} className={`${inputCls} resize-none`} placeholder="לדוגמה: יפו והמושבה הגרמנית, גיליון מנדטורי 1:20,000; או שם היישוב/הגוש." />
+            <p className="text-[11px] text-on-surface-variant mt-1">ניתן לתאר בטקסט, ו/או לסמן את האזור המבוקש על המפה למטה.</p>
             {err("mapDesc")}
+          </div>
+
+          <div className="mb-1">
+            <label className={labelCls}>סימון האזור על המפה (GovMap)</label>
+            <GovMapEmbed
+              mode="topo"
+              allowDraw
+              height="360px"
+              onAreaSelected={(a) => setArea({ itmX: a.itmX, itmY: a.itmY, vertices: a.vertices, sqkm: a.sqkm })}
+            />
+            {area && (
+              <p className="text-xs text-positive-green font-semibold mt-2">
+                ✓ אזור סומן — מרכז (רשת ישראל ITM): <span dir="ltr" className="font-mono">{area.itmX.toLocaleString()}, {area.itmY.toLocaleString()}</span> · {area.vertices} קודקודים
+              </p>
+            )}
           </div>
           <div>
             <label className={labelCls}>פורמט <span className="text-error-red">*</span></label>
