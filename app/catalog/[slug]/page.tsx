@@ -357,17 +357,31 @@ export default function ServiceDetailPage() {
                   <span>{t("svc.startOrder")} · בפיתוח</span>
                 </button>
               )}
-              <a
-                href={getOrderFormUrl(service)}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={`shine block w-full text-center px-6 py-4 rounded-full font-semibold transition-colors flex items-center justify-center gap-2 min-h-[54px] ${process ? "border border-secondary/40 text-secondary hover:bg-secondary/5" : "shine-glow btn-lux-primary"}`}
-                data-tooltip="מעבר לטופס ההזמנה הרשמי — נפתח בלשונית חדשה. זהו אותו הטופס שאליו מגיעים מהאתר הקיים; הפורטל נשאר פתוח."
-                data-tooltip-position="bottom"
-              >
-                <span className="material-symbols-outlined" aria-hidden="true">open_in_new</span>
-                <span>{process ? "מעבר לטופס הרשמי" : "מעבר להזמנה"}</span>
-              </a>
+              {process ? (
+                <button
+                  type="button"
+                  disabled
+                  aria-disabled="true"
+                  className="w-full bg-surface-container text-on-surface-variant/50 px-6 py-4 rounded-full font-semibold flex items-center justify-center gap-2 min-h-[54px] cursor-not-allowed border border-outline-variant/50"
+                  data-tooltip="ההזמנה מתבצעת כעת דרך הפורטל; הקישור לטופס הממשלתי מושבת עבור שירות זה."
+                  data-tooltip-position="bottom"
+                >
+                  <span className="material-symbols-outlined" aria-hidden="true">block</span>
+                  <span>מעבר לטופס הרשמי (מושבת)</span>
+                </button>
+              ) : (
+                <a
+                  href={getOrderFormUrl(service)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="shine shine-glow block w-full btn-lux-primary text-center px-6 py-4 rounded-full font-semibold transition-colors flex items-center justify-center gap-2 min-h-[54px]"
+                  data-tooltip="מעבר לטופס ההזמנה הרשמי — נפתח בלשונית חדשה. זהו אותו הטופס שאליו מגיעים מהאתר הקיים; הפורטל נשאר פתוח."
+                  data-tooltip-position="bottom"
+                >
+                  <span className="material-symbols-outlined" aria-hidden="true">open_in_new</span>
+                  <span>מעבר להזמנה</span>
+                </a>
+              )}
             </div>
 
             {/* GovForms process reflection (faithful to the official form spec) */}

@@ -8,6 +8,7 @@ import dynamic from "next/dynamic";
 import RouteFlowPanel, { type RouteFlowResult } from "@/components/RouteFlowPanel";
 import BoundariesInquiryForm from "@/components/BoundariesInquiryForm";
 import PaperMapsOrderForm from "@/components/PaperMapsOrderForm";
+import HistoricMapsOrderForm from "@/components/HistoricMapsOrderForm";
 
 // Services whose in-portal order UI implements the official GovForms conditional
 // logic (Maps@mapi.gov.il / Boundaries@mapi.gov.il) instead of the generic flow.
@@ -148,34 +149,18 @@ export default function OrderPage() {
     );
   }
 
-  if (!service.inScope) {
-    return (
-      <div className="max-w-container-max-width mx-auto px-4 md:px-margin-desktop py-20 text-center">
-        <h1 className="text-3xl font-bold text-primary mb-4">{t("svc.notInScope")}</h1>
-        <p className="text-on-surface-variant mb-6">
-          {t("svc.notInScopeSub")}
-        </p>
-        <a
-          href={service.externalUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="bg-alert-yellow text-white px-8 py-4 rounded-full font-bold inline-flex items-center gap-2"
-        >
-          <span>{t("svc.openForm")}</span>
-          <span className="material-symbols-outlined">open_in_new</span>
-        </a>
-      </div>
-    );
-  }
-
-  // Spec-driven in-portal forms for the paper-maps and boundaries routes —
-  // these implement the official GovForms conditional logic (see the two form
-  // components) instead of the generic polygon/orthophoto flow below.
+  // Spec-driven in-portal forms — these implement the official GovForms logic
+  // (paper maps / boundaries / historic maps) instead of the generic polygon
+  // flow below. Placed BEFORE the inScope guard on purpose: historic-maps is not
+  // "inScope" for the generic flow, yet still has its own in-portal order form.
   const isBoundaries = service.slug === "international-boundaries";
   const isPaperMaps = PAPER_MAP_ORDER_SLUGS.has(service.slug);
-  if (isBoundaries || isPaperMaps) {
+  const isHistoric = service.slug === "historic-maps";
+  if (isBoundaries || isPaperMaps || isHistoric) {
     const formTitle = isBoundaries
       ? "פנייה לקבלת מידע מאגף גבולות בינלאומיים"
+      : isHistoric
+      ? 'הזמנת מפות היסטוריות מארכיון מפ"י'
       : "הזמנת מפות נייר בהוצאת המרכז למיפוי ישראל";
     return (
       <div className="bg-surface min-h-screen">
@@ -195,8 +180,30 @@ export default function OrderPage() {
           </div>
         </div>
         <div className="max-w-container-max-width mx-auto px-4 md:px-margin-desktop py-8">
-          {isBoundaries ? <BoundariesInquiryForm service={service} /> : <PaperMapsOrderForm service={service} />}
+          {isBoundaries ? <BoundariesInquiryForm service={service} />
+            : isHistoric ? <HistoricMapsOrderForm service={service} />
+            : <PaperMapsOrderForm service={service} />}
         </div>
+      </div>
+    );
+  }
+
+  if (!service.inScope) {
+    return (
+      <div className="max-w-container-max-width mx-auto px-4 md:px-margin-desktop py-20 text-center">
+        <h1 className="text-3xl font-bold text-primary mb-4">{t("svc.notInScope")}</h1>
+        <p className="text-on-surface-variant mb-6">
+          {t("svc.notInScopeSub")}
+        </p>
+        <a
+          href={service.externalUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="bg-alert-yellow text-white px-8 py-4 rounded-full font-bold inline-flex items-center gap-2"
+        >
+          <span>{t("svc.openForm")}</span>
+          <span className="material-symbols-outlined">open_in_new</span>
+        </a>
       </div>
     );
   }

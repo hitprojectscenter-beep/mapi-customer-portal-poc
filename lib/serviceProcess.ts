@@ -119,6 +119,37 @@ const PAPER_MAPS: ServiceProcess = {
   deliveryDays: 'עד 4 ימי עסקים (זמן המשלוח בפועל תלוי בדואר ישראל).'
 };
 
+// Historic maps use a dedicated ordering channel (HistoricalMaps@mapi.gov.il),
+// separate from the two modern spec sheets. The logic below is grounded only in
+// the portal's own historic-maps service data (formats/price table, periods,
+// handling time) — nothing beyond it is invented.
+const HISTORIC: ServiceProcess = {
+  formName: 'הזמנת מפות היסטוריות מארכיון מפ"י · HistoricalMaps@mapi.gov.il',
+  intro: `הזמנת מפות היסטוריות מארכיון מפ"י — מהתקופה העות'מאנית, תקופת המנדט הבריטי, המדינה הצעירה ועד ימינו. שימושי למחקר אקדמי, היסטורי וגנאלוגי. הזמנה כעותק סרוק דיגיטלי או כהדפסת איכות.`,
+  audience: 'לקוח פרטי, לקוח עסקי או גוף מוסדי / ממשלתי.',
+  steps: [
+    { title: 'המפה המבוקשת', detail: 'בחירת התקופה ההיסטורית, תיאור האזור / המפה, בחירת פורמט (סרוק דיגיטלי או הדפסת איכות A3/A2/A1) וכמות.' },
+    { title: 'פרטי המבקש', detail: 'סוג לקוח (פרטי / עסקי / מוסדי) ופרטי קשר.' },
+    { title: 'אספקה', detail: 'עותק סרוק נשלח בקישור מאובטח בדוא"ל; מפה מודפסת נמסרת באיסוף עצמי או במשלוח דואר רשום / מהיר.' },
+    { title: 'תשלום', detail: 'תשלום מקוון (מחיר הפורמט × כמות + משלוח אם רלוונטי).' }
+  ],
+  options: [
+    { label: 'תקופות', items: ["עות'מאני / טרום-1918", "המנדט הבריטי (1918–1948)", "המדינה הצעירה (1948–1967)", "מ-1967 ועד היום"] },
+    { label: 'פורמט', items: ['סרוק (עותק דיגיטלי)', 'הדפסת איכות A3 / A2 / A1'] }
+  ],
+  pricing: [
+    { label: 'סרוק (עותק דיגיטלי)', amount: '120 ₪' },
+    { label: 'הדפסת איכות A3', amount: '160 ₪' },
+    { label: 'הדפסת איכות A2', amount: '210 ₪' },
+    { label: 'הדפסת איכות A1', amount: '280 ₪' }
+  ],
+  delivery: ['עותק דיגיטלי — קישור מאובטח בדוא"ל', 'איסוף עצמי מהמשרד', 'משלוח בדואר רשום / מהיר'],
+  links: [{ label: 'דף השירות ב-gov.il', url: 'https://www.gov.il/he/service/historic_maps' }],
+  notifications: ['בסיום ההזמנה נשלח אישור בדוא"ל.', 'הארכיון מאתר את המפה ומאמת זמינות; לאחר התשלום נמסר התוצר.'],
+  formats: 'PDF / JPEG / TIFF (סרוק) · הדפסת איכות (מודפס).',
+  deliveryDays: '7–14 ימי עסקים (סרוק מהיר יותר ממודפס).'
+};
+
 // Portal services covered by the paper-maps (Maps@mapi.gov.il) form.
 const PAPER_MAP_SLUGS = new Set([
   "topographic-map", "touring-map", "trail-map", "student-map",
@@ -128,6 +159,12 @@ const PAPER_MAP_SLUGS = new Set([
 /** The real GovForms process for a service, or null if none is documented. */
 export function getServiceProcess(slug: string): ServiceProcess | null {
   if (slug === "international-boundaries") return BOUNDARIES;
+  if (slug === "historic-maps") return HISTORIC;
   if (PAPER_MAP_SLUGS.has(slug)) return PAPER_MAPS;
   return null;
+}
+
+/** True when the service is ordered via an in-portal form (not a link-out). */
+export function hasInPortalOrder(slug: string): boolean {
+  return getServiceProcess(slug) !== null;
 }

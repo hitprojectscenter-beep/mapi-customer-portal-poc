@@ -9,6 +9,7 @@ import { useLanguage } from "@/lib/LanguageContext";
 import PriceTag from "@/components/PriceTag";
 import { useWishlist } from "@/lib/WishlistContext";
 import { getRatingSummary } from "@/lib/reviews";
+import { hasInPortalOrder } from "@/lib/serviceProcess";
 import StarRating from "./StarRating";
 
 interface Props {
@@ -20,10 +21,12 @@ export default function ServiceCard({ service }: Props) {
   const { t, lang } = useLanguage();
   const wish = useWishlist();
 
-  // Details live on the internal PDP; ordering goes to the ORIGINAL government
-  // form in a new tab (the in-portal order wizard is disabled / in development).
+  // Details live on the internal PDP. For services with an in-portal order form
+  // (paper maps / boundaries / historic maps) the card orders inside the portal;
+  // every other service still links out to the original government form.
   const pdpHref = `/catalog/${service.slug}`;
   const orderUrl = getOrderFormUrl(service);
+  const inPortalOrder = hasInPortalOrder(service.slug);
 
   const localName = getServiceName(service.slug, service.name, lang);
   const localShort = getServiceShortDescription(service.slug, service.shortDescription, lang);
@@ -92,26 +95,39 @@ export default function ServiceCard({ service }: Props) {
               <PriceTag amount={service.priceFrom} unit={service.priceUnit} size="sm" />
             )}
             <span
-              className="text-[10px] text-on-surface-variant/70 font-semibold uppercase tracking-wider mt-4 flex-shrink-0"
-              data-tooltip="הזמנה בתוך הפורטל בפיתוח — כרגע ההזמנה מתבצעת בטופס הרשמי."
+              className={`text-[10px] font-semibold uppercase tracking-wider mt-4 flex-shrink-0 ${inPortalOrder ? "text-secondary" : "text-on-surface-variant/70"}`}
+              data-tooltip={inPortalOrder ? "הזמנה מקוונת מלאה בתוך הפורטל." : "הזמנה בתוך הפורטל בפיתוח — כרגע ההזמנה מתבצעת בטופס הרשמי."}
               data-tooltip-position="bottom"
             >
-              בפורטל · בקרוב
+              {inPortalOrder ? "הזמנה בפורטל" : "בפורטל · בקרוב"}
             </span>
           </div>
 
-          {/* Primary action: the original government form, opened in a NEW TAB */}
-          <a
-            href={orderUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="shine shine-glow block w-full btn-lux-primary text-center py-2.5 rounded-full text-sm transition-colors flex items-center justify-center gap-2"
-            data-tooltip="מעבר לטופס ההזמנה הרשמי — נפתח בלשונית חדשה; הפורטל נשאר פתוח."
-            data-tooltip-position="bottom"
-          >
-            <span className="material-symbols-outlined text-[18px]" aria-hidden="true">open_in_new</span>
-            <span>מעבר להזמנה</span>
-          </a>
+          {/* Primary action: in-portal order form when available, else the
+              original government form opened in a NEW TAB. */}
+          {inPortalOrder ? (
+            <Link
+              href={`/order/${service.slug}`}
+              className="shine shine-glow block w-full btn-lux-primary text-center py-2.5 rounded-full text-sm transition-colors flex items-center justify-center gap-2"
+              data-tooltip="פתיחת טופס ההזמנה המקוון בפורטל."
+              data-tooltip-position="bottom"
+            >
+              <span className="material-symbols-outlined text-[18px]" aria-hidden="true">edit_note</span>
+              <span>התחל הזמנה</span>
+            </Link>
+          ) : (
+            <a
+              href={orderUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="shine shine-glow block w-full btn-lux-primary text-center py-2.5 rounded-full text-sm transition-colors flex items-center justify-center gap-2"
+              data-tooltip="מעבר לטופס ההזמנה הרשמי — נפתח בלשונית חדשה; הפורטל נשאר פתוח."
+              data-tooltip-position="bottom"
+            >
+              <span className="material-symbols-outlined text-[18px]" aria-hidden="true">open_in_new</span>
+              <span>מעבר להזמנה</span>
+            </a>
+          )}
         </div>
       </div>
     </article>
