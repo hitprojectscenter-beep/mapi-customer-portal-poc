@@ -334,27 +334,39 @@ export default function ServiceDetailPage() {
                 active path is the ORIGINAL government form, opened in a NEW TAB
                 (the same form reached from the legacy site). Portal stays open. */}
             <div className="space-y-2.5 mb-6">
-              <button
-                type="button"
-                disabled
-                aria-disabled="true"
-                className="w-full bg-surface-container text-on-surface-variant/60 px-6 py-4 rounded-full font-semibold flex items-center justify-center gap-2 min-h-[54px] cursor-not-allowed border border-outline-variant/60"
-                data-tooltip="הזמנה בתוך הפורטל נמצאת בפיתוח וכרגע מושבתת. להזמנה — לחצו 'מעבר להזמנה' לטופס הרשמי."
-                data-tooltip-position="bottom"
-              >
-                <span className="material-symbols-outlined" aria-hidden="true">lock</span>
-                <span>{t("svc.startOrder")} · בפיתוח</span>
-              </button>
+              {process ? (
+                <Link
+                  href={`/order/${service.slug}`}
+                  className="shine shine-glow block w-full btn-lux-primary text-center px-6 py-4 rounded-full font-semibold transition-colors flex items-center justify-center gap-2 min-h-[54px]"
+                  data-tooltip="פתיחת טופס ההזמנה המקוון בפורטל — מיישם את לוגיקת הטופס הממשלתי הרשמי."
+                  data-tooltip-position="bottom"
+                >
+                  <span className="material-symbols-outlined" aria-hidden="true">edit_note</span>
+                  <span>התחל הזמנה בפורטל</span>
+                </Link>
+              ) : (
+                <button
+                  type="button"
+                  disabled
+                  aria-disabled="true"
+                  className="w-full bg-surface-container text-on-surface-variant/60 px-6 py-4 rounded-full font-semibold flex items-center justify-center gap-2 min-h-[54px] cursor-not-allowed border border-outline-variant/60"
+                  data-tooltip="הזמנה בתוך הפורטל נמצאת בפיתוח וכרגע מושבתת. להזמנה — לחצו 'מעבר לטופס הרשמי'."
+                  data-tooltip-position="bottom"
+                >
+                  <span className="material-symbols-outlined" aria-hidden="true">lock</span>
+                  <span>{t("svc.startOrder")} · בפיתוח</span>
+                </button>
+              )}
               <a
                 href={getOrderFormUrl(service)}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="shine shine-glow block w-full btn-lux-primary text-center px-6 py-4 rounded-full font-semibold transition-colors flex items-center justify-center gap-2 min-h-[54px]"
+                className={`shine block w-full text-center px-6 py-4 rounded-full font-semibold transition-colors flex items-center justify-center gap-2 min-h-[54px] ${process ? "border border-secondary/40 text-secondary hover:bg-secondary/5" : "shine-glow btn-lux-primary"}`}
                 data-tooltip="מעבר לטופס ההזמנה הרשמי — נפתח בלשונית חדשה. זהו אותו הטופס שאליו מגיעים מהאתר הקיים; הפורטל נשאר פתוח."
                 data-tooltip-position="bottom"
               >
                 <span className="material-symbols-outlined" aria-hidden="true">open_in_new</span>
-                <span>מעבר להזמנה</span>
+                <span>{process ? "מעבר לטופס הרשמי" : "מעבר להזמנה"}</span>
               </a>
             </div>
 

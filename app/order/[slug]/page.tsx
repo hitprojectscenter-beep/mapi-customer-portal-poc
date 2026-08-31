@@ -6,6 +6,15 @@ import { useParams, useRouter } from "next/navigation";
 import { services, getServiceName } from "@/lib/data";
 import dynamic from "next/dynamic";
 import RouteFlowPanel, { type RouteFlowResult } from "@/components/RouteFlowPanel";
+import BoundariesInquiryForm from "@/components/BoundariesInquiryForm";
+import PaperMapsOrderForm from "@/components/PaperMapsOrderForm";
+
+// Services whose in-portal order UI implements the official GovForms conditional
+// logic (Maps@mapi.gov.il / Boundaries@mapi.gov.il) instead of the generic flow.
+const PAPER_MAP_ORDER_SLUGS = new Set([
+  "topographic-map", "touring-map", "trail-map", "student-map",
+  "state-emblems-poster", "city-map", "marine-maps"
+]);
 
 // Leaflet touches window on import — load the picker client-side only
 const PolygonMapPicker = dynamic(() => import("@/components/PolygonMapPicker"), {
@@ -155,6 +164,39 @@ export default function OrderPage() {
           <span>{t("svc.openForm")}</span>
           <span className="material-symbols-outlined">open_in_new</span>
         </a>
+      </div>
+    );
+  }
+
+  // Spec-driven in-portal forms for the paper-maps and boundaries routes —
+  // these implement the official GovForms conditional logic (see the two form
+  // components) instead of the generic polygon/orthophoto flow below.
+  const isBoundaries = service.slug === "international-boundaries";
+  const isPaperMaps = PAPER_MAP_ORDER_SLUGS.has(service.slug);
+  if (isBoundaries || isPaperMaps) {
+    const formTitle = isBoundaries
+      ? "פנייה לקבלת מידע מאגף גבולות בינלאומיים"
+      : "הזמנת מפות נייר בהוצאת המרכז למיפוי ישראל";
+    return (
+      <div className="bg-surface min-h-screen">
+        <div className="bg-primary text-white">
+          <div className="max-w-container-max-width mx-auto px-4 md:px-margin-desktop py-8">
+            <nav aria-label={t("nav.skipToContent")} className="text-sm text-white/70 mb-4">
+              <ol className="flex flex-row-reverse items-center gap-2 flex-wrap">
+                <li><Link href="/" className="hover:text-white">{t("common.home")}</Link></li>
+                <li aria-hidden="true">/</li>
+                <li><Link href={`/catalog/${service.slug}`} className="hover:text-white">{localName}</Link></li>
+                <li aria-hidden="true">/</li>
+                <li className="text-white font-bold">הזמנה בפורטל</li>
+              </ol>
+            </nav>
+            <h1 className="text-2xl md:text-3xl font-extrabold">{formTitle}</h1>
+            <p className="text-white/70 text-sm mt-1">טופס מקוון · {localName}</p>
+          </div>
+        </div>
+        <div className="max-w-container-max-width mx-auto px-4 md:px-margin-desktop py-8">
+          {isBoundaries ? <BoundariesInquiryForm service={service} /> : <PaperMapsOrderForm service={service} />}
+        </div>
       </div>
     );
   }
