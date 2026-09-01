@@ -51,6 +51,11 @@ const CATALOG: CategoryDef[] = [
 const SHEETS_25 = ["04-ראש הנקרה", "11-צפת", "20-חיפה", "31-חדרה", "אחר / לפי בקשה"];
 const SHEETS_50 = ["1-הגליל העליון", "3-עמק יזרעאל", "7-מישור החוף", "9-ירושלים", "אחר / לפי בקשה"];
 const CITIES = ["תל אביב-יפו", "ירושלים", "חיפה", "באר שבע", "נצרת", "אילת"];
+// Representative demo scales (real value comes from City_MAPI.Scale1).
+const CITY_SCALES: Record<string, string> = {
+  "תל אביב-יפו": "1:12,500", "ירושלים": "1:12,500", "חיפה": "1:12,500",
+  "באר שבע": "1:10,000", "נצרת": "1:10,000", "אילת": "1:10,000"
+};
 const DISTRIBUTORS = [
   { name: 'מפות הגליל בע"מ', hp: "514991234" },
   { name: "מרכז המפות — רון הוצאה לאור", hp: "513882910" },
@@ -89,7 +94,9 @@ export default function PaperMapsOrderForm({ service }: { service: Service }) {
   const [dCity, setDCity] = useState("");
   const [dStreet, setDStreet] = useState("");
   const [dHouse, setDHouse] = useState("");
+  const [dApt, setDApt] = useState("");
   const [dZip, setDZip] = useState("");
+  const [dPobox, setDPobox] = useState("");
   const [remarks, setRemarks] = useState("");
 
   const [showErrors, setShowErrors] = useState(false);
@@ -148,9 +155,10 @@ export default function PaperMapsOrderForm({ service }: { service: Service }) {
       if (!dCity.trim()) e.dCity = "שדה חובה.";
       if (!dStreet.trim()) e.dStreet = "שדה חובה.";
       if (!dHouse.trim()) e.dHouse = "שדה חובה.";
+      if (!/^\d{7}$/.test(dZip.trim())) e.dZip = "מיקוד בן 7 ספרות.";
     }
     return e;
-  }, [customerType, isDistributor, distributor, firstName, lastName, idNum, company, companyNum, email, phone, items, shipping, dCity, dStreet, dHouse]);
+  }, [customerType, isDistributor, distributor, firstName, lastName, idNum, company, companyNum, email, phone, items, shipping, dCity, dStreet, dHouse, dZip]);
 
   const isValid = Object.keys(errors).length === 0;
 
@@ -328,12 +336,20 @@ export default function PaperMapsOrderForm({ service }: { service: Service }) {
 
                   {/* City maps: pick a settlement */}
                   {p?.kind === "city" && (
-                    <div className="mt-3">
-                      <label className={labelCls}>בחירת יישוב <span className="text-error-red">*</span></label>
-                      <select value={it.city} onChange={(e) => patchItem(it.id, { city: e.target.value })} className={selCls}>
-                        <option value="">בחירה…</option>
-                        {CITIES.map((c) => <option key={c} value={c}>{c}</option>)}
-                      </select>
+                    <div className="mt-3 grid sm:grid-cols-2 gap-3">
+                      <div>
+                        <label className={labelCls}>בחירת יישוב <span className="text-error-red">*</span></label>
+                        <select value={it.city} onChange={(e) => patchItem(it.id, { city: e.target.value })} className={selCls}>
+                          <option value="">בחירה…</option>
+                          {CITIES.map((c) => <option key={c} value={c}>{c}</option>)}
+                        </select>
+                      </div>
+                      {it.city && (
+                        <div>
+                          <label className={labelCls}>קנה מידה של המפה</label>
+                          <input readOnly dir="ltr" value={CITY_SCALES[it.city] || "1:12,500"} className={`${inputCls} bg-surface-container/60 text-on-surface-variant`} />
+                        </div>
+                      )}
                     </div>
                   )}
 
@@ -401,8 +417,10 @@ export default function PaperMapsOrderForm({ service }: { service: Service }) {
             <div className="grid sm:grid-cols-2 gap-3">
               <div><label className={labelCls} htmlFor="dc">יישוב <span className="text-error-red">*</span></label><input id="dc" value={dCity} onChange={(e) => setDCity(e.target.value)} className={inputCls} />{err("dCity")}</div>
               <div><label className={labelCls} htmlFor="ds">רחוב <span className="text-error-red">*</span></label><input id="ds" value={dStreet} onChange={(e) => setDStreet(e.target.value)} className={inputCls} />{err("dStreet")}</div>
-              <div><label className={labelCls} htmlFor="dh">מספר בית <span className="text-error-red">*</span></label><input id="dh" dir="ltr" value={dHouse} onChange={(e) => setDHouse(e.target.value)} className={inputCls} />{err("dHouse")}</div>
-              <div><label className={labelCls} htmlFor="dz">מיקוד</label><input id="dz" dir="ltr" inputMode="numeric" value={dZip} onChange={(e) => setDZip(e.target.value)} className={inputCls} /></div>
+              <div><label className={labelCls} htmlFor="dh">מספר בית <span className="text-error-red">*</span></label><input id="dh" dir="ltr" maxLength={4} value={dHouse} onChange={(e) => setDHouse(e.target.value)} className={inputCls} />{err("dHouse")}</div>
+              <div><label className={labelCls} htmlFor="dapt">מספר דירה</label><input id="dapt" dir="ltr" maxLength={4} value={dApt} onChange={(e) => setDApt(e.target.value)} className={inputCls} /></div>
+              <div><label className={labelCls} htmlFor="dz">מיקוד <span className="text-error-red">*</span></label><input id="dz" dir="ltr" inputMode="numeric" maxLength={7} value={dZip} onChange={(e) => setDZip(e.target.value)} className={inputCls} />{err("dZip")}</div>
+              <div><label className={labelCls} htmlFor="dpo">תא דואר</label><input id="dpo" dir="ltr" inputMode="numeric" maxLength={5} value={dPobox} onChange={(e) => setDPobox(e.target.value)} className={inputCls} /></div>
             </div>
           )}
           <div className="mt-3">

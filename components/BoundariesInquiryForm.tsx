@@ -75,7 +75,9 @@ export default function BoundariesInquiryForm({ service }: { service: Service })
       if (!block.trim()) e.block = "יש להזין מספר גוש.";
       if (!parcel.trim()) e.parcel = "יש להזין מספר חלקה.";
     }
-    if (showPlace && placeMethod === "1" && !gisFile) e.gisFile = "יש לצרף קובץ GIS (ממ\"ג).";
+    // GISFile is required when place method = GIS (service 1), and also for a
+    // measurement check (service 2), per the spec; optional for "other" (3).
+    if (((showPlace && placeMethod === "1") || serviceType === "2") && !gisFile) e.gisFile = "יש לצרף קובץ GIS (ממ\"ג).";
     if (serviceType === "2" && !measureFile) e.measureFile = "יש לצרף מפת מדידה.";
     if (detail.trim().length < 20) e.detail = "יש לפרט את הפנייה (לפחות 20 תווים).";
 
@@ -237,7 +239,7 @@ export default function BoundariesInquiryForm({ service }: { service: Service })
             {showGisAttach && (
               <div className="mb-5">
                 <label className={labelCls}>
-                  צירוף קובץ GIS {serviceType === "2" || serviceType === "3" ? "(לא חובה אך רצוי)" : <span className="text-error-red">*</span>}
+                  צירוף קובץ GIS {serviceType === "3" ? "(לא חובה אך רצוי)" : <span className="text-error-red">*</span>}
                 </label>
                 <FilePick value={gisFile} onPick={setGisFile} accept=".shp,.dwg,.tiff,.kml,.kmz,.zip,.rar,.cpg,.dbf" hint="SHP · DWG · TIFF · KML · KMZ · ZIP · RAR" />
                 {err("gisFile")}
