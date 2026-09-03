@@ -12,6 +12,7 @@ import { useMemo, useState } from "react";
 import Link from "next/link";
 import type { Service } from "@/lib/data";
 import GovMapEmbed from "@/components/GovMapEmbed";
+import { SHIPPING_OPTIONS, shippingPrice, type ShippingCode } from "@/lib/mapiLists";
 
 type CustomerType = "1" | "2" | "3"; // private / business / government
 
@@ -48,7 +49,7 @@ export default function HistoricMapsOrderForm({ service }: { service: Service })
   const [items, setItems] = useState<Item[]>([blankItem()]);
   const [area, setArea] = useState<{ itmX: number; itmY: number; vertices: number; sqkm: number } | null>(null);
 
-  const [shipping, setShipping] = useState<"pickup" | "registered" | "express">("pickup");
+  const [shipping, setShipping] = useState<ShippingCode>("pickup");
   const [dCity, setDCity] = useState("");
   const [dStreet, setDStreet] = useState("");
   const [dHouse, setDHouse] = useState("");
@@ -68,7 +69,7 @@ export default function HistoricMapsOrderForm({ service }: { service: Service })
   const subtotal = items.reduce((s, it) => s + lineTotal(it), 0);
   // Any printed item requires physical delivery; an all-scanned order is digital.
   const hasPhysical = items.some((it) => { const f = fmtOf(it.format); return f && !f.digital; });
-  const shippingCost = hasPhysical && shipping !== "pickup" ? (shipping === "registered" ? 39 : 80) : 0;
+  const shippingCost = hasPhysical && shipping !== "pickup" ? shippingPrice(shipping) : 0;
   const total = subtotal + shippingCost;
 
   const errors = useMemo(() => {
@@ -287,12 +288,12 @@ export default function HistoricMapsOrderForm({ service }: { service: Service })
           ) : (
             <>
               <div className="grid sm:grid-cols-3 gap-2 mb-3">
-                {([["pickup", "איסוף עצמי", "0 ₪", "storefront"], ["registered", "דואר רשום", "39 ₪", "local_shipping"], ["express", "דואר מהיר", "80 ₪", "bolt"]] as [typeof shipping, string, string, string][]).map(([val, label, cost, icon]) => (
-                  <label key={val} className={`flex flex-col items-center text-center gap-0.5 p-3 rounded-xl border cursor-pointer transition-all ${shipping === val ? "border-secondary bg-secondary/5 ring-1 ring-secondary" : "border-outline-variant hover:border-secondary"}`}>
-                    <input type="radio" name="ship" className="sr-only" checked={shipping === val} onChange={() => setShipping(val)} />
-                    <span className="material-symbols-outlined text-secondary">{icon}</span>
-                    <span className="text-sm font-semibold">{label}</span>
-                    <span className="text-[11px] text-on-surface-variant">{cost}</span>
+                {SHIPPING_OPTIONS.map((opt) => (
+                  <label key={opt.code} className={`flex flex-col items-center text-center gap-0.5 p-3 rounded-xl border cursor-pointer transition-all ${shipping === opt.code ? "border-secondary bg-secondary/5 ring-1 ring-secondary" : "border-outline-variant hover:border-secondary"}`}>
+                    <input type="radio" name="ship" className="sr-only" checked={shipping === opt.code} onChange={() => setShipping(opt.code)} />
+                    <span className="material-symbols-outlined text-secondary">{opt.icon}</span>
+                    <span className="text-sm font-semibold">{opt.label}</span>
+                    <span className="text-[11px] text-on-surface-variant">{opt.price} ₪</span>
                   </label>
                 ))}
               </div>

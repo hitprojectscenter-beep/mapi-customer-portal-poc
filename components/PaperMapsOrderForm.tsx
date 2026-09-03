@@ -15,6 +15,10 @@
 import { useMemo, useState } from "react";
 import Link from "next/link";
 import type { Service } from "@/lib/data";
+import {
+  SHEETS_25, SHEETS_50, CITIES, cityScale, DISTRIBUTORS,
+  SHIPPING_OPTIONS, shippingPrice, type ShippingCode
+} from "@/lib/mapiLists";
 
 type CustomerType = "1" | "2" | "3"; // private / business / distributor
 type MapKind = "topo25" | "topo50" | "city" | "plain";
@@ -47,20 +51,6 @@ const CATALOG: CategoryDef[] = [
   ] }
 ];
 
-// Representative demo lists.
-const SHEETS_25 = ["04-ראש הנקרה", "11-צפת", "20-חיפה", "31-חדרה", "אחר / לפי בקשה"];
-const SHEETS_50 = ["1-הגליל העליון", "3-עמק יזרעאל", "7-מישור החוף", "9-ירושלים", "אחר / לפי בקשה"];
-const CITIES = ["תל אביב-יפו", "ירושלים", "חיפה", "באר שבע", "נצרת", "אילת"];
-// Representative demo scales (real value comes from City_MAPI.Scale1).
-const CITY_SCALES: Record<string, string> = {
-  "תל אביב-יפו": "1:12,500", "ירושלים": "1:12,500", "חיפה": "1:12,500",
-  "באר שבע": "1:10,000", "נצרת": "1:10,000", "אילת": "1:10,000"
-};
-const DISTRIBUTORS = [
-  { name: 'מפות הגליל בע"מ', hp: "514991234" },
-  { name: "מרכז המפות — רון הוצאה לאור", hp: "513882910" },
-  { name: `ג'יאוגרף מפות בע"מ`, hp: "515773028" }
-];
 const OFFICES = 'תל אביב-יפו (לינקולן 1) · ירושלים (חשין 1) · באר שבע (התקווה 4) · חיפה (הפלי"ם 15) · נצרת (המלאכה 16)';
 
 interface Item {
@@ -90,7 +80,7 @@ export default function PaperMapsOrderForm({ service }: { service: Service }) {
   const [phone, setPhone] = useState("");
 
   const [items, setItems] = useState<Item[]>([blankItem()]);
-  const [shipping, setShipping] = useState<"pickup" | "registered" | "express">("pickup");
+  const [shipping, setShipping] = useState<ShippingCode>("pickup");
   const [dCity, setDCity] = useState("");
   const [dStreet, setDStreet] = useState("");
   const [dHouse, setDHouse] = useState("");
@@ -118,7 +108,7 @@ export default function PaperMapsOrderForm({ service }: { service: Service }) {
   };
 
   const subtotal = items.reduce((s, it) => s + lineTotal(it), 0);
-  const shippingCost = shipping === "registered" ? 39 : shipping === "express" ? 80 : 0;
+  const shippingCost = shipping === "pickup" ? 0 : shippingPrice(shipping);
   const total = subtotal + shippingCost;
 
   const errors = useMemo(() => {
@@ -247,21 +237,21 @@ export default function PaperMapsOrderForm({ service }: { service: Service }) {
           )}
           {customerType === "1" && (
             <div className="grid sm:grid-cols-2 gap-3 mb-4">
-              <div><label className={labelCls} htmlFor="fn">שם פרטי <span className="text-error-red">*</span></label><input id="fn" value={firstName} onChange={(e) => setFirstName(e.target.value)} className={inputCls} />{err("firstName")}</div>
-              <div><label className={labelCls} htmlFor="ln">שם משפחה <span className="text-error-red">*</span></label><input id="ln" value={lastName} onChange={(e) => setLastName(e.target.value)} className={inputCls} />{err("lastName")}</div>
+              <div><label className={labelCls} htmlFor="fn">שם פרטי <span className="text-error-red">*</span></label><input id="fn" minLength={2} maxLength={25} value={firstName} onChange={(e) => setFirstName(e.target.value)} className={inputCls} />{err("firstName")}</div>
+              <div><label className={labelCls} htmlFor="ln">שם משפחה <span className="text-error-red">*</span></label><input id="ln" minLength={2} maxLength={25} value={lastName} onChange={(e) => setLastName(e.target.value)} className={inputCls} />{err("lastName")}</div>
               <div className="sm:col-span-2"><label className={labelCls} htmlFor="id">מספר זהות <span className="text-error-red">*</span></label><input id="id" dir="ltr" inputMode="numeric" maxLength={9} value={idNum} onChange={(e) => setIdNum(e.target.value)} className={inputCls} />{err("idNum")}</div>
             </div>
           )}
           {customerType === "2" && (
             <div className="grid sm:grid-cols-2 gap-3 mb-4">
-              <div><label className={labelCls} htmlFor="co">שם החברה <span className="text-error-red">*</span></label><input id="co" value={company} onChange={(e) => setCompany(e.target.value)} className={inputCls} />{err("company")}</div>
+              <div><label className={labelCls} htmlFor="co">שם החברה <span className="text-error-red">*</span></label><input id="co" maxLength={50} value={company} onChange={(e) => setCompany(e.target.value)} className={inputCls} />{err("company")}</div>
               <div><label className={labelCls} htmlFor="con">מספר ח.פ <span className="text-error-red">*</span></label><input id="con" dir="ltr" inputMode="numeric" maxLength={9} value={companyNum} onChange={(e) => setCompanyNum(e.target.value)} className={inputCls} />{err("companyNum")}</div>
             </div>
           )}
           {customerType && (
             <div className="grid sm:grid-cols-2 gap-3">
               <div><label className={labelCls} htmlFor="em">דואר אלקטרוני <span className="text-error-red">*</span></label><input id="em" dir="ltr" type="email" value={email} onChange={(e) => setEmail(e.target.value)} className={inputCls} />{err("email")}</div>
-              <div><label className={labelCls} htmlFor="ph">טלפון <span className="text-error-red">*</span></label><input id="ph" dir="ltr" inputMode="tel" value={phone} onChange={(e) => setPhone(e.target.value)} className={inputCls} />{err("phone")}</div>
+              <div><label className={labelCls} htmlFor="ph">טלפון <span className="text-error-red">*</span></label><input id="ph" dir="ltr" inputMode="tel" maxLength={11} value={phone} onChange={(e) => setPhone(e.target.value)} className={inputCls} />{err("phone")}</div>
             </div>
           )}
         </section>
@@ -347,7 +337,7 @@ export default function PaperMapsOrderForm({ service }: { service: Service }) {
                       {it.city && (
                         <div>
                           <label className={labelCls}>קנה מידה של המפה</label>
-                          <input readOnly dir="ltr" value={CITY_SCALES[it.city] || "1:12,500"} className={`${inputCls} bg-surface-container/60 text-on-surface-variant`} />
+                          <input readOnly dir="ltr" value={cityScale(it.city)} className={`${inputCls} bg-surface-container/60 text-on-surface-variant`} />
                         </div>
                       )}
                     </div>
@@ -399,12 +389,12 @@ export default function PaperMapsOrderForm({ service }: { service: Service }) {
             פרטי משלוח
           </h3>
           <div className="grid sm:grid-cols-3 gap-2 mb-3">
-            {([["pickup", "איסוף עצמי", "0 ₪", "storefront"], ["registered", "דואר רשום", "39 ₪", "local_shipping"], ["express", "דואר מהיר", "80 ₪", "bolt"]] as [typeof shipping, string, string, string][]).map(([val, label, cost, icon]) => (
-              <label key={val} className={`flex flex-col items-center text-center gap-0.5 p-3 rounded-xl border cursor-pointer transition-all ${shipping === val ? "border-secondary bg-secondary/5 ring-1 ring-secondary" : "border-outline-variant hover:border-secondary"}`}>
-                <input type="radio" name="ship" className="sr-only" checked={shipping === val} onChange={() => setShipping(val)} />
-                <span className="material-symbols-outlined text-secondary">{icon}</span>
-                <span className="text-sm font-semibold">{label}</span>
-                <span className="text-[11px] text-on-surface-variant">{cost}</span>
+            {SHIPPING_OPTIONS.map((opt) => (
+              <label key={opt.code} className={`flex flex-col items-center text-center gap-0.5 p-3 rounded-xl border cursor-pointer transition-all ${shipping === opt.code ? "border-secondary bg-secondary/5 ring-1 ring-secondary" : "border-outline-variant hover:border-secondary"}`}>
+                <input type="radio" name="ship" className="sr-only" checked={shipping === opt.code} onChange={() => setShipping(opt.code)} />
+                <span className="material-symbols-outlined text-secondary">{opt.icon}</span>
+                <span className="text-sm font-semibold">{opt.label}</span>
+                <span className="text-[11px] text-on-surface-variant">{opt.price} ₪</span>
               </label>
             ))}
           </div>

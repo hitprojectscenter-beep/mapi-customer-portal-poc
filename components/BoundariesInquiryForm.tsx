@@ -11,6 +11,7 @@
 import { useMemo, useState } from "react";
 import Link from "next/link";
 import type { Service } from "@/lib/data";
+import { GIS_EXTENSIONS, MEASUREMENT_EXTENSIONS, validateAttachment, ATTACHMENT_MAX_MB } from "@/lib/mapiLists";
 
 type ServiceType = "1" | "2" | "3";      // מרחבית / מדידה / אחר
 type PlaceMethod = "1" | "2" | "3" | "4"; // GIS / גוש+חלקה / גוש שומה / קואורדינטות
@@ -67,13 +68,18 @@ export default function BoundariesInquiryForm({ service }: { service: Service })
     if (showCoords) {
       const yn = Number(y), xn = Number(x);
       if (!y) e.y = "יש להזין קואורדינטת Y.";
+      else if (!/^\d{1,16}$/.test(y.trim())) e.y = "Y — ספרות בלבד.";
       else if (!Number.isFinite(yn) || yn < Y_MIN || yn > Y_MAX) e.y = `Y מחוץ לטווח התקף (${Y_MIN.toLocaleString()}–${Y_MAX.toLocaleString()}).`;
       if (!x) e.x = "יש להזין קואורדינטת X.";
+      // Spec: decimal number, up to 2 digits after the point.
+      else if (!/^\d{1,16}(\.\d{1,2})?$/.test(x.trim())) e.x = "X — ספרות, עד שתי ספרות אחרי הנקודה.";
       else if (!Number.isFinite(xn) || xn < X_MIN || xn > X_MAX) e.x = `X מחוץ לטווח התקף (${X_MIN.toLocaleString()}–${X_MAX.toLocaleString()}).`;
     }
     if (showBlock) {
       if (!block.trim()) e.block = "יש להזין מספר גוש.";
+      else if (!/^[\d/]{1,12}$/.test(block.trim())) e.block = "מספר גוש — ספרות (וסלש) בלבד, עד 12 תווים.";
       if (!parcel.trim()) e.parcel = "יש להזין מספר חלקה.";
+      else if (!/^\d{1,16}$/.test(parcel.trim())) e.parcel = "מספר חלקה — ספרות בלבד.";
     }
     // GISFile is required when place method = GIS (service 1), and also for a
     // measurement check (service 2), per the spec; optional for "other" (3).
@@ -82,9 +88,10 @@ export default function BoundariesInquiryForm({ service }: { service: Service })
     if (detail.trim().length < 20) e.detail = "יש לפרט את הפנייה (לפחות 20 תווים).";
 
     if (!customerType) e.customerType = "יש לבחור את סוג הלקוח.";
+    // Field lengths follow the spec (names 2-25, company up to 50, phone 9-11).
     if (customerType === "1") {
-      if (!firstName.trim()) e.firstName = "שדה חובה.";
-      if (!lastName.trim()) e.lastName = "שדה חובה.";
+      if (firstName.trim().length < 2) e.firstName = "שם פרטי — 2 תווים לפחות.";
+      if (lastName.trim().length < 2) e.lastName = "שם משפחה — 2 תווים לפחות.";
       if (!digits9(idNum)) e.idNum = "מספר זהות בן 9 ספרות.";
     }
     if (customerType === "2") {
@@ -93,6 +100,8 @@ export default function BoundariesInquiryForm({ service }: { service: Service })
     }
     if (!emailOk(email)) e.email = "כתובת דוא\"ל לא תקינה.";
     if (!phone.trim()) e.phone = "שדה חובה.";
+    else if (!/^[\d\-+() ]{9,11}$/.test(phone.trim())) e.phone = "מספר טלפון בן 9 עד 11 תווים.";
+    if (detail.trim().length > 2000) e.detail = "פירוט הפנייה מוגבל ל-2000 תווים.";
     return e;
   }, [serviceType, placeMethod, showPlace, showCoords, showBlock, y, x, block, parcel, gisFile, measureFile, detail, customerType, firstName, lastName, idNum, company, companyNum, email, phone]);
 
@@ -225,12 +234,12 @@ export default function BoundariesInquiryForm({ service }: { service: Service })
               <div className="mb-5 grid grid-cols-2 gap-3">
                 <div>
                   <label className={labelCls} htmlFor="block">מספר גוש <span className="text-error-red">*</span></label>
-                  <input id="block" dir="ltr" value={block} onChange={(e) => setBlock(e.target.value)} className={inputCls} />
+                  <input id="block" dir="ltr" maxLength={12} value={block} onChange={(e) => setBlock(e.target.value)} className={inputCls} />
                   {err("block")}
                 </div>
                 <div>
                   <label className={labelCls} htmlFor="parcel">מספר חלקה <span className="text-error-red">*</span></label>
-                  <input id="parcel" dir="ltr" value={parcel} onChange={(e) => setParcel(e.target.value)} className={inputCls} />
+                  <input id="parcel" dir="ltr" inputMode="numeric" maxLength={16} value={parcel} onChange={(e) => setParcel(e.target.value)} className={inputCls} />
                   {err("parcel")}
                 </div>
               </div>
@@ -241,7 +250,7 @@ export default function BoundariesInquiryForm({ service }: { service: Service })
                 <label className={labelCls}>
                   צירוף קובץ GIS {serviceType === "3" ? "(לא חובה אך רצוי)" : <span className="text-error-red">*</span>}
                 </label>
-                <FilePick value={gisFile} onPick={setGisFile} accept=".shp,.dwg,.tiff,.kml,.kmz,.zip,.rar,.cpg,.dbf" hint="SHP · DWG · TIFF · KML · KMZ · ZIP · RAR" />
+                <FilePick value={gisFile} onPick={setGisFile} allowed={GIS_EXTENSIONS} hint="SHP · DWG · TIFF · KML · KMZ · ZIP · RAR" />
                 {err("gisFile")}
               </div>
             )}
@@ -249,14 +258,14 @@ export default function BoundariesInquiryForm({ service }: { service: Service })
             {showMeasure && (
               <div className="mb-5">
                 <label className={labelCls}>מפת מדידה <span className="text-error-red">*</span></label>
-                <FilePick value={measureFile} onPick={setMeasureFile} accept=".pdf,.jpeg,.jpg,.png,.tiff,.shp" hint="PDF · JPEG · PNG · TIFF · SHP" />
+                <FilePick value={measureFile} onPick={setMeasureFile} allowed={MEASUREMENT_EXTENSIONS} hint="PDF · JPEG · PNG · TIFF · SHP" />
                 {err("measureFile")}
               </div>
             )}
 
             <div>
               <label className={labelCls} htmlFor="detail">פירוט הפנייה <span className="text-error-red">*</span></label>
-              <textarea id="detail" rows={5} value={detail} onChange={(e) => setDetail(e.target.value)} className={`${inputCls} resize-none`} placeholder="נא לפרט את הבקשה (לפחות 20 תווים)…" />
+              <textarea id="detail" rows={5} maxLength={2000} value={detail} onChange={(e) => setDetail(e.target.value)} className={`${inputCls} resize-none`} placeholder="נא לפרט את הבקשה (לפחות 20 תווים)…" />
               <div className="flex justify-between"><span>{err("detail")}</span><span className="text-[11px] text-on-surface-variant mt-1">{detail.trim().length}/2000</span></div>
             </div>
           </section>
@@ -284,14 +293,14 @@ export default function BoundariesInquiryForm({ service }: { service: Service })
 
             {customerType === "1" && (
               <div className="grid sm:grid-cols-2 gap-3 mb-4">
-                <div><label className={labelCls} htmlFor="fn">שם פרטי <span className="text-error-red">*</span></label><input id="fn" value={firstName} onChange={(e) => setFirstName(e.target.value)} className={inputCls} />{err("firstName")}</div>
-                <div><label className={labelCls} htmlFor="ln">שם משפחה <span className="text-error-red">*</span></label><input id="ln" value={lastName} onChange={(e) => setLastName(e.target.value)} className={inputCls} />{err("lastName")}</div>
+                <div><label className={labelCls} htmlFor="fn">שם פרטי <span className="text-error-red">*</span></label><input id="fn" minLength={2} maxLength={25} value={firstName} onChange={(e) => setFirstName(e.target.value)} className={inputCls} />{err("firstName")}</div>
+                <div><label className={labelCls} htmlFor="ln">שם משפחה <span className="text-error-red">*</span></label><input id="ln" minLength={2} maxLength={25} value={lastName} onChange={(e) => setLastName(e.target.value)} className={inputCls} />{err("lastName")}</div>
                 <div className="sm:col-span-2"><label className={labelCls} htmlFor="id">מספר זהות (כולל ספרת ביקורת) <span className="text-error-red">*</span></label><input id="id" dir="ltr" inputMode="numeric" maxLength={9} value={idNum} onChange={(e) => setIdNum(e.target.value)} className={inputCls} />{err("idNum")}</div>
               </div>
             )}
             {customerType === "2" && (
               <div className="grid sm:grid-cols-2 gap-3 mb-4">
-                <div><label className={labelCls} htmlFor="co">שם החברה <span className="text-error-red">*</span></label><input id="co" value={company} onChange={(e) => setCompany(e.target.value)} className={inputCls} />{err("company")}</div>
+                <div><label className={labelCls} htmlFor="co">שם החברה <span className="text-error-red">*</span></label><input id="co" maxLength={50} value={company} onChange={(e) => setCompany(e.target.value)} className={inputCls} />{err("company")}</div>
                 <div><label className={labelCls} htmlFor="con">מספר ח.פ <span className="text-error-red">*</span></label><input id="con" dir="ltr" inputMode="numeric" maxLength={9} value={companyNum} onChange={(e) => setCompanyNum(e.target.value)} className={inputCls} />{err("companyNum")}</div>
               </div>
             )}
@@ -299,7 +308,7 @@ export default function BoundariesInquiryForm({ service }: { service: Service })
             {customerType && (
               <div className="grid sm:grid-cols-2 gap-3">
                 <div><label className={labelCls} htmlFor="em">דואר אלקטרוני <span className="text-error-red">*</span></label><input id="em" dir="ltr" type="email" value={email} onChange={(e) => setEmail(e.target.value)} className={inputCls} />{err("email")}</div>
-                <div><label className={labelCls} htmlFor="ph">טלפון <span className="text-error-red">*</span></label><input id="ph" dir="ltr" inputMode="tel" value={phone} onChange={(e) => setPhone(e.target.value)} className={inputCls} />{err("phone")}</div>
+                <div><label className={labelCls} htmlFor="ph">טלפון <span className="text-error-red">*</span></label><input id="ph" dir="ltr" inputMode="tel" maxLength={11} value={phone} onChange={(e) => setPhone(e.target.value)} className={inputCls} />{err("phone")}</div>
               </div>
             )}
           </section>
@@ -329,16 +338,30 @@ export default function BoundariesInquiryForm({ service }: { service: Service })
   );
 }
 
-// Lightweight file picker — demo only (no upload); records the chosen file name.
-function FilePick({ value, onPick, accept, hint }: { value: string; onPick: (name: string) => void; accept: string; hint: string }) {
+// File picker with client-side gatekeeping on type and size.
+// The POC does NOT transmit file content — only the chosen name is recorded.
+// Production must additionally run CDR/Sandbox sanitisation server-side before
+// storing or forwarding any file (see docs/SECURE_DEVELOPMENT.md, gap G-03).
+function FilePick({ value, onPick, allowed, hint }: { value: string; onPick: (name: string) => void; allowed: string[]; hint: string }) {
+  const [fileErr, setFileErr] = useState("");
+  const handle = (f: File | undefined) => {
+    if (!f) { onPick(""); setFileErr(""); return; }
+    const problem = validateAttachment(f, allowed);
+    if (problem) { setFileErr(problem); onPick(""); return; }
+    setFileErr(""); onPick(f.name);
+  };
   return (
     <div>
       <label className="flex items-center gap-3 p-3 rounded-xl border border-dashed border-outline-variant hover:border-secondary cursor-pointer transition-colors bg-surface-container/40">
         <span className="material-symbols-outlined text-secondary" aria-hidden="true">attach_file</span>
         <span className="text-sm text-on-surface-variant flex-1">{value || "בחירת קובץ לצירוף…"}</span>
-        <input type="file" accept={accept} className="sr-only" onChange={(e) => onPick(e.target.files?.[0]?.name || "")} />
+        <input type="file" accept={allowed.join(",")} className="sr-only" onChange={(e) => handle(e.target.files?.[0])} />
       </label>
-      <p className="text-[11px] text-on-surface-variant mt-1">סוגי קבצים: {hint}</p>
+      <p className="text-[11px] text-on-surface-variant mt-1">סוגי קבצים: {hint} · עד {ATTACHMENT_MAX_MB}MB</p>
+      {fileErr && <p className="text-[11px] text-error-red mt-1">{fileErr}</p>}
+      <p className="text-[11px] text-on-surface-variant/80 mt-1">
+        בשלב ה-POC הקובץ אינו נשלח — נשמר שם הקובץ בלבד. בייצור תתבצע סריקה והלבנה (CDR) בצד השרת.
+      </p>
     </div>
   );
 }
