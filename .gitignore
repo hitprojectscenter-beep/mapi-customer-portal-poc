@@ -40,3 +40,6 @@ next-env.d.ts
 
 .next-e2e/
 e2e-run.log
+
+# Cloud-committee workbooks (inputs/deliverables, not source)
+*.xlsx
